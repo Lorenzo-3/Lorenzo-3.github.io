@@ -4,33 +4,74 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Lorenzo Marinelli</title>
+  <meta name="description" content="Lorenzo Marinelli — Computer Science student at Sapienza University. Personal site: projects, notes, contact." />
   <link rel="stylesheet" href="/assets/style.css" />
 </head>
+
 <body>
   <div class="wrap">
-    <nav>
-      <a href="/">Home</a>
-      <a href="/about/">About</a>
-      <a href="/projects/">Projects</a>
-      <a href="/notes/">Notes</a>
-      <a href="/contact/">Contact</a>
+    <nav class="nav">
+      <a class="nav__brand" href="/">LM</a>
+      <div class="nav__links">
+        <a aria-current="page" href="/">Home</a>
+        <a href="/about/">About</a>
+        <a href="/projects/">Projects</a>
+        <a href="/notes/">Notes</a>
+        <a href="/contact/">Contact</a>
+      </div>
     </nav>
 
-    <h1>Lorenzo Marinelli</h1>
-    <p>Computer Science student at Sapienza university.</p>
-
-    <div class="card">
-      <p>
-        Quick links:
-        <a href="https://github.com/Lorenzo-3" target="_blank">GitHub</a>
-        . <a href="https://www.linkedin.com/in/lorenzo-marinelli-6821403a9/" target="_blank">LinkedIn</a>
-        . <a href="lorenzo03.marinelli@gmail.com">Email</a>
+    <header class="hero">
+      <p class="kicker">Computer Science · Sapienza University</p>
+      <h1>Lorenzo Marinelli</h1>
+      <p class="lead">
+        I build practical ML systems and enjoy working on anomaly detection, graph neural networks, and high-performance computing.
       </p>
-      <small>Based in Italy · This site is intentionally lightweight.</small>
-    </div>
 
-    <h2>Now</h2>
-    <p>Studying for the exam session</p>
+      <div class="hero__cta">
+        <a class="btn" href="/projects/">See projects</a>
+        <a class="btn btn--ghost" href="/about/">About me</a>
+      </div>
+
+      <div class="meta">
+        <span>Based in Italy</span>
+        <span class="sep">•</span>
+        <span>Lightweight, no JS</span>
+      </div>
+    </header>
+
+    <section class="grid">
+      <article class="card">
+        <h2>Quick links</h2>
+        <p class="links">
+          <a href="https://github.com/Lorenzo-3" target="_blank" rel="noreferrer">GitHub</a>
+          <span class="sep">•</span>
+          <a href="https://www.linkedin.com/in/lorenzo-marinelli-6821403a9/" target="_blank" rel="noreferrer">LinkedIn</a>
+          <span class="sep">•</span>
+          <a href="mailto:lorenzo03.marinelli@gmail.com">Email</a>
+        </p>
+        <p><small>If you want to reach me, email is best.</small></p>
+      </article>
+
+      <article class="card">
+        <h2>Now</h2>
+        <p>Studying for the exam session.</p>
+        <p><small>Last updated: February 2026.</small></p>
+      </article>
+    </section>
+
+    <section class="card">
+      <h2>Highlights</h2>
+      <ul class="bullets">
+        <li><strong>ML/vision:</strong> anomaly detection and localization on high-resolution imagery.</li>
+        <li><strong>Graph ML:</strong> interactome modeling and switch-gene workflows with PyTorch Geometric.</li>
+        <li><strong>Systems:</strong> interest in efficient pipelines and compute-aware model design.</li>
+      </ul>
+    </section>
+
+    <footer class="footer">
+      <small>© 2026 Lorenzo Marinelli · <a href="/contact/">Contact</a></small>
+    </footer>
   </div>
 </body>
 </html>
