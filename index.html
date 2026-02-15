@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" data-palette="triad">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
@@ -11,20 +11,29 @@
 <body>
   <div class="wrap">
     <nav class="nav">
-      <a class="nav__brand" href="/">LM</a>
+      <a class="nav__brand" href="/" aria-label="Home">LM</a>
+
       <div class="nav__links">
         <a aria-current="page" href="/">Home</a>
         <a href="/about/">About</a>
         <a href="/projects/">Projects</a>
         <a href="/notes/">Notes</a>
+        <a href="/contact/">Contact</a>
       </div>
     </nav>
 
     <header class="hero">
+      <p class="kicker">
+        <span class="badge">Computer Science</span>
+        <span class="sep">•</span>
+        Sapienza University
+      </p>
+
       <h1>Lorenzo Marinelli</h1>
-      <p class="kicker">Computer Science · Sapienza University</p>
+
       <p class="lead">
-        I like building practical ML systems and enjoy working on data analysis tasks.
+        I build practical ML systems with a focus on <span class="hl">anomaly detection</span>,
+        <span class="hl">graph neural networks</span>, and compute-aware workflows.
       </p>
 
       <div class="hero__cta">
@@ -32,7 +41,11 @@
         <a class="btn btn--ghost" href="/about/">About me</a>
       </div>
 
-
+      <div class="meta">
+        <span>Based in Italy</span>
+        <span class="sep">•</span>
+        <span>Lightweight, no JS</span>
+      </div>
     </header>
 
     <section class="grid">
@@ -50,12 +63,21 @@
 
       <article class="card">
         <h2>Now</h2>
-        <p>Studying for the exam session.</p>
+        <p>
+          Studying for the exam session and polishing a few projects to publish.
+        </p>
         <p><small>Last updated: February 2026.</small></p>
       </article>
     </section>
 
-
+    <section class="card">
+      <h2>Highlights</h2>
+      <ul class="bullets">
+        <li><strong>Vision / ML:</strong> anomaly localization on high-resolution imagery.</li>
+        <li><strong>Graph ML:</strong> interactome modeling with PyTorch Geometric.</li>
+        <li><strong>Systems:</strong> interest in efficient pipelines and deployment constraints.</li>
+      </ul>
+    </section>
 
     <footer class="footer">
       <small>© 2026 Lorenzo Marinelli · <a href="/contact/">Contact</a></small>
