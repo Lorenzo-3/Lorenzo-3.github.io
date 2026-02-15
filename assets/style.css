@@ -2,8 +2,8 @@
   --bg: #0f0f12;
   --text: #e8e8e8;
   --muted: #9aa0a6;
-  --accent: #4f8cff;
-  --card: rgba(255,255,255,0.04);
+  --accent: rgb(255, 255, 113);
+  --card: #ffffff0a;
   --border: rgba(255,255,255,0.10);
 }
 
