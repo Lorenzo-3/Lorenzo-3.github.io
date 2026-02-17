@@ -57,17 +57,17 @@ html[data-theme="light"]{
 html[data-palette="triad"]{
   /* DARK */
   --bg-dark:#0f0f12;
-  --text-dark:#ececec;
-  --muted-dark:#a9afb6;
+  --text-dark:#e8c1c1;
+  --muted-dark:#8ca6c4;
 
   /* Teal = primary */
-  --accent-dark:#4fd6c8;
+  --accent-dark:#2ee1cf;
 
   /* Yellow = highlight */
-  --accent2-dark:#ffd76a;
+  --accent2-dark:#fdd055;
 
   /* Maroon = emphasis */
-  --accent3-dark:#d35a7c;
+  --accent3-dark:#e21a53;
 
   --card-dark:rgba(255,255,255,.05);
   --border-dark:rgba(255,255,255,.12);
@@ -75,16 +75,16 @@ html[data-palette="triad"]{
   /* LIGHT */
   --bg-light:#fbf6ee;
   --text-light:#1b1710;
-  --muted-light:#5d554a;
+  --muted-light:#785b31;
 
   /* Teal (deeper for contrast) */
   --accent-light:#006a64;
 
   /* Yellow becomes gold */
-  --accent2-light:#7a5a00;
+  --accent2-light:#c18d00;
 
   /* True maroon */
-  --accent3-light:#7a1830;
+  --accent3-light:#c10030;
 
   --card-light:rgba(0,0,0,.04);
   --border-light:rgba(0,0,0,.10);
@@ -163,10 +163,17 @@ small { color: var(--muted); }
 .nav {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: space-between;  /* THIS is the key */
   gap: 1rem;
   margin-bottom: 2.5rem;
 }
+
+.nav__links {
+  display: flex;
+  gap: .8rem;
+  margin-left: auto;   /* extra safety: pushes links right */
+}
+
 
 .nav__brand {
   color: var(--text);
@@ -181,12 +188,6 @@ small { color: var(--muted); }
   border-radius: 12px;
   font-weight: 700;
   letter-spacing: 0.5px;
-}
-
-.nav__links {
-  display: flex;
-  gap: .6rem;
-  flex-wrap: wrap;
 }
 
 .hero {
@@ -214,13 +215,13 @@ small { color: var(--muted); }
   margin-top: 1.2rem;
 }
 
-.btn {
+.btn{
   display: inline-block;
   padding: .55rem .9rem;
   border-radius: 12px;
   border: 1px solid var(--border);
   background: var(--accent);
-  color: #07110d; /* good on teal in dark theme */
+  color: #07110d;              /* good on light teal in DARK theme */
   text-decoration: none;
   font-weight: 600;
 }
@@ -235,9 +236,23 @@ html[data-theme="light"] .btn{
   }
 }
 
-.btn--ghost {
+.btn--ghost{
   background: transparent;
-  color: var(--text);
+  color: var(--text);          /* always readable */
+}
+
+.btn--ghost:hover{
+  border-color: var(--accent2);
+  background: color-mix(in srgb, var(--accent2) 10%, transparent);
+}
+
+html[data-theme="light"] .btn:not(.btn--ghost){
+  color:#ffffff;
+}
+@media (prefers-color-scheme: light){
+  html:not([data-theme]) .btn:not(.btn--ghost){
+    color:#ffffff;
+  }
 }
 
 .meta {
@@ -283,3 +298,69 @@ html[data-theme="light"] .btn{
   font-weight: 650;
 }
 
+.profile{
+  display:flex;
+  gap: 1.50rem;
+  align-items: flex-start;
+  margin-top: .9rem;
+}
+
+.avatar{
+  width: 130px;
+  height: 130px;
+  border-radius: 30px;      /* use 999px if you want it circular */
+  object-fit: cover;
+  border: 1px solid var(--border);
+  background: var(--card);
+  flex: 0 0 auto;
+}
+
+/* If your photo has a big white frame baked in, this helps visually */
+.avatar{
+  box-shadow: 0 10px 30px rgba(0,0,0,.25);
+}
+
+@media (max-width: 640px){
+  .profile{ flex-direction: column; }
+  .avatar{ width: 118px; height: 118px; }
+}
+
+.social{
+  display:flex;
+  gap:.6rem;
+  flex-wrap:wrap;
+  margin-top: 1rem;
+}
+
+.social-icons{
+  display:flex;
+  gap:.55rem;
+  margin-top: .9rem;
+}
+
+.iconlink{
+  width: 38px;
+  height: 38px;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  background: var(--card);
+  color: var(--muted);
+  text-decoration: none;
+}
+
+.iconlink svg{
+  width: 18px;
+  height: 18px;
+}
+
+.iconlink:hover{
+  color: var(--accent2);           /* yellow on hover */
+  border-color: var(--accent2);
+}
+
+@media (max-width: 520px){
+  .iconlink{ width: 36px; height: 36px; }
+}

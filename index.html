@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Lorenzo Marinelli</title>
-  <meta name="description" content="Lorenzo Marinelli — Computer Science student at Sapienza University. Personal site: projects, notes, contact." />
+  <meta name="description" content="Lorenzo Marinelli — Computer Science student at Sapienza University. Projects, notes, and contact." />
   <link rel="stylesheet" href="/assets/style.css" />
 </head>
 
@@ -29,58 +29,83 @@
         Sapienza University
       </p>
 
-      <h1>Lorenzo Marinelli</h1>
+      <div class="profile">
+        <img
+          class="avatar"
+          src="/assets/profile.jpg"
+          alt="Lorenzo Marinelli"
+          width="104"
+          height="104"
+          loading="lazy"
+        />
 
-      <p class="lead">
-        I build practical ML systems with a focus on <span class="hl">anomaly detection</span>,
-        <span class="hl">graph neural networks</span>, and compute-aware workflows.
-      </p>
+        <div class="profile__text">
+          <h1>Lorenzo Marinelli</h1>
 
-      <div class="hero__cta">
-        <a class="btn" href="/projects/">See projects</a>
-        <a class="btn btn--ghost" href="/about/">About me</a>
-      </div>
+          <p class="lead">
+            Computer Science student focused on
+            <span class="hl">Machine Learning</span>,
+            <span class="hl">Data Science</span>, and
+            <span class="hl">Bioinformatics</span>.
+          </p>
 
-      <div class="meta">
-        <span>Based in Italy</span>
-        <span class="sep">•</span>
-        <span>Lightweight, no JS</span>
+          <div class="hero__cta">
+            <a class="btn" href="/projects/">See projects</a>
+            <a class="btn btn--ghost" href="/about/">About me</a>
+          </div>
+
+          <div class="social-icons" aria-label="Quick links">
+            <a class="iconlink" href="mailto:lorenzo03.marinelli@gmail.com" aria-label="Email">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path fill="currentColor" d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4-8 5L4 8V6l8 5 8-5v2z"/>
+              </svg>
+            </a>
+
+            <a class="iconlink" href="https://github.com/Lorenzo-3" target="_blank" rel="noreferrer" aria-label="GitHub">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path fill="currentColor" d="M12 2a10 10 0 0 0-3.16 19.49c.5.09.68-.22.68-.48v-1.7c-2.77.6-3.35-1.18-3.35-1.18-.45-1.15-1.1-1.46-1.1-1.46-.9-.62.07-.61.07-.61 1 .07 1.53 1.03 1.53 1.03.9 1.53 2.36 1.09 2.94.83.09-.65.35-1.09.63-1.34-2.21-.25-4.54-1.11-4.54-4.94 0-1.09.39-1.98 1.03-2.68-.1-.25-.45-1.27.1-2.65 0 0 .84-.27 2.75 1.02A9.6 9.6 0 0 1 12 6.8c.85 0 1.71.11 2.51.32 1.9-1.29 2.74-1.02 2.74-1.02.56 1.38.21 2.4.11 2.65.64.7 1.03 1.59 1.03 2.68 0 3.84-2.34 4.68-4.57 4.93.36.31.68.93.68 1.88v2.79c0 .26.18.58.69.48A10 10 0 0 0 12 2z"/>
+              </svg>
+            </a>
+          </div>
+          
+
+          <div class="meta">
+            <span>Italy</span>
+            <span class="sep">•</span>
+            <span>Last updated: February 2026</span>
+          </div>
+        </div>
       </div>
     </header>
 
     <section class="grid">
       <article class="card">
-        <h2>Quick links</h2>
-        <p class="links">
-          <a href="https://github.com/Lorenzo-3" target="_blank" rel="noreferrer">GitHub</a>
-          <span class="sep">•</span>
-          <a href="https://www.linkedin.com/in/lorenzo-marinelli-6821403a9/" target="_blank" rel="noreferrer">LinkedIn</a>
-          <span class="sep">•</span>
-          <a href="mailto:lorenzo03.marinelli@gmail.com">Email</a>
-        </p>
-        <p><small>If you want to reach me, email is best.</small></p>
+        <h2>Open to</h2>
+        <ul class="bullets">
+          <li><strong>Internships / thesis work:</strong> ML, graph ML, bioinformatics.</li>
+          <li><strong>Collaboration:</strong> research prototypes and open-source projects.</li>
+        </ul>
       </article>
+
 
       <article class="card">
         <h2>Now</h2>
-        <p>
-          Studying for the exam session and polishing a few projects to publish.
-        </p>
-        <p><small>Last updated: February 2026.</small></p>
+        <p>Studying for the exam session and polishing a few personal projects for publication.</p>
+        <p><small>Next: add 1–2 writeups to the Projects page.</small></p>
       </article>
     </section>
 
     <section class="card">
       <h2>Highlights</h2>
       <ul class="bullets">
-        <li><strong>Vision / ML:</strong> anomaly localization on high-resolution imagery.</li>
-        <li><strong>Graph ML:</strong> interactome modeling with PyTorch Geometric.</li>
-        <li><strong>Systems:</strong> interest in efficient pipelines and deployment constraints.</li>
+        <li><strong>ML / vision:</strong> anomaly detection and localization on high-resolution imagery (UAV use-cases).</li>
+        <li><strong>Graph deep learning:</strong> interactome modeling and protein interaction workflows with PyTorch Geometric.</li>
+        <li><strong>Data analysis:</strong> exploratory analysis of the 2019 European elections to uncover patterns and insights.</li>
       </ul>
     </section>
 
     <footer class="footer">
-      <small>© 2026 Lorenzo Marinelli · <a href="/contact/">Contact</a></small>
+      <small>© 2026 Lorenzo Marinelli</small>
     </footer>
   </div>
 </body>
