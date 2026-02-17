@@ -56,18 +56,18 @@ html[data-theme="light"]{
 /* Yellow + Maroon + Teal palette (coherent, non-ridiculous) */
 html[data-palette="triad"]{
   /* DARK */
-  --bg-dark:#0f0f12;
+  --bg-dark:#302020;
   --text-dark:#e8c1c1;
   --muted-dark:#cfe3fc;
 
   /* Teal = primary */
-  --accent-dark:#12e1cc;
+  --accent-dark:#42dacb;
 
   /* Yellow = highlight */
-  --accent2-dark:#fadc89;
+  --accent2-dark:#ffe397;
 
   /* Maroon = emphasis */
-  --accent3-dark:#e21a53;
+  --accent3-dark:#e74976;
 
   --card-dark:rgba(255,255,255,.05);
   --border-dark:rgba(255,255,255,.12);
@@ -81,7 +81,7 @@ html[data-palette="triad"]{
   --accent-light:#006a64;
 
   /* Yellow becomes gold */
-  --accent2-light:#c18d00;
+  --accent2-light:#966e00;
 
   /* True maroon */
   --accent3-light:#c10030;
@@ -293,19 +293,20 @@ html[data-theme="light"] .btn:not(.btn--ghost){
 
 .profile{
   display:flex;
-  gap: 1.50rem;
+  gap: 1.20rem;
   align-items: flex-start;
   margin-top: .9rem;
 }
 
 .avatar{
-  width: 130px;
-  height: 130px;
-  border-radius: 30px;      /* use 999px if you want it circular */
+  width: 180px;
+  height: 180px;
+  border-radius: 50px;      /* use 999px if you want it circular */
   object-fit: cover;
   border: 1px solid var(--border);
   background: var(--card);
   flex: 0 0 auto;
+  margin: 17px;
 }
 
 /* If your photo has a big white frame baked in, this helps visually */
