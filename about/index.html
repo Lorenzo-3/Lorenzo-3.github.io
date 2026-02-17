@@ -4,25 +4,119 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>About · Lorenzo Marinelli</title>
+  <meta name="description" content="About Lorenzo Marinelli — Computer Science student focused on ML, data science, and bioinformatics." />
   <link rel="stylesheet" href="/assets/style.css" />
 </head>
+
 <body>
   <div class="wrap">
-    <nav>
-      <a href="/">Home</a>
-      <a href="/about/">About</a>
-      <a href="/projects/">Projects</a>
-      <a href="/notes/">Notes</a>
-      <a href="/contact/">Contact</a>
+    <nav class="nav">
+      <a class="nav__brand" href="/" aria-label="Home">LM</a>
+
+      <div class="nav__links">
+        <a href="/">Home</a>
+        <a aria-current="page" href="/about/">About</a>
+        <a href="/projects/">Projects</a>
+        <a href="/notes/">Notes</a>
+        <a href="/contact/">Contact</a>
+      </div>
     </nav>
 
-    <h1>About</h1>
-    <p>Short bio. What you care about. What you’re optimizing for.</p>
+    <header class="hero">
+      <h1>About</h1>
 
-    <h2>Interests</h2>
-    <div class="card">
-      <p>GNNs, anomaly detection, HPC, and applied ML systems.</p>
-    </div>
+    <p class="lead">
+      I’m Lorenzo, a Master’s student in Computer Science at Sapienza University (Rome).
+      I like building things that are <span class="hl">practical</span> and <span class="hl">measurable</span>:
+      small ML systems, experiments, and pipelines where you can tell what improved and why.
+      What I enjoy most is the moment where messy data starts to make sense, when patterns show up and a <span class="hl">real story</span> emerges just from looking at numbers.
+    </p>
+
+    <p class="lead">
+      More than “computer science for its own sake”, I’m especially drawn to using computation as a tool for <span class="hl">statistical study</span>:
+      bioinformatics, physics, game theory, information theory, and any domain where models and data can answer real questions.
+      That said, I still genuinely like computer stuff in general, from code and good engineering to the hands-on side of building and testing systems.
+    </p>
+
+
+      <div class="meta">
+        <span>Based in Italy</span>
+        <span class="sep">•</span>
+        <span>Last updated: February 2026</span>
+      </div>
+    </header>
+
+    <section class="grid">
+      <article class="card">
+        <h2>Education</h2>
+        <ul class="bullets edu">
+          <li class="edu__item">
+            <div class="edu__row">
+              <span class="edu__title hl">MSc Computer Science</span>
+              <span class="edu__date">2025–Present</span>
+            </div>
+            <div class="edu__meta">Sapienza University of Rome</div>
+          </li>
+
+          <li class="edu__item">
+            <div class="edu__row">
+              <span class="edu__title hl">BSc Applied Computer Science & AI</span>
+              <span class="edu__date">2022–2025</span>
+            </div>
+            <div class="edu__meta">Sapienza University of Rome · <strong>110 cum laude</strong></div>
+          </li>
+
+          <li class="edu__item">
+            <div class="edu__row">
+              <span class="edu__title">Diploma di Liceo Scientifico</span>
+              <span class="edu__date">2017–2022</span>
+            </div>
+            <div class="edu__meta">Liceo Scientifico A. Romita · <strong>100 cum laude</strong></div>
+          </li>
+        </ul>
+      </article>
+
+
+      <article class="card">
+        <h2>How I work</h2>
+        <ul class="bullets">
+          <li><strong>Clarity first:</strong> I like simple baselines and clean evaluation.</li>
+          <li><strong>Iterate fast:</strong> small experiments, then scale what works.</li>
+          <li><strong>Efficiency matters:</strong> I enjoy constraints (edge, speed, memory).</li>
+        </ul>
+      </article>
+    </section>
+
+    <section class="card">
+      <h2>What I build</h2>
+      <ul class="bullets">
+        <li><strong>ML pipelines:</strong> training + evaluation + interpretation, end to end.</li>
+        <li><strong>Vision experiments:</strong> anomaly detection/localization on high-resolution imagery.</li>
+        <li><strong>Graph ML:</strong> biological networks, interactomes, and network-medicine ideas.</li>
+        <li><strong>Data analysis:</strong> cleaning messy datasets, extracting patterns, telling the story.</li>
+      </ul>
+      <p><small>Projects and writeups live in <a href="/projects/">Projects</a> and <a href="/notes/">Notes</a>.</small></p>
+    </section>
+
+    <section class="card">
+      <h2>Tools (Python-first)</h2>
+      <p>
+        I’m mostly a Python person. I don’t try to collect languages; I try to ship results.
+        That usually means using the right libraries and writing glue code that’s readable and reproducible.
+      </p>
+
+      <ul class="bullets">
+        <li><strong>ML:</strong> PyTorch, PyTorch Lightning, scikit-learn</li>
+        <li><strong>Data:</strong> NumPy, pandas</li>
+        <li><strong>Vision:</strong> OpenCV, torchvision</li>
+        <li><strong>Graphs:</strong> PyTorch Geometric, NetworkX</li>
+        <li><strong>Workflow:</strong> Git, notebooks, Docker (when needed)</li>
+      </ul>
+    </section>
+
+    <footer class="footer">
+      <small>© 2026 Lorenzo Marinelli</small>
+    </footer>
   </div>
 </body>
 </html>

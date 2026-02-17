@@ -57,14 +57,14 @@ html[data-theme="light"]{
 html[data-palette="triad"]{
   /* DARK */
   --bg-dark:#302020;
-  --text-dark:#e8c1c1;
-  --muted-dark:#cfe3fc;
+  --text-dark:#e9c3c3;
+  --muted-dark:rgb(206, 221, 240);
 
   /* Teal = primary */
-  --accent-dark:#42dacb;
+  --accent2-dark:rgb(60, 255, 240);
 
   /* Yellow = highlight */
-  --accent2-dark:#ffe397;
+  --accent-dark:#ffe065;
 
   /* Maroon = emphasis */
   --accent3-dark:#e74976;
@@ -74,14 +74,14 @@ html[data-palette="triad"]{
 
   /* LIGHT */
   --bg-light:#fbf6ee;
-  --text-light:#1b1710;
-  --muted-light:#524430;
+  --text-light:rgb(27, 23, 16);
+  --muted-light:rgb(82, 68, 48);
 
   /* Teal (deeper for contrast) */
-  --accent-light:#006a64;
+  --accent2-light:rgb(0, 80, 76);
 
   /* Yellow becomes gold */
-  --accent2-light:#966e00;
+  --accent-light:#966e00;
 
   /* True maroon */
   --accent3-light:#c10030;
@@ -204,7 +204,6 @@ small { color: var(--muted); }
 
 .lead {
   font-size: 1.1rem;
-  max-width: 60ch;
   margin-top: 0.8rem;
 }
 
@@ -299,8 +298,8 @@ html[data-theme="light"] .btn:not(.btn--ghost){
 }
 
 .avatar{
-  width: 180px;
-  height: 180px;
+  width: 179px;
+  height: 179px;
   border-radius: 50px;      /* use 999px if you want it circular */
   object-fit: cover;
   border: 1px solid var(--border);
@@ -358,3 +357,20 @@ html[data-theme="light"] .btn:not(.btn--ghost){
 @media (max-width: 520px){
   .iconlink{ width: 36px; height: 36px; }
 }
+
+.edu { list-style: none; margin-left: 0; }
+.edu__item { padding: .55rem 0; border-top: 1px solid var(--border); }
+.edu__item:first-child { border-top: 0; padding-top: 0; }
+
+.edu__row {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  align-items: baseline;
+}
+
+.edu__title { color: var(--accent2); font-weight: 650; }
+.edu__date { color: var(--muted); white-space: nowrap; }
+
+.edu__meta { color: var(--muted); margin-top: .15rem; }
+
