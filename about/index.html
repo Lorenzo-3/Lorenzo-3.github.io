@@ -25,19 +25,20 @@
     <header class="hero">
       <h1>About</h1>
 
-    <p class="lead">
-      I’m Lorenzo, a Master’s student in Computer Science at Sapienza University (Rome).
-      I like building things that are <span class="hl">practical</span> and <span class="hl">measurable</span>:
-      small ML systems, experiments, and pipelines where you can tell what improved and why.
-      What I enjoy most is the moment where messy data starts to make sense, when patterns show up and a <span class="hl">real story</span> emerges just from looking at numbers.
-    </p>
+      <p class="lead">
+        I’m Lorenzo, a Master’s student in Computer Science at Sapienza University (Rome).
+        I like building things that are <span class="hl">practical</span> and <span class="hl">measurable</span>:
+        small ML systems, experiments, and pipelines where you can tell what improved and why.
+        What I enjoy most is the moment where messy data starts to make sense — when patterns show up and a
+        <span class="hl">real story</span> emerges just from looking at numbers.
+      </p>
 
-    <p class="lead">
-      More than “computer science for its own sake”, I’m especially drawn to using computation as a tool for <span class="hl">statistical study</span>:
-      bioinformatics, physics, game theory, information theory, and any domain where models and data can answer real questions.
-      That said, I still genuinely like computer stuff in general, from code and good engineering to the hands-on side of building and testing systems.
-    </p>
-
+      <p class="lead">
+        More than “computer science for its own sake”, I’m especially drawn to using computation as a tool for
+        <span class="hl">statistical study</span>: bioinformatics, physics, game theory, information theory, and any domain
+        where models and data can answer real questions. That said, I still genuinely like computer stuff in general —
+        from code and good engineering to the hands-on side of building and testing systems.
+      </p>
 
       <div class="meta">
         <span>Based in Italy</span>
@@ -71,47 +72,72 @@
               <span class="edu__title">Diploma di Liceo Scientifico</span>
               <span class="edu__date">2017–2022</span>
             </div>
-            <div class="edu__meta">Liceo Scientifico A. Romita · <strong>100 cum laude</strong></div>
+            <div class="edu__meta">Liceo Scientifico A. Romita · <strong>100 e lode</strong></div>
           </li>
         </ul>
       </article>
 
-
       <article class="card">
-        <h2>How I work</h2>
+        <h2>What I build</h2>
         <ul class="bullets">
-          <li><strong>Clarity first:</strong> I like simple baselines and clean evaluation.</li>
-          <li><strong>Iterate fast:</strong> small experiments, then scale what works.</li>
-          <li><strong>Efficiency matters:</strong> I enjoy constraints (edge, speed, memory).</li>
+          <li><strong>ML pipelines:</strong> training + evaluation + interpretation, end to end.</li>
+          <li><strong>Vision experiments:</strong> detection/localization on high-resolution imagery (UAV-style constraints).</li>
+          <li><strong>Graph ML:</strong> biological networks, interactomes, and network-medicine ideas.</li>
+          <li><strong>Data analysis:</strong> cleaning messy datasets, extracting patterns, telling the story.</li>
+          <li><strong>3D / synthetic data:</strong> small Blender pipelines for labeled datasets and domain randomization.</li>
+          <li><strong>Web & small apps:</strong> lightweight APIs and tools that wrap analyses into something usable.</li>
         </ul>
+        <p><small>Projects and writeups live in <a href="/projects/">Projects</a> and <a href="/notes/">Notes</a>.</small></p>
       </article>
     </section>
 
     <section class="card">
-      <h2>What I build</h2>
-      <ul class="bullets">
-        <li><strong>ML pipelines:</strong> training + evaluation + interpretation, end to end.</li>
-        <li><strong>Vision experiments:</strong> anomaly detection/localization on high-resolution imagery.</li>
-        <li><strong>Graph ML:</strong> biological networks, interactomes, and network-medicine ideas.</li>
-        <li><strong>Data analysis:</strong> cleaning messy datasets, extracting patterns, telling the story.</li>
-      </ul>
-      <p><small>Projects and writeups live in <a href="/projects/">Projects</a> and <a href="/notes/">Notes</a>.</small></p>
-    </section>
+      <h2>Tools & skills</h2>
 
-    <section class="card">
-      <h2>Tools (Python-first)</h2>
-      <p>
-        I’m mostly a Python person. I don’t try to collect languages; I try to ship results.
-        That usually means using the right libraries and writing glue code that’s readable and reproducible.
-      </p>
+      <section class="grid">
+        <article class="card">
+          <h2>ML & data</h2>
+          <ul class="bullets">
+            <li><strong>Core:</strong> Python, NumPy, pandas, Matplotlib</li>
+            <li><strong>ML/DL:</strong> PyTorch, PyTorch Lightning, scikit-learn</li>
+            <li><strong>Experiment workflow:</strong> notebooks, reproducible runs, clean evaluation</li>
+          </ul>
+        </article>
 
-      <ul class="bullets">
-        <li><strong>ML:</strong> PyTorch, PyTorch Lightning, scikit-learn</li>
-        <li><strong>Data:</strong> NumPy, pandas</li>
-        <li><strong>Vision:</strong> OpenCV, torchvision</li>
-        <li><strong>Graphs:</strong> PyTorch Geometric, NetworkX</li>
-        <li><strong>Workflow:</strong> Git, notebooks, Docker (when needed)</li>
-      </ul>
+        <article class="card">
+          <h2>Vision & graphs</h2>
+          <ul class="bullets">
+            <li><strong>Vision:</strong> OpenCV, torchvision</li>
+            <li><strong>Graphs:</strong> PyTorch Geometric, NetworkX, Gephi</li>
+            <li><strong>Typical tasks:</strong> heatmaps/masks → post-processing → bounding boxes → classification</li>
+          </ul>
+        </article>
+      </section>
+
+      <section class="grid">
+        <article class="card">
+          <h2>Bioinformatics / network medicine</h2>
+          <ul class="bullets">
+            <li><strong>Tools:</strong> SWIMmeR, SaveRunner,WGCNA, Enrichr</li>
+            <li><strong>Work:</strong> enrichment analysis, correlation analysis,  network-based interpretation, interactome workflows</li>
+            <li><strong>Supporting stack:</strong> pandas/NumPy for cleaning + reproducible notebooks for analysis</li>
+          </ul>
+        </article>
+
+        <article class="card">
+          <h2>3D, web, and engineering</h2>
+          <ul class="bullets">
+            <li><strong>3D / rendering:</strong> Blender (dataset generation, lighting, domain randomization)</li>
+            <li><strong>Web:</strong> HTML/CSS, JavaScript, OpenAPI, REST APIs</li>
+            <li><strong>Backend basics:</strong> SQL fundamentals, small services/tools</li>
+            <li><strong>Workflow:</strong> Git, Docker (when needed)</li>
+          </ul>
+        </article>
+      </section>
+
+      <p><small>
+        I’m mostly Python-first: I prefer using the right libraries and writing clean glue code over “collecting” languages.
+      </small></p>
     </section>
 
     <footer class="footer">

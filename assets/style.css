@@ -56,7 +56,7 @@ html[data-theme="light"]{
 /* Yellow + Maroon + Teal palette (coherent, non-ridiculous) */
 html[data-palette="triad"]{
   /* DARK */
-  --bg-dark:#302020;
+  --bg-dark:rgb(48, 32, 32);
   --text-dark:#e9c3c3;
   --muted-dark:rgb(206, 221, 240);
 
