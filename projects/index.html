@@ -3,22 +3,168 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>About · Lorenzo Marinelli</title>
+  <title>Projects · Lorenzo Marinelli</title>
+  <meta name="description" content="Projects by Lorenzo Marinelli — ML, data science, bioinformatics, and engineering work." />
   <link rel="stylesheet" href="/assets/style.css" />
 </head>
+
 <body>
   <div class="wrap">
-    <nav>
-      <a href="/">Home</a>
-      <a href="/about/">About</a>
-      <a href="/projects/">Projects</a>
-      <a href="/notes/">Notes</a>
-      <a href="/contact/">Contact</a>
+    <nav class="nav">
+      <a class="nav__brand" href="/" aria-label="Home">LM</a>
+
+      <div class="nav__links">
+        <a href="/">Home</a>
+        <a href="/about/">About</a>
+        <a aria-current="page" href="/projects/">Projects</a>
+        <a href="/notes/">Notes</a>
+        <a href="/contact/">Contact</a>
+      </div>
     </nav>
 
-    <h1>About</h1>
-    <p>work in progress</p>
+    <header class="hero">
+      <h1>Projects</h1>
+      <p class="lead">A selection of things I’ve built and studied.</p>
+      <div class="meta">
+        <span>ML · Data · Bioinformatics</span>
+        <span class="sep">•</span>
+        <span>Last updated: February 2026</span>
+      </div>
+    </header>
 
+    <!-- Featured thesis -->
+    <section class="card thesis">
+      <div class="project__top">
+        <h2>Featured: Bachelor’s thesis</h2>
+      </div>
+
+      <p class="project__desc">
+        <strong>Unveiling Protein Connections through Graph Neural Networks and ProtT5 Embeddings</strong><br />
+        A lightweight link-prediction pipeline for protein–protein interactions combining ProtT5 sequence embeddings
+        with graph context (STRING v12). Includes a NOTCH2-focused case study.
+      </p>
+
+      <ul class="bullets">
+        <li><strong>Task:</strong> predict missing PPIs using an encoder–decoder GNN with learned node representations.</li>
+        <li><strong>Data:</strong> high-confidence STRING graph + ProtT5 embeddings as node features.</li>
+        <li><strong>Result highlight:</strong> strong separability and excellent early precision (top-ranked predictions).</li>
+      </ul>
+
+      <div class="hero__cta thesis__cta">
+        <!-- Update these filenames/paths to match your repo -->
+        <a class="btn" href="/assets/thesis/thesis.pdf">Read thesis (PDF)</a>
+        <a class="btn btn--ghost" href="/assets/thesis/thesis-slides.pdf">Slides (PDF)</a>
+      </div>
+
+      <p><small>
+        If you cite this work or want details about the setup/metrics, the full writeup is in the thesis PDF.
+      </small></p>
+    </section>
+
+    <section class="grid">
+      <article class="card project">
+        <div class="project__top">
+          <h2>UAV Anomaly Detection & Localization</h2>
+        </div>
+
+        <p class="project__desc">
+          Pipeline created for the Sapienza Flight Team to detect and localize targets in high-resolution aerial imagery
+          using reconstruction-error based models and post-processing (masks → bounding boxes → classification-ready crops).
+        </p>
+
+        <ul class="bullets">
+          <li><strong>Focus:</strong> robust localization under “static background + rare objects” assumptions.</li>
+          <li><strong>Work:</strong> AE/VAE variants, denoising strategies, thresholding + connected components for bboxes.</li>
+          <li><strong>Outcome:</strong> fast candidate generation that can be cheaper than running a detector everywhere.</li>
+        </ul>
+      </article>
+
+      <article class="card project">
+        <div class="project__top">
+          <h2>Network Medicine (GNN + Switch Genes)</h2>
+        </div>
+
+        <p class="project__desc">
+          Exploration of interactome-based learning for disease biology: using gene expression + protein interaction networks
+          to predict/refine “switch genes” and interpret mechanisms.
+        </p>
+
+        <ul class="bullets">
+          <li><strong>Tools:</strong> SWIMmeR, SaveRunner, Enrichr (enrichment + network interpretation).</li>
+          <li><strong>Work:</strong> data cleaning, graph construction, model prototyping, evaluation across diseases.</li>
+          <li><strong>Goal:</strong> learn representations that generalize beyond a single disease dataset.</li>
+        </ul>
+      </article>
+    </section>
+
+    <section class="grid">
+      <article class="card project">
+        <div class="project__top">
+          <h2>EU Elections 2019 Data Analysis</h2>
+        </div>
+
+        <p class="project__desc">
+          Exploratory analysis of the 2019 European elections: cleaning results, testing hypotheses, and producing visual summaries.
+        </p>
+
+        <ul class="bullets">
+          <li><strong>Work:</strong> wrangling messy tables, consistency checks, reproducible notebooks.</li>
+          <li><strong>Output:</strong> plots + narrative conclusions based on quantitative patterns.</li>
+        </ul>
+      </article>
+
+      <article class="card project">
+        <div class="project__top">
+          <h2>Lorenz Attractor Forecasting (Multi-output LSTM)</h2>
+        </div>
+
+        <p class="project__desc">
+          Forecasting the Lorenz system with an LSTM predicting coordinates and derivatives, exploring stability in rollouts
+          and training dynamics.
+        </p>
+
+        <ul class="bullets">
+          <li><strong>Work:</strong> multi-head outputs, delta/residual ideas, sensitivity to derivative scaling.</li>
+          <li><strong>Outcome:</strong> learned which formulations remain stable in multi-step prediction.</li>
+        </ul>
+      </article>
+    </section>
+
+    <section class="grid">
+      <article class="card project">
+        <div class="project__top">
+          <h2>Synthetic Dataset Generation (Blender)</h2>
+        </div>
+
+        <p class="project__desc">
+          Small pipeline for generating labeled synthetic images with domain randomization for CV training experiments.
+        </p>
+
+        <ul class="bullets">
+          <li><strong>Work:</strong> scene randomization, lighting changes, exporting labels.</li>
+          <li><strong>Why:</strong> quick iteration when real data is expensive or limited.</li>
+        </ul>
+      </article>
+
+      <article class="card project">
+        <div class="project__top">
+          <h2>Small Web / API Projects</h2>
+        </div>
+
+        <p class="project__desc">
+          Lightweight backend/API work and small apps to wrap functionality into something usable and testable.
+        </p>
+
+        <ul class="bullets">
+          <li><strong>Work:</strong> API schemas, endpoints, and clean integration with client logic.</li>
+          <li><strong>Stack:</strong> OpenAPI + SQL fundamentals + HTML/CSS/JS for simple UIs.</li>
+        </ul>
+      </article>
+    </section>
+
+    <footer class="footer">
+      <small>© 2026 Lorenzo Marinelli</small>
+    </footer>
   </div>
 </body>
 </html>
