@@ -39,29 +39,27 @@
       </div>
 
       <p class="project__desc">
-        <strong>Unveiling Protein Connections through Graph Neural Networks and ProtT5 Embeddings</strong><br />
+        <span class="hl">Unveiling Protein Connections through Graph Neural Networks and ProtT5 Embeddings</span><br />
         A lightweight link-prediction pipeline for protein–protein interactions combining ProtT5 sequence embeddings
         with graph context (STRING v12). Includes a NOTCH2-focused case study.
       </p>
 
       <ul class="bullets">
-        <li><strong>Task:</strong> predict missing PPIs using an encoder–decoder GNN with learned node representations.</li>
-        <li><strong>Data:</strong> high-confidence STRING graph + ProtT5 embeddings as node features.</li>
-        <li><strong>Result highlight:</strong> strong separability and excellent early precision (top-ranked predictions).</li>
+        <li><span class="hl">Task:</span> predict missing PPIs using an encoder–decoder GNN with learned node representations.</li>
+        <li><span class="hl">Data:</span> high-confidence STRING graph + ProtT5 embeddings as node features.</li>
+        <li><span class="hl">Result highlight:</span> strong separability and excellent early precision (top-ranked predictions).</li>
       </ul>
 
       <div class="hero__cta thesis__cta">
-        <!-- Update these filenames/paths to match your repo -->
         <a class="btn" href="/assets/thesis/thesis.pdf">Read thesis (PDF)</a>
         <a class="btn btn--ghost" href="/assets/thesis/thesis-slides.pdf">Slides (PDF)</a>
       </div>
 
-      <p><small>
-        If you cite this work or want details about the setup/metrics, the full writeup is in the thesis PDF.
-      </small></p>
+      <p><small>If you want details about setup/metrics, the full writeup is in the thesis PDF.</small></p>
     </section>
 
-    <section class="grid">
+    <!-- UAV project: FULL WIDTH (not inside .grid) -->
+    <section>
       <article class="card project">
         <div class="project__top">
           <h2>UAV Anomaly Detection & Localization</h2>
@@ -73,27 +71,12 @@
         </p>
 
         <ul class="bullets">
-          <li><strong>Focus:</strong> robust localization under “static background + rare objects” assumptions.</li>
-          <li><strong>Work:</strong> AE/VAE variants, denoising strategies, thresholding + connected components for bboxes.</li>
-          <li><strong>Outcome:</strong> fast candidate generation that can be cheaper than running a detector everywhere.</li>
+          <li><span class="hl">Focus:</span> robust localization under “static background + rare objects” assumptions.</li>
+          <li><span class="hl">Work:</span> AE/VAE variants, denoising strategies, thresholding + connected components for bboxes.</li>
+          <li><span class="hl">Outcome:</span> fast candidate generation that can be cheaper than running a detector everywhere.</li>
         </ul>
-      </article>
 
-      <article class="card project">
-        <div class="project__top">
-          <h2>Network Medicine (GNN + Switch Genes)</h2>
-        </div>
-
-        <p class="project__desc">
-          Exploration of interactome-based learning for disease biology: using gene expression + protein interaction networks
-          to predict/refine “switch genes” and interpret mechanisms.
-        </p>
-
-        <ul class="bullets">
-          <li><strong>Tools:</strong> SWIMmeR, SaveRunner, Enrichr (enrichment + network interpretation).</li>
-          <li><strong>Work:</strong> data cleaning, graph construction, model prototyping, evaluation across diseases.</li>
-          <li><strong>Goal:</strong> learn representations that generalize beyond a single disease dataset.</li>
-        </ul>
+        <p class="project__links"><small>Writeup / repo: not public yet.</small></p>
       </article>
     </section>
 
@@ -108,9 +91,13 @@
         </p>
 
         <ul class="bullets">
-          <li><strong>Work:</strong> wrangling messy tables, consistency checks, reproducible notebooks.</li>
-          <li><strong>Output:</strong> plots + narrative conclusions based on quantitative patterns.</li>
+          <li><span class="hl">Work:</span> wrangling messy tables, consistency checks, reproducible notebooks.</li>
+          <li><span class="hl">Output:</span> plots + narrative conclusions based on quantitative patterns.</li>
         </ul>
+
+        <p class="project__links">
+          <a href="/assets/Towny candidates ppt.pdf">Report (PDF)</a>
+        </p>
       </article>
 
       <article class="card project">
@@ -124,9 +111,15 @@
         </p>
 
         <ul class="bullets">
-          <li><strong>Work:</strong> multi-head outputs, delta/residual ideas, sensitivity to derivative scaling.</li>
-          <li><strong>Outcome:</strong> learned which formulations remain stable in multi-step prediction.</li>
+          <li><span class="hl">Work:</span> multi-head outputs, delta/residual ideas, sensitivity to derivative scaling.</li>
+          <li><span class="hl">Outcome:</span> learned which formulations remain stable in multi-step prediction.</li>
         </ul>
+
+        <p class="project__links">
+          <a href="/assets/lorenz.ipynb">Notebook (ipynb)</a>
+          <span class="sep">•</span>
+          <a href="/assets/lorenz.html">Rendered (HTML)</a>
+        </p>
       </article>
     </section>
 
@@ -141,9 +134,24 @@
         </p>
 
         <ul class="bullets">
-          <li><strong>Work:</strong> scene randomization, lighting changes, exporting labels.</li>
-          <li><strong>Why:</strong> quick iteration when real data is expensive or limited.</li>
+          <li><span class="hl">Work:</span> scene randomization, lighting changes, exporting labels.</li>
+          <li><span class="hl">Why:</span> quick iteration when real data is expensive or limited.</li>
         </ul>
+
+        <!-- Drop your images in /assets/synth/ and update filenames below -->
+        <div class="gallery" aria-label="Synthetic dataset examples">
+          <a class="thumb" href="/assets/synth/render-01.jpg">
+            <img src="/assets/synth/render-01.jpg" alt="Synthetic render example 1" loading="lazy">
+          </a>
+          <a class="thumb" href="/assets/synth/render-02.jpg">
+            <img src="/assets/synth/render-02.jpg" alt="Synthetic render example 2" loading="lazy">
+          </a>
+          <a class="thumb" href="/assets/synth/render-03.jpg">
+            <img src="/assets/synth/render-03.jpg" alt="Synthetic render example 3" loading="lazy">
+          </a>
+        </div>
+
+        <p class="project__links"><small>Tip: keep images ~1200px wide for fast loading.</small></p>
       </article>
 
       <article class="card project">
@@ -156,9 +164,15 @@
         </p>
 
         <ul class="bullets">
-          <li><strong>Work:</strong> API schemas, endpoints, and clean integration with client logic.</li>
-          <li><strong>Stack:</strong> OpenAPI + SQL fundamentals + HTML/CSS/JS for simple UIs.</li>
+          <li><span class="hl">Work:</span> API schemas, endpoints, and clean integration with client logic.</li>
+          <li><span class="hl">Stack:</span> OpenAPI + SQL fundamentals + HTML/CSS/JS for simple UIs.</li>
         </ul>
+
+        <p class="project__links">
+          <a href="https://github.com/Lorenzo-3/WasaTextMarinelli" target="_blank" rel="noreferrer">WasaText</a>
+          <span class="sep">•</span>
+          <a href="https://github.com/Lorenzo-3/mood_tracker" target="_blank" rel="noreferrer">Mood tracker</a>
+        </p>
       </article>
     </section>
 

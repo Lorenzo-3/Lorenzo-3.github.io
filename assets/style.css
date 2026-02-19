@@ -374,3 +374,48 @@ html[data-theme="light"] .btn:not(.btn--ghost){
 
 .edu__meta { color: var(--muted); margin-top: .15rem; }
 
+.project__links{
+  margin-top: .9rem;
+  margin-bottom: 0;
+  color: var(--muted);
+}
+
+.project__links a{
+  color: var(--accent);
+  text-decoration: none;
+}
+
+.project__links a:hover{
+  text-decoration: underline;
+  text-decoration-color: var(--accent2);
+  text-underline-offset: 3px;
+}
+
+/* Simple thumbnail gallery (no JS) */
+.gallery{
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: .7rem;
+  margin-top: 1rem;
+}
+
+.thumb{
+  border: 1px solid var(--border);
+  background: var(--card);
+  border-radius: 12px;
+  overflow: hidden;
+  display: block;
+}
+
+.thumb img{
+  width: 100%;
+  height: 120px;
+  object-fit: cover;
+  display: block;
+}
+
+@media (max-width: 720px){
+  .gallery{ grid-template-columns: 1fr; }
+  .thumb img{ height: 180px; }
+}
+
