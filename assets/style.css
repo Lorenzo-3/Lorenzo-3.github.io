@@ -54,37 +54,38 @@ html[data-theme="light"]{
 }
 
 /* Yellow + Maroon + Teal palette (coherent, non-ridiculous) */
+/* Yellow + Maroon + Teal — tuned for “no Night Shift” */
 html[data-palette="triad"]{
-  /* DARK */
-  --bg-dark:rgb(34, 32, 32);
-  --text-dark:#e9c3c3;
-  --muted-dark:rgb(206, 221, 240);
+  /* DARK (warmer neutrals, calmer accents) */
+  --bg-dark:#302014;              /* warm charcoal */
+  --text-dark:#f0e7de;            /* warm off-white (less pink) */
+  --muted-dark:#b9aba0;           /* warm muted, not blue */
 
-  /* Teal = primary */
-  --accent2-dark:rgb(60, 255, 240);
+  /* Yellow = highlight (slightly softer) */
+  --accent-dark:#ffc400;
 
-  /* Yellow = highlight */
-  --accent-dark:#ffe065;
+  /* Teal = primary (less neon) */
+  --accent2-dark:#39bfb0;
 
-  /* Maroon = emphasis */
-  --accent3-dark:#e74976;
+  /* Maroon = emphasis (less hot magenta) */
+  --accent3-dark:#c84a63;
 
-  --card-dark:rgba(255,255,255,.05);
-  --border-dark:rgba(255,255,255,.12);
+  --card-dark:rgba(255,255,255,.06);
+  --border-dark:rgba(255, 255, 255, 0.14);
 
-  /* LIGHT */
-  --bg-light:#fbf6ee;
-  --text-light:rgb(27, 23, 16);
-  --muted-light:rgb(82, 68, 48);
+  /* LIGHT (paper + controlled contrast) */
+  --bg-light:#fff7bc;             /* a touch warmer than fb f6 ee */
+  --text-light:#1b1710;
+  --muted-light:#6a5b49;
 
-  /* Teal (deeper for contrast) */
-  --accent2-light:rgb(0, 80, 76);
+  /* Teal (deep, readable) */
+  --accent2-light:#0b6d66;
 
-  /* Yellow becomes gold */
-  --accent-light:#966e00;
+  /* Yellow (gold, readable on light bg) */
+  --accent-light:#8a6400;
 
-  /* True maroon */
-  --accent3-light:#c10030;
+  /* Maroon (classic, not screaming) */
+  --accent3-light:#8a1b36;
 
   --card-light:rgba(0,0,0,.04);
   --border-light:rgba(0,0,0,.10);
