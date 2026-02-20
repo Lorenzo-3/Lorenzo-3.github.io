@@ -1,0 +1,193 @@
+<!doctype html>
+<html lang="it" data-palette="triad">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Progetti · Lorenzo Marinelli</title>
+  <meta name="description" content="Progetti di Lorenzo Marinelli — ML, data science, bioinformatica e lavoro ingegneristico." />
+  <link rel="stylesheet" href="/assets/style.css" />
+
+  <link rel="alternate" hreflang="en" href="/projects/" />
+  <link rel="alternate" hreflang="it" href="/it/projects/" />
+</head>
+
+<body>
+  <div class="wrap">
+    <nav class="nav">
+      <a class="nav__brand" href="/it/" aria-label="Home">LM</a>
+
+      <!-- Language toggle FIRST (as requested) -->
+      <div class="lang" aria-label="Lingua">
+        <a class="lang__btn" href="/projects/" aria-label="English" title="English">
+          <span class="flag" aria-hidden="true">🇬🇧</span>
+          <span class="sr-only" lang="en">English</span>
+        </a>
+        <a class="lang__btn is-active" href="/it/projects/" aria-label="Italiano" title="Italiano">
+          <span class="flag" aria-hidden="true">🇮🇹</span>
+          <span class="sr-only" lang="it">Italiano</span>
+        </a>
+      </div>
+
+      <div class="nav__links">
+        <a href="/it/">Home</a>
+        <a href="/it/about/">Info</a>
+        <a aria-current="page" href="/it/projects/">Progetti</a>
+        <a href="/it/notes/">Appunti</a>
+        <a href="/it/contact/">Contatti</a>
+      </div>
+    </nav>
+
+    <header class="hero">
+      <h1>Progetti</h1>
+      <p class="lead">Una selezione di cose che ho costruito e studiato.</p>
+      <div class="meta">
+        <span>ML · Dati · Bioinformatica</span>
+        <span class="sep">•</span>
+        <span>Aggiornato: Febbraio 2026</span>
+      </div>
+    </header>
+
+    <!-- Featured thesis -->
+    <section class="card thesis">
+      <div class="project__top">
+        <h2>In evidenza: tesi triennale</h2>
+      </div>
+
+      <p class="project__desc">
+        <span class="hl">Unveiling Protein Connections through Graph Neural Networks and ProtT5 Embeddings</span><br />
+        Pipeline leggera di link prediction per interazioni proteina–proteina che combina embedding di sequenza (ProtT5)
+        con il contesto di grafo (STRING v12). Include un case study su NOTCH2.
+      </p>
+
+      <ul class="bullets">
+        <li><span class="hl">Obiettivo:</span> predire PPI mancanti con un GNN encoder–decoder e rappresentazioni apprese.</li>
+        <li><span class="hl">Dati:</span> grafo STRING ad alta confidenza + embedding ProtT5 come feature dei nodi.</li>
+        <li><span class="hl">Risultato:</span> ottima separabilità e precisione elevata nelle predizioni top-ranked.</li>
+      </ul>
+
+      <div class="hero__cta thesis__cta">
+        <a class="btn" href="/assets/thesis/thesis.pdf">Leggi la tesi (PDF)</a>
+        <a class="btn btn--ghost" href="/assets/thesis/thesis-slides.pdf">Slide (PDF)</a>
+      </div>
+
+      <p><small>Per dettagli su setup e metriche, la spiegazione completa è nel PDF della tesi.</small></p>
+    </section>
+
+    <!-- UAV project: FULL WIDTH -->
+    <section>
+      <article class="card project">
+        <div class="project__top">
+          <h2>Anomaly Detection & Localizzazione (UAV)</h2>
+        </div>
+
+        <p class="project__desc">
+          Modello sviluppato per il Sapienza Flight Team per individuare e localizzare target in immagini aeree ad alta risoluzione,
+          usando modelli basati su reconstruction error e post-processing (mask → bounding box → crop per classificazione).
+        </p>
+
+        <ul class="bullets">
+          <li><span class="hl">Focus:</span> localizzazione robusta con assunzione “sfondo statico + oggetti rari”.</li>
+          <li><span class="hl">Lavoro:</span> varianti AE/VAE, strategie di denoising, soglie + componenti connesse per le bbox.</li>
+          <li><span class="hl">Outcome:</span> generazione veloce di candidati, potenzialmente più economica di un detector su tutta l’immagine.</li>
+        </ul>
+      </article>
+    </section>
+
+    <section class="grid">
+      <article class="card project">
+        <div class="project__top">
+          <h2>Analisi dati — Elezioni Europee 2019</h2>
+        </div>
+
+        <p class="project__desc">
+          Analisi esplorativa delle elezioni europee 2019: pulizia dei dati, verifica di ipotesi e sintesi tramite visualizzazioni.
+        </p>
+
+        <ul class="bullets">
+          <li><span class="hl">Lavoro:</span> wrangling di tabelle “sporche”, controlli di consistenza, notebook riproducibili.</li>
+          <li><span class="hl">Output:</span> grafici + conclusioni narrative basate su pattern quantitativi.</li>
+        </ul>
+
+        <p class="project__links">
+          <a href="/assets/Towny candidates ppt.pdf">Presentazione (PDF)</a>
+          , è prevista una revisione/espansione del progetto in futuro.
+        </p>
+      </article>
+
+      <article class="card project">
+        <div class="project__top">
+          <h2>Previsione dell’attrattore di Lorenz (LSTM multi-output)</h2>
+        </div>
+
+        <p class="project__desc">
+          Notebook “toy” per prevedere il sistema di Lorenz con una LSTM che predice coordinate e derivate,
+          esplorando stabilità nei rollout e dinamiche di training.
+        </p>
+
+        <ul class="bullets">
+          <li><span class="hl">Lavoro:</span> output multi-head, idee delta/residual, sensibilità alla scala delle derivate.</li>
+          <li><span class="hl">Outcome:</span> quali formulazioni restano stabili nella predizione multi-step.</li>
+        </ul>
+
+        <p class="project__links">
+          <a href="/assets/lorenz.ipynb">Notebook (ipynb)</a>
+          <span class="sep">•</span>
+          <a href="/assets/lorenz.html">Versione renderizzata (HTML)</a>
+        </p>
+      </article>
+    </section>
+
+    <section class="grid">
+      <article class="card project">
+        <div class="project__top">
+          <h2>Generazione dataset sintetico (Blender)</h2>
+        </div>
+
+        <p class="project__desc">
+          Piccola pipeline per generare immagini sintetiche etichettate per la competizione SUAS-2025 a cui ha partecipato
+          il Sapienza Flight Team, usando domain randomization per l’addestramento di YOLO.
+        </p>
+
+        <ul class="bullets">
+          <li><span class="hl">Lavoro:</span> randomizzazione della scena, variazioni di luce, esportazione delle label.</li>
+          <li><span class="hl">Perché:</span> iterazione rapida quando i dati reali sono costosi o limitati.</li>
+        </ul>
+
+        <div class="gallery" aria-label="Esempi dataset sintetico">
+          <a class="thumb">
+            <img src="/assets/7e547bd9f0b3f4b8.png" alt="Esempio render sintetico 1" loading="lazy">
+          </a>
+          <a class="thumb">
+            <img src="/assets/f5ed90d4cdfd9977.png" alt="Esempio render sintetico 2" loading="lazy">
+          </a>
+        </div>
+      </article>
+
+      <article class="card project">
+        <div class="project__top">
+          <h2>Piccoli progetti Web / API</h2>
+        </div>
+
+        <p class="project__desc">
+          Lavori leggeri di backend/API e piccole app per trasformare funzionalità in qualcosa di usabile e testabile.
+        </p>
+
+        <ul class="bullets">
+          <li><span class="hl">Lavoro:</span> schemi API, endpoint e integrazione pulita con la logica client.</li>
+          <li><span class="hl">Stack:</span> OpenAPI + basi SQL + HTML/CSS/JS per UI semplici.</li>
+        </ul>
+
+        <p class="project__links">
+          <a href="https://github.com/Lorenzo-3/WasaTextMarinelli" target="_blank" rel="noreferrer">WasaText</a>
+          <span class="sep">•</span>
+          <a href="https://github.com/Lorenzo-3/mood_tracker" target="_blank" rel="noreferrer">Mood tracker</a>
+        </p>
+      </article>
+    </section>
+
+    <footer class="footer">
+      <small>© 2026 Lorenzo Marinelli</small>
+    </footer>
+  </div>
+</body>
+</html>

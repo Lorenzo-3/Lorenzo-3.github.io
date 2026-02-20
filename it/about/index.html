@@ -1,0 +1,167 @@
+<!doctype html>
+<html lang="it" data-palette="triad">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Info · Lorenzo Marinelli</title>
+  <meta name="description" content="Info su Lorenzo Marinelli — studente di Informatica con focus su ML, data science e bioinformatica." />
+  <link rel="stylesheet" href="/assets/style.css" />
+
+  <link rel="alternate" hreflang="en" href="/about/" />
+  <link rel="alternate" hreflang="it" href="/it/about/" />
+</head>
+
+<body>
+  <div class="wrap">
+    <nav class="nav">
+      <a class="nav__brand" href="/it/" aria-label="Home">LM</a>
+
+      <!-- Flag language toggle -->
+      <div class="lang" aria-label="Lingua">
+        <a class="lang__btn" href="/about/" aria-label="English" title="English">
+          <span class="flag" aria-hidden="true">🇬🇧</span>
+          <span class="sr-only" lang="en">English</span>
+        </a>
+        <a class="lang__btn is-active" href="/it/about/" aria-label="Italiano" title="Italiano">
+          <span class="flag" aria-hidden="true">🇮🇹</span>
+          <span class="sr-only" lang="it">Italiano</span>
+        </a>
+      </div>
+
+      <div class="nav__links">
+        <a href="/it/">Home</a>
+        <a aria-current="page" href="/it/about/">Info</a>
+        <a href="/it/projects/">Progetti</a>
+        <a href="/it/notes/">Appunti</a>
+        <a href="/it/contact/">Contatti</a>
+      </div>
+
+
+    </nav>
+
+    <header class="hero">
+      <h1>Info</h1>
+
+      <p class="lead">
+        Sono Lorenzo, studente magistrale in Computer Science alla Sapienza (Roma).
+        Mi piace costruire cose <span class="hl">pratiche</span> e <span class="hl">misurabili</span>:
+        piccoli sistemi di ML, esperimenti e pipeline dove si capisce chiaramente cosa è migliorato e perché.
+        La parte che mi diverte di più è quando dati “sporchi” iniziano ad avere senso: emergono pattern e una
+        <span class="hl">storia reale</span> viene fuori semplicemente dai numeri.
+      </p>
+
+      <p class="lead">
+        Più che l’informatica “fine a sé stessa”, mi interessa usare il calcolo come strumento per lo
+        <span class="hl">studio statistico</span>: bioinformatica, fisica, teoria dei giochi, teoria dell’informazione
+        e in generale qualsiasi ambito in cui modelli e dati aiutano a rispondere a domande concrete.
+        Detto questo, mi piace anche l’informatica in senso ampio — dal codice scritto bene al lato pratico del
+        progettare, testare e far funzionare sistemi.
+      </p>
+
+      <div class="meta">
+        <span>Italia</span>
+        <span class="sep">•</span>
+        <span>Aggiornato: Febbraio 2026</span>
+      </div>
+    </header>
+
+    <section class="grid">
+      <article class="card">
+        <h2>Formazione</h2>
+        <ul class="bullets edu">
+          <li class="edu__item">
+            <div class="edu__row">
+              <span class="edu__title hl">Laurea Magistrale in Informatica</span>
+              <span class="edu__date">2025–Presente</span>
+            </div>
+            <div class="edu__meta">Sapienza Università di Roma</div>
+          </li>
+
+          <li class="edu__item">
+            <div class="edu__row">
+              <span class="edu__title hl">Laurea Triennale in Informatica Applicata & AI</span>
+              <span class="edu__date">2022–2025</span>
+            </div>
+            <div class="edu__meta">Sapienza Università di Roma · <strong>110 e lode</strong></div>
+          </li>
+
+          <li class="edu__item">
+            <div class="edu__row">
+              <span class="edu__title">Diploma di Liceo Scientifico</span>
+              <span class="edu__date">2017–2022</span>
+            </div>
+            <div class="edu__meta">Liceo Scientifico A. Romita · <strong>100 e lode</strong></div>
+          </li>
+        </ul>
+      </article>
+
+      <article class="card">
+        <h2>Cosa costruisco</h2>
+        <ul class="bullets">
+          <li><strong>Pipeline ML:</strong> training + valutazione + interpretazione.</li>
+          <li><strong>Vision:</strong> pipeline di detection/localizzazione/segmentazione.</li>
+          <li><strong>Graph ML:</strong> reti biologiche, reti sociali e analisi generale di dati su grafi.</li>
+          <li><strong>Analisi dati:</strong> pulizia di dataset “sporchi”, estrazione e interpretazione di pattern.</li>
+          <li><strong>3D / dati sintetici:</strong> piccoli workflow Blender per dataset etichettati.</li>
+          <li><strong>Web & app leggere:</strong> API e strumenti semplici per siti e piccole applicazioni.</li>
+        </ul>
+        <p><small>Progetti e writeup sono in <a href="/it/projects/">Progetti</a> e <a href="/it/notes/">Appunti</a>.</small></p>
+      </article>
+    </section>
+
+    <section class="card">
+      <h2>Strumenti & competenze</h2>
+
+      <section class="grid">
+        <article class="card">
+          <h2>ML & dati</h2>
+          <ul class="bullets">
+            <li><strong>Base:</strong> Python, NumPy, pandas, Matplotlib</li>
+            <li><strong>ML/DL:</strong> PyTorch, PyTorch Lightning, scikit-learn</li>
+            <li><strong>Workflow:</strong> notebook, esperimenti riproducibili, valutazioni pulite</li>
+          </ul>
+        </article>
+
+        <article class="card">
+          <h2>Vision & grafi</h2>
+          <ul class="bullets">
+            <li><strong>Vision:</strong> OpenCV, torchvision</li>
+            <li><strong>Grafi:</strong> PyTorch Geometric, NetworkX, Gephi</li>
+            <li><strong>Task tipici:</strong> heatmap/mask → post-processing → bounding box → classificazione</li>
+          </ul>
+        </article>
+      </section>
+
+      <section class="grid">
+        <article class="card">
+          <h2>Bioinformatica / network medicine</h2>
+          <ul class="bullets">
+            <li><strong>Tool:</strong> SWIMmeR, SaveRunner, WGCNA, Enrichr</li>
+            <li><strong>Attività:</strong> enrichment analysis, disease module analysis, correlazioni, interpretazione su rete, workflow su interactomi</li>
+            <li><strong>Supporto:</strong> pandas/NumPy per pulizia + notebook riproducibili per analisi</li>
+          </ul>
+        </article>
+
+        <article class="card">
+          <h2>3D, web & ingegneria</h2>
+          <ul class="bullets">
+            <li><strong>3D / rendering:</strong> Blender (dataset, luci, domain randomization)</li>
+            <li><strong>Web:</strong> HTML/CSS, JavaScript, OpenAPI, REST</li>
+            <li><strong>Backend:</strong> basi SQL, piccoli servizi/strumenti</li>
+            <li><strong>Workflow:</strong> Git, Docker (quando serve)</li>
+          </ul>
+        </article>
+      </section>
+
+      <p><small>
+        Sono principalmente “Python-first”: preferisco usare bene le librerie giuste e scrivere glue code pulito,
+        invece di “collezionare” linguaggi.
+      </small></p>
+    </section>
+
+    <footer class="footer">
+      <small>© 2026 Lorenzo Marinelli</small>
+    </footer>
+  </div>
+</body>
+</html>
