@@ -3,22 +3,49 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>About · Lorenzo Marinelli</title>
+  <title>Notes · Lorenzo Marinelli</title>
+  <meta name="description" content="Notes by Lorenzo Marinelli — short writeups on ML, data science, and bioinformatics." />
   <link rel="stylesheet" href="/assets/style.css" />
 </head>
+
 <body>
   <div class="wrap">
-    <nav>
-      <a href="/">Home</a>
-      <a href="/about/">About</a>
-      <a href="/projects/">Projects</a>
-      <a href="/notes/">Notes</a>
-      <a href="/contact/">Contact</a>
+    <nav class="nav">
+      <a class="nav__brand" href="/" aria-label="Home">LM</a>
+
+      <div class="nav__links">
+        <a href="/">Home</a>
+        <a href="/about/">About</a>
+        <a href="/projects/">Projects</a>
+        <a aria-current="page" href="/notes/">Notes</a>
+        <a href="/contact/">Contact</a>
+      </div>
     </nav>
 
-    <h1>About</h1>
-    <p>work in progress</p>
+    <header class="hero">
+      <h1>Notes</h1>
+      <p class="lead">
+        Short writeups, experiments, and things I don’t want to forget.
+      </p>
+    </header>
 
+    <section class="card">
+      <h2>Pinned</h2>
+      <ul class="bullets notes-list">
+      </ul>
+    </section>
+
+    <section class="card">
+      <h2>All notes</h2>
+      <ul class="bullets notes-list">
+      </ul>
+
+      <p></p>
+    </section>
+
+    <footer class="footer">
+      <small>© 2026 Lorenzo Marinelli</small>
+    </footer>
   </div>
 </body>
 </html>
