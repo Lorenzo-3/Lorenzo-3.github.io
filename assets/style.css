@@ -61,7 +61,7 @@ html[data-palette="triad"]{
   --muted-dark:rgb(218, 219, 224);
 
   /* Teal = primary */
-  --accent2-dark:rgb(105, 225, 205);
+  --accent2-dark:rgb(100, 245, 225);
 
   /* Yellow = highlight */
   --accent-dark:#ffd025;
