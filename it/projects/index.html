@@ -47,7 +47,7 @@
       <div class="meta">
         <span>ML · Dati · Bioinformatica</span>
         <span class="sep">•</span>
-        <span>Aggiornato: Febbraio 2026</span>
+        <span>Aggiornato: Aprile 2026</span>
       </div>
     </header>
 
@@ -120,23 +120,21 @@
 
       <article class="card project">
         <div class="project__top">
-          <h2>Previsione dell’attrattore di Lorenz (LSTM multi-output)</h2>
+          <h2>RL-Nav v1 — RL guidato da oracolo per navigazione in osservabilità parziale</h2>
         </div>
 
         <p class="project__desc">
-          Notebook “toy” per prevedere il sistema di Lorenz con una LSTM che predice coordinate e derivate,
-          esplorando stabilità nei rollout e dinamiche di training.
+          Progetto d’esame sulla combinazione di reinforcement learning e guida basata su LLM per la navigazione in un ambiente PyBullet
+          stocastico con goal nascosto, sensing locale limitato, embedding di guida da 512 dimensioni e controllo ricorrente.
         </p>
 
         <ul class="bullets">
-          <li><span class="hl">Lavoro:</span> output multi-head, idee delta/residual, sensibilità alla scala delle derivate.</li>
-          <li><span class="hl">Outcome:</span> quali formulazioni restano stabili nella predizione multi-step.</li>
+          <li><span class="hl">Lavoro:</span> progettazione dell’interfaccia oracle con LLM, output strutturati vincolati e dataset offline di embedding per aggirare i limiti di latenza, costo e ambiguità delle chiamate live durante il training.</li>
+          <li><span class="hl">Risultato:</span> integrazione di RL, PPO ricorrente e guida da LLM in un’unica pipeline di navigazione, con 62% di successo in held-out e collo di bottiglia principale nell’esecuzione robusta sotto rumore e pericoli.</li>
         </ul>
 
         <p class="project__links">
-          <a href="/assets/lorenz.ipynb">Notebook (ipynb)</a>
-          <span class="sep">•</span>
-          <a href="/assets/lorenz.html">Versione renderizzata (HTML)</a>
+          <a href="/assets/RL-Nav_v1_Lorenzo_Marinelli.pdf">Presentazione (PDF)</a>
         </p>
       </article>
     </section>

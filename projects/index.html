@@ -46,7 +46,7 @@
       <div class="meta">
         <span>ML · Data · Bioinformatics</span>
         <span class="sep">•</span>
-        <span>Last updated: February 2026</span>
+        <span>Last updated: April 2026</span>
       </div>
     </header>
 
@@ -120,23 +120,21 @@
 
       <article class="card project">
         <div class="project__top">
-          <h2>Lorenz Attractor Forecasting (Multi-output LSTM)</h2>
+          <h2>RL-Nav v1 — Oracle-Guided RL for Partial-Observation Navigation</h2>
         </div>
 
         <p class="project__desc">
-          Small toy notebook forecasting the Lorenz system with an LSTM predicting coordinates and derivatives, exploring stability in rollouts
-          and training dynamics.
+          Exam project on combining reinforcement learning and LLM-based guidance for navigation in a stochastic PyBullet environment with a
+          hidden goal, sparse local sensing, dense 512-D guidance embeddings, and recurrent control.
         </p>
 
         <ul class="bullets">
-          <li><span class="hl">Work:</span> multi-head outputs, delta/residual ideas, sensitivity to derivative scaling.</li>
-          <li><span class="hl">Outcome:</span> learned which formulations remain stable in multi-step prediction.</li>
+          <li><span class="hl">Work:</span> designed the LLM oracle interface, constrained structured outputs, and an offline embedding dataset to work around latency, cost, and ambiguity limits of live LLM calls during training.</li>
+          <li><span class="hl">Outcome:</span> combined RL, recurrent PPO, and LLM guidance into a single navigation pipeline, reaching 62% held-out success while showing the main bottleneck is robust execution under noise and hazards.</li>
         </ul>
 
         <p class="project__links">
-          <a href="/assets/lorenz.ipynb">Notebook (ipynb)</a>
-          <span class="sep">•</span>
-          <a href="/assets/lorenz.html">Rendered (HTML)</a>
+          <a href="/assets/RL-Nav_v1_Lorenzo_Marinelli.pdf">Presentation (PDF)</a>
         </p>
       </article>
     </section>
