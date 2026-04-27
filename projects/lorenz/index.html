@@ -1,0 +1,473 @@
+<!doctype html>
+<html lang="en" data-palette="triad">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Lorenz Attractor Forecasting · Lorenzo Marinelli</title>
+    <meta name="description" content="Interactive Lorenz attractor demo and project notes by Lorenzo Marinelli." />
+    <link rel="stylesheet" href="/assets/style.css" />
+
+    <link rel="alternate" hreflang="it" href="/it/projects/lorenz/" />
+    <link rel="alternate" hreflang="en" href="/projects/lorenz/" />
+    <link rel="icon" href="/assets/favicon.ico" sizes="any">
+    <link rel="icon" type="image/png" href="/assets/favicon-32.png" sizes="32x32">
+    <link rel="icon" type="image/png" href="/assets/favicon-16.png" sizes="16x16">
+    <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
+
+    <style>
+        .demo-layout {
+            display: grid;
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        .demo-stage {
+            position: relative;
+            overflow: hidden;
+            border: 1px solid var(--border);
+            border-radius: 22px;
+            background:
+                radial-gradient(circle at 20% 20%, color-mix(in srgb, var(--accent2) 16%, transparent), transparent 30%),
+                radial-gradient(circle at 80% 80%, color-mix(in srgb, var(--accent3) 12%, transparent), transparent 34%),
+                color-mix(in srgb, var(--card) 90%, transparent);
+        }
+
+        .lorenz-canvas {
+            width: 100%;
+            height: min(62vh, 560px);
+            min-height: 360px;
+            display: block;
+        }
+
+        .demo-hud {
+            margin: 0 1rem 1rem;
+            padding: .75rem .85rem;
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            background: color-mix(in srgb, var(--bg) 72%, transparent);
+            backdrop-filter: blur(14px);
+            color: var(--muted);
+            font-size: .92rem;
+        }
+
+        .demo-hud strong {
+            color: var(--accent2);
+        }
+
+        .demo-controls {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: .85rem;
+            padding: 1rem;
+            border-top: 1px solid var(--border);
+            background: color-mix(in srgb, var(--bg) 42%, transparent);
+        }
+
+        .control-row {
+            display: grid;
+            grid-template-columns: 120px 1fr 56px;
+            gap: .75rem;
+            align-items: center;
+            color: var(--muted);
+            font-size: .95rem;
+        }
+
+        .control-row input[type="range"] {
+            width: 100%;
+            accent-color: var(--accent2);
+        }
+
+        .demo-actions {
+            display: flex;
+            gap: .7rem;
+            flex-wrap: wrap;
+        }
+
+        .demo-btn {
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: .5rem .8rem;
+            background: var(--card);
+            color: var(--text);
+            font: inherit;
+            cursor: pointer;
+        }
+
+        .demo-btn:hover {
+            border-color: var(--accent2);
+            color: var(--accent2);
+        }
+
+        .equation-card {
+            overflow: auto;
+        }
+
+        .equation {
+            margin-top: .7rem;
+            padding: 1rem;
+            border-radius: 16px;
+            border: 1px solid var(--border);
+            background: color-mix(in srgb, var(--card) 82%, transparent);
+            font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+            color: var(--accent2);
+            white-space: pre-wrap;
+        }
+
+        .backlink {
+            margin-top: 1.2rem;
+        }
+
+        @media (min-width: 900px) {
+            .demo-layout {
+                grid-template-columns: minmax(0, 1.35fr) minmax(280px, .65fr);
+            }
+        }
+
+        @media (max-width: 720px) {
+            .control-row {
+                grid-template-columns: 1fr;
+                gap: .35rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="wrap">
+        <nav class="nav">
+            <a class="nav__brand" href="/" aria-label="Home">LM</a>
+
+            <div class="lang" aria-label="Language">
+                <a class="lang__btn is-active" href="/projects/lorenz/" aria-label="English" title="English">
+                    <span class="flag" aria-hidden="true">🇬🇧</span>
+                    <span class="sr-only" lang="en">English</span>
+                </a>
+                <a class="lang__btn" href="/it/projects/lorenz/" aria-label="Italiano" title="Italiano">
+                    <span class="flag" aria-hidden="true">🇮🇹</span>
+                    <span class="sr-only" lang="it">Italiano</span>
+                </a>
+            </div>
+
+            <button class="theme-toggle" type="button" data-theme-toggle aria-label="Toggle theme" title="Toggle theme">
+                <span data-theme-icon aria-hidden="true">◐</span>
+            </button>
+
+            <div class="nav__links">
+                <a href="/">Home</a>
+                <a href="/about/">About</a>
+                <a aria-current="page" href="/projects/">Projects</a>
+                <a href="/notes/">Notes</a>
+                <a href="/contact/">Contact</a>
+            </div>
+        </nav>
+
+        <header class="hero">
+            <p class="kicker">Interactive demo</p>
+            <h1>Lorenz Attractor Forecasting</h1>
+            <p class="lead">
+                A small visual demo connected to my experiments with LSTMs, derivative-aware outputs, and rolling
+                forecasts on a chaotic dynamical system.
+            </p>
+
+            <div class="tag-row" aria-label="Tags">
+                <span>LSTM</span>
+                <span>Time series</span>
+                <span>Chaotic systems</span>
+                <span>Numerical simulation</span>
+            </div>
+
+            <div class="hero__cta backlink">
+                <a class="btn btn--ghost" href="/projects/">← Back to projects</a>
+                <a class="btn" href="/assets/old%20projects/lorenz.html">Open notebook export</a>
+            </div>
+        </header>
+
+        <main class="demo-layout">
+            <section class="card">
+                <h2>Live attractor</h2>
+                <p>
+                    The canvas below simulates the Lorenz system directly in the browser. Change ρ to see how the shape
+                    of the trajectory changes.
+                </p>
+
+                <div class="demo-stage">
+                    <canvas class="lorenz-canvas" data-lorenz-canvas aria-label="Animated Lorenz attractor"></canvas>
+
+                    <div class="demo-hud">
+                        <strong>Why it matters:</strong>
+                        in chaotic systems, tiny prediction errors quickly compound. This is why a model can look good
+                        at one-step prediction but diverge during recursive rollouts.
+                    </div>
+
+                    <div class="demo-controls" aria-label="Lorenz controls">
+                        <div class="demo-actions">
+                            <button class="demo-btn" type="button" data-lorenz-pause>Pause</button>
+                            <button class="demo-btn" type="button" data-lorenz-reset>Reset</button>
+                        </div>
+
+                        <label class="control-row">
+                            <span>Speed</span>
+                            <input type="range" min="1" max="12" value="5" step="1" data-lorenz-speed>
+                            <output data-lorenz-speed-output>5×</output>
+                        </label>
+
+                        <label class="control-row">
+                            <span>Trail</span>
+                            <input type="range" min="250" max="2400" value="1300" step="50" data-lorenz-trail>
+                            <output data-lorenz-trail-output>1300</output>
+                        </label>
+
+                        <label class="control-row">
+                            <span>ρ parameter</span>
+                            <input type="range" min="12" max="45" value="28" step="1" data-lorenz-rho>
+                            <output data-lorenz-rho-output>28</output>
+                        </label>
+                    </div>
+                </div>
+            </section>
+
+            <aside class="card equation-card">
+                <h2>System</h2>
+                <p>The classical Lorenz system is defined by three coupled differential equations:</p>
+
+                <pre class="equation">dx/dt = σ(y - x)
+dy/dt = x(ρ - z) - y
+dz/dt = xy - βz
+
+σ = 10
+ρ = variable
+β = 8/3</pre>
+
+                <h2>Project notes</h2>
+                <ul class="bullets">
+                    <li><span class="hl">Goal:</span> predict future states from previous trajectory windows.</li>
+                    <li><span class="hl">Tried:</span> coordinate prediction, derivative prediction, and residual-style
+                        updates.</li>
+                    <li><span class="hl">Problem:</span> rolling predictions can drift even when short-horizon metrics
+                        look acceptable.</li>
+                    <li><span class="hl">Takeaway:</span> stability matters as much as pointwise accuracy for recursive
+                        forecasting.</li>
+                </ul>
+            </aside>
+
+            <section class="card">
+                <h2>What I learned</h2>
+                <p>
+                    The Lorenz system is a useful stress test because the ground truth is deterministic but very
+                    sensitive to initial conditions.
+                    This makes it a good playground for understanding why sequence models may perform well locally but
+                    fail globally.
+                </p>
+                <p>
+                    In my experiments, predicting coordinates and derivatives independently surprisingly worked better
+                    than forcing
+                    derivative calculations too early in training.
+                    Residual-style updates were interesting, but recursive rollouts still exposed instability.
+                </p>
+            </section>
+
+            <section class="card">
+                <h2>An early recurrent-data experiment</h2>
+                <p>
+                    This was one of my first experiments with recurrent data during my first year of university. It was
+                    not a large or polished research project, but it was the first time I really saw how sequence models
+                    behave once predictions are fed back into themselves.
+                </p>
+                <p>
+                    I am still fond of it for that reason. The Lorenz system made the lesson concrete: even a small
+                    model can look convincing over short horizons, while the recursive rollout exposes stability,
+                    drift, and error accumulation in a way that is hard to ignore.
+                </p>
+            </section>
+        </main>
+
+        <footer class="footer">
+            <small>© 2026 Lorenzo Marinelli</small>
+        </footer>
+    </div>
+
+    <script src="/assets/script.js" defer></script>
+
+    <script>
+        (() => {
+            const canvas = document.querySelector('[data-lorenz-canvas]');
+            if (!canvas) return;
+
+            const ctx = canvas.getContext('2d');
+            const pauseButton = document.querySelector('[data-lorenz-pause]');
+            const resetButton = document.querySelector('[data-lorenz-reset]');
+            const speedInput = document.querySelector('[data-lorenz-speed]');
+            const trailInput = document.querySelector('[data-lorenz-trail]');
+            const rhoInput = document.querySelector('[data-lorenz-rho]');
+            const speedOutput = document.querySelector('[data-lorenz-speed-output]');
+            const trailOutput = document.querySelector('[data-lorenz-trail-output]');
+            const rhoOutput = document.querySelector('[data-lorenz-rho-output]');
+
+            const root = document.documentElement;
+            const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+            let width = 0;
+            let height = 0;
+            let points = [];
+            let cursor = 0;
+            let rotation = 0;
+            let paused = reduceMotion;
+            let speed = Number(speedInput?.value || 5);
+            let trail = Number(trailInput?.value || 1300);
+            let rho = Number(rhoInput?.value || 28);
+
+            const cssVar = (name, fallback) => getComputedStyle(root).getPropertyValue(name).trim() || fallback;
+
+            const resize = () => {
+                const rect = canvas.getBoundingClientRect();
+                const dpr = Math.min(window.devicePixelRatio || 1, 2);
+
+                width = Math.max(320, rect.width);
+                height = Math.max(320, rect.height);
+
+                canvas.width = Math.floor(width * dpr);
+                canvas.height = Math.floor(height * dpr);
+                ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+            };
+
+            const generateLorenz = () => {
+                const sigma = 10;
+                const beta = 8 / 3;
+                const dt = 0.006;
+                const total = 9500;
+
+                let x = 0.01;
+                let y = 1;
+                let z = 1.05;
+
+                const next = [];
+
+                for (let i = 0; i < total; i += 1) {
+                    const dx = sigma * (y - x);
+                    const dy = x * (rho - z) - y;
+                    const dz = x * y - beta * z;
+
+                    x += dx * dt;
+                    y += dy * dt;
+                    z += dz * dt;
+
+                    if (i > 120) next.push({ x, y, z });
+                }
+
+                points = next;
+                cursor = Math.min(200, points.length - 1);
+            };
+
+            const project = (p) => {
+                const a = rotation;
+                const b = rotation * 0.42;
+
+                const x0 = p.x;
+                const y0 = p.z - 26;
+                const z0 = p.y;
+
+                const x1 = x0 * Math.cos(a) - z0 * Math.sin(a);
+                const z1 = x0 * Math.sin(a) + z0 * Math.cos(a);
+
+                const y1 = y0 * Math.cos(b) - z1 * Math.sin(b);
+
+                const scale = Math.min(width, height) / 62;
+
+                return {
+                    x: width / 2 + x1 * scale,
+                    y: height / 2 + y1 * scale
+                };
+            };
+
+            const draw = () => {
+                const accent = cssVar('--accent2', '#64f5e1');
+                const accentWarm = cssVar('--accent', '#ffd025');
+                const text = cssVar('--muted', '#d8d8d8');
+
+                ctx.clearRect(0, 0, width, height);
+
+                if (!points.length) return;
+
+                if (!paused) {
+                    cursor = (cursor + speed) % points.length;
+                    rotation += 0.0025 + speed * 0.00012;
+                }
+
+                const start = Math.max(1, cursor - trail);
+
+                for (let i = start; i < cursor; i += 1) {
+                    const prev = project(points[i - 1]);
+                    const curr = project(points[i]);
+                    const t = (i - start) / Math.max(1, cursor - start);
+
+                    ctx.globalAlpha = 0.05 + t * 0.82;
+                    ctx.strokeStyle = t > 0.78 ? accentWarm : accent;
+                    ctx.lineWidth = 0.8 + t * 1.25;
+                    ctx.beginPath();
+                    ctx.moveTo(prev.x, prev.y);
+                    ctx.lineTo(curr.x, curr.y);
+                    ctx.stroke();
+                }
+
+                const head = project(points[cursor]);
+
+                ctx.globalAlpha = 0.9;
+                ctx.fillStyle = accentWarm;
+                ctx.beginPath();
+                ctx.arc(head.x, head.y, 4.5, 0, Math.PI * 2);
+                ctx.fill();
+
+                ctx.globalAlpha = 0.72;
+                ctx.fillStyle = text;
+                ctx.font = '12px ui-monospace, SFMono-Regular, Menlo, Consolas, monospace';
+                ctx.fillText(`ρ = ${rho}`, 18, height - 22);
+
+                ctx.globalAlpha = 1;
+                requestAnimationFrame(draw);
+            };
+
+            const syncOutputs = () => {
+                if (speedOutput) speedOutput.value = `${speed}×`;
+                if (trailOutput) trailOutput.value = String(trail);
+                if (rhoOutput) rhoOutput.value = String(rho);
+                if (pauseButton) pauseButton.textContent = paused ? 'Play' : 'Pause';
+            };
+
+            pauseButton?.addEventListener('click', () => {
+                paused = !paused;
+                syncOutputs();
+            });
+
+            resetButton?.addEventListener('click', () => {
+                rotation = 0;
+                generateLorenz();
+            });
+
+            speedInput?.addEventListener('input', () => {
+                speed = Number(speedInput.value);
+                syncOutputs();
+            });
+
+            trailInput?.addEventListener('input', () => {
+                trail = Number(trailInput.value);
+                syncOutputs();
+            });
+
+            rhoInput?.addEventListener('input', () => {
+                rho = Number(rhoInput.value);
+                generateLorenz();
+                syncOutputs();
+            });
+
+            resize();
+            generateLorenz();
+            syncOutputs();
+            draw();
+
+            window.addEventListener('resize', resize);
+        })();
+    </script>
+</body>
+
+</html>

@@ -20,7 +20,6 @@
     <nav class="nav">
       <a class="nav__brand" href="/" aria-label="Home">LM</a>
 
-      <!-- Language toggle FIRST -->
       <div class="lang" aria-label="Language">
         <a class="lang__btn is-active" href="/contact/" aria-label="English" title="English">
           <span class="flag" aria-hidden="true">🇬🇧</span>
@@ -32,6 +31,10 @@
         </a>
       </div>
 
+      <button class="theme-toggle" type="button" data-theme-toggle aria-label="Toggle theme" title="Toggle theme">
+        <span data-theme-icon aria-hidden="true">◐</span>
+      </button>
+
       <div class="nav__links">
         <a href="/">Home</a>
         <a href="/about/">About</a>
@@ -42,10 +45,16 @@
     </nav>
 
     <header class="hero">
-      <h1>Contact</h1>
-      <p class="lead">
-        Email is by far the best way to reach me.
+      <p class="kicker">Contact</p>
+      <h1>Let’s connect</h1>
+      <p class="lead hero-line">
+        Email is by far the best way to reach me, especially for project questions, research ideas, internships, or
+        collaboration proposals.
       </p>
+      <div class="hero__cta">
+        <a class="btn" href="mailto:lorenzo03.marinelli@gmail.com">Send email</a>
+        <a class="btn btn--ghost" href="/projects/">See projects first</a>
+      </div>
       <div class="meta">
         <span>Based in Italy</span>
         <span class="sep">•</span>
@@ -53,56 +62,87 @@
       </div>
     </header>
 
-    <section class="card">
-      <h2>Reach me</h2>
+    <section class="card project-card--featured">
+      <p class="project-kicker">Primary channel</p>
+      <h2>Email</h2>
+      <p>
+        For anything that needs context, send a concise email with the goal, links, and any useful constraints. I usually
+        reply faster when the message has a clear ask.
+      </p>
+      <div class="tag-row" aria-label="Good topics">
+        <span>Research</span>
+        <span>Internships</span>
+        <span>ML projects</span>
+        <span>Open source</span>
+      </div>
+    </section>
 
-      <div class="contact-row" aria-label="Contact links">
-        <a class="contact-pill" href="mailto:lorenzo03.marinelli@gmail.com" aria-label="Email">
+    <section class="grid contact-grid" aria-label="Contact links">
+      <a class="card contact-card" href="mailto:lorenzo03.marinelli@gmail.com" aria-label="Email">
+        <span class="contact-card__icon">
           <svg viewBox="0 0 24 24" aria-hidden="true">
             <path fill="currentColor" d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4-8 5L4 8V6l8 5 8-5v2z"/>
           </svg>
-          <span>Email</span>
-        </a>
+        </span>
+        <span>
+          <strong>Email</strong>
+          <small>Best for direct messages</small>
+        </span>
+      </a>
 
-        <a class="contact-pill" href="https://github.com/Lorenzo-3" target="_blank" rel="noreferrer" aria-label="GitHub">
+      <a class="card contact-card" href="https://github.com/Lorenzo-3" target="_blank" rel="noreferrer" aria-label="GitHub">
+        <span class="contact-card__icon">
           <svg viewBox="0 0 24 24" aria-hidden="true">
             <path fill="currentColor" d="M12 2a10 10 0 0 0-3.16 19.49c.5.09.68-.22.68-.48v-1.7c-2.77.6-3.35-1.18-3.35-1.18-.45-1.15-1.1-1.46-1.1-1.46-.9-.62.07-.61.07-.61 1 .07 1.53 1.03 1.53 1.03.9 1.53 2.36 1.09 2.94.83.09-.65.35-1.09.63-1.34-2.21-.25-4.54-1.11-4.54-4.94 0-1.09.39-1.98 1.03-2.68-.1-.25-.45-1.27.1-2.65 0 0 .84-.27 2.75 1.02A9.6 9.6 0 0 1 12 6.8c.85 0 1.71.11 2.51.32 1.9-1.29 2.74-1.02 2.74-1.02.56 1.38.21 2.4.11 2.65.64.7 1.03 1.59 1.03 2.68 0 3.84-2.34 4.68-4.57 4.93.36.31.68.93.68 1.88v2.79c0 .26.18.58.69.48A10 10 0 0 0 12 2z"/>
           </svg>
-          <span>GitHub</span>
-        </a>
+        </span>
+        <span>
+          <strong>GitHub</strong>
+          <small>Code and project history</small>
+        </span>
+      </a>
 
-        <a class="contact-pill" href="https://www.linkedin.com/in/lorenzo-marinelli-6821403a9/" target="_blank" rel="noreferrer" aria-label="LinkedIn">
+      <a class="card contact-card" href="https://www.linkedin.com/in/lorenzo-marinelli-6821403a9/" target="_blank" rel="noreferrer" aria-label="LinkedIn">
+        <span class="contact-card__icon">
           <svg viewBox="0 0 24 24" aria-hidden="true">
             <path fill="currentColor" d="M4.98 3.5C4.98 4.88 3.87 6 2.5 6S0 4.88 0 3.5 1.12 1 2.5 1s2.48 1.12 2.48 2.5zM0.5 23.5h4V7.98h-4V23.5zM8 7.98h3.83v2.12h.05c.53-1 1.83-2.12 3.77-2.12 4.03 0 4.77 2.65 4.77 6.1v9.42h-4v-8.36c0-1.99-.04-4.55-2.77-4.55-2.77 0-3.19 2.16-3.19 4.41v8.5H8V7.98z"/>
           </svg>
-          <span>LinkedIn</span>
-        </a>
+        </span>
+        <span>
+          <strong>LinkedIn</strong>
+          <small>Professional profile</small>
+        </span>
+      </a>
 
-        <a class="contact-pill" href="https://t.me/Lorenzo_4135" target="_blank" rel="noreferrer" aria-label="Telegram">
+      <a class="card contact-card" href="https://t.me/Lorenzo_4135" target="_blank" rel="noreferrer" aria-label="Telegram">
+        <span class="contact-card__icon">
           <svg viewBox="0 0 24 24" aria-hidden="true">
             <path fill="currentColor" d="M9.04 15.73 8.9 19.6c.4 0 .58-.17.79-.38l1.9-1.82 3.95 2.89c.72.4 1.23.19 1.42-.67l2.58-12.11c.22-1.04-.37-1.45-1.07-1.19L3.3 9.78c-1 .4-.98.97-.17 1.22l4.2 1.31L17.1 6.2c.46-.3.88-.13.53.18l-8.06 9.35z"/>
           </svg>
-          <span>Telegram</span>
-        </a>
-      </div>
-
-      <p style="margin-top:1rem;"></p>
-
-    <section class="card">
-      <h2>What to include</h2>
-      <ul class="bullets">
-        <li><strong>Context:</strong> who you are and how you found my site</li>
-        <li><strong>Goal:</strong> what interests you (question, collaboration, opportunity)</li>
-        <li><strong>Details:</strong> links, datasets, papers, or constraints if relevant</li>
-      </ul>
-      <p><small>I usually reply faster when the message has a clear ask.</small></p>
+        </span>
+        <span>
+          <strong>Telegram</strong>
+          <small>Quick informal contact</small>
+        </span>
+      </a>
     </section>
 
+    <section class="grid">
+      <article class="card stat-card">
+        <h2>Context</h2>
+        <p>Who you are, how you found my site, and what area you want to discuss.</p>
+      </article>
+
+      <article class="card stat-card">
+        <h2>Goal</h2>
+        <p>The concrete question, collaboration idea, opportunity, or technical problem.</p>
+      </article>
     </section>
 
     <footer class="footer">
       <small>© 2026 Lorenzo Marinelli</small>
     </footer>
   </div>
+  <script src="/assets/script.js" defer></script>
 </body>
 </html>

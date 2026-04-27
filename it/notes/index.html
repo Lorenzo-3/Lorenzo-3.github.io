@@ -1,5 +1,6 @@
 <!doctype html>
 <html lang="it" data-palette="triad">
+
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
@@ -20,7 +21,6 @@
     <nav class="nav">
       <a class="nav__brand" href="/it/" aria-label="Home">LM</a>
 
-      <!-- Language toggle FIRST -->
       <div class="lang" aria-label="Lingua">
         <a class="lang__btn" href="/notes/" aria-label="English" title="English">
           <span class="flag" aria-hidden="true">🇬🇧</span>
@@ -32,6 +32,10 @@
         </a>
       </div>
 
+      <button class="theme-toggle" type="button" data-theme-toggle aria-label="Cambia tema" title="Cambia tema">
+        <span data-theme-icon aria-hidden="true">◐</span>
+      </button>
+
       <div class="nav__links">
         <a href="/it/">Home</a>
         <a href="/it/about/">Info</a>
@@ -42,35 +46,74 @@
     </nav>
 
     <header class="hero">
+      <p class="kicker">Learning log</p>
       <h1>Appunti</h1>
-      <p class="lead">
-        Note brevi, esperimenti e cose che non voglio dimenticare.
+      <p class="lead hero-line">
+        Note brevi, esperimenti, aggiornamenti e riferimenti tecnici.
       </p>
       <div class="meta">
-        <span>ML · Dati · Bioinformatica</span>
+        <span>Italia</span>
         <span class="sep">•</span>
         <span>Aggiornato: Aprile 2026</span>
       </div>
     </header>
 
-    <section class="card">
-      <h2>In evidenza</h2>
-      <ul class="bullets notes-list">
-      </ul>
+    <section class="card project-card--featured">
+      <p class="project-kicker">Appunto in evidenza</p>
+      <h2>Adversarial machine learning</h2>
+      <p>
+        Ho iniziato un breve corso NVIDIA DLI su adversarial machine learning e model security, uno dei miei interessi
+        principali dell’ultimo periodo. Lo sto tenendo come riferimento compatto per attacchi, robustezza e abitudini di
+        valutazione.
+      </p>
+      <div class="tag-row" aria-label="Tag">
+        <span>Model security</span>
+        <span>Adversarial ML</span>
+        <span>Valutazione</span>
+      </div>
+      <div class="hero__cta">
+        <a class="btn" href="https://learn.nvidia.com/courses/course-detail?course_id=course-v1:DLI+S-DS-03+V1"
+          target="_blank" rel="noreferrer">Apri corso</a>
+        <a class="btn btn--ghost" href="/it/projects/">Progetti collegati</a>
+      </div>
+    </section>
+
+    <section class="grid">
+      <article class="card stat-card">
+        <h2>Temi attuali</h2>
+        <ul class="bullets">
+          <li><span class="hl">Sicurezza:</span> adversarial examples, robustezza e failure modes dei modelli.</li>
+          <li><span class="hl">Pratica ML:</span> valutazione, interpretazione ed esperimenti riproducibili.</li>
+        </ul>
+      </article>
+
+      <article class="card stat-card">
+        <h2>Formato</h2>
+        <p>Prima note brevi. I writeup più lunghi possono crescere dalle parti che risultano utili nei progetti reali.
+        </p>
+      </article>
     </section>
 
     <section class="card">
-      <h2>Tutti gli appunti</h2>
-      <ul class="bullets notes-list">
-        <li>Ho iniziato un piccolo <a href="https://learn.nvidia.com/courses/course-detail?course_id=course-v1:DLI+S-DS-03+V1">corso NVIDIA DLI</a> su adversarial machine learning e model security, uno dei miei interessi principali dell’ultimo periodo.</li>
+      <div class="filter-panel__top">
+        <h2>Tutti gli appunti</h2>
+        <p class="filter-status">1 appunto</p>
+      </div>
+      <ul class="notes-list">
+        <li>
+          <p class="project-kicker">Aprile 2026</p>
+          <a href="https://learn.nvidia.com/courses/course-detail?course_id=course-v1:DLI+S-DS-03+V1" target="_blank"
+            rel="noreferrer">Corso NVIDIA DLI su adversarial machine learning e model security</a>
+          <p>Riferimento compatto per robustezza, sicurezza dei modelli e valutazione sotto pressione adversarial.</p>
+        </li>
       </ul>
-
-      <p></p>
     </section>
 
     <footer class="footer">
       <small>© 2026 Lorenzo Marinelli</small>
     </footer>
   </div>
+  <script src="/assets/script.js" defer></script>
 </body>
+
 </html>

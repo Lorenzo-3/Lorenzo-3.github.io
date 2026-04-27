@@ -1,10 +1,12 @@
 <!doctype html>
 <html lang="it" data-palette="triad">
+
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Progetti · Lorenzo Marinelli</title>
-  <meta name="description" content="Progetti di Lorenzo Marinelli — ML, data science, bioinformatica e lavoro ingegneristico." />
+  <meta name="description"
+    content="Progetti di Lorenzo Marinelli — ML, data science, bioinformatica e lavoro ingegneristico." />
   <link rel="stylesheet" href="/assets/style.css" />
 
   <link rel="alternate" hreflang="en" href="/projects/" />
@@ -20,7 +22,6 @@
     <nav class="nav">
       <a class="nav__brand" href="/it/" aria-label="Home">LM</a>
 
-      <!-- Language toggle FIRST (as requested) -->
       <div class="lang" aria-label="Lingua">
         <a class="lang__btn" href="/projects/" aria-label="English" title="English">
           <span class="flag" aria-hidden="true">🇬🇧</span>
@@ -32,6 +33,10 @@
         </a>
       </div>
 
+      <button class="theme-toggle" type="button" data-theme-toggle aria-label="Cambia tema" title="Cambia tema">
+        <span data-theme-icon aria-hidden="true">◐</span>
+      </button>
+
       <div class="nav__links">
         <a href="/it/">Home</a>
         <a href="/it/about/">Info</a>
@@ -41,121 +46,223 @@
       </div>
     </nav>
 
-    <header class="hero">
+    <header class="hero hero--projects">
+      <p class="kicker">Lavori selezionati</p>
       <h1>Progetti</h1>
-      <p class="lead">Una selezione di cose che ho costruito e studiato.</p>
+      <p class="lead">Una panoramica ordinata di alcune cose che ho costruito, studiato e testato.</p>
       <div class="meta">
-        <span>ML · Dati · Bioinformatica</span>
+        <span>Italia</span>
         <span class="sep">•</span>
         <span>Aggiornato: Aprile 2026</span>
       </div>
     </header>
 
-    <!-- Featured thesis -->
-    <section class="card thesis">
+    <section class="filter-panel card" aria-label="Browser dei progetti">
+      <div class="filter-panel__top">
+        <h2>Sfoglia per area</h2>
+        <p class="filter-status" data-filter-status>Tutti i progetti visibili</p>
+      </div>
+
+      <div class="filterbar" data-filter-group aria-label="Filtri progetti">
+        <button class="filter-btn is-active" type="button" data-filter="all" aria-pressed="true">Tutti</button>
+        <button class="filter-btn" type="button" data-filter="ml" aria-pressed="false">Machine Learning</button>
+        <button class="filter-btn" type="button" data-filter="bio" aria-pressed="false">Bioinformatica</button>
+        <button class="filter-btn" type="button" data-filter="vision" aria-pressed="false">Visione</button>
+        <button class="filter-btn" type="button" data-filter="dynamics" aria-pressed="false">Sistemi dinamici</button>
+        <button class="filter-btn" type="button" data-filter="data" aria-pressed="false">Dati</button>
+        <button class="filter-btn" type="button" data-filter="web" aria-pressed="false">Web/API</button>
+      </div>
+    </section>
+
+    <section class="card thesis project-card project-card--featured" data-tags="ml bio data graph thesis">
       <div class="project__top">
-        <h2>In evidenza: tesi triennale</h2>
+        <p class="project-kicker">Tesi in evidenza</p>
+        <h2>Tesi triennale</h2>
       </div>
 
       <p class="project__desc">
         <span class="hl">Unveiling Protein Connections through Graph Neural Networks and ProtT5 Embeddings</span><br />
-        Pipeline leggera di link prediction per interazioni proteina–proteina che combina embedding di sequenza (ProtT5)
-        con il contesto di grafo (STRING v12). Include un case study su NOTCH2.
+        La mia tesi triennale parte da una domanda pratica di bioinformatica: un modello può suggerire collegamenti
+        probabili ma ancora mancanti tra proteine, così da dare candidati migliori da controllare? Combina informazione
+        di sequenza con una rete di interazioni note, con un case study su NOTCH2.
       </p>
 
+      <div class="tag-row" aria-label="Tags">
+        <span>Bioinformatica</span>
+        <span>Reti proteiche</span>
+        <span>Link prediction</span>
+        <span>Ranking candidati</span>
+      </div>
+
       <ul class="bullets">
-        <li><span class="hl">Obiettivo:</span> predire PPI mancanti con un GNN encoder–decoder e rappresentazioni apprese.</li>
-        <li><span class="hl">Dati:</span> grafo STRING ad alta confidenza + embedding ProtT5 come feature dei nodi.</li>
-        <li><span class="hl">Risultato:</span> ottima separabilità e precisione elevata nelle predizioni top-ranked.</li>
+        <li><span class="hl">Obiettivo:</span> ordinare possibili collegamenti proteina–proteina non ancora noti.</li>
+        <li><span class="hl">Perché:</span> la validazione in laboratorio costa tempo e risorse, quindi una shortlist
+          più
+          affidabile è utile.</li>
+        <li><span class="hl">Dettagli:</span> il riassunto interattivo spiega dati, modello, risultati e limiti.</li>
       </ul>
 
       <div class="hero__cta thesis__cta">
-        <a class="btn" href="/assets/thesis/thesis.pdf">Leggi la tesi (PDF)</a>
-        <a class="btn btn--ghost" href="/assets/thesis/thesis-slides.pdf">Slide (PDF)</a>
+        <a class="btn" href="/assets/thesis/thesis.pdf">Leggi la tesi</a>
+        <a class="btn btn--ghost" href="/it/projects/thesis-gnn-protein-interactions/">Riassunto interattivo</a>
+        <a class="btn btn--ghost" href="/assets/thesis/thesis-slides.pdf">Slide PDF</a>
       </div>
-
-      <p><small>Per dettagli su setup e metriche, la spiegazione completa è nel PDF della tesi.</small></p>
     </section>
 
-    <!-- UAV project: FULL WIDTH -->
-    <section>
-      <article class="card project">
+    <section class="grid project-grid project-grid--featured-pair">
+      <article class="card project project-card" data-tags="ml vision uav">
         <div class="project__top">
-          <h2>Anomaly Detection & Localizzazione (UAV)</h2>
+          <p class="project-kicker">Visione artificiale</p>
+          <h2>Anomaly Detection & Localizzazione UAV</h2>
         </div>
 
         <p class="project__desc">
-          Modello sviluppato per il Sapienza Flight Team per individuare e localizzare target in immagini aeree ad alta risoluzione,
-          usando modelli basati su reconstruction error e post-processing (mask → bounding box → crop per classificazione).
+          Pipeline di visione artificiale per immagini da drone molto grandi, con un obiettivo semplice: individuare
+          oggetti o aree insolite e trasformarle in regioni da controllare o classificare.
         </p>
 
+        <div class="tag-row" aria-label="Tags">
+          <span>Immagini aeree</span>
+          <span>Anomaly detection</span>
+          <span>Localizzazione</span>
+          <span>Post-processing</span>
+        </div>
+
         <ul class="bullets">
-          <li><span class="hl">Focus:</span> localizzazione robusta con assunzione “sfondo statico + oggetti rari”.</li>
-          <li><span class="hl">Lavoro:</span> varianti AE/VAE, strategie di denoising, soglie + componenti connesse per le bbox.</li>
-          <li><span class="hl">Outcome:</span> generazione veloce di candidati, potenzialmente più economica di un detector su tutta l’immagine.</li>
+          <li><span class="hl">Obiettivo:</span> trovare aree candidate dentro frame aerei ad alta risoluzione.</li>
+          <li><span class="hl">Perché:</span> i target sono rari e le immagini grandi, quindi restringere la ricerca fa
+            risparmiare tempo.</li>
+          <li><span class="hl">Output:</span> heatmap, bounding box e crop da passare a un classificatore o a una demo.
+          </li>
         </ul>
+        <div class="hero__cta">
+          <a class="btn" href="/it/projects/uav-anomaly-detection/">Ulteriori dettagli</a>
+        </div>
+      </article>
+
+      <article class="card project project-card" data-tags="ml dynamics timeseries">
+        <div class="project__top">
+          <p class="project-kicker">Sistemi dinamici</p>
+          <h2>Previsione dell’attrattore di Lorenz</h2>
+        </div>
+
+        <p class="project__desc">
+          Un piccolo studio di forecasting su un sistema caotico: un modello riesce a prevedere il movimento
+          successivo, e quanto velocemente crescono gli errori quando le previsioni vengono riusate dal modello?
+        </p>
+
+        <div class="tag-row" aria-label="Tags">
+          <span>Sistemi dinamici</span>
+          <span>Forecasting</span>
+          <span>Serie temporali</span>
+          <span>Stabilità</span>
+        </div>
+
+        <ul class="bullets">
+          <li><span class="hl">Obiettivo:</span> prevedere brevi tratti di moto in un sistema molto sensibile a piccole
+            variazioni.</li>
+          <li><span class="hl">Perché:</span> è un problema giocattolo pulito per capire i limiti della predizione su
+            serie temporali.</li>
+          <li><span class="hl">Lezione:</span> buone predizioni a breve termine non restano automaticamente affidabili
+            su
+            rollout lunghi.</li>
+        </ul>
+
+        <div class="hero__cta">
+          <a class="btn" href="/it/projects/lorenz/">Demo interattiva</a>
+          <a class="btn btn--ghost" href="/assets/old%20projects/lorenz.html">Export notebook</a>
+        </div>
       </article>
     </section>
 
-    <section class="grid">
-      <article class="card project">
+    <section class="grid project-grid">
+      <article class="card project project-card" data-tags="data">
         <div class="project__top">
+          <p class="project-kicker">Analisi dati</p>
           <h2>Analisi dati — Elezioni Europee 2019</h2>
         </div>
 
         <p class="project__desc">
-          Analisi esplorativa delle elezioni europee 2019: pulizia dei dati, verifica di ipotesi e sintesi tramite visualizzazioni.
+          Analisi esplorativa delle elezioni europee 2019: pulizia dei dati, verifica di ipotesi e sintesi tramite
+          visualizzazioni.
         </p>
+
+        <div class="tag-row" aria-label="Tags">
+          <span>Dati pubblici</span>
+          <span>Pulizia dati</span>
+          <span>Visualizzazione</span>
+          <span>Analisi esplorativa</span>
+        </div>
 
         <ul class="bullets">
-          <li><span class="hl">Lavoro:</span> wrangling di tabelle “sporche”, controlli di consistenza, notebook riproducibili.</li>
-          <li><span class="hl">Output:</span> grafici + conclusioni narrative basate su pattern quantitativi.</li>
+          <li><span class="hl">Lavoro:</span> wrangling di tabelle sporche, controlli di consistenza e notebook
+            riproducibili.</li>
+          <li><span class="hl">Output:</span> grafici e conclusioni narrative basate su pattern quantitativi.</li>
         </ul>
 
-        <p class="project__links">
-          <a href="/assets/Towny candidates ppt.pdf">Presentazione (PDF)</a>
-          , è prevista una revisione/espansione del progetto in futuro.
-        </p>
+        <div class="hero__cta">
+          <a class="btn" href="/assets/Towny candidates ppt.pdf">Presentazione PDF</a>
+        </div>
       </article>
 
-      <article class="card project">
+      <article class="card project project-card" data-tags="ml rl">
         <div class="project__top">
-          <h2>RL-Nav v1 — RL guidato da oracolo per navigazione in osservabilità parziale</h2>
+          <p class="project-kicker">Reinforcement learning</p>
+          <h2>RL-Nav v1 — RL guidato da oracolo in osservabilità parziale</h2>
         </div>
 
         <p class="project__desc">
-          Progetto d’esame sulla combinazione di reinforcement learning e guida basata su LLM per la navigazione in un ambiente PyBullet
-          stocastico con goal nascosto, sensing locale limitato, embedding di guida da 512 dimensioni e controllo ricorrente.
+          Progetto d’esame che combina reinforcement learning e guida basata su LLM per navigazione in un ambiente
+          PyBullet stocastico con goal nascosto, sensing locale, embedding di guida e controllo ricorrente.
         </p>
+
+        <div class="tag-row" aria-label="Tags">
+          <span>Reinforcement learning</span>
+          <span>Navigazione</span>
+          <span>Guida LLM</span>
+          <span>Osservabilità parziale</span>
+        </div>
 
         <ul class="bullets">
-          <li><span class="hl">Lavoro:</span> progettazione dell’interfaccia oracle con LLM, output strutturati vincolati e dataset offline di embedding per aggirare i limiti di latenza, costo e ambiguità delle chiamate live durante il training.</li>
-          <li><span class="hl">Risultato:</span> integrazione di RL, PPO ricorrente e guida da LLM in un’unica pipeline di navigazione, con 62% di successo in held-out e collo di bottiglia principale nell’esecuzione robusta sotto rumore e pericoli.</li>
+          <li><span class="hl">Lavoro:</span> progettazione dell’interfaccia dell’oracolo LLM e output strutturati
+            vincolati.</li>
+          <li><span class="hl">Risultato:</span> 62% di successo in held-out, evidenziando la robustezza come collo di
+            bottiglia.</li>
         </ul>
 
-        <p class="project__links">
-          <a href="/assets/RL-Nav_v1_Lorenzo_Marinelli.pdf">Presentazione (PDF)</a>
-        </p>
+        <div class="hero__cta">
+          <a class="btn" href="/assets/RL-Nav/RL-Nav_v1_Lorenzo_Marinelli.pdf">Presentazione PDF</a>
+        </div>
       </article>
     </section>
 
-    <section class="grid">
-      <article class="card project">
+    <section class="grid project-grid">
+      <article class="card project project-card" data-tags="vision data ml">
         <div class="project__top">
-          <h2>Generazione dataset sintetico (Blender)</h2>
+          <p class="project-kicker">Dati sintetici</p>
+          <h2>Generazione dataset sintetico in Blender</h2>
         </div>
 
         <p class="project__desc">
-          Piccola pipeline per generare immagini sintetiche etichettate per la competizione SUAS-2025 a cui ha partecipato
-          il Sapienza Flight Team, usando domain randomization per l’addestramento di YOLO.
+          Piccola pipeline per generare immagini sintetiche etichettate con domain randomization per training in stile
+          YOLO.
         </p>
 
+        <div class="tag-row" aria-label="Tags">
+          <span>Dati sintetici</span>
+          <span>Rendering 3D</span>
+          <span>Domain randomization</span>
+          <span>Object detection</span>
+        </div>
+
         <ul class="bullets">
-          <li><span class="hl">Lavoro:</span> randomizzazione della scena, variazioni di luce, esportazione delle label.</li>
-          <li><span class="hl">Perché:</span> iterazione rapida quando i dati reali sono costosi o limitati.</li>
+          <li><span class="hl">Lavoro:</span> randomizzazione della scena, variazioni di luce ed esportazione delle
+            label.</li>
+          <li><span class="hl">Perché:</span> iterazione rapida quando i dati reali sono costosi, limitati o difficili
+            da raccogliere.</li>
         </ul>
 
-        <div class="gallery" aria-label="Esempi dataset sintetico">
+        <div class="gallery" aria-label="Esempi di dati sintetici">
           <a class="thumb">
             <img src="/assets/7e547bd9f0b3f4b8.png" alt="Esempio render sintetico 1" loading="lazy">
           </a>
@@ -163,27 +270,39 @@
             <img src="/assets/f5ed90d4cdfd9977.png" alt="Esempio render sintetico 2" loading="lazy">
           </a>
         </div>
+
       </article>
 
-      <article class="card project">
+      <article class="card project project-card" data-tags="web data">
         <div class="project__top">
+          <p class="project-kicker">Ingegneria</p>
           <h2>Piccoli progetti Web / API</h2>
         </div>
 
         <p class="project__desc">
-          Lavori leggeri di backend/API e piccole app per trasformare funzionalità in qualcosa di usabile e testabile.
+          Lavori leggeri di backend/API e piccole app orientate a trasformare funzionalità in qualcosa di usabile e
+          testabile.
         </p>
+
+        <div class="tag-row" aria-label="Tags">
+          <span>Web app</span>
+          <span>Design API</span>
+          <span>Frontend base</span>
+          <span>Strumenti piccoli</span>
+        </div>
 
         <ul class="bullets">
           <li><span class="hl">Lavoro:</span> schemi API, endpoint e integrazione pulita con la logica client.</li>
-          <li><span class="hl">Stack:</span> OpenAPI + basi SQL + HTML/CSS/JS per UI semplici.</li>
+          <li><span class="hl">Stack:</span> OpenAPI, basi SQL, HTML, CSS e JavaScript.</li>
         </ul>
 
-        <p class="project__links">
-          <a href="https://github.com/Lorenzo-3/WasaTextMarinelli" target="_blank" rel="noreferrer">WasaText</a>
-          <span class="sep">•</span>
-          <a href="https://github.com/Lorenzo-3/mood_tracker" target="_blank" rel="noreferrer">Mood tracker</a>
-        </p>
+        <div class="hero__cta">
+          <a class="btn">Questo sito!</a>
+          <a class="btn btn--ghost" href="https://github.com/Lorenzo-3/WasaTextMarinelli" target="_blank"
+            rel="noreferrer">WasaText</a>
+          <a class="btn btn--ghost" href="https://github.com/Lorenzo-3/mood_tracker" target="_blank"
+            rel="noreferrer">Mood tracker</a>
+        </div>
       </article>
     </section>
 
@@ -191,5 +310,8 @@
       <small>© 2026 Lorenzo Marinelli</small>
     </footer>
   </div>
+
+  <script src="/assets/script.js" defer></script>
 </body>
+
 </html>

@@ -1,13 +1,14 @@
 <!doctype html>
 <html lang="it" data-palette="triad">
+
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Lorenzo Marinelli</title>
-  <meta name="description" content="Lorenzo Marinelli — studente di Informatica alla Sapienza. Progetti, appunti e contatti." />
+  <meta name="description"
+    content="Lorenzo Marinelli — studente di Informatica alla Sapienza. Progetti, appunti e contatti." />
   <link rel="stylesheet" href="/assets/style.css" />
 
-  <!-- hreflang (optional but nice) -->
   <link rel="alternate" hreflang="en" href="/" />
   <link rel="alternate" hreflang="it" href="/it/" />
   <link rel="icon" href="/assets/favicon.ico" sizes="any">
@@ -20,7 +21,7 @@
   <div class="wrap">
     <nav class="nav">
       <a class="nav__brand" href="/it/" aria-label="Home">LM</a>
-      
+
       <div class="lang" aria-label="Lingua">
         <a class="lang__btn" href="/" aria-label="English" title="English">
           <span class="flag" aria-hidden="true">🇬🇧</span>
@@ -30,6 +31,10 @@
         </a>
       </div>
 
+      <button class="theme-toggle" type="button" data-theme-toggle aria-label="Cambia tema" title="Cambia tema">
+        <span data-theme-icon aria-hidden="true">◐</span>
+      </button>
+
       <div class="nav__links">
         <a aria-current="page" href="/it/">Home</a>
         <a href="/it/about/">Info</a>
@@ -37,80 +42,78 @@
         <a href="/it/notes/">Appunti</a>
         <a href="/it/contact/">Contatti</a>
       </div>
-
-
     </nav>
 
-      <div class="profile">
-        <img
-          class="avatar"
-          src="/assets/profilen.jpg"
-          alt="foto ancora non scelta"
-          width="104"
-          height="104"
-          loading="lazy"
-        />
+    <div class="profile">
+      <img class="avatar" src="/assets/profile.jpg" alt="foto ancora non scelta" width="104" height="104"
+        loading="lazy" />
 
-        <div class="profile__text">
-          <h1>Lorenzo Marinelli</h1>
-          <p class="kicker">Computer Science @ Sapienza Università di Roma · Italia</p>
+      <div class="profile__text">
+        <h1>Lorenzo Marinelli</h1>
+        <p class="kicker">Computer Science @ Sapienza Università di Roma · Italia</p>
 
-          <p class="lead">
-            Mi occupo soprattutto di
-            <span class="hl">Machine Learning</span>,
-            <span class="hl">Data Science</span> e
-            <span class="hl">Bioinformatica</span>.
-          </p>
+        <p class="lead hero-line">
+          Costruisco soluzioni pratiche per
+          <span class="type-rotator"
+            data-words="ML su grafi,Visione artificiale,Bioinformatica,Analisi dati,Deep Learning,Apprendimento per rinforzo,Modelli linguistici di grandi dimensioni,Sistemi dinamici">
+            Machine Learning su
+            grafi</span>.
+        </p>
 
-          <div class="hero__cta">
-            <a class="btn" href="/it/projects/">Vedi i progetti</a>
-            <a class="btn btn--ghost" href="/it/about/">Info</a>
-          </div>
+        <div class="hero__cta">
+          <a class="btn" href="/it/projects/">Vedi i progetti</a>
+          <a class="btn btn--ghost" href="/it/about/">Info</a>
+        </div>
 
-          <div class="social-icons" aria-label="Link rapidi">
-            <a class="iconlink" href="mailto:lorenzo03.marinelli@gmail.com" aria-label="Email">
-              <svg viewBox="0 0 24 24" aria-hidden="true">
-                <path fill="currentColor" d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4-8 5L4 8V6l8 5 8-5v2z"/>
-              </svg>
-            </a>
+        <div class="social-icons" aria-label="Link rapidi">
+          <a class="iconlink" href="mailto:lorenzo03.marinelli@gmail.com" aria-label="Email">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path fill="currentColor"
+                d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4-8 5L4 8V6l8 5 8-5v2z" />
+            </svg>
+          </a>
 
-            <a class="iconlink" href="https://github.com/Lorenzo-3" target="_blank" rel="noreferrer" aria-label="GitHub">
-              <svg viewBox="0 0 24 24" aria-hidden="true">
-                <path fill="currentColor" d="M12 2a10 10 0 0 0-3.16 19.49c.5.09.68-.22.68-.48v-1.7c-2.77.6-3.35-1.18-3.35-1.18-.45-1.15-1.1-1.46-1.1-1.46-.9-.62.07-.61.07-.61 1 .07 1.53 1.03 1.53 1.03.9 1.53 2.36 1.09 2.94.83.09-.65.35-1.09.63-1.34-2.21-.25-4.54-1.11-4.54-4.94 0-1.09.39-1.98 1.03-2.68-.1-.25-.45-1.27.1-2.65 0 0 .84-.27 2.75 1.02A9.6 9.6 0 0 1 12 6.8c.85 0 1.71.11 2.51.32 1.9-1.29 2.74-1.02 2.74-1.02.56 1.38.21 2.4.11 2.65.64.7 1.03 1.59 1.03 2.68 0 3.84-2.34 4.68-4.57 4.93.36.31.68.93.68 1.88v2.79c0 .26.18.58.69.48A10 10 0 0 0 12 2z"/>
-              </svg>
-            </a>
-          </div>
+          <a class="iconlink" href="https://github.com/Lorenzo-3" target="_blank" rel="noreferrer" aria-label="GitHub">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path fill="currentColor"
+                d="M12 2a10 10 0 0 0-3.16 19.49c.5.09.68-.22.68-.48v-1.7c-2.77.6-3.35-1.18-3.35-1.18-.45-1.15-1.1-1.46-1.1-1.46-.9-.62.07-.61.07-.61 1 .07 1.53 1.03 1.53 1.03.9 1.53 2.36 1.09 2.94.83.09-.65.35-1.09.63-1.34-2.21-.25-4.54-1.11-4.54-4.94 0-1.09.39-1.98 1.03-2.68-.1-.25-.45-1.27.1-2.65 0 0 .84-.27 2.75 1.02A9.6 9.6 0 0 1 12 6.8c.85 0 1.71.11 2.51.32 1.9-1.29 2.74-1.02 2.74-1.02.56 1.38.21 2.4.11 2.65.64.7 1.03 1.59 1.03 2.68 0 3.84-2.34 4.68-4.57 4.93.36.31.68.93.68 1.88v2.79c0 .26.18.58.69.48A10 10 0 0 0 12 2z" />
+            </svg>
+          </a>
+        </div>
 
-          <div class="meta">
-            <span>Italia</span>
-            <span class="sep">•</span>
-            <span>Aggiornato: Aprile 2026</span>
-          </div>
+        <div class="meta">
+          <span>Italia</span>
+          <span class="sep">•</span>
+          <span>Aggiornato: Aprile 2026</span>
         </div>
       </div>
+    </div>
 
     <section class="grid">
-      <article class="card">
+      <article class="card stat-card">
         <h2>Aperto a</h2>
         <ul class="bullets">
-          <li><span class="hl">Tirocini / tesi:</span> Deep Learning, graph ML, bioinformatica, Analisi Dati, Sicurezza dei modelli di ML.</li>
+          <li><span class="hl">Tirocini / tesi:</span> Deep Learning, graph ML, bioinformatica, Analisi Dati, Sicurezza
+            dei modelli di ML.</li>
           <li><span class="hl">Collaborazioni:</span> prototipi di ricerca e progetti open-source.</li>
         </ul>
       </article>
 
-      <article class="card">
+      <article class="card stat-card">
         <h2>Adesso</h2>
-        <p>Sto studiando per la sessione d’esami e sistemando alcuni progetti personali.</p>
-        <p><small>Prossimo: ripresa delle lezioni.</small></p>
+        <p>Sto studiando per la prossima sessione d’esami e sistemando alcuni progetti personali.</p>
       </article>
     </section>
 
     <section class="card">
-      <h2>In breve</h2>
+      <h2>In evidenza</h2>
       <ul class="bullets">
-        <li><span class="hl">ML / vision:</span> anomaly detection e localizzazione su immagini ad alta risoluzione (casi UAV).</li>
-        <li><span class="hl">Graph deep learning:</span> modellazione di interactomi e workflow per interazioni proteiche con PyTorch Geometric.</li>
-        <li><span class="hl">Analisi dati:</span> analisi esplorativa delle elezioni europee 2019 per trovare pattern e insight.</li>
+        <li><span class="hl">AI applicata:</span> sviluppo e test di sistemi ML tra visione, grafi, serie temporali,
+          apprendimento per rinforzo e workflow guidati da modelli linguistici.</li>
+        <li><span class="hl">Dati e calcolo scientifico:</span> trasformo problemi di dominio e dataset disordinati in
+          analisi riproducibili, sintesi visuali ed esperimenti documentati.</li>
+        <li><span class="hl">Metodo di ricerca:</span> collego corsi, tesi e progetti personali con appunti leggibili,
+          demo e valutazione pratica.</li>
       </ul>
     </section>
 
@@ -118,5 +121,8 @@
       <small>© 2026 Lorenzo Marinelli</small>
     </footer>
   </div>
+
+  <script src="/assets/script.js" defer></script>
 </body>
+
 </html>

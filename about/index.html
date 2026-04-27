@@ -1,10 +1,12 @@
 <!doctype html>
 <html lang="en" data-palette="triad">
+
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>About · Lorenzo Marinelli</title>
-  <meta name="description" content="About Lorenzo Marinelli — Computer Science student focused on ML, data science, and bioinformatics." />
+  <meta name="description"
+    content="About Lorenzo Marinelli — Computer Science MSc student working across applied AI, data, and scientific computing." />
   <link rel="stylesheet" href="/assets/style.css" />
 
   <link rel="alternate" hreflang="it" href="/it/about/" />
@@ -20,16 +22,20 @@
     <nav class="nav">
       <a class="nav__brand" href="/" aria-label="Home">LM</a>
 
-      <div class="lang" aria-label="Lingua">
+      <div class="lang" aria-label="Language">
         <a class="lang__btn is-active" href="/about/" aria-label="English" title="English">
           <span class="flag" aria-hidden="true">🇬🇧</span>
           <span class="sr-only" lang="en">English</span>
         </a>
-        <a class="lang__btn " href="/it/about/" aria-label="Italiano" title="Italiano">
+        <a class="lang__btn" href="/it/about/" aria-label="Italiano" title="Italiano">
           <span class="flag" aria-hidden="true">🇮🇹</span>
           <span class="sr-only" lang="it">Italiano</span>
         </a>
       </div>
+
+      <button class="theme-toggle" type="button" data-theme-toggle aria-label="Toggle theme" title="Toggle theme">
+        <span data-theme-icon aria-hidden="true">◐</span>
+      </button>
 
       <div class="nav__links">
         <a href="/">Home</a>
@@ -41,20 +47,21 @@
     </nav>
 
     <header class="hero">
+      <p class="kicker">Background</p>
       <h1>About</h1>
-
+      <p class="lead hero-line">
+        I’m a Computer Science MSc student at Sapienza University, working across
+        <span class="hl">applied AI, data, and scientific computing</span>.
+      </p>
       <p class="lead">
-        Hi, I’m Lorenzo. I’m a Master’s student in Computer Science at Sapienza University (Rome).
-        I like building small, concrete things: ML experiments, pipelines, and prototypes where you can actually see
-        what changes when you tweak a piece.
-        The best moment is when a messy dataset starts to make sense and patterns show up that tell you something real.
+        This page is the background behind the projects: how I study, what I tend to build, and the tools I reach for
+        when turning an idea into something testable.
       </p>
 
-      <p class="lead">
-        I’m mostly interested in computation as a tool for <span class="hl">analysis</span> — bioinformatics, physics,
-        information theory, and anywhere models + data can answer real questions.
-        But yes, I also like the “computer stuff”: coding, making systems run, and the practical engineering details.
-      </p>
+      <div class="hero__cta">
+        <a class="btn" href="/projects/">See projects</a>
+        <a class="btn btn--ghost" href="/contact/">Contact</a>
+      </div>
 
       <div class="meta">
         <span>Based in Italy</span>
@@ -64,7 +71,7 @@
     </header>
 
     <section class="grid">
-      <article class="card">
+      <article class="card stat-card">
         <h2>Education</h2>
         <ul class="bullets edu">
           <li class="edu__item">
@@ -77,7 +84,8 @@
 
           <li class="edu__item">
             <div class="edu__row">
-              <span class="edu__title hl">BSc Applied Computer Science & AI</span>
+              <span class="edu__title hl">Bachelor Degree in Applied Computer Science &amp; Artificial
+                Intelligence</span>
               <span class="edu__date">2022–2025</span>
             </div>
             <div class="edu__meta">Sapienza University of Rome · <strong>110 cum laude</strong></div>
@@ -93,72 +101,67 @@
         </ul>
       </article>
 
-      <article class="card">
-        <h2>What I build</h2>
+      <article class="card stat-card">
+        <h2>Current direction</h2>
         <ul class="bullets">
-          <li><strong>ML pipelines:</strong> training + evaluation + interpretation.</li>
-          <li><strong>Vision experiments:</strong> detection/localization/segmentation pipelines.</li>
-          <li><strong>Graph ML:</strong> biological networks, social interaction networks, and general network data analysis.</li>
-          <li><strong>Data analysis:</strong> cleaning messy datasets, extracting and interpreting patterns</li>
-          <li><strong>3D / synthetic data:</strong> small Blender pipelines for labeled datasets.</li>
-          <li><strong>Web & small apps:</strong> lightweight APIs and tools for site and apps</li>
+          <li><span class="hl">Applied AI:</span> models that solve concrete tasks, expose their limits, and can be
+            evaluated clearly.</li>
+          <li><span class="hl">Scientific data work:</span> graph, vision, time-series, and bioinformatics problems.
+          </li>
+          <li><span class="hl">Reliable experiments:</span> readable notebooks, reproducible runs, and practical
+            diagnostics.</li>
+          <li><span class="hl">Readable outputs:</span> demos, notes, and summaries that make the reasoning behind a
+            result easy to inspect.</li>
         </ul>
-        <p><small>Projects and writeups live in <a href="/projects/">Projects</a> and <a href="/notes/">Notes</a>.</small></p>
       </article>
     </section>
 
-    <section class="card">
-      <h2>Tools & skills</h2>
+    <section class="card project-card--featured">
+      <p class="project-kicker">Working style</p>
+      <h2>Small experiments, clear evaluation</h2>
+      <p>
+        I like starting from the question and the data before choosing the model. The implementation matters because a
+        good experiment should be easy to rerun, inspect, compare, and explain after the first result looks promising.
+      </p>
+      <div class="tag-row" aria-label="Workflow">
+        <span>Reproducible runs</span>
+        <span>Clean evaluation</span>
+        <span>Visual diagnostics</span>
+        <span>Small tools</span>
+      </div>
+    </section>
 
-      <section class="grid">
-        <article class="card">
-          <h2>ML & data</h2>
-          <ul class="bullets">
-            <li><strong>Core:</strong> Python, NumPy, pandas, Matplotlib</li>
-            <li><strong>ML/DL:</strong> PyTorch, PyTorch Lightning, scikit-learn</li>
-            <li><strong>Experiment workflow:</strong> notebooks, reproducible runs, clean evaluation</li>
-          </ul>
-        </article>
+    <section class="grid">
+      <article class="card">
+        <p class="project-kicker">Tools</p>
+        <h2>Core toolkit</h2>
+        <ul class="bullets">
+          <li><strong>Python:</strong> NumPy, pandas, Matplotlib, scikit-learn, notebooks, data cleaning</li>
+          <li><strong>Deep learning:</strong> PyTorch, PyTorch Lightning, PyTorch Geometric, model evaluation</li>
+          <li><strong>Vision &amp; graphs:</strong> OpenCV, torchvision, NetworkX, Gephi, post-processing</li>
+          <li><strong>Engineering:</strong> Git, Docker when useful, HTML/CSS, JavaScript, OpenAPI, SQL</li>
+          <li><strong>Workflow:</strong> reproducible runs, visual checks, compact documentation, small demos</li>
+        </ul>
+      </article>
 
-        <article class="card">
-          <h2>Vision & graphs</h2>
-          <ul class="bullets">
-            <li><strong>Vision:</strong> OpenCV, torchvision</li>
-            <li><strong>Graphs:</strong> PyTorch Geometric, NetworkX, Gephi</li>
-            <li><strong>Typical tasks:</strong> heatmaps/masks → post-processing → bounding boxes → classification</li>
-          </ul>
-        </article>
-      </section>
-
-      <section class="grid">
-        <article class="card">
-          <h2>Bioinformatics / network medicine</h2>
-          <ul class="bullets">
-            <li><strong>Tools:</strong> SWIMmeR, SaveRunner,WGCNA, Enrichr</li>
-            <li><strong>Work:</strong> enrichment analysis, disease module analysis, correlation analysis,  network-based interpretation, interactome workflows</li>
-            <li><strong>Supporting stack:</strong> pandas/NumPy for cleaning + reproducible notebooks for analysis</li>
-          </ul>
-        </article>
-
-        <article class="card">
-          <h2>3D, web, and engineering</h2>
-          <ul class="bullets">
-            <li><strong>3D / rendering:</strong> Blender (dataset generation, lighting, domain randomization)</li>
-            <li><strong>Web:</strong> HTML/CSS, JavaScript, OpenAPI, REST APIs</li>
-            <li><strong>Backend basics:</strong> SQL fundamentals, small services/tools</li>
-            <li><strong>Workflow:</strong> Git, Docker (when needed)</li>
-          </ul>
-        </article>
-      </section>
-
-      <p><small>
-        I’m mostly Python-first: I prefer using the right libraries and writing clean glue code over “collecting” languages.
-      </small></p>
+      <article class="card">
+        <p class="project-kicker">Domains</p>
+        <h2>Where I apply it</h2>
+        <ul class="bullets">
+          <li><strong>Bioinformatics:</strong> interactomes, protein interaction prediction, enrichment workflows,
+            correlation analysis</li>
+          <li><strong>Computer vision:</strong> anomaly detection, localization, masks, boxes, synthetic data</li>
+          <li><strong>Dynamical systems:</strong> forecasting, recursive prediction, stability checks</li>
+          <li><strong>Research prototypes:</strong> small web/API tools, demos, and visual summaries</li>
+        </ul>
+      </article>
     </section>
 
     <footer class="footer">
       <small>© 2026 Lorenzo Marinelli</small>
     </footer>
   </div>
+  <script src="/assets/script.js" defer></script>
 </body>
+
 </html>

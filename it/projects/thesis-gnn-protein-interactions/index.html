@@ -1,0 +1,965 @@
+<!doctype html>
+<html lang="it" data-palette="triad">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Tesi GNN Interazioni Proteiche · Lorenzo Marinelli</title>
+    <meta name="description"
+        content="Riassunto interattivo della tesi di Lorenzo Marinelli sulla predizione di interazioni proteina-proteina con Graph Neural Networks ed embedding ProtT5." />
+    <link rel="stylesheet" href="/assets/style.css" />
+
+    <link rel="alternate" hreflang="en" href="/projects/thesis-gnn-protein-interactions/" />
+    <link rel="alternate" hreflang="it" href="/it/projects/thesis-gnn-protein-interactions/" />
+    <link rel="icon" href="/assets/favicon.ico" sizes="any">
+    <link rel="icon" type="image/png" href="/assets/favicon-32.png" sizes="32x32">
+    <link rel="icon" type="image/png" href="/assets/favicon-16.png" sizes="16x16">
+    <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
+
+    <style>
+        .thesis-layout {
+            display: grid;
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        .thesis-section {
+            scroll-margin-top: 7rem;
+        }
+
+        .thesis-hero-grid {
+            display: grid;
+            gap: 1rem;
+            margin-top: 1.2rem;
+        }
+
+        @media (min-width: 900px) {
+            .thesis-hero-grid {
+                grid-template-columns: minmax(0, 1.25fr) minmax(280px, .75fr);
+            }
+        }
+
+        .metric-grid {
+            display: grid;
+            gap: .8rem;
+            grid-template-columns: repeat(auto-fit, minmax(min(100%, 9.5rem), 1fr));
+            margin-top: 1rem;
+        }
+
+        .metric-card {
+            padding: 1rem;
+            border: 1px solid var(--border);
+            border-radius: 18px;
+            background: color-mix(in srgb, var(--card) 86%, transparent);
+        }
+
+        .metric-card strong {
+            display: block;
+            margin-bottom: .25rem;
+            color: var(--accent2);
+            font-size: clamp(1.55rem, 2.6vw, 2.2rem);
+            line-height: 1;
+            overflow-wrap: normal;
+            white-space: nowrap;
+        }
+
+        .metric-card span {
+            color: var(--muted);
+            font-size: .92rem;
+        }
+
+        .pipeline {
+            display: grid;
+            gap: .85rem;
+            margin-top: 1rem;
+        }
+
+        @media (min-width: 920px) {
+            .pipeline {
+                grid-template-columns: repeat(5, minmax(0, 1fr));
+            }
+        }
+
+        .pipeline-node {
+            position: relative;
+            min-height: 150px;
+            padding: 1rem;
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            background: color-mix(in srgb, var(--card) 88%, transparent);
+            overflow: hidden;
+            cursor: pointer;
+            transition: transform .2s ease, border-color .2s ease, box-shadow .2s ease;
+        }
+
+        .pipeline-node:hover,
+        .pipeline-node.is-active {
+            transform: translateY(-3px);
+            border-color: var(--accent2);
+            box-shadow: 0 16px 34px rgba(0, 0, 0, .14);
+        }
+
+        .pipeline-node::after {
+            content: "";
+            position: absolute;
+            right: -34px;
+            top: -34px;
+            width: 92px;
+            height: 92px;
+            border-radius: 50%;
+            background: radial-gradient(circle, color-mix(in srgb, var(--accent2) 22%, transparent), transparent 68%);
+            opacity: .65;
+        }
+
+        .pipeline-node__num {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 2rem;
+            height: 2rem;
+            margin-bottom: .75rem;
+            border-radius: 999px;
+            border: 1px solid color-mix(in srgb, var(--accent2) 35%, transparent);
+            color: var(--accent2);
+            background: color-mix(in srgb, var(--accent2) 14%, transparent);
+            font-weight: 800;
+        }
+
+        .pipeline-node h3 {
+            margin-bottom: .35rem;
+        }
+
+        .pipeline-node p {
+            margin-bottom: 0;
+            color: var(--muted);
+            font-size: .94rem;
+        }
+
+        .pipeline-explainer {
+            margin-top: 1rem;
+            padding: 1rem;
+            border: 1px solid var(--border);
+            border-radius: 18px;
+            background: color-mix(in srgb, var(--bg) 40%, transparent);
+        }
+
+        .pipeline-explainer h3 {
+            color: var(--accent2);
+            margin-bottom: .35rem;
+        }
+
+        .split-layout {
+            display: grid;
+            gap: 1rem;
+        }
+
+        @media (min-width: 900px) {
+            .split-layout {
+                grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+            }
+        }
+
+        .graph-demo {
+            position: relative;
+            min-height: 330px;
+            border: 1px solid var(--border);
+            border-radius: 22px;
+            overflow: hidden;
+            background:
+                radial-gradient(circle at 25% 25%, color-mix(in srgb, var(--accent2) 14%, transparent), transparent 30%),
+                color-mix(in srgb, var(--card) 88%, transparent);
+        }
+
+        .graph-node {
+            position: absolute;
+            width: 2.1rem;
+            height: 2.1rem;
+            display: grid;
+            place-items: center;
+            border-radius: 999px;
+            border: 1px solid var(--border);
+            background: var(--card);
+            color: var(--muted);
+            font-size: .78rem;
+            font-weight: 800;
+            transform: translate(-50%, -50%);
+            transition: transform .22s ease, background .22s ease, color .22s ease, border-color .22s ease, box-shadow .22s ease;
+        }
+
+        .graph-node.center {
+            width: 2.6rem;
+            height: 2.6rem;
+            background: var(--accent);
+            color: #090b0d;
+            left: 50%;
+            top: 50%;
+            z-index: 4;
+        }
+
+        .graph-node[data-hop="1"].is-lit {
+            background: var(--accent2);
+            color: #06110e;
+            border-color: var(--accent2);
+            box-shadow: 0 0 0 5px color-mix(in srgb, var(--accent2) 18%, transparent);
+        }
+
+        .graph-node[data-hop="2"].is-lit {
+            background: var(--accent3);
+            color: #090b0d;
+            border-color: var(--accent3);
+            box-shadow: 0 0 0 5px color-mix(in srgb, var(--accent3) 16%, transparent);
+        }
+
+        .graph-node[data-hop="3"].is-lit {
+            background: color-mix(in srgb, var(--accent) 85%, white);
+            color: #090b0d;
+            border-color: var(--accent);
+            box-shadow: 0 0 0 5px color-mix(in srgb, var(--accent) 14%, transparent);
+        }
+
+        .graph-node.is-lit {
+            transform: translate(-50%, -50%) scale(1.08);
+        }
+
+        .graph-links {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+
+        .graph-link {
+            stroke: color-mix(in srgb, var(--accent2) 38%, transparent);
+            stroke-width: .7;
+            stroke-linecap: round;
+            opacity: .42;
+            transition: opacity .22s ease, stroke .22s ease, stroke-width .22s ease;
+        }
+
+        .graph-link.is-lit {
+            stroke: var(--accent2);
+            stroke-width: 1.2;
+            opacity: .9;
+        }
+
+        .graph-link[data-hop="2"].is-lit {
+            stroke: var(--accent3);
+        }
+
+        .graph-link[data-hop="3"].is-lit {
+            stroke: var(--accent);
+        }
+
+        .hop-controls,
+        .case-controls {
+            display: flex;
+            flex-wrap: wrap;
+            gap: .55rem;
+            margin-top: 1rem;
+        }
+
+        .mini-btn {
+            border: 1px solid var(--border);
+            border-radius: 999px;
+            padding: .5rem .85rem;
+            background: var(--card);
+            color: var(--muted);
+            font: inherit;
+            cursor: pointer;
+            transition: transform .18s ease, color .18s ease, border-color .18s ease, background .18s ease;
+        }
+
+        .mini-btn:hover {
+            transform: translateY(-1px);
+            color: var(--text);
+            border-color: var(--accent2);
+        }
+
+        .mini-btn.is-active {
+            background: var(--accent2);
+            color: #06110e;
+            border-color: var(--accent2);
+            box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent2) 18%, transparent);
+        }
+
+        html[data-theme="light"] .mini-btn.is-active {
+            color: #fff;
+        }
+
+        @media (prefers-color-scheme: light) {
+            html:not([data-theme]) .mini-btn.is-active {
+                color: #fff;
+            }
+        }
+
+        .case-panel {
+            padding: 1rem;
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            background: color-mix(in srgb, var(--card) 88%, transparent);
+        }
+
+        .case-bars {
+            display: grid;
+            gap: .65rem;
+            margin: 1rem 0;
+        }
+
+        .case-bar {
+            display: grid;
+            gap: .3rem;
+        }
+
+        .case-bar__track {
+            height: .85rem;
+            border-radius: 999px;
+            overflow: hidden;
+            background: color-mix(in srgb, var(--border) 70%, transparent);
+        }
+
+        .case-bar__fill {
+            height: 100%;
+            width: var(--w);
+            border-radius: inherit;
+            background: linear-gradient(90deg, var(--accent2), var(--accent), var(--accent3));
+            transition: width .35s ease;
+        }
+
+        .case-summary {
+            margin-bottom: 0;
+            color: var(--muted);
+        }
+
+        .mini-nav {
+            display: flex;
+            flex-wrap: wrap;
+            gap: .55rem;
+            margin-top: 1rem;
+        }
+
+        .mini-nav a {
+            display: inline-flex;
+            border: 1px solid var(--border);
+            border-radius: 999px;
+            padding: .45rem .75rem;
+            color: var(--muted);
+            background: var(--card);
+            text-decoration: none;
+        }
+
+        .mini-nav a:hover {
+            color: var(--accent2);
+            border-color: var(--accent2);
+        }
+
+        @media (max-width: 700px) {
+            .graph-demo {
+                min-height: 280px;
+            }
+
+            .graph-node {
+                width: 1.85rem;
+                height: 1.85rem;
+                font-size: .7rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="wrap">
+        <nav class="nav">
+            <a class="nav__brand" href="/it/" aria-label="Home">LM</a>
+
+            <div class="lang" aria-label="Lingua">
+                <a class="lang__btn" href="/projects/thesis-gnn-protein-interactions/" aria-label="English"
+                    title="English">
+                    <span class="flag" aria-hidden="true">🇬🇧</span>
+                    <span class="sr-only" lang="en">English</span>
+                </a>
+                <a class="lang__btn is-active" href="/it/projects/thesis-gnn-protein-interactions/"
+                    aria-label="Italiano" title="Italiano">
+                    <span class="flag" aria-hidden="true">🇮🇹</span>
+                    <span class="sr-only" lang="it">Italiano</span>
+                </a>
+            </div>
+
+            <button class="theme-toggle" type="button" data-theme-toggle aria-label="Cambia tema" title="Cambia tema">
+                <span data-theme-icon aria-hidden="true">◐</span>
+            </button>
+
+            <div class="nav__links">
+                <a href="/it/">Home</a>
+                <a href="/it/about/">Info</a>
+                <a aria-current="page" href="/it/projects/">Progetti</a>
+                <a href="/it/notes/">Appunti</a>
+                <a href="/it/contact/">Contatti</a>
+            </div>
+        </nav>
+
+        <header class="hero">
+            <p class="kicker">Riassunto interattivo della tesi</p>
+            <h1>Unveiling Protein Connections through Graph Neural Networks and ProtT5 Embeddings</h1>
+            <p class="lead">
+                Un riassunto web-native della mia tesi triennale: predire interazioni proteina-proteina mancanti
+                combinando embedding da protein language model e Graph Neural Networks.
+            </p>
+
+            <div class="tag-row" aria-label="Tags">
+                <span>Graph Neural Networks</span>
+                <span>ProtT5</span>
+                <span>STRING v12</span>
+                <span>Link prediction</span>
+                <span>Bioinformatica</span>
+            </div>
+
+            <div class="hero__cta">
+                <a class="btn btn--ghost" href="/it/projects/">← Torna ai progetti</a>
+                <a class="btn" href="/assets/thesis/thesis.pdf">PDF completo</a>
+            </div>
+
+            <nav class="mini-nav" aria-label="Sezioni della pagina">
+                <a href="#pipeline">Pipeline</a>
+                <a href="#dataset">Dataset</a>
+                <a href="#architecture">Architettura</a>
+                <a href="#results">Risultati</a>
+                <a href="#bias">Bias</a>
+                <a href="#notch2">NOTCH2</a>
+            </nav>
+        </header>
+
+        <main class="thesis-layout">
+            <section class="card thesis-section" id="pipeline">
+                <h2>Dalle sequenze proteiche agli score di interazione</h2>
+                <p>
+                    L’idea è semplice: le proteine diventano nodi, le interazioni note diventano archi, ProtT5 fornisce
+                    feature basate sulla sequenza
+                    e il GNN apprende embedding proteici arricchiti dal contesto di grafo.
+                </p>
+
+                <div class="pipeline" data-pipeline>
+                    <article class="pipeline-node is-active" tabindex="0" data-title="Sequenze proteiche"
+                        data-text="Il punto di partenza è la sequenza amminoacidica di ogni proteina. Questo dà al modello informazione biologica prima ancora di considerare il grafo.">
+                        <span class="pipeline-node__num">1</span>
+                        <h3>Sequenze</h3>
+                        <p>Stringhe di amminoacidi.</p>
+                    </article>
+
+                    <article class="pipeline-node" tabindex="0" data-title="Embedding ProtT5"
+                        data-text="ProtT5 converte ogni sequenza proteica in un embedding da 1024 dimensioni, usato come feature iniziale del nodo.">
+                        <span class="pipeline-node__num">2</span>
+                        <h3>ProtT5</h3>
+                        <p>Feature dei nodi da 1024 dimensioni.</p>
+                    </article>
+
+                    <article class="pipeline-node" tabindex="0" data-title="Grafo PPI"
+                        data-text="Il grafo STRING fornisce interazioni note ad alta confidenza. I nodi sono proteine e gli archi sono interazioni supportate sperimentalmente o computazionalmente.">
+                        <span class="pipeline-node__num">3</span>
+                        <h3>Grafo PPI</h3>
+                        <p>Proteine come nodi, PPI come archi.</p>
+                    </article>
+
+                    <article class="pipeline-node" tabindex="0" data-title="Encoder GNN"
+                        data-text="L’encoder esegue message passing, così ogni embedding proteico viene raffinato usando il contesto delle interazioni vicine.">
+                        <span class="pipeline-node__num">4</span>
+                        <h3>Encoder GNN</h3>
+                        <p>Message passing sulla rete.</p>
+                    </article>
+
+                    <article class="pipeline-node" tabindex="0" data-title="Pair decoder"
+                        data-text="Dopo una singola inferenza sul grafo, il decoder può assegnare uno score a coppie di embedding proteici e produrre una probabilità di interazione.">
+                        <span class="pipeline-node__num">5</span>
+                        <h3>Decoder</h3>
+                        <p>Score di interazione tra coppie.</p>
+                    </article>
+                </div>
+
+                <div class="pipeline-explainer" aria-live="polite">
+                    <h3 data-pipeline-title>Sequenze proteiche</h3>
+                    <p data-pipeline-text>
+                        Il punto di partenza è la sequenza amminoacidica di ogni proteina. Questo dà al modello
+                        informazione biologica prima ancora di considerare il grafo.
+                    </p>
+                </div>
+            </section>
+
+            <section class="card thesis-section" id="dataset">
+                <h2>Dataset: grafo PPI umano da STRING v12</h2>
+                <div class="thesis-hero-grid">
+                    <div>
+                        <p>
+                            Ho usato la rete di interazioni proteina-proteina umana da STRING v12, mantenendo solo archi
+                            ad altissima confidenza.
+                            Il filtro a confidenza ≥ 950 riduce il rumore e rende il grafo più affidabile per il
+                            training, anche se rimuove molte interazioni a confidenza minore.
+                        </p>
+                        <ul class="bullets">
+                            <li><span class="hl">Fonte:</span> STRING v12, rete PPI umana.</li>
+                            <li><span class="hl">Filtro:</span> confidence score ≥ 950.</li>
+                            <li><span class="hl">Grafo finale:</span> 10.430 proteine e circa 120 mila interazioni.</li>
+                            <li><span class="hl">Training:</span> archi positivi più coppie negative campionate con
+                                rapporto 10×.</li>
+                        </ul>
+                    </div>
+
+                    <aside class="metric-grid" aria-label="Riepilogo dataset">
+                        <div class="metric-card">
+                            <strong>10.430</strong>
+                            <span>proteine</span>
+                        </div>
+                        <div class="metric-card">
+                            <strong>~120k</strong>
+                            <span>interazioni ad alta confidenza</span>
+                        </div>
+                        <div class="metric-card">
+                            <strong>≥950</strong>
+                            <span>soglia STRING</span>
+                        </div>
+                        <div class="metric-card">
+                            <strong>10×</strong>
+                            <span>rapporto negative sampling</span>
+                        </div>
+                    </aside>
+                </div>
+            </section>
+
+            <section class="card thesis-section" id="architecture">
+                <h2>Architettura: encoder di grafo + pair decoder</h2>
+
+                <div class="split-layout">
+                    <div>
+                        <h3>Intuizione del message passing</h3>
+                        <p>
+                            TAGConv aggrega informazione multi-hop. Usa i pulsanti per vedere come una proteina centrale
+                            può ricevere informazione dai vicini a 1-hop, 2-hop e 3-hop.
+                        </p>
+
+                        <div class="graph-demo" data-hop-demo aria-label="Visualizzazione hop message passing">
+                            <svg class="graph-links" viewBox="0 0 100 100" preserveAspectRatio="none"
+                                aria-hidden="true" focusable="false">
+                                <line class="graph-link" data-hop="1" x1="50" y1="50" x2="70" y2="23" />
+                                <line class="graph-link" data-hop="1" x1="50" y1="50" x2="72" y2="63" />
+                                <line class="graph-link" data-hop="1" x1="50" y1="50" x2="27" y2="28" />
+                                <line class="graph-link" data-hop="1" x1="50" y1="50" x2="24" y2="67" />
+                                <line class="graph-link" data-hop="2" x1="70" y1="23" x2="83" y2="12" />
+                                <line class="graph-link" data-hop="2" x1="72" y1="63" x2="86" y2="76" />
+                                <line class="graph-link" data-hop="2" x1="27" y1="28" x2="11" y2="20" />
+                                <line class="graph-link" data-hop="2" x1="24" y1="67" x2="12" y2="79" />
+                                <line class="graph-link" data-hop="3" x1="83" y1="12" x2="48" y2="8" />
+                                <line class="graph-link" data-hop="3" x1="11" y1="20" x2="48" y2="8" />
+                                <line class="graph-link" data-hop="3" x1="86" y1="76" x2="48" y2="84" />
+                                <line class="graph-link" data-hop="3" x1="12" y1="79" x2="48" y2="84" />
+                            </svg>
+
+                            <span class="graph-node center">u</span>
+                            <span class="graph-node" data-hop="1" style="left:70%;top:23%;">1</span>
+                            <span class="graph-node" data-hop="1" style="left:72%;top:63%;">1</span>
+                            <span class="graph-node" data-hop="1" style="left:27%;top:28%;">1</span>
+                            <span class="graph-node" data-hop="1" style="left:24%;top:67%;">1</span>
+
+                            <span class="graph-node" data-hop="2" style="left:83%;top:12%;">2</span>
+                            <span class="graph-node" data-hop="2" style="left:86%;top:76%;">2</span>
+                            <span class="graph-node" data-hop="2" style="left:11%;top:20%;">2</span>
+                            <span class="graph-node" data-hop="2" style="left:12%;top:79%;">2</span>
+
+                            <span class="graph-node" data-hop="3" style="left:48%;top:8%;">3</span>
+                            <span class="graph-node" data-hop="3" style="left:48%;top:84%;">3</span>
+                        </div>
+
+                        <div class="hop-controls">
+                            <button class="mini-btn is-active" type="button" data-hop="1">1-hop</button>
+                            <button class="mini-btn" type="button" data-hop="2">2-hop</button>
+                            <button class="mini-btn" type="button" data-hop="3">3-hop</button>
+                        </div>
+                    </div>
+
+                    <div>
+                        <h3>Layer dell’encoder</h3>
+                        <ul class="bullets">
+                            <li><span class="hl">TAGConv K=3:</span> aggrega informazione di vicinato a 1-hop, 2-hop e
+                                3-hop in un solo layer.</li>
+                            <li><span class="hl">TransformerConv:</span> convoluzione con meccanismo attention-style
+                                multi-head per modulare l’influenza dei vicini.</li>
+                            <li><span class="hl">GINConv:</span> layer finale non lineare per aumentare la capacità
+                                rappresentativa.</li>
+                        </ul>
+
+                        <h3>Pair decoder</h3>
+                        <p>
+                            Una volta prodotti gli embedding arricchiti dal grafo, il decoder assegna score alle coppie.
+                            Questo permette di codificare il grafo una volta e poi ordinare molte coppie candidate.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="architecture-showcase" aria-label="Spiegazione animata dell'architettura">
+                    <article class="architecture-panel">
+                        <h3>Attention in TransformerConv</h3>
+                        <p>
+                            Ogni vicino invia un messaggio, ma l’attention decide quanto quel messaggio deve contare
+                            prima che la proteina centrale aggiorni il proprio embedding.
+                        </p>
+
+                        <div class="attention-demo" aria-label="Aggregazione dei vicini pesata da attention">
+                            <svg class="attention-links" viewBox="0 0 100 100" preserveAspectRatio="none"
+                                aria-hidden="true" focusable="false">
+                                <line class="attention-link attention-link--strong" x1="18" y1="28" x2="50" y2="52" />
+                                <line class="attention-link attention-link--mid" x1="80" y1="30" x2="50" y2="52" />
+                                <line class="attention-link attention-link--weak" x1="22" y1="76" x2="50" y2="52" />
+                                <line class="attention-link attention-link--mid" x1="78" y1="78" x2="50" y2="52" />
+                            </svg>
+
+                            <span class="attention-token" style="--x:18%;--y:28%;"></span>
+                            <span class="attention-token attention-token--mid" style="--x:80%;--y:30%;"></span>
+                            <span class="attention-token attention-token--weak" style="--x:22%;--y:76%;"></span>
+                            <span class="attention-token attention-token--mid" style="--x:78%;--y:78%;"></span>
+
+                            <span class="attention-node attention-node--target" style="--x:50%;--y:52%;">u</span>
+                            <span class="attention-node" style="--x:18%;--y:28%;">a</span>
+                            <span class="attention-node" style="--x:80%;--y:30%;">b</span>
+                            <span class="attention-node" style="--x:22%;--y:76%;">c</span>
+                            <span class="attention-node" style="--x:78%;--y:78%;">d</span>
+                        </div>
+
+                        <div class="attention-weights" aria-label="Esempio di pesi attention">
+                            <div class="attention-weight">
+                                <span>a -> u</span>
+                                <span class="attention-weight__track"><span class="attention-weight__fill"
+                                        style="--w:86%;"></span></span>
+                                <span>0.42</span>
+                            </div>
+                            <div class="attention-weight">
+                                <span>b -> u</span>
+                                <span class="attention-weight__track"><span class="attention-weight__fill"
+                                        style="--w:58%;"></span></span>
+                                <span>0.28</span>
+                            </div>
+                            <div class="attention-weight">
+                                <span>c -> u</span>
+                                <span class="attention-weight__track"><span class="attention-weight__fill"
+                                        style="--w:28%;"></span></span>
+                                <span>0.14</span>
+                            </div>
+                        </div>
+                    </article>
+
+                    <article class="architecture-panel">
+                        <h3>Animazione del pair decoder</h3>
+                        <p>
+                            Dopo il message passing, il grafo viene codificato una volta. Il decoder riceve solo due
+                            embedding, costruisce feature di coppia e le mappa a una probabilità di interazione.
+                        </p>
+
+                        <div class="decoder-motion" aria-label="Flusso animato del pair decoder">
+                            <svg class="decoder-arrow-layer" viewBox="0 0 100 100" preserveAspectRatio="none"
+                                aria-hidden="true" focusable="false">
+                                <defs>
+                                    <marker id="decoder-arrowhead" viewBox="0 0 10 10" refX="8" refY="5"
+                                        markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+                                        <path class="decoder-arrow-head" d="M 0 0 L 10 5 L 0 10 z" />
+                                    </marker>
+                                </defs>
+                                <path class="decoder-arrow decoder-arrow--zi" d="M25 14.5 V18 H14 V22.6" />
+                                <path class="decoder-arrow decoder-arrow--zj" d="M75 14.5 V20.6 H20 V22.6" />
+                                <path class="decoder-arrow decoder-arrow--zi" d="M25 14.5 V18 H47 V22.6" />
+                                <path class="decoder-arrow decoder-arrow--zj" d="M75 14.5 V20.6 H53 V22.6" />
+                                <path class="decoder-arrow decoder-arrow--zi" d="M25 14.5 V18 H80 V22.6" />
+                                <path class="decoder-arrow decoder-arrow--zj" d="M75 14.5 V20.6 H86 V22.6" />
+                                <path class="decoder-arrow decoder-arrow--feature" d="M17 41.5 C18 45.8 34 46.6 50 49" />
+                                <path class="decoder-arrow decoder-arrow--feature" d="M50 41.5 V49" />
+                                <path class="decoder-arrow decoder-arrow--feature" d="M83 41.5 C82 45.8 66 46.6 50 49" />
+                                <path class="decoder-arrow decoder-arrow--mlp" d="M50 64.5 V69" />
+                                <path class="decoder-arrow decoder-arrow--mlp" d="M50 81.8 V86.6" />
+                            </svg>
+
+                            <div class="decoder-card decoder-card--embedding decoder-card--zi">
+                                <strong>z<sub>i</sub></strong>
+                                <span>embedding proteina i</span>
+                            </div>
+                            <div class="decoder-card decoder-card--embedding decoder-card--zj">
+                                <strong>z<sub>j</sub></strong>
+                                <span>embedding proteina j</span>
+                            </div>
+                            <div class="decoder-card decoder-card--feature decoder-card--diff">
+                                <strong>z<sub>i</sub> - z<sub>j</sub></strong>
+                                <span>differenza direzionale</span>
+                            </div>
+                            <div class="decoder-card decoder-card--feature decoder-card--product">
+                                <strong>z<sub>i</sub> &times; z<sub>j</sub></strong>
+                                <span>segnale condiviso</span>
+                            </div>
+                            <div class="decoder-card decoder-card--feature decoder-card--squared">
+                                <strong>(z<sub>i</sub> - z<sub>j</sub>)<sup>2</sup></strong>
+                                <span>segnale di distanza</span>
+                            </div>
+                            <div class="decoder-card decoder-card--mlp decoder-card--mlp1">
+                                <strong>MLP layer 1</strong>
+                                <span>mix dell'evidenza</span>
+                            </div>
+                            <div class="decoder-card decoder-card--mlp decoder-card--mlp2">
+                                <strong>MLP layer 2</strong>
+                                <span>score non lineare</span>
+                            </div>
+                            <div class="decoder-card decoder-card--output">
+                                <strong>p</strong>
+                                <span>scalare finale</span>
+                            </div>
+                        </div>
+                    </article>
+                </div>
+            </section>
+
+            <section class="card thesis-section" id="results">
+                <h2>Risultati</h2>
+                <p>
+                    Il modello ha ottenuto una forte separabilità globale e un’ottima early precision. Quest’ultima è
+                    particolarmente importante perché in un workflow biologico l’obiettivo è spesso produrre una
+                    short-list affidabile di candidati da validare.
+                </p>
+
+                <div class="metric-grid">
+                    <div class="metric-card">
+                        <strong>0.96</strong>
+                        <span>AUROC</span>
+                    </div>
+                    <div class="metric-card">
+                        <strong>0.89</strong>
+                        <span>AUPRC</span>
+                    </div>
+                    <div class="metric-card">
+                        <strong>1.00</strong>
+                        <span>Precision@500</span>
+                    </div>
+                    <div class="metric-card">
+                        <strong>82%</strong>
+                        <span>precisione a soglia 0.5</span>
+                    </div>
+                </div>
+
+                <ul class="bullets">
+                    <li><span class="hl">AUROC 0.96:</span> forte capacità di ranking tra coppie vere e negative.</li>
+                    <li><span class="hl">AUPRC 0.89:</span> buona robustezza con sbilanciamento positivo-negativo 1:10.
+                    </li>
+                    <li><span class="hl">P@500 = 1.00:</span> tutte le prime 500 predizioni nel test setup erano
+                        positive vere.</li>
+                    <li><span class="hl">Recall:</span> circa 81% con soglia 0.5.</li>
+                </ul>
+            </section>
+
+            <section class="card thesis-section" id="bias">
+                <h2>Bias topologico</h2>
+                <div class="split-layout">
+                    <div>
+                        <p>
+                            Il modello è risultato più forte nelle regioni dense del grafo. Ha senso: i GNN sfruttano
+                            informazione di vicinato, quindi hub e cluster forniscono più segnale.
+                        </p>
+                        <ul class="bullets">
+                            <li><span class="hl">Archi di test recuperati:</span> coinvolgevano proteine con grado
+                                superiore alla media.</li>
+                            <li><span class="hl">Regioni dense:</span> più vicini condivisi e più evidenza contestuale.
+                            </li>
+                            <li><span class="hl">Proteine a basso grado:</span> più difficili da valutare con alta
+                                confidenza.</li>
+                        </ul>
+                    </div>
+
+                    <div class="case-panel">
+                        <h3>Interpretazione pratica</h3>
+                        <p class="case-summary">
+                            Il modello non sta imparando solo compatibilità di sequenza. Sta anche imparando come la
+                            probabilità di interazione si comporta nella topologia osservata.
+                            Questo è utile, ma introduce un punto debole nelle zone sparse.
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+            <section class="card thesis-section" id="notch2">
+                <h2>Case study NOTCH2</h2>
+                <p>
+                    L’analisi su NOTCH2 confronta un grafo più denso a minore confidenza con il grafo ad alta confidenza
+                    usato per il training.
+                    Il punto centrale è che il contesto di grafo cambia drasticamente la confidenza del modello.
+                </p>
+
+                <div class="case-controls" aria-label="Toggle contesto grafo NOTCH2">
+                    <button class="mini-btn is-active" type="button" data-case="dense">Grafo denso LC-250</button>
+                    <button class="mini-btn" type="button" data-case="sparse">Grafo sparso HC-950</button>
+                </div>
+
+                <div class="case-panel" data-case-panel>
+                    <h3 data-case-title>Grafo denso LC-250</h3>
+                    <p data-case-text>
+                        Nel grafo più denso, gli archi recuperati mostrano una regione ad alta confidenza vicino a p =
+                        0.95. Il modello diventa più deciso perché NOTCH2 ha una topologia locale più ricca.
+                    </p>
+
+                    <div class="case-bars">
+                        <div class="case-bar">
+                            <span>Densità del contesto di grafo</span>
+                            <div class="case-bar__track">
+                                <div class="case-bar__fill" data-case-density style="--w: 92%;"></div>
+                            </div>
+                        </div>
+                        <div class="case-bar">
+                            <span>Predizioni ad alta confidenza</span>
+                            <div class="case-bar__track">
+                                <div class="case-bar__fill" data-case-confidence style="--w: 88%;"></div>
+                            </div>
+                        </div>
+                        <div class="case-bar">
+                            <span>Cautela del modello</span>
+                            <div class="case-bar__track">
+                                <div class="case-bar__fill" data-case-caution style="--w: 28%;"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="card">
+                <h2>Limiti e sviluppi futuri</h2>
+                <div class="split-layout">
+                    <div>
+                        <h3>Limiti</h3>
+                        <ul class="bullets">
+                            <li><span class="hl">Bias topologico:</span> meno affidabile su proteine a basso grado.</li>
+                            <li><span class="hl">Singola fonte dati:</span> training solo su STRING@950.</li>
+                            <li><span class="hl">Nessun baseline esterno:</span> confronto diretto difficile con altri
+                                studi.</li>
+                            <li><span class="hl">Scalabilità:</span> grafi molto grandi richiedono batching più
+                                ottimizzato.</li>
+                        </ul>
+                    </div>
+
+                    <div>
+                        <h3>Sviluppi futuri</h3>
+                        <ul class="bullets">
+                            <li><span class="hl">Generalizzazione:</span> training e valutazione su più sorgenti PPI.
+                            </li>
+                            <li><span class="hl">Explainability:</span> mostrare quali path, motivi o feature di
+                                sequenza guidano le predizioni.</li>
+                            <li><span class="hl">Scalabilità:</span> subgraph batching e curriculum schedule per grafi
+                                più grandi.</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="hero__cta">
+                    <a class="btn" href="/assets/thesis/thesis.pdf">PDF completo</a>
+                    <a class="btn btn--ghost" href="/it/projects/">Torna ai progetti</a>
+                </div>
+            </section>
+        </main>
+
+        <footer class="footer">
+            <small>© 2026 Lorenzo Marinelli</small>
+        </footer>
+    </div>
+
+    <script src="/assets/script.js" defer></script>
+
+    <script>
+        (() => {
+            const pipeline = document.querySelector('[data-pipeline]');
+            const pipelineTitle = document.querySelector('[data-pipeline-title]');
+            const pipelineText = document.querySelector('[data-pipeline-text]');
+
+            if (pipeline && pipelineTitle && pipelineText) {
+                const activateNode = (node) => {
+                    pipeline.querySelectorAll('.pipeline-node').forEach((item) => item.classList.remove('is-active'));
+                    node.classList.add('is-active');
+                    pipelineTitle.textContent = node.dataset.title || '';
+                    pipelineText.textContent = node.dataset.text || '';
+                };
+
+                pipeline.querySelectorAll('.pipeline-node').forEach((node) => {
+                    node.addEventListener('click', () => activateNode(node));
+                    node.addEventListener('keydown', (event) => {
+                        if (event.key === 'Enter' || event.key === ' ') {
+                            event.preventDefault();
+                            activateNode(node);
+                        }
+                    });
+                });
+            }
+
+            const hopButtons = document.querySelectorAll('[data-hop]');
+            const hopNodes = document.querySelectorAll('.graph-node[data-hop]');
+            const hopLinks = document.querySelectorAll('.graph-link[data-hop]');
+
+            const setHop = (hop) => {
+                hopButtons.forEach((button) => {
+                    const active = button.dataset.hop === String(hop);
+                    button.classList.toggle('is-active', active);
+                    button.setAttribute('aria-pressed', String(active));
+                });
+
+                hopNodes.forEach((node) => {
+                    node.classList.toggle('is-lit', Number(node.dataset.hop) <= Number(hop));
+                });
+
+                hopLinks.forEach((link) => {
+                    link.classList.toggle('is-lit', Number(link.dataset.hop) <= Number(hop));
+                });
+            };
+
+            hopButtons.forEach((button) => {
+                button.addEventListener('click', () => setHop(button.dataset.hop));
+            });
+
+            setHop(1);
+
+            const caseButtons = document.querySelectorAll('[data-case]');
+            const caseTitle = document.querySelector('[data-case-title]');
+            const caseText = document.querySelector('[data-case-text]');
+            const density = document.querySelector('[data-case-density]');
+            const confidence = document.querySelector('[data-case-confidence]');
+            const caution = document.querySelector('[data-case-caution]');
+
+            const cases = {
+                dense: {
+                    title: 'Grafo denso LC-250',
+                    text: 'Nel grafo più denso, gli archi recuperati mostrano una regione ad alta confidenza vicino a p = 0.95. Il modello diventa più deciso perché NOTCH2 ha una topologia locale più ricca.',
+                    density: '92%',
+                    confidence: '88%',
+                    caution: '28%'
+                },
+                sparse: {
+                    title: 'Grafo sparso HC-950',
+                    text: 'Nel grafo sparso ad alta confidenza, le nuove predizioni per NOTCH2 risultano molto più caute. Gli score sono più bassi e pochissime predizioni raggiungono alta confidenza.',
+                    density: '32%',
+                    confidence: '24%',
+                    caution: '82%'
+                }
+            };
+
+            const setCase = (key) => {
+                const data = cases[key];
+                if (!data) return;
+
+                caseButtons.forEach((button) => {
+                    const active = button.dataset.case === key;
+                    button.classList.toggle('is-active', active);
+                    button.setAttribute('aria-pressed', String(active));
+                });
+
+                if (caseTitle) caseTitle.textContent = data.title;
+                if (caseText) caseText.textContent = data.text;
+                if (density) density.style.setProperty('--w', data.density);
+                if (confidence) confidence.style.setProperty('--w', data.confidence);
+                if (caution) caution.style.setProperty('--w', data.caution);
+            };
+
+            caseButtons.forEach((button) => {
+                button.addEventListener('click', () => setCase(button.dataset.case));
+            });
+
+            setCase('dense');
+        })();
+    </script>
+</body>
+
+</html>

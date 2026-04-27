@@ -1,10 +1,12 @@
 <!doctype html>
 <html lang="en" data-palette="triad">
+
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Notes · Lorenzo Marinelli</title>
-  <meta name="description" content="Notes by Lorenzo Marinelli — short writeups on ML, data science, and bioinformatics." />
+  <meta name="description"
+    content="Notes by Lorenzo Marinelli — short writeups on ML, data science, and bioinformatics." />
   <link rel="stylesheet" href="/assets/style.css" />
 
   <link rel="alternate" hreflang="en" href="/notes/" />
@@ -20,7 +22,6 @@
     <nav class="nav">
       <a class="nav__brand" href="/" aria-label="Home">LM</a>
 
-      <!-- Language toggle FIRST -->
       <div class="lang" aria-label="Language">
         <a class="lang__btn is-active" href="/notes/" aria-label="English" title="English">
           <span class="flag" aria-hidden="true">🇬🇧</span>
@@ -32,6 +33,10 @@
         </a>
       </div>
 
+      <button class="theme-toggle" type="button" data-theme-toggle aria-label="Toggle theme" title="Toggle theme">
+        <span data-theme-icon aria-hidden="true">◐</span>
+      </button>
+
       <div class="nav__links">
         <a href="/">Home</a>
         <a href="/about/">About</a>
@@ -42,34 +47,72 @@
     </nav>
 
     <header class="hero">
+      <p class="kicker">Learning log</p>
       <h1>Notes</h1>
-      <p class="lead">
-        Short writeups, experiments, and things I don’t want to forget.
+      <p class="lead hero-line">
+        Short writeups, experiments, updates and technical references.
       </p>
       <div class="meta">
-        <span>ML · Data · Bioinformatics</span>
+        <span>Based in Italy</span>
         <span class="sep">•</span>
         <span>Last updated: April 2026</span>
       </div>
     </header>
 
-    <section class="card">
-      <h2>Pinned</h2>
-      <ul class="bullets notes-list">
-      </ul>
+    <section class="card project-card--featured">
+      <p class="project-kicker">Pinned note</p>
+      <h2>Adversarial machine learning</h2>
+      <p>
+        I started a short NVIDIA DLI course on adversarial machine learning and model security, one of my biggest recent
+        interests. I’m tracking it as a compact reference for attacks, robustness, and model evaluation habits.
+      </p>
+      <div class="tag-row" aria-label="Tags">
+        <span>Model security</span>
+        <span>Adversarial ML</span>
+        <span>Evaluation</span>
+      </div>
+      <div class="hero__cta">
+        <a class="btn" href="https://learn.nvidia.com/courses/course-detail?course_id=course-v1:DLI+S-DS-03+V1"
+          target="_blank" rel="noreferrer">Open course</a>
+        <a class="btn btn--ghost" href="/projects/">Related projects</a>
+      </div>
+    </section>
+
+    <section class="grid">
+      <article class="card stat-card">
+        <h2>Current themes</h2>
+        <ul class="bullets">
+          <li><span class="hl">Security:</span> adversarial examples, robustness, and model failure modes.</li>
+          <li><span class="hl">ML practice:</span> evaluation, interpretation, and reproducible experiments.</li>
+        </ul>
+      </article>
+
+      <article class="card stat-card">
+        <h2>Format</h2>
+        <p>Short notes first. Longer writeups can grow from the parts that prove useful in real projects.</p>
+      </article>
     </section>
 
     <section class="card">
-      <h2>All notes</h2>
-      <ul class="bullets notes-list">
-        <li>Started a small <a href="https://learn.nvidia.com/courses/course-detail?course_id=course-v1:DLI+S-DS-03+V1">NVIDIA DLI course</a> on adversarial machine learning and model security, one of my biggest recent interests.</li>
+      <div class="filter-panel__top">
+        <h2>All notes</h2>
+        <p class="filter-status">1 note</p>
+      </div>
+      <ul class="notes-list">
+        <li>
+          <p class="project-kicker">April 2026</p>
+          <a href="https://learn.nvidia.com/courses/course-detail?course_id=course-v1:DLI+S-DS-03+V1" target="_blank"
+            rel="noreferrer">NVIDIA DLI course on adversarial machine learning and model security</a>
+          <p>Compact reference for robustness, model security, and evaluation under adversarial pressure.</p>
+        </li>
       </ul>
-      <p></p>
     </section>
 
     <footer class="footer">
       <small>© 2026 Lorenzo Marinelli</small>
     </footer>
   </div>
+  <script src="/assets/script.js" defer></script>
 </body>
+
 </html>
