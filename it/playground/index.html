@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="it" data-palette="triad">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Playground · Lorenzo Marinelli</title>
+  <meta name="description"
+    content="Playground interattivo di Lorenzo Marinelli — per ora disponibile nella versione inglese mentre gli esperimenti vengono completati." />
+  <link rel="stylesheet" href="/assets/style.css" />
+
+  <link rel="alternate" hreflang="en" href="/playground/" />
+  <link rel="alternate" hreflang="it" href="/it/playground/" />
+  <link rel="icon" href="/assets/favicon.ico" sizes="any">
+  <link rel="icon" type="image/png" href="/assets/favicon-32.png" sizes="32x32">
+  <link rel="icon" type="image/png" href="/assets/favicon-16.png" sizes="16x16">
+  <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
+</head>
+
+<body>
+  <div class="wrap">
+    <nav class="nav">
+      <a class="nav__brand" href="/it/" aria-label="Home">LM</a>
+
+      <div class="lang" aria-label="Lingua">
+        <a class="lang__btn" href="/playground/" aria-label="English" title="English">
+          <span class="flag" aria-hidden="true">🇬🇧</span>
+          <span class="sr-only" lang="en">English</span>
+        </a>
+        <a class="lang__btn is-active" href="/it/playground/" aria-label="Italiano" title="Italiano">
+          <span class="flag" aria-hidden="true">🇮🇹</span>
+          <span class="sr-only" lang="it">Italiano</span>
+        </a>
+      </div>
+
+      <button class="theme-toggle" type="button" data-theme-toggle aria-label="Cambia tema" title="Cambia tema">
+        <span data-theme-icon aria-hidden="true">◐</span>
+      </button>
+
+      <div class="nav__links">
+        <a href="/it/">Home</a>
+        <a href="/it/about/">Info</a>
+        <a href="/it/projects/">Progetti</a>
+        <a href="/it/notes/">Appunti</a>
+        <a href="/it/contact/">Contatti</a>
+        <a aria-current="page" href="/it/playground/">Playground</a>
+      </div>
+    </nav>
+
+    <header class="hero">
+      <p class="kicker">Spazio interattivo</p>
+      <h1>Playground</h1>
+      <p class="lead hero-line">
+        Sto completando prima la versione inglese del playground, così struttura e esperimenti possono stabilizzarsi
+        prima della traduzione italiana.
+      </p>
+      <div class="meta">
+        <span>Solo in inglese per ora</span>
+        <span class="sep">•</span>
+        <span>Aggiornato: Aprile 2026</span>
+      </div>
+      <div class="hero__cta">
+        <a class="btn" href="/playground/">Apri il playground in inglese</a>
+      </div>
+    </header>
+
+    <section class="grid">
+      <article class="card">
+        <h2>Perché rimanda all’inglese</h2>
+        <p>
+          Le demo stanno ancora cambiando: grafi, piccoli giochi visuali, computer vision e teoria musicale. Tradurle
+          ora significherebbe mantenere due versioni instabili invece di rifinire prima l’esperienza principale.
+        </p>
+      </article>
+
+      <article class="card">
+        <h2>Cosa aspettarsi</h2>
+        <p>
+          Quando il playground sarà più maturo, questa pagina riceverà una traduzione vera. Nel frattempo, i link agli
+          esperimenti puntano alla versione inglese.
+        </p>
+      </article>
+    </section>
+
+    <section class="card">
+      <div class="filter-panel__top">
+        <h2>Esperimenti disponibili</h2>
+        <p class="filter-status">Versione inglese</p>
+      </div>
+      <ul class="notes-list">
+        <li>
+          <p class="project-kicker">Grafi</p>
+          <strong><a href="/playground/graph-diffusion/">Graph Signal Diffusion</a></strong>
+          <p>
+            Una piccola simulazione su segnali che si propagano su una rete.
+          </p>
+        </li>
+        <li>
+          <p class="project-kicker">Rilevamento anomalie</p>
+          <strong><a href="/playground/anomaly-node/">Anomaly Node Game</a></strong>
+          <p>
+            Un gioco rapido per trovare il nodo che si comporta in modo diverso dal resto del grafo.
+          </p>
+        </li>
+        <li>
+          <p class="project-kicker">Computer vision</p>
+          <strong><a href="/playground/computer-vision/">Computer Vision Mini Lab</a></strong>
+          <p>
+            Piccoli esperimenti visivi su detection, saliency, errore di ricostruzione e maschere.
+          </p>
+        </li>
+        <li>
+          <p class="project-kicker">Musica</p>
+          <strong><a href="/playground/circle-of-fifths/">Circle of Fifths Network</a></strong>
+          <p>
+            Il circolo delle quinte letto come una rete di relazioni armoniche.
+          </p>
+        </li>
+      </ul>
+    </section>
+
+    <footer class="footer">
+      <small>© 2026 Lorenzo Marinelli</small>
+    </footer>
+  </div>
+
+  <script src="/assets/script.js" defer></script>
+</body>
+
+</html>

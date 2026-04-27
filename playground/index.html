@@ -1,0 +1,418 @@
+<!doctype html>
+<html lang="en" data-palette="triad">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Playground · Lorenzo Marinelli</title>
+  <meta name="description"
+    content="Interactive browser playground by Lorenzo Marinelli — graph thinking, data science, music theory, and browser-native experiments." />
+  <link rel="stylesheet" href="/assets/style.css" />
+
+  <link rel="alternate" hreflang="it" href="/it/playground/" />
+  <link rel="alternate" hreflang="en" href="/playground/" />
+  <link rel="icon" href="/assets/favicon.ico" sizes="any">
+  <link rel="icon" type="image/png" href="/assets/favicon-32.png" sizes="32x32">
+  <link rel="icon" type="image/png" href="/assets/favicon-16.png" sizes="16x16">
+  <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
+</head>
+
+<body class="playground-page">
+  <div class="wrap">
+    <nav class="nav">
+      <a class="nav__brand" href="/" aria-label="Home">LM</a>
+
+      <div class="lang" aria-label="Language">
+        <a class="lang__btn is-active" href="/playground/" aria-label="English" title="English">
+          <span class="flag" aria-hidden="true">🇬🇧</span>
+          <span class="sr-only" lang="en">English</span>
+        </a>
+        <a class="lang__btn" href="/it/playground/" aria-label="Italiano" title="Italiano">
+          <span class="flag" aria-hidden="true">🇮🇹</span>
+          <span class="sr-only" lang="it">Italiano</span>
+        </a>
+      </div>
+
+      <button class="theme-toggle" type="button" data-theme-toggle aria-label="Toggle theme" title="Toggle theme">
+        <span data-theme-icon aria-hidden="true">◐</span>
+      </button>
+
+      <div class="nav__links">
+        <a href="/">Home</a>
+        <a href="/about/">About</a>
+        <a href="/projects/">Projects</a>
+        <a href="/notes/">Notes</a>
+        <a href="/contact/">Contact</a>
+        <a aria-current="page" href="/playground/">Playground</a>
+      </div>
+    </nav>
+
+    <header class="hero playground-hero">
+      <p class="kicker">Interactive map</p>
+      <h1>Playground-WIP</h1>
+      <p class="lead hero-line">
+        A browser-native map of graph thinking, data science, anomaly detection, music theory,
+        and the small visual experiments that connect them.
+      </p>
+    </header>
+
+    <main class="playground-graph-window" aria-label="Interactive playground graph area">
+      <div class="playground-hint">
+        <span>Click a theme node</span>
+        <small>edges mean the topics are related</small>
+      </div>
+    </main>
+
+    <section class="card playground-minimal-note">
+      <p class="project-kicker">Live experiments</p>
+      <h2>Four sketches, one shared graph</h2>
+      <ul class="notes-list playground-live-list">
+        <li>
+          <strong><a href="/playground/graph-diffusion/">Graph Signal Diffusion</a></strong>
+          <p>Inject a signal into one node and see how local neighborhoods carry it.</p>
+        </li>
+        <li>
+          <strong><a href="/playground/anomaly-node/">Anomaly Node Game</a></strong>
+          <p>Watch a dynamic graph and identify the node that reacts differently.</p>
+        </li>
+        <li>
+          <strong><a href="/playground/computer-vision/">Computer Vision Mini Lab</a></strong>
+          <p>Small visual toys around detection, saliency, reconstruction error, masks, and image intuition.</p>
+        </li>
+        <li>
+          <strong><a href="/playground/circle-of-fifths/">Circle of Fifths Network</a></strong>
+          <p>Explore keys, relative minors, and harmonic neighbors as a graph.</p>
+        </li>
+      </ul>
+    </section>
+
+    <footer class="footer">
+      <small>© 2026 Lorenzo Marinelli</small>
+    </footer>
+  </div>
+
+  <aside class="playground-popup" data-playground-popup hidden aria-live="polite">
+    <button class="playground-popup__close" type="button" data-playground-close aria-label="Close popup">×</button>
+
+    <p class="project-kicker" data-playground-kicker>Theme node</p>
+    <h2 data-playground-title>Select a node</h2>
+    <p data-playground-text>
+      Click any theme node to see how it connects to the current experiments and project work.
+    </p>
+
+    <div class="playground-popup__relations">
+      <strong>Related nodes</strong>
+      <div data-playground-relations></div>
+    </div>
+
+    <a class="btn" href="/playground/graph-diffusion/" data-playground-link>Open experiment</a>
+  </aside>
+
+  <script src="/assets/script.js" defer></script>
+
+  <script>
+    window.addEventListener('load', () => {
+      const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+      document.querySelectorAll('.network-bg').forEach(canvas => canvas.remove());
+
+      const canvas = document.createElement('canvas');
+      canvas.className = 'network-bg playground-bg-graph';
+      canvas.setAttribute('aria-hidden', 'true');
+      document.body.prepend(canvas);
+
+      const ctx = canvas.getContext('2d');
+      const root = document.documentElement;
+
+      const popup = document.querySelector('[data-playground-popup]');
+      const closeButton = document.querySelector('[data-playground-close]');
+      const popupKicker = document.querySelector('[data-playground-kicker]');
+      const popupTitle = document.querySelector('[data-playground-title]');
+      const popupText = document.querySelector('[data-playground-text]');
+      const popupRelations = document.querySelector('[data-playground-relations]');
+      const popupLink = document.querySelector('[data-playground-link]');
+
+      const nodes = [
+        {
+          id: 'graph-diffusion',
+          label: 'GNNs',
+          x: 0.48,
+          y: 0.43,
+          kicker: 'Graph intuition',
+          title: 'Graph Signal Diffusion',
+          text: 'Inject a signal into one node and watch it spread through local neighborhoods. A compact visual intuition for graph neural networks, interactomes, and network medicine.',
+          href: '/playground/graph-diffusion/',
+          linkLabel: 'Open experiment',
+          kind: 'experiment'
+        },
+        {
+          id: 'bioinformatics',
+          label: 'Bioinformatics',
+          x: 0.22,
+          y: 0.52,
+          kicker: 'Biology + computation',
+          title: 'Protein Interaction Networks',
+          text: 'This node anchors the biology side of the map: genes, proteins, disease modules, enrichment, and the graph structure behind biological data.',
+          href: '/projects/thesis-gnn-protein-interactions/',
+          linkLabel: 'Read related project',
+          kind: 'theme'
+        },
+        {
+          id: 'anomaly-detection',
+          label: 'Anomaly',
+          x: 0.42,
+          y: 0.74,
+          kicker: 'Detection game',
+          title: 'Anomaly Node Game',
+          text: 'One node behaves differently. Try to find it by watching motion, connectivity, and signal response.',
+          href: '/playground/anomaly-node/',
+          linkLabel: 'Open experiment',
+          kind: 'experiment'
+        },
+        {
+          id: 'computer-vision',
+          label: 'Vision',
+          x: 0.70,
+          y: 0.66,
+          kicker: 'Visual systems',
+          title: 'Computer Vision Mini Lab',
+          text: 'Small visual toys around detection, saliency, reconstruction error, masks, and image intuition.',
+          href: '/playground/computer-vision/',
+          linkLabel: 'Open experiment',
+          kind: 'experiment'
+        },
+        {
+          id: 'circle-fifths',
+          label: 'Fifths',
+          x: 0.63,
+          y: 0.22,
+          kicker: 'Music theory',
+          title: 'Circle of Fifths Network',
+          text: 'Keys, fifths, relative minors, and harmonic neighborhoods shown as an interactive graph instead of a static diagram.',
+          href: '/playground/circle-of-fifths/',
+          linkLabel: 'Open experiment',
+          kind: 'experiment'
+        }
+      ];
+
+      const edges = [
+        ['graph-diffusion', 'bioinformatics'],
+        ['graph-diffusion', 'anomaly-detection'],
+        ['graph-diffusion', 'computer-vision'],
+        ['graph-diffusion', 'circle-fifths'],
+
+        ['bioinformatics', 'anomaly-detection'],
+        ['anomaly-detection', 'computer-vision']
+      ];
+
+      const byId = new Map(nodes.map(node => [node.id, node]));
+      let activeId = null;
+      let hoveredId = null;
+      let time = 0;
+
+      const cssVar = (name, fallback) =>
+        getComputedStyle(root).getPropertyValue(name).trim() || fallback;
+
+      const resize = () => {
+        const dpr = Math.min(window.devicePixelRatio || 1, 2);
+        canvas.width = Math.floor(window.innerWidth * dpr);
+        canvas.height = Math.floor(window.innerHeight * dpr);
+        canvas.style.width = `${window.innerWidth}px`;
+        canvas.style.height = `${window.innerHeight}px`;
+        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      };
+
+      const relatedIds = (id) => {
+        return edges
+          .filter(([a, b]) => a === id || b === id)
+          .map(([a, b]) => a === id ? b : a);
+      };
+
+      const pointFor = (node) => {
+        const padX = window.innerWidth < 520 ? 34 : 72;
+        const graphWidth = Math.max(1, window.innerWidth - padX * 2);
+        const graphHeight = Math.max(1, window.innerHeight * (window.innerWidth < 720 ? 0.72 : 0.74));
+        const spreadX = window.innerWidth < 720 ? 1.35 : 1.45;
+        const spreadY = window.innerWidth < 720 ? 1.10 : 1.08;
+        const centerY = window.innerHeight * (window.innerWidth < 720 ? 0.68 : 0.58);
+        const waveX = reduceMotion ? 0 : Math.sin(time * 0.0012 + node.x * 8) * 6;
+        const waveY = reduceMotion ? 0 : Math.cos(time * 0.0010 + node.y * 8) * 5;
+        const x = window.innerWidth / 2 + (node.x - 0.5) * graphWidth * spreadX;
+        const y = centerY + (node.y - 0.5) * graphHeight * spreadY;
+
+        return {
+          x: Math.min(window.innerWidth - padX, Math.max(padX, x)) + waveX,
+          y: Math.min(window.innerHeight - 34, Math.max(34, y)) + waveY
+        };
+      };
+
+      const openPopup = (id) => {
+        const node = byId.get(id);
+        if (!node) return;
+
+        activeId = id;
+        popup.hidden = false;
+
+        popupKicker.textContent = node.kicker;
+        popupTitle.textContent = node.title;
+        popupText.textContent = node.text;
+
+        popupRelations.innerHTML = '';
+        relatedIds(id).forEach(relatedId => {
+          const related = byId.get(relatedId);
+          if (!related) return;
+
+          const button = document.createElement('button');
+          button.type = 'button';
+          button.className = 'playground-relation-chip';
+          button.textContent = related.label;
+          button.addEventListener('click', () => openPopup(related.id));
+          popupRelations.appendChild(button);
+        });
+
+        popupLink.hidden = !node.href;
+        popupLink.href = node.href || '#';
+        popupLink.textContent = node.linkLabel || 'Open';
+
+        if (reduceMotion) draw(performance.now());
+      };
+
+      const closePopup = () => {
+        popup.hidden = true;
+        activeId = null;
+
+        if (reduceMotion) draw(performance.now());
+      };
+
+      const hitTest = (clientX, clientY) => {
+        let best = null;
+        let bestDistance = Infinity;
+
+        nodes.forEach(node => {
+          const p = pointFor(node);
+          const distance = Math.hypot(p.x - clientX, p.y - clientY);
+
+          if (distance < 34 && distance < bestDistance) {
+            best = node.id;
+            bestDistance = distance;
+          }
+        });
+
+        return best;
+      };
+
+      const draw = (now = 0) => {
+        time = now;
+
+        const accent = cssVar('--accent2', '#64f5e1');
+        const warm = cssVar('--accent', '#ffd025');
+        const hot = cssVar('--accent3', '#e74976');
+        const text = cssVar('--text', '#e9d3b3');
+
+        const activeRelated = new Set(activeId ? relatedIds(activeId) : []);
+        const hoveredRelated = new Set(hoveredId ? relatedIds(hoveredId) : []);
+
+        ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
+
+        edges.forEach(([aId, bId]) => {
+          const a = byId.get(aId);
+          const b = byId.get(bId);
+          const ap = pointFor(a);
+          const bp = pointFor(b);
+
+          const highlighted =
+            aId === activeId ||
+            bId === activeId ||
+            aId === hoveredId ||
+            bId === hoveredId;
+
+          ctx.globalAlpha = highlighted ? 0.78 : 0.20;
+          ctx.strokeStyle = highlighted ? warm : accent;
+          ctx.lineWidth = highlighted ? 1.7 : 1;
+
+          ctx.beginPath();
+          ctx.moveTo(ap.x, ap.y);
+          ctx.lineTo(bp.x, bp.y);
+          ctx.stroke();
+        });
+
+        nodes.forEach(node => {
+          const p = pointFor(node);
+
+          const isActive = node.id === activeId;
+          const isHovered = node.id === hoveredId;
+          const isRelated = activeRelated.has(node.id) || hoveredRelated.has(node.id);
+          const emphasized = isActive || isHovered || isRelated || (!activeId && !hoveredId);
+
+          const pulse = reduceMotion ? 1 : 1 + Math.sin(now * 0.003 + node.x * 10) * 0.07;
+          const radius = (isActive ? 10 : isHovered ? 9 : isRelated ? 7 : 5.5) * pulse;
+
+          ctx.globalAlpha = emphasized ? 0.95 : 0.36;
+          ctx.fillStyle = isActive ? hot : isRelated ? warm : accent;
+
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, radius, 0, Math.PI * 2);
+          ctx.fill();
+
+          if (node.kind === 'experiment') {
+            ctx.globalAlpha = emphasized ? 0.76 : 0.30;
+            ctx.strokeStyle = warm;
+            ctx.lineWidth = 1.2;
+            ctx.beginPath();
+            ctx.arc(p.x, p.y, radius + 5, 0, Math.PI * 2);
+            ctx.stroke();
+          }
+
+          ctx.globalAlpha = emphasized ? 0.96 : 0.50;
+          ctx.fillStyle = isActive ? hot : text;
+          ctx.font = `${isActive ? 700 : 500} 12px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif`;
+          ctx.textAlign = 'center';
+          ctx.textBaseline = 'top';
+          ctx.fillText(node.label, p.x, p.y + radius + 9);
+        });
+
+        ctx.globalAlpha = 1;
+        if (!reduceMotion) requestAnimationFrame(draw);
+      };
+
+      canvas.addEventListener('pointermove', event => {
+        hoveredId = hitTest(event.clientX, event.clientY);
+        canvas.classList.toggle('is-clickable', Boolean(hoveredId));
+
+        if (reduceMotion) draw(performance.now());
+      });
+
+      canvas.addEventListener('pointerleave', () => {
+        hoveredId = null;
+        canvas.classList.remove('is-clickable');
+
+        if (reduceMotion) draw(performance.now());
+      });
+
+      canvas.addEventListener('click', event => {
+        const id = hitTest(event.clientX, event.clientY);
+        if (id) openPopup(id);
+      });
+
+      closeButton.addEventListener('click', closePopup);
+
+      window.addEventListener('keydown', event => {
+        if (event.key === 'Escape') closePopup();
+      });
+
+      window.addEventListener('resize', () => {
+        resize();
+        if (reduceMotion) draw(performance.now());
+      });
+
+      resize();
+      if (reduceMotion) {
+        draw(0);
+      } else {
+        requestAnimationFrame(draw);
+      }
+    });
+  </script>
+</body>
+
+</html>

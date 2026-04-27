@@ -1,0 +1,407 @@
+<!doctype html>
+<html lang="en" data-palette="triad">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Graph Signal Diffusion · Playground · Lorenzo Marinelli</title>
+    <meta name="description"
+        content="Interactive graph signal diffusion toy by Lorenzo Marinelli — click a node and watch information spread across a graph." />
+    <link rel="stylesheet" href="/assets/style.css" />
+
+    <link rel="alternate" hreflang="en" href="/playground/graph-diffusion/" />
+    <link rel="icon" href="/assets/favicon.ico" sizes="any">
+    <link rel="icon" type="image/png" href="/assets/favicon-32.png" sizes="32x32">
+    <link rel="icon" type="image/png" href="/assets/favicon-16.png" sizes="16x16">
+    <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
+</head>
+
+<body>
+    <div class="wrap">
+        <nav class="nav">
+            <a class="nav__brand" href="/" aria-label="Home">LM</a>
+
+            <div class="lang" aria-label="Language">
+                <a class="lang__btn is-active" href="/playground/graph-diffusion/" aria-label="English" title="English">
+                    <span class="flag" aria-hidden="true">🇬🇧</span>
+                    <span class="sr-only" lang="en">English</span>
+                </a>
+                <a class="lang__btn" href="/it/playground/" aria-label="Italiano" title="Italiano">
+                    <span class="flag" aria-hidden="true">🇮🇹</span>
+                    <span class="sr-only" lang="it">Italiano</span>
+                </a>
+            </div>
+
+            <button class="theme-toggle" type="button" data-theme-toggle aria-label="Toggle theme" title="Toggle theme">
+                <span data-theme-icon aria-hidden="true">◐</span>
+            </button>
+
+            <div class="nav__links">
+                <a href="/">Home</a>
+                <a href="/about/">About</a>
+                <a href="/projects/">Projects</a>
+                <a href="/notes/">Notes</a>
+                <a href="/contact/">Contact</a>
+                <a aria-current="page" href="/playground/">Playground</a>
+            </div>
+        </nav>
+
+        <header class="hero">
+            <p class="kicker">Playground experiment</p>
+            <h1>Graph Signal Diffusion</h1>
+            <p class="lead hero-line">
+                Click a node to inject a signal. Nearby nodes receive a weaker version of it at each hop.
+                It is a small visual intuition for graph neighborhoods, message passing, and network effects.
+            </p>
+
+            <div class="meta">
+                <span>Graphs</span>
+                <span class="sep">•</span>
+                <span>Message passing intuition</span>
+                <span class="sep">•</span>
+                <span>Browser-native</span>
+            </div>
+
+            <div class="hero__cta">
+                <a class="btn btn--ghost" href="/playground/">← Back to Playground</a>
+            </div>
+        </header>
+
+        <main class="card diffusion-app" data-graph-diffusion>
+            <div class="diffusion-app__top">
+                <div>
+                    <p class="project-kicker">Interactive graph</p>
+                    <h2>Inject a signal</h2>
+                    <p>
+                        Click any node in the canvas. Increase the hop count to let the signal travel farther.
+                        Increase the decay to make the signal fade more slowly.
+                    </p>
+                </div>
+
+                <div class="diffusion-status" data-diffusion-status>
+                    Ready
+                </div>
+            </div>
+
+            <canvas class="diffusion-canvas" data-diffusion-canvas
+                aria-label="Interactive graph signal diffusion canvas">
+            </canvas>
+
+            <section class="diffusion-controls" aria-label="Diffusion controls">
+                <label class="range-control">
+                    <span>Hops <strong data-diffusion-hop-value>3</strong></span>
+                    <input type="range" min="1" max="6" value="3" step="1" data-diffusion-hops>
+                </label>
+
+                <label class="range-control">
+                    <span>Decay <strong data-diffusion-decay-value>0.58</strong></span>
+                    <input type="range" min="0.25" max="0.90" value="0.58" step="0.01" data-diffusion-decay>
+                </label>
+
+                <label class="range-control">
+                    <span>Density <strong data-diffusion-density-value>3</strong></span>
+                    <input type="range" min="2" max="5" value="3" step="1" data-diffusion-density>
+                </label>
+
+                <div class="diffusion-buttons">
+                    <button class="mini-btn" type="button" data-diffusion-random>New graph</button>
+                    <button class="mini-btn" type="button" data-diffusion-reset>Replay signal</button>
+                </div>
+            </section>
+        </main>
+
+        <section class="grid">
+            <article class="card">
+                <h2>What this represents</h2>
+                <p>
+                    This is not meant to be a full GNN implementation. It shows the core intuition:
+                    a node starts with information, then its local neighborhood receives progressively weaker traces of
+                    it.
+                </p>
+                <p>
+                    In a real graph neural network, each node repeatedly aggregates information from its neighbors and
+                    updates
+                    its representation. More hops means a wider receptive field, but also more smoothing.
+                </p>
+            </article>
+
+            <article class="card">
+                <h2>A shared graph language</h2>
+                <p>
+                    The same visual metaphor connects several interests: protein interaction networks, disease modules,
+                    graph neural networks, random walks, music harmony graphs, and even idea association.
+                </p>
+                <p>
+                    Keeping it small makes the interaction reusable: a graph can be a model, a map, a composition tool,
+                    or a way to make abstract relationships easier to inspect.
+                </p>
+            </article>
+        </section>
+
+        <footer class="footer">
+            <small>© 2026 Lorenzo Marinelli</small>
+        </footer>
+    </div>
+
+    <script src="/assets/script.js" defer></script>
+
+    <script>
+        window.addEventListener('DOMContentLoaded', () => {
+            const root = document.querySelector('[data-graph-diffusion]');
+            if (!root) return;
+
+            const canvas = root.querySelector('[data-diffusion-canvas]');
+            const ctx = canvas.getContext('2d');
+
+            const hopsInput = root.querySelector('[data-diffusion-hops]');
+            const decayInput = root.querySelector('[data-diffusion-decay]');
+            const densityInput = root.querySelector('[data-diffusion-density]');
+
+            const hopValue = root.querySelector('[data-diffusion-hop-value]');
+            const decayValue = root.querySelector('[data-diffusion-decay-value]');
+            const densityValue = root.querySelector('[data-diffusion-density-value]');
+            const status = root.querySelector('[data-diffusion-status]');
+
+            const randomButton = root.querySelector('[data-diffusion-random]');
+            const resetButton = root.querySelector('[data-diffusion-reset]');
+
+            const graph = {
+                nodes: [],
+                edges: [],
+                active: 0,
+                hovered: null
+            };
+
+            const cssVar = (name, fallback) =>
+                getComputedStyle(document.documentElement).getPropertyValue(name).trim() || fallback;
+
+            const settings = () => ({
+                hops: Number(hopsInput.value),
+                decay: Number(decayInput.value),
+                density: Number(densityInput.value)
+            });
+
+            const syncLabels = () => {
+                const { hops, decay, density } = settings();
+                hopValue.textContent = String(hops);
+                decayValue.textContent = decay.toFixed(2);
+                densityValue.textContent = String(density);
+            };
+
+            const resizeCanvas = () => {
+                const rect = canvas.getBoundingClientRect();
+                const dpr = Math.min(window.devicePixelRatio || 1, 2);
+
+                canvas.width = Math.floor(rect.width * dpr);
+                canvas.height = Math.floor(rect.height * dpr);
+                ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+            };
+
+            const buildGraph = () => {
+                resizeCanvas();
+
+                const rect = canvas.getBoundingClientRect();
+                const count = rect.width < 520 ? 22 : 32;
+                const centerX = rect.width / 2;
+                const centerY = rect.height / 2;
+                const radius = Math.min(rect.width, rect.height) * 0.36;
+
+                graph.nodes = Array.from({ length: count }, (_, index) => {
+                    const angle = (index / count) * Math.PI * 2;
+                    const ringJitter = 0.72 + Math.random() * 0.45;
+
+                    return {
+                        x: centerX + Math.cos(angle) * radius * ringJitter + (Math.random() - 0.5) * 40,
+                        y: centerY + Math.sin(angle) * radius * ringJitter + (Math.random() - 0.5) * 40,
+                        value: 0,
+                        target: 0,
+                        pulse: Math.random() * Math.PI * 2
+                    };
+                });
+
+                graph.edges = [];
+
+                graph.nodes.forEach((node, index) => {
+                    const nearest = graph.nodes
+                        .map((other, otherIndex) => ({
+                            index: otherIndex,
+                            distance: index === otherIndex ? Infinity : Math.hypot(node.x - other.x, node.y - other.y)
+                        }))
+                        .sort((a, b) => a.distance - b.distance)
+                        .slice(0, settings().density);
+
+                    nearest.forEach(item => {
+                        const a = Math.min(index, item.index);
+                        const b = Math.max(index, item.index);
+
+                        const exists = graph.edges.some(edge => edge.a === a && edge.b === b);
+                        if (!exists) graph.edges.push({ a, b });
+                    });
+                });
+
+                graph.active = Math.floor(Math.random() * graph.nodes.length);
+                injectSignal(graph.active);
+            };
+
+            const adjacency = () => {
+                const neighbors = Array.from({ length: graph.nodes.length }, () => []);
+
+                graph.edges.forEach(edge => {
+                    neighbors[edge.a].push(edge.b);
+                    neighbors[edge.b].push(edge.a);
+                });
+
+                return neighbors;
+            };
+
+            const injectSignal = (origin) => {
+                const { hops, decay } = settings();
+                const neighbors = adjacency();
+
+                const seen = new Map([[origin, 0]]);
+                const queue = [origin];
+
+                while (queue.length) {
+                    const current = queue.shift();
+                    const depth = seen.get(current);
+
+                    if (depth >= hops) continue;
+
+                    neighbors[current].forEach(next => {
+                        if (seen.has(next)) return;
+
+                        seen.set(next, depth + 1);
+                        queue.push(next);
+                    });
+                }
+
+                graph.active = origin;
+
+                graph.nodes.forEach((node, index) => {
+                    const depth = seen.get(index);
+                    node.target = depth === undefined ? 0 : Math.pow(decay, depth);
+                });
+
+                status.textContent = `${seen.size} of ${graph.nodes.length} nodes reached within ${hops} hops`;
+            };
+
+            const hitTest = (event) => {
+                const rect = canvas.getBoundingClientRect();
+                const x = event.clientX - rect.left;
+                const y = event.clientY - rect.top;
+
+                let best = null;
+                let bestDistance = Infinity;
+
+                graph.nodes.forEach((node, index) => {
+                    const distance = Math.hypot(node.x - x, node.y - y);
+
+                    if (distance < 18 && distance < bestDistance) {
+                        best = index;
+                        bestDistance = distance;
+                    }
+                });
+
+                return best;
+            };
+
+            const draw = () => {
+                const rect = canvas.getBoundingClientRect();
+
+                const accent = cssVar('--accent2', '#64f5e1');
+                const warm = cssVar('--accent', '#ffd025');
+                const hot = cssVar('--accent3', '#e74976');
+                const muted = cssVar('--muted', '#dadbe0');
+
+                ctx.clearRect(0, 0, rect.width, rect.height);
+
+                graph.nodes.forEach(node => {
+                    node.value += (node.target - node.value) * 0.10;
+                    node.pulse += 0.028;
+                });
+
+                graph.edges.forEach(edge => {
+                    const a = graph.nodes[edge.a];
+                    const b = graph.nodes[edge.b];
+                    const signal = Math.max(a.value, b.value);
+
+                    ctx.globalAlpha = 0.16 + signal * 0.62;
+                    ctx.strokeStyle = signal > 0.12 ? warm : accent;
+                    ctx.lineWidth = 1 + signal * 3;
+
+                    ctx.beginPath();
+                    ctx.moveTo(a.x, a.y);
+                    ctx.lineTo(b.x, b.y);
+                    ctx.stroke();
+                });
+
+                graph.nodes.forEach((node, index) => {
+                    const isActive = index === graph.active;
+                    const isHovered = index === graph.hovered;
+                    const pulse = 1 + Math.sin(node.pulse) * 0.08;
+                    const radius = 5 + node.value * 14 + (isActive ? 4 : 0) + (isHovered ? 3 : 0);
+
+                    ctx.globalAlpha = 0.34 + node.value * 0.60 + (isActive ? 0.20 : 0);
+                    ctx.fillStyle = isActive ? hot : node.value > 0.08 ? warm : accent;
+
+                    ctx.beginPath();
+                    ctx.arc(node.x, node.y, radius * pulse, 0, Math.PI * 2);
+                    ctx.fill();
+
+                    if (isActive || node.value > 0.45) {
+                        ctx.globalAlpha = 0.88;
+                        ctx.fillStyle = muted;
+                        ctx.font = '11px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif';
+                        ctx.fillText(isActive ? 'seed' : node.value.toFixed(2), node.x + 10, node.y - 10);
+                    }
+                });
+
+                ctx.globalAlpha = 1;
+                requestAnimationFrame(draw);
+            };
+
+            canvas.addEventListener('pointermove', event => {
+                graph.hovered = hitTest(event);
+                canvas.classList.toggle('is-clickable', graph.hovered !== null);
+            });
+
+            canvas.addEventListener('pointerleave', () => {
+                graph.hovered = null;
+                canvas.classList.remove('is-clickable');
+            });
+
+            canvas.addEventListener('click', event => {
+                const hit = hitTest(event);
+                if (hit === null) return;
+
+                injectSignal(hit);
+            });
+
+            hopsInput.addEventListener('input', () => {
+                syncLabels();
+                injectSignal(graph.active);
+            });
+
+            decayInput.addEventListener('input', () => {
+                syncLabels();
+                injectSignal(graph.active);
+            });
+
+            densityInput.addEventListener('input', () => {
+                syncLabels();
+                buildGraph();
+            });
+
+            randomButton.addEventListener('click', buildGraph);
+            resetButton.addEventListener('click', () => injectSignal(graph.active));
+
+            window.addEventListener('resize', buildGraph);
+
+            syncLabels();
+            buildGraph();
+            draw();
+        });
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,679 @@
+<!doctype html>
+<html lang="en" data-palette="triad">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Computer Vision Mini Lab · Playground · Lorenzo Marinelli</title>
+    <meta name="description"
+        content="Interactive computer vision toy by Lorenzo Marinelli — small visual toys around detection, saliency, reconstruction error, masks, and image intuition." />
+    <link rel="stylesheet" href="/assets/style.css" />
+
+    <link rel="alternate" hreflang="en" href="/playground/computer-vision/" />
+    <link rel="icon" href="/assets/favicon.ico" sizes="any">
+    <link rel="icon" type="image/png" href="/assets/favicon-32.png" sizes="32x32">
+    <link rel="icon" type="image/png" href="/assets/favicon-16.png" sizes="16x16">
+    <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
+</head>
+
+<body class="vision-page">
+    <div class="wrap">
+        <nav class="nav">
+            <a class="nav__brand" href="/" aria-label="Home">LM</a>
+
+            <div class="lang" aria-label="Language">
+                <a class="lang__btn is-active" href="/playground/computer-vision/" aria-label="English"
+                    title="English">
+                    <span class="flag" aria-hidden="true">🇬🇧</span>
+                    <span class="sr-only" lang="en">English</span>
+                </a>
+                <a class="lang__btn" href="/it/playground/" aria-label="Italiano" title="Italiano">
+                    <span class="flag" aria-hidden="true">🇮🇹</span>
+                    <span class="sr-only" lang="it">Italiano</span>
+                </a>
+            </div>
+
+            <button class="theme-toggle" type="button" data-theme-toggle aria-label="Toggle theme" title="Toggle theme">
+                <span data-theme-icon aria-hidden="true">◐</span>
+            </button>
+
+            <div class="nav__links">
+                <a href="/">Home</a>
+                <a href="/about/">About</a>
+                <a href="/projects/">Projects</a>
+                <a href="/notes/">Notes</a>
+                <a href="/contact/">Contact</a>
+                <a aria-current="page" href="/playground/">Playground</a>
+            </div>
+        </nav>
+
+        <header class="hero">
+            <p class="kicker">Playground experiment</p>
+            <h1>Computer Vision Mini Lab</h1>
+            <p class="lead hero-line">
+                Small visual toys around detection, saliency, reconstruction error, masks, and image intuition.
+            </p>
+
+            <div class="meta">
+                <span>Computer vision</span>
+                <span class="sep">•</span>
+                <span>Visual diagnostics</span>
+                <span class="sep">•</span>
+                <span>Browser-native</span>
+            </div>
+
+            <div class="hero__cta">
+                <a class="btn btn--ghost" href="/playground/">← Back to Playground</a>
+            </div>
+        </header>
+
+        <main class="card vision-app" data-vision-app>
+            <div class="vision-app__top">
+                <div>
+                    <p class="project-kicker">Synthetic image probe</p>
+                    <h2>One scene, five model views</h2>
+                    <p>
+                        A neutral generated image is reused across five views, so the model overlay changes while the
+                        underlying scene stays visually stable.
+                    </p>
+                </div>
+
+                <div class="vision-status" data-vision-status>
+                    Raw image
+                </div>
+            </div>
+
+            <div class="vision-modebar" aria-label="Vision view mode">
+                <button class="mini-btn is-active" type="button" data-vision-mode="raw">Raw</button>
+                <button class="mini-btn" type="button" data-vision-mode="detection">Detection</button>
+                <button class="mini-btn" type="button" data-vision-mode="saliency">Saliency</button>
+                <button class="mini-btn" type="button" data-vision-mode="error">Error</button>
+                <button class="mini-btn" type="button" data-vision-mode="mask">Mask</button>
+            </div>
+
+            <div class="vision-layout">
+                <section class="vision-stage" aria-label="Interactive computer vision canvas">
+                    <canvas class="vision-canvas" data-vision-canvas>
+                        Interactive computer vision canvas.
+                    </canvas>
+                </section>
+
+                <aside class="vision-panel">
+                    <p class="project-kicker">Probe readout</p>
+                    <h2 data-vision-title>Scene overview</h2>
+
+                    <div class="vision-detail-list">
+                        <div>
+                            <span>Detector focus</span>
+                            <strong data-vision-detections>0 regions</strong>
+                        </div>
+                        <div>
+                            <span>Mask coverage</span>
+                            <strong data-vision-mask>0%</strong>
+                        </div>
+                        <div>
+                            <span>Reconstruction error</span>
+                            <strong data-vision-error>Low</strong>
+                        </div>
+                        <div>
+                            <span>Selected pixel</span>
+                            <strong data-vision-probe>Background</strong>
+                        </div>
+                    </div>
+
+                    <label class="range-control">
+                        <span>Threshold <strong data-vision-threshold-value>0.58</strong></span>
+                        <input type="range" min="0.25" max="0.90" value="0.58" step="0.01" data-vision-threshold>
+                    </label>
+
+                    <label class="range-control">
+                        <span>Image noise <strong data-vision-noise-value>0.16</strong></span>
+                        <input type="range" min="0.00" max="0.45" value="0.16" step="0.01" data-vision-noise>
+                    </label>
+
+                    <div class="vision-buttons">
+                        <button class="mini-btn" type="button" data-vision-new>New scene</button>
+                        <button class="mini-btn" type="button" data-vision-reveal>Reveal target</button>
+                    </div>
+
+                    <div class="vision-legend" aria-label="Vision overlay legend">
+                        <span><i class="vision-swatch vision-swatch--accent"></i> model overlay</span>
+                        <span><i class="vision-swatch vision-swatch--hot"></i> error / reveal</span>
+                        <span><i class="vision-swatch vision-swatch--warm"></i> probe</span>
+                    </div>
+                </aside>
+            </div>
+        </main>
+
+        <section class="grid">
+            <article class="card">
+                <h2>What to notice</h2>
+                <p>
+                    Detection compresses an image into boxes and confidence scores. Saliency spreads attention over
+                    pixels. Reconstruction error shows where a simple prior fails to explain what is visible.
+                </p>
+            </article>
+
+            <article class="card">
+                <h2>From pixels to pipeline</h2>
+                <p>
+                    The scene is synthetic, but the habits are real: compare views, move thresholds, inspect false
+                    certainty, and keep the model output tied to the image that produced it.
+                </p>
+            </article>
+        </section>
+
+        <footer class="footer">
+            <small>© 2026 Lorenzo Marinelli</small>
+        </footer>
+    </div>
+
+    <script src="/assets/script.js" defer></script>
+
+    <script>
+        window.addEventListener('DOMContentLoaded', () => {
+            const root = document.querySelector('[data-vision-app]');
+            if (!root) return;
+
+            const canvas = root.querySelector('[data-vision-canvas]');
+            const ctx = canvas.getContext('2d');
+
+            const status = root.querySelector('[data-vision-status]');
+            const title = root.querySelector('[data-vision-title]');
+            const detections = root.querySelector('[data-vision-detections]');
+            const mask = root.querySelector('[data-vision-mask]');
+            const error = root.querySelector('[data-vision-error]');
+            const probe = root.querySelector('[data-vision-probe]');
+            const thresholdInput = root.querySelector('[data-vision-threshold]');
+            const noiseInput = root.querySelector('[data-vision-noise]');
+            const thresholdValue = root.querySelector('[data-vision-threshold-value]');
+            const noiseValue = root.querySelector('[data-vision-noise-value]');
+            const newButton = root.querySelector('[data-vision-new]');
+            const revealButton = root.querySelector('[data-vision-reveal]');
+            const modeButtons = Array.from(root.querySelectorAll('[data-vision-mode]'));
+
+            const state = {
+                mode: 'raw',
+                threshold: Number(thresholdInput.value),
+                noise: Number(noiseInput.value),
+                reveal: false,
+                selected: null
+            };
+
+            let scene = null;
+
+            const cssVar = (name, fallback) =>
+                getComputedStyle(document.documentElement).getPropertyValue(name).trim() || fallback;
+
+            const alphaColor = (color, alpha) => {
+                if (color.startsWith('#') && color.length === 7) {
+                    const r = parseInt(color.slice(1, 3), 16);
+                    const g = parseInt(color.slice(3, 5), 16);
+                    const b = parseInt(color.slice(5, 7), 16);
+                    return `rgba(${r}, ${g}, ${b}, ${alpha})`;
+                }
+
+                if (color.startsWith('rgb(')) {
+                    return color.replace('rgb(', 'rgba(').replace(')', `, ${alpha})`);
+                }
+
+                if (color.startsWith('rgba(')) {
+                    return color.replace(/,\s*[\d.]+\)$/, `, ${alpha})`);
+                }
+
+                return color;
+            };
+
+            const random = (min, max) => min + Math.random() * (max - min);
+
+            const resizeCanvas = () => {
+                const rect = canvas.getBoundingClientRect();
+                const dpr = Math.min(window.devicePixelRatio || 1, 2);
+
+                canvas.width = Math.floor(rect.width * dpr);
+                canvas.height = Math.floor(rect.height * dpr);
+                ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+            };
+
+            const buildScene = () => {
+                resizeCanvas();
+
+                const rect = canvas.getBoundingClientRect();
+                const width = rect.width || 760;
+                const height = rect.height || 500;
+                const objectCount = width < 560 ? 6 : 8;
+                const names = ['ridge', 'grain', 'edge', 'patch', 'mark', 'cell', 'speck', 'blob'];
+
+                scene = {
+                    width,
+                    height,
+                    tiles: [],
+                    objects: []
+                };
+
+                const cols = Math.ceil(width / 18);
+                const rows = Math.ceil(height / 18);
+
+                for (let row = 0; row < rows; row += 1) {
+                    for (let col = 0; col < cols; col += 1) {
+                        scene.tiles.push({
+                            x: col * 18,
+                            y: row * 18,
+                            w: 19,
+                            h: 19,
+                            value: random(-1, 1),
+                            grain: random(-1, 1)
+                        });
+                    }
+                }
+
+                for (let index = 0; index < objectCount; index += 1) {
+                    const rx = random(width * 0.045, width * 0.085);
+                    const ry = random(height * 0.045, height * 0.095);
+
+                    scene.objects.push({
+                        x: random(rx + 20, width - rx - 20),
+                        y: random(ry + 20, height - ry - 20),
+                        rx,
+                        ry,
+                        angle: random(-0.65, 0.65),
+                        base: random(0.36, 0.78),
+                        score: random(0.18, 0.68),
+                        error: random(0.08, 0.38),
+                        saliency: random(0.16, 0.58),
+                        name: names[index % names.length],
+                        anomaly: false
+                    });
+                }
+
+                const anomaly = scene.objects[Math.floor(Math.random() * scene.objects.length)];
+                anomaly.name = 'unusual seam';
+                anomaly.score = random(0.82, 0.97);
+                anomaly.error = random(0.74, 0.96);
+                anomaly.saliency = random(0.76, 0.98);
+                anomaly.base = random(0.78, 0.92);
+                anomaly.anomaly = true;
+
+                state.selected = null;
+                syncPanel();
+                draw();
+            };
+
+            const objectAt = (x, y) => {
+                let best = null;
+                let bestDistance = Infinity;
+
+                scene.objects.forEach(item => {
+                    const cos = Math.cos(-item.angle);
+                    const sin = Math.sin(-item.angle);
+                    const dx = x - item.x;
+                    const dy = y - item.y;
+                    const localX = dx * cos - dy * sin;
+                    const localY = dx * sin + dy * cos;
+                    const distance = (localX / item.rx) ** 2 + (localY / item.ry) ** 2;
+
+                    if (distance <= 1.05 && distance < bestDistance) {
+                        best = item;
+                        bestDistance = distance;
+                    }
+                });
+
+                return best;
+            };
+
+            const highConfidenceObjects = () =>
+                scene.objects.filter(item => item.score >= state.threshold);
+
+            const maskCoverage = () => {
+                const visibleArea = highConfidenceObjects()
+                    .reduce((sum, item) => sum + Math.PI * item.rx * item.ry, 0);
+                return Math.min(99, Math.round((visibleArea / (scene.width * scene.height)) * 100));
+            };
+
+            const modeLabel = () => ({
+                raw: 'Raw image',
+                detection: 'Detected regions',
+                saliency: 'Saliency map',
+                error: 'Reconstruction error',
+                mask: 'Segmentation mask'
+            })[state.mode];
+
+            const scoreLabel = (value) => {
+                if (value >= 0.78) return 'High';
+                if (value >= 0.48) return 'Medium';
+                return 'Low';
+            };
+
+            const selectedLabel = () => {
+                if (!state.selected) return 'Background';
+                if (!state.selected.object) return 'Background';
+                return state.reveal || !state.selected.object.anomaly
+                    ? `${state.selected.object.name} · ${state.selected.object.score.toFixed(2)}`
+                    : `candidate · ${state.selected.object.score.toFixed(2)}`;
+            };
+
+            const syncPanel = () => {
+                if (!scene) return;
+
+                const visible = highConfidenceObjects().length;
+                const anomaly = scene.objects.find(item => item.anomaly);
+
+                status.textContent = `${modeLabel()} · ${visible} regions`;
+                title.textContent = state.selected?.object ? 'Selected region' : 'Scene overview';
+                detections.textContent = `${visible} regions`;
+                mask.textContent = `${maskCoverage()}%`;
+                error.textContent = scoreLabel(anomaly.error);
+                probe.textContent = selectedLabel();
+                thresholdValue.textContent = state.threshold.toFixed(2);
+                noiseValue.textContent = state.noise.toFixed(2);
+
+                modeButtons.forEach(button => {
+                    const active = button.dataset.visionMode === state.mode;
+                    button.classList.toggle('is-active', active);
+                    button.setAttribute('aria-pressed', String(active));
+                });
+
+                revealButton.textContent = state.reveal ? 'Hide target' : 'Reveal target';
+            };
+
+            const drawEllipse = (item, fill, stroke, lineWidth = 1.4, alpha = 1) => {
+                ctx.save();
+                ctx.translate(item.x, item.y);
+                ctx.rotate(item.angle);
+                ctx.globalAlpha *= alpha;
+                if (fill) ctx.fillStyle = fill;
+                if (stroke) ctx.strokeStyle = stroke;
+                ctx.lineWidth = lineWidth;
+                ctx.beginPath();
+                ctx.ellipse(0, 0, item.rx, item.ry, 0, 0, Math.PI * 2);
+                if (fill) ctx.fill();
+                if (stroke) ctx.stroke();
+                ctx.restore();
+            };
+
+            const drawBlob = (item, color, strength) => {
+                const gradient = ctx.createRadialGradient(item.x, item.y, 4, item.x, item.y, item.rx * 2.7);
+                gradient.addColorStop(0, alphaColor(color, Math.min(0.72, 0.58 * strength)));
+                gradient.addColorStop(0.42, alphaColor(color, Math.min(0.36, 0.27 * strength)));
+                gradient.addColorStop(1, alphaColor(color, 0));
+
+                ctx.fillStyle = gradient;
+                ctx.beginPath();
+                ctx.arc(item.x, item.y, item.rx * 2.8, 0, Math.PI * 2);
+                ctx.fill();
+            };
+
+            const drawBaseImage = (dim = 1, objectAlpha = 1) => {
+                const text = cssVar('--text', '#e9d3b3');
+
+                const background = ctx.createLinearGradient(0, 0, scene.width, scene.height);
+                background.addColorStop(0, 'rgba(28, 40, 36, 0.96)');
+                background.addColorStop(0.55, 'rgba(25, 24, 20, 0.96)');
+                background.addColorStop(1, 'rgba(50, 43, 24, 0.96)');
+                ctx.fillStyle = background;
+                ctx.fillRect(0, 0, scene.width, scene.height);
+
+                scene.tiles.forEach(tile => {
+                    const shade = Math.round(38 + tile.value * 18 + state.noise * tile.grain * 25);
+                    ctx.fillStyle = `rgba(${shade}, ${Math.round(shade * 1.08)}, ${Math.round(shade * 0.92)}, ${0.14 * dim})`;
+                    ctx.fillRect(tile.x, tile.y, tile.w, tile.h);
+                });
+
+                scene.objects.forEach(item => {
+                    const shade = Math.round(78 + item.base * 92);
+                    const fill = `rgba(${shade}, ${Math.min(255, shade + 6)}, ${Math.min(255, shade + 10)}, ${0.30 * dim * objectAlpha})`;
+                    const strokeAlpha = 0.24 * dim * objectAlpha;
+
+                    drawEllipse(
+                        item,
+                        fill,
+                        alphaColor(text, strokeAlpha),
+                        1,
+                        1
+                    );
+                });
+            };
+
+            const drawDetection = () => {
+                const accent = cssVar('--accent2', 'rgb(100, 245, 225)');
+                const hot = cssVar('--accent3', 'rgb(231, 73, 118)');
+                const text = cssVar('--text', '#e9d3b3');
+
+                highConfidenceObjects().forEach(item => {
+                    const color = state.reveal && item.anomaly ? hot : accent;
+                    const x = item.x - item.rx - 8;
+                    const y = item.y - item.ry - 8;
+                    const w = item.rx * 2 + 16;
+                    const h = item.ry * 2 + 16;
+                    const label = state.reveal && item.anomaly ? 'target' : 'region';
+                    const labelText = `${label} ${item.score.toFixed(2)}`;
+
+                    drawEllipse(item, alphaColor(color, 0.11), color, state.reveal && item.anomaly ? 2.6 : 1.7, 1);
+
+                    ctx.strokeStyle = color;
+                    ctx.lineWidth = state.reveal && item.anomaly ? 2.6 : 1.7;
+                    ctx.strokeRect(x, y, w, h);
+
+                    ctx.fillStyle = 'rgba(0, 0, 0, .55)';
+                    ctx.font = '12px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif';
+                    ctx.fillRect(x, Math.max(0, y - 22), Math.max(92, ctx.measureText(labelText).width + 12), 22);
+                    ctx.fillStyle = text;
+                    ctx.fillText(labelText, x + 6, Math.max(14, y - 7));
+                });
+            };
+
+            const drawSaliency = () => {
+                const accent = cssVar('--accent2', 'rgb(100, 245, 225)');
+                const attentionCutoff = Math.max(0.34, state.threshold - 0.12);
+
+                ctx.fillStyle = 'rgba(2, 8, 8, .18)';
+                ctx.fillRect(0, 0, scene.width, scene.height);
+
+                ctx.save();
+                ctx.globalCompositeOperation = 'screen';
+                scene.objects.forEach(item => {
+                    drawBlob(item, accent, item.saliency * 1.18);
+                });
+                ctx.restore();
+
+                scene.objects
+                    .filter(item => item.saliency >= attentionCutoff)
+                    .forEach(item => {
+                        drawEllipse(item, null, accent, 1.8, 0.95);
+                    });
+            };
+
+            const drawError = () => {
+                const hot = cssVar('--accent3', 'rgb(231, 73, 118)');
+                const text = cssVar('--text', '#e9d3b3');
+                const errorCutoff = Math.max(0.26, state.threshold * 0.72);
+
+                ctx.fillStyle = 'rgba(18, 2, 6, .22)';
+                ctx.fillRect(0, 0, scene.width, scene.height);
+
+                ctx.save();
+                ctx.globalCompositeOperation = 'screen';
+                scene.objects.forEach(item => {
+                    drawBlob(item, hot, item.error * 1.28);
+                });
+                ctx.restore();
+
+                scene.objects.forEach(item => {
+                    const opacity = Math.min(0.84, Math.max(0.18, item.error));
+
+                    ctx.save();
+                    ctx.setLineDash([6, 5]);
+                    drawEllipse(
+                        { ...item, x: item.x + 9, y: item.y - 6 },
+                        null,
+                        alphaColor(text, 0.34 * opacity),
+                        1.25,
+                        1
+                    );
+                    ctx.restore();
+
+                    if (item.error >= errorCutoff) {
+                        drawEllipse(item, null, hot, item.anomaly ? 2.8 : 1.7, 0.95);
+                    }
+                });
+            };
+
+            const drawMask = () => {
+                const accent = cssVar('--accent2', 'rgb(100, 245, 225)');
+                const text = cssVar('--text', '#e9d3b3');
+
+                ctx.fillStyle = 'rgba(0, 0, 0, .34)';
+                ctx.fillRect(0, 0, scene.width, scene.height);
+
+                scene.objects
+                    .filter(item => item.score < state.threshold)
+                    .forEach(item => {
+                        drawEllipse(item, alphaColor(text, 0.025), alphaColor(text, 0.08), 1, 1);
+                    });
+
+                highConfidenceObjects().forEach(item => {
+                    drawEllipse(item, alphaColor(accent, 0.52), accent, 2.1, 1);
+                });
+            };
+
+            const drawTargetReveal = () => {
+                const anomaly = scene.objects.find(item => item.anomaly);
+                const hot = cssVar('--accent3', 'rgb(231, 73, 118)');
+                const text = cssVar('--text', '#e9d3b3');
+                const x = anomaly.x - anomaly.rx - 8;
+                const y = anomaly.y - anomaly.ry - 8;
+
+                drawEllipse(anomaly, alphaColor(hot, 0.18), hot, 3, 1);
+
+                ctx.fillStyle = 'rgba(0, 0, 0, .62)';
+                ctx.font = '12px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif';
+                ctx.fillRect(x, Math.max(0, y - 22), 62, 22);
+                ctx.fillStyle = text;
+                ctx.fillText('target', x + 6, Math.max(14, y - 7));
+            };
+
+            const drawSelection = () => {
+                if (!state.selected) return;
+
+                const warm = cssVar('--accent', 'rgb(255, 208, 37)');
+                const x = state.selected.x;
+                const y = state.selected.y;
+
+                ctx.strokeStyle = warm;
+                ctx.lineWidth = 1.4;
+                ctx.beginPath();
+                ctx.arc(x, y, 10, 0, Math.PI * 2);
+                ctx.stroke();
+                ctx.beginPath();
+                ctx.moveTo(x - 17, y);
+                ctx.lineTo(x - 7, y);
+                ctx.moveTo(x + 7, y);
+                ctx.lineTo(x + 17, y);
+                ctx.moveTo(x, y - 17);
+                ctx.lineTo(x, y - 7);
+                ctx.moveTo(x, y + 7);
+                ctx.lineTo(x, y + 17);
+                ctx.stroke();
+            };
+
+            const draw = () => {
+                if (!scene) return;
+
+                ctx.clearRect(0, 0, scene.width, scene.height);
+
+                if (state.mode === 'raw' || state.mode === 'detection') {
+                    drawBaseImage(1);
+                } else {
+                    drawBaseImage(0.58);
+                }
+
+                if (state.mode === 'detection') {
+                    drawDetection();
+                }
+
+                if (state.mode === 'saliency') {
+                    drawSaliency();
+                }
+
+                if (state.mode === 'error') {
+                    drawError();
+                }
+
+                if (state.mode === 'mask') {
+                    drawMask();
+                }
+
+                if (state.reveal && state.mode !== 'detection') {
+                    drawTargetReveal();
+                }
+
+                drawSelection();
+            };
+
+            const canvasPoint = (event) => {
+                const rect = canvas.getBoundingClientRect();
+                return {
+                    x: event.clientX - rect.left,
+                    y: event.clientY - rect.top
+                };
+            };
+
+            modeButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    state.mode = button.dataset.visionMode;
+                    syncPanel();
+                    draw();
+                });
+            });
+
+            thresholdInput.addEventListener('input', () => {
+                state.threshold = Number(thresholdInput.value);
+                syncPanel();
+                draw();
+            });
+
+            noiseInput.addEventListener('input', () => {
+                state.noise = Number(noiseInput.value);
+                syncPanel();
+                draw();
+            });
+
+            newButton.addEventListener('click', buildScene);
+
+            revealButton.addEventListener('click', () => {
+                state.reveal = !state.reveal;
+                syncPanel();
+                draw();
+            });
+
+            canvas.addEventListener('pointermove', event => {
+                const point = canvasPoint(event);
+                canvas.classList.toggle('is-clickable', Boolean(objectAt(point.x, point.y)));
+            });
+
+            canvas.addEventListener('pointerleave', () => {
+                canvas.classList.remove('is-clickable');
+            });
+
+            canvas.addEventListener('click', event => {
+                const point = canvasPoint(event);
+                state.selected = {
+                    x: point.x,
+                    y: point.y,
+                    object: objectAt(point.x, point.y)
+                };
+
+                syncPanel();
+                draw();
+            });
+
+            window.addEventListener('resize', () => {
+                buildScene();
+            });
+
+            buildScene();
+        });
+    </script>
+</body>
+
+</html>

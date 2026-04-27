@@ -1,0 +1,503 @@
+<!doctype html>
+<html lang="en" data-palette="triad">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Circle of Fifths Network · Playground · Lorenzo Marinelli</title>
+    <meta name="description"
+        content="Interactive circle of fifths network by Lorenzo Marinelli — explore key relationships, relative minors, and simple harmonic motion." />
+    <link rel="stylesheet" href="/assets/style.css" />
+
+    <link rel="alternate" hreflang="en" href="/playground/circle-of-fifths/" />
+    <link rel="icon" href="/assets/favicon.ico" sizes="any">
+    <link rel="icon" type="image/png" href="/assets/favicon-32.png" sizes="32x32">
+    <link rel="icon" type="image/png" href="/assets/favicon-16.png" sizes="16x16">
+    <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
+</head>
+
+<body>
+    <div class="wrap">
+        <nav class="nav">
+            <a class="nav__brand" href="/" aria-label="Home">LM</a>
+
+            <div class="lang" aria-label="Language">
+                <a class="lang__btn is-active" href="/playground/circle-of-fifths/" aria-label="English"
+                    title="English">
+                    <span class="flag" aria-hidden="true">🇬🇧</span>
+                    <span class="sr-only" lang="en">English</span>
+                </a>
+                <a class="lang__btn" href="/it/playground/" aria-label="Italiano" title="Italiano">
+                    <span class="flag" aria-hidden="true">🇮🇹</span>
+                    <span class="sr-only" lang="it">Italiano</span>
+                </a>
+            </div>
+
+            <button class="theme-toggle" type="button" data-theme-toggle aria-label="Toggle theme" title="Toggle theme">
+                <span data-theme-icon aria-hidden="true">◐</span>
+            </button>
+
+            <div class="nav__links">
+                <a href="/">Home</a>
+                <a href="/about/">About</a>
+                <a href="/projects/">Projects</a>
+                <a href="/notes/">Notes</a>
+                <a href="/contact/">Contact</a>
+                <a aria-current="page" href="/playground/">Playground</a>
+            </div>
+        </nav>
+
+        <header class="hero">
+            <p class="kicker">Playground experiment</p>
+            <h1>Circle of Fifths Network</h1>
+            <p class="lead hero-line">
+                A small interactive music-theory graph. Click a key to highlight its closest harmonic neighbors,
+                relative minor, and a simple I–vi–IV–V progression.
+            </p>
+
+            <div class="meta">
+                <span>Music theory</span>
+                <span class="sep">•</span>
+                <span>Graphs</span>
+                <span class="sep">•</span>
+                <span>Harmony intuition</span>
+            </div>
+
+            <div class="hero__cta">
+                <a class="btn btn--ghost" href="/playground/">← Back to Playground</a>
+            </div>
+        </header>
+
+        <main class="card fifths-app" data-fifths-app>
+            <div class="fifths-app__top">
+                <div>
+                    <p class="project-kicker">Interactive harmony graph</p>
+                    <h2>Keys as connected nodes</h2>
+                    <p>
+                        Outer nodes are major keys. Inner nodes are their relative minors.
+                        Neighboring major keys are a fifth apart, which makes them natural modulation targets.
+                    </p>
+                </div>
+
+                <div class="fifths-status" data-fifths-status>
+                    Selected: C major
+                </div>
+            </div>
+
+            <div class="fifths-layout">
+                <section class="fifths-stage" aria-label="Interactive circle of fifths">
+                    <canvas class="fifths-canvas" data-fifths-canvas>
+                        Interactive circle of fifths.
+                    </canvas>
+                </section>
+
+                <aside class="fifths-panel">
+                    <p class="project-kicker" data-fifths-kicker>Current key</p>
+                    <h2 data-fifths-title>C major</h2>
+
+                    <div class="fifths-detail-list">
+                        <div>
+                            <span>Dominant</span>
+                            <strong data-fifths-dominant>G major</strong>
+                        </div>
+                        <div>
+                            <span>Subdominant</span>
+                            <strong data-fifths-subdominant>F major</strong>
+                        </div>
+                        <div>
+                            <span>Relative minor</span>
+                            <strong data-fifths-relative>Am</strong>
+                        </div>
+                        <div>
+                            <span>Progression</span>
+                            <strong data-fifths-progression>C → Am → F → G</strong>
+                        </div>
+                    </div>
+
+                    <button class="btn fifths-play" type="button" data-fifths-play>
+                        Play progression
+                    </button>
+
+                    <p class="fifths-note">
+                        The sound is intentionally simple: plain synthesized triads, just enough to hear the
+                        relationship.
+                    </p>
+                </aside>
+            </div>
+        </main>
+
+        <section class="grid">
+            <article class="card">
+                <h2>What to notice</h2>
+                <p>
+                    Moving clockwise adds sharps and moves by fifths. Moving counterclockwise adds flats and moves by
+                    fourths.
+                    Nearby keys share many notes, which is why they are common modulation targets.
+                </p>
+            </article>
+
+            <article class="card">
+                <h2>Why this belongs in the Playground</h2>
+                <p>
+                    It uses the same graph idea as the data-science toys, but applied to harmony. Chords, keys, and
+                    progressions
+                    can all be treated as nodes and transitions.
+                </p>
+            </article>
+        </section>
+
+        <footer class="footer">
+            <small>© 2026 Lorenzo Marinelli</small>
+        </footer>
+    </div>
+
+    <script src="/assets/script.js" defer></script>
+
+    <script>
+        window.addEventListener('DOMContentLoaded', () => {
+            const root = document.querySelector('[data-fifths-app]');
+            if (!root) return;
+
+            const canvas = root.querySelector('[data-fifths-canvas]');
+            const ctx = canvas.getContext('2d');
+
+            const status = root.querySelector('[data-fifths-status]');
+            const title = root.querySelector('[data-fifths-title]');
+            const dominant = root.querySelector('[data-fifths-dominant]');
+            const subdominant = root.querySelector('[data-fifths-subdominant]');
+            const relative = root.querySelector('[data-fifths-relative]');
+            const progression = root.querySelector('[data-fifths-progression]');
+            const playButton = root.querySelector('[data-fifths-play]');
+
+            const keys = [
+                { major: 'C', minor: 'Am', pc: 0, progression: ['C', 'Am', 'F', 'G'] },
+                { major: 'G', minor: 'Em', pc: 7, progression: ['G', 'Em', 'C', 'D'] },
+                { major: 'D', minor: 'Bm', pc: 2, progression: ['D', 'Bm', 'G', 'A'] },
+                { major: 'A', minor: 'F#m', pc: 9, progression: ['A', 'F#m', 'D', 'E'] },
+                { major: 'E', minor: 'C#m', pc: 4, progression: ['E', 'C#m', 'A', 'B'] },
+                { major: 'B', minor: 'G#m', pc: 11, progression: ['B', 'G#m', 'E', 'F#'] },
+                { major: 'F#/Gb', minor: 'D#m/Ebm', pc: 6, progression: ['Gb', 'Ebm', 'Cb', 'Db'] },
+                { major: 'Db', minor: 'Bbm', pc: 1, progression: ['Db', 'Bbm', 'Gb', 'Ab'] },
+                { major: 'Ab', minor: 'Fm', pc: 8, progression: ['Ab', 'Fm', 'Db', 'Eb'] },
+                { major: 'Eb', minor: 'Cm', pc: 3, progression: ['Eb', 'Cm', 'Ab', 'Bb'] },
+                { major: 'Bb', minor: 'Gm', pc: 10, progression: ['Bb', 'Gm', 'Eb', 'F'] },
+                { major: 'F', minor: 'Dm', pc: 5, progression: ['F', 'Dm', 'Bb', 'C'] }
+            ];
+
+            const pitchClasses = {
+                C: 0,
+                'C#': 1,
+                Db: 1,
+                D: 2,
+                'D#': 3,
+                Eb: 3,
+                E: 4,
+                F: 5,
+                'F#': 6,
+                Gb: 6,
+                G: 7,
+                'G#': 8,
+                Ab: 8,
+                A: 9,
+                'A#': 10,
+                Bb: 10,
+                B: 11,
+                Cb: 11
+            };
+
+            let selected = 0;
+            let hovered = null;
+            let animationFrame = null;
+            let time = 0;
+
+            const cssVar = (name, fallback) =>
+                getComputedStyle(document.documentElement).getPropertyValue(name).trim() || fallback;
+
+            const resizeCanvas = () => {
+                const rect = canvas.getBoundingClientRect();
+                const dpr = Math.min(window.devicePixelRatio || 1, 2);
+
+                canvas.width = Math.floor(rect.width * dpr);
+                canvas.height = Math.floor(rect.height * dpr);
+
+                ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+            };
+
+            const pointFor = (index, radiusScale = 1) => {
+                const rect = canvas.getBoundingClientRect();
+                const size = Math.min(rect.width, rect.height);
+                const radius = size * 0.34 * radiusScale;
+                const angle = -Math.PI / 2 + (index / keys.length) * Math.PI * 2;
+
+                return {
+                    x: rect.width / 2 + Math.cos(angle) * radius,
+                    y: rect.height / 2 + Math.sin(angle) * radius
+                };
+            };
+
+            const selectKey = (index) => {
+                selected = index;
+
+                const key = keys[index];
+                const dom = keys[(index + 1) % keys.length];
+                const sub = keys[(index - 1 + keys.length) % keys.length];
+
+                status.textContent = `Selected: ${key.major} major`;
+                title.textContent = `${key.major} major`;
+                dominant.textContent = `${dom.major} major`;
+                subdominant.textContent = `${sub.major} major`;
+                relative.textContent = key.minor;
+                progression.textContent = key.progression.join(' → ');
+            };
+
+            const hitTest = (event) => {
+                const rect = canvas.getBoundingClientRect();
+                const x = event.clientX - rect.left;
+                const y = event.clientY - rect.top;
+
+                let best = null;
+                let bestDistance = Infinity;
+
+                keys.forEach((_, index) => {
+                    const majorPoint = pointFor(index, 1);
+                    const minorPoint = pointFor(index, 0.58);
+
+                    const majorDistance = Math.hypot(majorPoint.x - x, majorPoint.y - y);
+                    const minorDistance = Math.hypot(minorPoint.x - x, minorPoint.y - y);
+
+                    if (majorDistance < 34 && majorDistance < bestDistance) {
+                        best = { index, kind: 'major' };
+                        bestDistance = majorDistance;
+                    }
+
+                    if (minorDistance < 30 && minorDistance < bestDistance) {
+                        best = { index, kind: 'minor' };
+                        bestDistance = minorDistance;
+                    }
+                });
+
+                return best;
+            };
+
+            const draw = (now = 0) => {
+                time = now;
+
+                const rect = canvas.getBoundingClientRect();
+
+                const accent = cssVar('--accent2', '#64f5e1');
+                const warm = cssVar('--accent', '#ffd025');
+                const hot = cssVar('--accent3', '#e74976');
+                const text = cssVar('--text', '#e9d3b3');
+                const muted = cssVar('--muted', '#dadbe0');
+
+                const dominantIndex = (selected + 1) % keys.length;
+                const subdominantIndex = (selected - 1 + keys.length) % keys.length;
+
+                ctx.clearRect(0, 0, rect.width, rect.height);
+
+                ctx.globalAlpha = 0.18;
+                ctx.strokeStyle = accent;
+                ctx.lineWidth = 1.2;
+                ctx.beginPath();
+
+                keys.forEach((_, index) => {
+                    const point = pointFor(index, 1);
+                    if (index === 0) ctx.moveTo(point.x, point.y);
+                    else ctx.lineTo(point.x, point.y);
+                });
+
+                ctx.closePath();
+                ctx.stroke();
+
+                keys.forEach((_, index) => {
+                    const majorPoint = pointFor(index, 1);
+                    const minorPoint = pointFor(index, 0.58);
+
+                    const related = index === selected || index === dominantIndex || index === subdominantIndex;
+                    const active = index === selected;
+                    const hover = index === hovered;
+
+                    ctx.globalAlpha = active || hover ? 0.86 : related ? 0.58 : 0.18;
+                    ctx.strokeStyle = active ? hot : related ? warm : accent;
+                    ctx.lineWidth = active ? 2.2 : related ? 1.6 : 1;
+
+                    ctx.beginPath();
+                    ctx.moveTo(majorPoint.x, majorPoint.y);
+                    ctx.lineTo(minorPoint.x, minorPoint.y);
+                    ctx.stroke();
+                });
+
+                keys.forEach((key, index) => {
+                    const majorPoint = pointFor(index, 1);
+                    const minorPoint = pointFor(index, 0.58);
+
+                    const related = index === selected || index === dominantIndex || index === subdominantIndex;
+                    const active = index === selected;
+                    const hover = index === hovered;
+                    const pulse = 1 + Math.sin(time * 0.003 + index) * 0.05;
+
+                    const majorRadius = (active ? 15 : hover ? 13 : related ? 11 : 8) * pulse;
+                    const minorRadius = (active ? 10 : hover ? 9 : related ? 8 : 6) * pulse;
+
+                    ctx.globalAlpha = active || hover ? 1 : related ? 0.82 : 0.42;
+                    ctx.fillStyle = active ? hot : related ? warm : accent;
+
+                    ctx.beginPath();
+                    ctx.arc(majorPoint.x, majorPoint.y, majorRadius, 0, Math.PI * 2);
+                    ctx.fill();
+
+                    ctx.globalAlpha = active || hover ? 0.92 : related ? 0.72 : 0.34;
+                    ctx.fillStyle = active ? warm : accent;
+
+                    ctx.beginPath();
+                    ctx.arc(minorPoint.x, minorPoint.y, minorRadius, 0, Math.PI * 2);
+                    ctx.fill();
+
+                    ctx.textAlign = 'center';
+                    ctx.textBaseline = 'middle';
+
+                    ctx.globalAlpha = active || hover || related ? 0.98 : 0.62;
+                    ctx.fillStyle = active ? hot : text;
+                    ctx.font = `${active ? 800 : 700} 13px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif`;
+                    ctx.fillText(key.major, majorPoint.x, majorPoint.y - majorRadius - 14);
+
+                    ctx.globalAlpha = active || hover || related ? 0.86 : 0.48;
+                    ctx.fillStyle = muted;
+                    ctx.font = '11px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif';
+                    ctx.fillText(key.minor, minorPoint.x, minorPoint.y + minorRadius + 12);
+                });
+
+                ctx.globalAlpha = 1;
+                animationFrame = requestAnimationFrame(draw);
+            };
+
+            const SINGLE_NOTE_VOLUME = 0.24;
+            const CHORD_VOICE_VOLUME = 0.12;
+
+            const cleanRootName = (name) => {
+                return name
+                    .split('/')[0]
+                    .replace('m', '')
+                    .trim();
+            };
+
+            const playSingleNote = (rootName, octave = 4) => {
+                const audio = new AudioContext();
+
+                const root = cleanRootName(rootName);
+                const pc = pitchClasses[root] ?? 0;
+
+                const midi = 12 * (octave + 1) + pc;
+                const frequency = midiToFrequency(midi);
+
+                const oscillator = audio.createOscillator();
+                const gain = audio.createGain();
+
+                oscillator.type = 'sine';
+                oscillator.frequency.value = frequency;
+
+                const now = audio.currentTime;
+
+                gain.gain.setValueAtTime(0.0001, now);
+                gain.gain.exponentialRampToValueAtTime(SINGLE_NOTE_VOLUME, now + 0.025);;
+                gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.65);
+
+                oscillator.connect(gain);
+                gain.connect(audio.destination);
+
+                oscillator.start(now);
+                oscillator.stop(now + 0.7);
+            };
+
+            const midiToFrequency = (midi) => {
+                return 440 * Math.pow(2, (midi - 69) / 12);
+            };
+
+            const normalizeChordRoot = (name) => {
+                return name
+                    .split('/')[0]
+                    .replace('m', '')
+                    .replace('°', '')
+                    .trim();
+            };
+
+            const playTriad = (audio, rootName, quality, startTime, duration) => {
+                const root = normalizeChordRoot(rootName);
+                const pc = pitchClasses[root] ?? 0;
+                const baseMidi = 60 + pc;
+                const midiRoot = baseMidi > 72 ? baseMidi - 12 : baseMidi;
+                const intervals = quality === 'minor' ? [0, 3, 7] : [0, 4, 7];
+
+                intervals.forEach(interval => {
+                    const oscillator = audio.createOscillator();
+                    const gain = audio.createGain();
+
+                    oscillator.type = 'sine';
+                    oscillator.frequency.value = midiToFrequency(midiRoot + interval);
+
+                    gain.gain.setValueAtTime(0.0001, startTime);
+                    gain.gain.exponentialRampToValueAtTime(CHORD_VOICE_VOLUME, startTime + 0.025);
+                    gain.gain.exponentialRampToValueAtTime(0.0001, startTime + duration);
+
+                    oscillator.connect(gain);
+                    gain.connect(audio.destination);
+
+                    oscillator.start(startTime);
+                    oscillator.stop(startTime + duration + 0.03);
+                });
+            };
+
+            const playProgression = () => {
+                const audio = new AudioContext();
+                const chords = keys[selected].progression;
+                const qualities = ['major', 'minor', 'major', 'major'];
+                const now = audio.currentTime + 0.05;
+
+                chords.forEach((chord, index) => {
+                    playTriad(audio, chord, qualities[index], now + index * 0.62, 0.54);
+                });
+            };
+
+            canvas.addEventListener('pointermove', event => {
+                const hit = hitTest(event);
+                hovered = hit ? hit.index : null;
+                canvas.classList.toggle('is-clickable', hit !== null);
+            });
+
+            canvas.addEventListener('click', event => {
+                const hit = hitTest(event);
+                if (!hit) return;
+
+                const key = keys[hit.index];
+
+                selectKey(hit.index);
+
+                if (hit.kind === 'major') {
+                    playSingleNote(key.major, 4);
+                } else {
+                    playSingleNote(key.minor, 4);
+                }
+            });
+
+            canvas.addEventListener('pointerleave', () => {
+                hovered = null;
+                canvas.classList.remove('is-clickable');
+            });
+
+
+            playButton.addEventListener('click', playProgression);
+
+            window.addEventListener('resize', () => {
+                cancelAnimationFrame(animationFrame);
+                resizeCanvas();
+                draw();
+            });
+
+            resizeCanvas();
+            selectKey(0);
+            draw();
+        });
+    </script>
+</body>
+
+</html>
