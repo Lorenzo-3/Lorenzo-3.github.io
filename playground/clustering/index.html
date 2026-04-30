@@ -1,0 +1,920 @@
+<!doctype html>
+<html lang="en" data-palette="triad">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Clustering Lab · Playground · Lorenzo Marinelli</title>
+    <meta name="description"
+        content="Interactive clustering lab by Lorenzo Marinelli - add 2D points and compare k-means, k-medoids, DBSCAN, Mean Shift, and agglomerative clustering." />
+    <link rel="stylesheet" href="/assets/style.css" />
+
+    <link rel="alternate" hreflang="en" href="/playground/clustering/" />
+    <link rel="icon" href="/assets/favicon.ico" sizes="any">
+    <link rel="icon" type="image/png" href="/assets/favicon-32.png" sizes="32x32">
+    <link rel="icon" type="image/png" href="/assets/favicon-16.png" sizes="16x16">
+    <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
+</head>
+
+<body class="cluster-page">
+    <div class="wrap">
+        <nav class="nav">
+            <a class="nav__brand" href="/" aria-label="Home">LM</a>
+
+            <div class="lang" aria-label="Language">
+                <a class="lang__btn is-active" href="/playground/clustering/" aria-label="English" title="English">
+                    <span class="flag" aria-hidden="true">🇬🇧</span>
+                    <span class="sr-only" lang="en">English</span>
+                </a>
+                <a class="lang__btn" href="/it/playground/" aria-label="Italiano" title="Italiano">
+                    <span class="flag" aria-hidden="true">🇮🇹</span>
+                    <span class="sr-only" lang="it">Italiano</span>
+                </a>
+            </div>
+
+            <button class="theme-toggle" type="button" data-theme-toggle aria-label="Toggle theme" title="Toggle theme">
+                <span data-theme-icon aria-hidden="true">◐</span>
+            </button>
+
+            <div class="nav__links">
+                <a href="/">Home</a>
+                <a href="/about/">About</a>
+                <a href="/projects/">Projects</a>
+                <a href="/notes/">Notes</a>
+                <a href="/contact/">Contact</a>
+                <a aria-current="page" href="/playground/">Playground</a>
+            </div>
+        </nav>
+
+        <header class="hero">
+            <p class="kicker">Playground experiment</p>
+            <h1>Clustering Lab</h1>
+            <p class="lead hero-line">
+                Add points in 2D, then compare how k-means, k-medoids, DBSCAN, Mean Shift, and agglomerative clustering
+                turn the same geometry into different groups.
+            </p>
+
+            <div class="hero__cta">
+                <a class="btn btn--ghost" href="/playground/">← Back to Playground</a>
+            </div>
+        </header>
+
+        <main class="cluster-app" data-cluster-lab>
+            <section class="cluster-controls" aria-label="Clustering controls">
+                <div class="cluster-control-group">
+                    <span class="cluster-control-label">Algorithm</span>
+                    <div class="cluster-button-row">
+                        <button class="mini-btn is-active" type="button"
+                            data-cluster-algorithm="kmeans">k-means</button>
+                        <button class="mini-btn" type="button" data-cluster-algorithm="kmedoids">k-medoids</button>
+                        <button class="mini-btn" type="button" data-cluster-algorithm="dbscan">DBSCAN</button>
+                        <button class="mini-btn" type="button" data-cluster-algorithm="meanshift">Mean Shift</button>
+                        <button class="mini-btn" type="button"
+                            data-cluster-algorithm="agglomerative">Agglomerative</button>
+                    </div>
+                </div>
+
+                <div class="cluster-control-group">
+                    <span class="cluster-control-label">Settings</span>
+
+                    <div class="cluster-settings" data-cluster-settings="kmeans">
+                        <label class="range-control">
+                            <span>Clusters <strong data-kmeans-k-value>3</strong></span>
+                            <input type="range" min="2" max="6" value="3" step="1" data-kmeans-k>
+                        </label>
+                        <label class="range-control">
+                            <span>Iterations <strong data-kmeans-iterations-value>16</strong></span>
+                            <input type="range" min="2" max="30" value="16" step="1" data-kmeans-iterations>
+                        </label>
+                    </div>
+
+                    <div class="cluster-settings" data-cluster-settings="kmedoids" hidden>
+                        <label class="range-control">
+                            <span>Medoids <strong data-kmedoids-k-value>3</strong></span>
+                            <input type="range" min="2" max="6" value="3" step="1" data-kmedoids-k>
+                        </label>
+                        <label class="range-control">
+                            <span>Refinement <strong data-kmedoids-iterations-value>8</strong></span>
+                            <input type="range" min="1" max="20" value="8" step="1" data-kmedoids-iterations>
+                        </label>
+                    </div>
+
+                    <div class="cluster-settings" data-cluster-settings="dbscan" hidden>
+                        <label class="range-control">
+                            <span>Radius <strong data-dbscan-radius-value>54</strong></span>
+                            <input type="range" min="18" max="120" value="54" step="2" data-dbscan-radius>
+                        </label>
+                        <label class="range-control">
+                            <span>Min points <strong data-dbscan-min-value>4</strong></span>
+                            <input type="range" min="2" max="8" value="4" step="1" data-dbscan-min>
+                        </label>
+                    </div>
+
+                    <div class="cluster-settings" data-cluster-settings="meanshift" hidden>
+                        <label class="range-control">
+                            <span>Bandwidth <strong data-meanshift-bandwidth-value>76</strong></span>
+                            <input type="range" min="24" max="150" value="76" step="2" data-meanshift-bandwidth>
+                        </label>
+                        <label class="range-control">
+                            <span>Merge radius <strong data-meanshift-merge-value>34</strong></span>
+                            <input type="range" min="12" max="80" value="34" step="2" data-meanshift-merge>
+                        </label>
+                    </div>
+
+                    <div class="cluster-settings" data-cluster-settings="agglomerative" hidden>
+                        <label class="range-control">
+                            <span>Clusters <strong data-agg-k-value>3</strong></span>
+                            <input type="range" min="2" max="6" value="3" step="1" data-agg-k>
+                        </label>
+                        <label class="range-control">
+                            <span>Linkage</span>
+                            <select data-agg-linkage>
+                                <option value="average" selected>Average</option>
+                                <option value="single">Single</option>
+                                <option value="complete">Complete</option>
+                            </select>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="cluster-control-group">
+                    <span class="cluster-control-label">Points</span>
+                    <div class="cluster-button-row">
+                        <button class="mini-btn" type="button" data-cluster-preset="blobs">Seed blobs</button>
+                        <button class="mini-btn" type="button" data-cluster-preset="bridge">Seed bridge</button>
+                        <button class="mini-btn" type="button" data-cluster-undo>Undo</button>
+                        <button class="mini-btn" type="button" data-cluster-clear>Clear</button>
+                    </div>
+                </div>
+
+                <div class="cluster-status" data-cluster-status>
+                    Ready
+                </div>
+            </section>
+
+            <section class="cluster-main" aria-label="Clustering workspace">
+                <div class="cluster-canvas-wrap">
+                    <canvas class="cluster-canvas" data-cluster-canvas
+                        aria-label="Interactive 2D point cloud clustering canvas"></canvas>
+                </div>
+
+                <aside class="cluster-side-panel">
+                    <h3>Current result</h3>
+                    <div class="cluster-metric-list">
+                        <div class="cluster-metric">
+                            <span>Algorithm</span>
+                            <strong data-cluster-metric-algorithm>k-means</strong>
+                        </div>
+                        <div class="cluster-metric">
+                            <span>Points</span>
+                            <strong data-cluster-metric-points>0</strong>
+                        </div>
+                        <div class="cluster-metric">
+                            <span>Clusters</span>
+                            <strong data-cluster-metric-clusters>0</strong>
+                        </div>
+                        <div class="cluster-metric">
+                            <span>Noise</span>
+                            <strong data-cluster-metric-noise>0</strong>
+                        </div>
+                    </div>
+                    <p class="cluster-note" data-cluster-note>
+                        k-means forces every point into one of k compact groups.
+                    </p>
+                    <div class="cluster-explanation">
+                        <h4 data-cluster-explanation-title>k-means</h4>
+                        <p data-cluster-explanation-body>
+                            Repeatedly assigns each point to the nearest center, then moves each center to the mean of
+                            its assigned points.
+                        </p>
+                        <p><strong>Best when:</strong> <span data-cluster-explanation-best>Groups are compact and
+                                roughly round.</span></p>
+                        <p><strong>Watch out:</strong> <span data-cluster-explanation-watch>The cluster count is forced
+                                even when the geometry disagrees.</span></p>
+                    </div>
+                </aside>
+            </section>
+        </main>
+
+        <footer class="footer">
+            <small>© 2026 Lorenzo Marinelli</small>
+        </footer>
+    </div>
+
+    <script src="/assets/script.js" defer></script>
+
+    <script>
+        window.addEventListener('DOMContentLoaded', () => {
+            const root = document.querySelector('[data-cluster-lab]');
+            if (!root) return;
+
+            const canvas = root.querySelector('[data-cluster-canvas]');
+            const ctx = canvas.getContext('2d');
+
+            const status = root.querySelector('[data-cluster-status]');
+            const algorithmMetric = root.querySelector('[data-cluster-metric-algorithm]');
+            const pointsMetric = root.querySelector('[data-cluster-metric-points]');
+            const clustersMetric = root.querySelector('[data-cluster-metric-clusters]');
+            const noiseMetric = root.querySelector('[data-cluster-metric-noise]');
+            const note = root.querySelector('[data-cluster-note]');
+
+            const algorithmButtons = Array.from(root.querySelectorAll('[data-cluster-algorithm]'));
+            const settingsPanels = Array.from(root.querySelectorAll('[data-cluster-settings]'));
+            const presetButtons = Array.from(root.querySelectorAll('[data-cluster-preset]'));
+
+            const kmeansK = root.querySelector('[data-kmeans-k]');
+            const kmeansIterations = root.querySelector('[data-kmeans-iterations]');
+            const kmedoidsK = root.querySelector('[data-kmedoids-k]');
+            const kmedoidsIterations = root.querySelector('[data-kmedoids-iterations]');
+            const dbscanRadius = root.querySelector('[data-dbscan-radius]');
+            const dbscanMin = root.querySelector('[data-dbscan-min]');
+            const meanShiftBandwidth = root.querySelector('[data-meanshift-bandwidth]');
+            const meanShiftMerge = root.querySelector('[data-meanshift-merge]');
+            const aggK = root.querySelector('[data-agg-k]');
+            const aggLinkage = root.querySelector('[data-agg-linkage]');
+
+            const kmeansKValue = root.querySelector('[data-kmeans-k-value]');
+            const kmeansIterationsValue = root.querySelector('[data-kmeans-iterations-value]');
+            const kmedoidsKValue = root.querySelector('[data-kmedoids-k-value]');
+            const kmedoidsIterationsValue = root.querySelector('[data-kmedoids-iterations-value]');
+            const dbscanRadiusValue = root.querySelector('[data-dbscan-radius-value]');
+            const dbscanMinValue = root.querySelector('[data-dbscan-min-value]');
+            const meanShiftBandwidthValue = root.querySelector('[data-meanshift-bandwidth-value]');
+            const meanShiftMergeValue = root.querySelector('[data-meanshift-merge-value]');
+            const aggKValue = root.querySelector('[data-agg-k-value]');
+
+            const explanationTitle = root.querySelector('[data-cluster-explanation-title]');
+            const explanationBody = root.querySelector('[data-cluster-explanation-body]');
+            const explanationBest = root.querySelector('[data-cluster-explanation-best]');
+            const explanationWatch = root.querySelector('[data-cluster-explanation-watch]');
+
+            const undoButton = root.querySelector('[data-cluster-undo]');
+            const clearButton = root.querySelector('[data-cluster-clear]');
+
+            const state = {
+                algorithm: 'kmeans',
+                points: [],
+                labels: [],
+                centroids: [],
+                hovered: null,
+                dragging: null
+            };
+
+            const cssVar = (name, fallback) =>
+                getComputedStyle(document.documentElement).getPropertyValue(name).trim() || fallback;
+
+            const clamp = (value, min = 0, max = 1) =>
+                Math.min(max, Math.max(min, value));
+
+            const clusterColors = () => [
+                cssVar('--accent2', '#64f5e1'),
+                cssVar('--accent', '#ffd025'),
+                cssVar('--accent3', '#e74976'),
+                '#8fe36f',
+                '#8ca7ff',
+                '#ff915c'
+            ];
+
+            const algorithmLabel = () => {
+                if (state.algorithm === 'dbscan') return 'DBSCAN';
+                if (state.algorithm === 'kmedoids') return 'k-medoids';
+                if (state.algorithm === 'meanshift') return 'Mean Shift';
+                if (state.algorithm === 'agglomerative') return 'Agglomerative';
+                return 'k-means';
+            };
+
+            const algorithmNotes = {
+                kmeans: {
+                    title: 'k-means',
+                    short: 'k-means forces every point into one of k compact groups.',
+                    body: 'It alternates between assigning points to the nearest center and moving each center to the average position of its assigned points.',
+                    best: 'Compact, round-ish groups where choosing k in advance is reasonable.',
+                    watch: 'Outliers pull the mean, and non-round shapes get split or merged awkwardly.'
+                },
+                kmedoids: {
+                    title: 'k-medoids',
+                    short: 'k-medoids uses real points as representatives, making it more robust than k-means.',
+                    body: 'It assigns points to the nearest representative point, then chooses a better representative from inside each cluster.',
+                    best: 'Small datasets where you want each center to be an actual observed point.',
+                    watch: 'It still needs k in advance and still forces every point into some cluster.'
+                },
+                dbscan: {
+                    title: 'DBSCAN',
+                    short: 'DBSCAN groups dense neighborhoods and leaves sparse points as noise.',
+                    body: 'It starts from points with enough neighbors inside a radius, then expands clusters through connected dense regions.',
+                    best: 'Irregular shapes, bridges, and datasets where isolated points should stay unassigned.',
+                    watch: 'A single radius can fail when one cluster is dense and another is sparse.'
+                },
+                meanshift: {
+                    title: 'Mean Shift',
+                    short: 'Mean Shift lets dense regions define the cluster centers.',
+                    body: 'Each point repeatedly moves toward the average of nearby points until it settles near a density peak.',
+                    best: 'Exploring natural modes when you do not want to choose the number of clusters.',
+                    watch: 'Bandwidth is everything: too small creates fragments, too large merges separate peaks.'
+                },
+                agglomerative: {
+                    title: 'Agglomerative',
+                    short: 'Agglomerative clustering repeatedly merges the nearest groups.',
+                    body: 'It starts with every point alone and builds a hierarchy by merging clusters according to the selected linkage rule.',
+                    best: 'Inspecting hierarchy and seeing how single, complete, and average linkage change the result.',
+                    watch: 'Single linkage can chain through bridges, while complete linkage can over-favor compact groups.'
+                }
+            };
+
+            const syncControls = () => {
+                algorithmButtons.forEach(button => {
+                    button.classList.toggle('is-active', button.dataset.clusterAlgorithm === state.algorithm);
+                });
+
+                settingsPanels.forEach(panel => {
+                    panel.hidden = panel.dataset.clusterSettings !== state.algorithm;
+                });
+
+                kmeansKValue.textContent = kmeansK.value;
+                kmeansIterationsValue.textContent = kmeansIterations.value;
+                kmedoidsKValue.textContent = kmedoidsK.value;
+                kmedoidsIterationsValue.textContent = kmedoidsIterations.value;
+                dbscanRadiusValue.textContent = dbscanRadius.value;
+                dbscanMinValue.textContent = dbscanMin.value;
+                meanShiftBandwidthValue.textContent = meanShiftBandwidth.value;
+                meanShiftMergeValue.textContent = meanShiftMerge.value;
+                aggKValue.textContent = aggK.value;
+
+                const details = algorithmNotes[state.algorithm];
+                note.textContent = details.short;
+                explanationTitle.textContent = details.title;
+                explanationBody.textContent = details.body;
+                explanationBest.textContent = details.best;
+                explanationWatch.textContent = details.watch;
+            };
+
+            const resizeCanvas = () => {
+                const rect = canvas.getBoundingClientRect();
+                const dpr = Math.min(window.devicePixelRatio || 1, 2);
+
+                canvas.width = Math.floor(rect.width * dpr);
+                canvas.height = Math.floor(rect.height * dpr);
+                ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+            };
+
+            const pointToCanvas = (point, rect) => ({
+                x: point.x * rect.width,
+                y: point.y * rect.height
+            });
+
+            const eventPoint = (event) => {
+                const rect = canvas.getBoundingClientRect();
+
+                return {
+                    x: clamp((event.clientX - rect.left) / rect.width),
+                    y: clamp((event.clientY - rect.top) / rect.height)
+                };
+            };
+
+            const distancePx = (a, b, rect) =>
+                Math.hypot((a.x - b.x) * rect.width, (a.y - b.y) * rect.height);
+
+            const hitTest = (event) => {
+                const rect = canvas.getBoundingClientRect();
+                const target = eventPoint(event);
+                let best = null;
+                let bestDistance = Infinity;
+
+                state.points.forEach((point, index) => {
+                    const distance = distancePx(point, target, rect);
+                    if (distance < 16 && distance < bestDistance) {
+                        best = index;
+                        bestDistance = distance;
+                    }
+                });
+
+                return best;
+            };
+
+            const meanPoint = (indices) => {
+                const sum = indices.reduce((acc, index) => {
+                    acc.x += state.points[index].x;
+                    acc.y += state.points[index].y;
+                    return acc;
+                }, { x: 0, y: 0 });
+
+                return {
+                    x: sum.x / indices.length,
+                    y: sum.y / indices.length
+                };
+            };
+
+            const initializeCentroids = (k, rect) => {
+                const centroids = [state.points[Math.floor(state.points.length / 2)]];
+
+                while (centroids.length < k) {
+                    let bestPoint = state.points[0];
+                    let bestDistance = -Infinity;
+
+                    state.points.forEach(point => {
+                        const nearest = Math.min(...centroids.map(centroid => distancePx(point, centroid, rect)));
+                        if (nearest > bestDistance) {
+                            bestDistance = nearest;
+                            bestPoint = point;
+                        }
+                    });
+
+                    centroids.push({ ...bestPoint });
+                }
+
+                return centroids.map(point => ({ ...point }));
+            };
+
+            const initializeMedoids = (k, rect) => {
+                const medoids = [Math.floor(state.points.length / 2)];
+
+                while (medoids.length < k) {
+                    let bestIndex = 0;
+                    let bestDistance = -Infinity;
+
+                    state.points.forEach((point, index) => {
+                        if (medoids.includes(index)) return;
+
+                        const nearest = Math.min(...medoids.map(medoid => distancePx(point, state.points[medoid], rect)));
+                        if (nearest > bestDistance) {
+                            bestDistance = nearest;
+                            bestIndex = index;
+                        }
+                    });
+
+                    medoids.push(bestIndex);
+                }
+
+                return medoids;
+            };
+
+            const runKmeans = (rect) => {
+                const k = Math.min(Number(kmeansK.value), state.points.length);
+                const iterations = Number(kmeansIterations.value);
+                const labels = Array(state.points.length).fill(0);
+                let centroids = initializeCentroids(k, rect);
+
+                for (let iteration = 0; iteration < iterations; iteration += 1) {
+                    state.points.forEach((point, index) => {
+                        labels[index] = centroids.reduce((best, centroid, cluster) => {
+                            const distance = distancePx(point, centroid, rect);
+                            return distance < best.distance ? { cluster, distance } : best;
+                        }, { cluster: 0, distance: Infinity }).cluster;
+                    });
+
+                    centroids = centroids.map((centroid, cluster) => {
+                        const members = labels
+                            .map((label, index) => label === cluster ? index : null)
+                            .filter(index => index !== null);
+
+                        return members.length ? meanPoint(members) : centroid;
+                    });
+                }
+
+                return { labels, centroids };
+            };
+
+            const runKmedoids = (rect) => {
+                const k = Math.min(Number(kmedoidsK.value), state.points.length);
+                const iterations = Number(kmedoidsIterations.value);
+                const labels = Array(state.points.length).fill(0);
+                let medoids = initializeMedoids(k, rect);
+
+                for (let iteration = 0; iteration < iterations; iteration += 1) {
+                    state.points.forEach((point, index) => {
+                        labels[index] = medoids.reduce((best, medoid, cluster) => {
+                            const distance = distancePx(point, state.points[medoid], rect);
+                            return distance < best.distance ? { cluster, distance } : best;
+                        }, { cluster: 0, distance: Infinity }).cluster;
+                    });
+
+                    medoids = medoids.map((medoid, cluster) => {
+                        const members = labels
+                            .map((label, index) => label === cluster ? index : null)
+                            .filter(index => index !== null);
+
+                        if (!members.length) return medoid;
+
+                        return members.reduce((best, candidate) => {
+                            const cost = members.reduce((sum, other) => {
+                                return sum + distancePx(state.points[candidate], state.points[other], rect);
+                            }, 0);
+
+                            return cost < best.cost ? { index: candidate, cost } : best;
+                        }, { index: medoid, cost: Infinity }).index;
+                    });
+                }
+
+                return {
+                    labels,
+                    centroids: medoids.map(index => ({ ...state.points[index], medoid: true }))
+                };
+            };
+
+            const runDbscan = (rect) => {
+                const radius = Number(dbscanRadius.value);
+                const minPoints = Number(dbscanMin.value);
+                const labels = Array(state.points.length).fill(undefined);
+                const visited = Array(state.points.length).fill(false);
+                let cluster = 0;
+
+                const regionQuery = (index) =>
+                    state.points
+                        .map((point, candidate) => ({
+                            candidate,
+                            distance: distancePx(state.points[index], point, rect)
+                        }))
+                        .filter(item => item.distance <= radius)
+                        .map(item => item.candidate);
+
+                const expandCluster = (index, neighbors) => {
+                    labels[index] = cluster;
+
+                    for (let cursor = 0; cursor < neighbors.length; cursor += 1) {
+                        const candidate = neighbors[cursor];
+
+                        if (!visited[candidate]) {
+                            visited[candidate] = true;
+                            const candidateNeighbors = regionQuery(candidate);
+
+                            if (candidateNeighbors.length >= minPoints) {
+                                candidateNeighbors.forEach(neighbor => {
+                                    if (!neighbors.includes(neighbor)) neighbors.push(neighbor);
+                                });
+                            }
+                        }
+
+                        if (labels[candidate] === undefined || labels[candidate] === -1) {
+                            labels[candidate] = cluster;
+                        }
+                    }
+                };
+
+                state.points.forEach((_, index) => {
+                    if (visited[index]) return;
+
+                    visited[index] = true;
+                    const neighbors = regionQuery(index);
+
+                    if (neighbors.length < minPoints) {
+                        labels[index] = -1;
+                        return;
+                    }
+
+                    expandCluster(index, neighbors);
+                    cluster += 1;
+                });
+
+                return { labels, centroids: [] };
+            };
+
+            const runMeanShift = (rect) => {
+                const bandwidth = Number(meanShiftBandwidth.value);
+                const mergeRadius = Number(meanShiftMerge.value);
+                const shifted = state.points.map(point => ({ ...point }));
+
+                shifted.forEach(point => {
+                    for (let iteration = 0; iteration < 18; iteration += 1) {
+                        const neighbors = state.points.filter(candidate => {
+                            return distancePx(point, candidate, rect) <= bandwidth;
+                        });
+
+                        if (!neighbors.length) return;
+
+                        const mean = neighbors.reduce((acc, candidate) => {
+                            acc.x += candidate.x;
+                            acc.y += candidate.y;
+                            return acc;
+                        }, { x: 0, y: 0 });
+
+                        point.x = mean.x / neighbors.length;
+                        point.y = mean.y / neighbors.length;
+                    }
+                });
+
+                const modes = [];
+                const labels = Array(state.points.length).fill(0);
+
+                shifted.forEach((point, index) => {
+                    const existing = modes.findIndex(mode => distancePx(point, mode, rect) <= mergeRadius);
+
+                    if (existing >= 0) {
+                        const mode = modes[existing];
+                        mode.x = (mode.x * mode.count + point.x) / (mode.count + 1);
+                        mode.y = (mode.y * mode.count + point.y) / (mode.count + 1);
+                        mode.count += 1;
+                        labels[index] = existing;
+                        return;
+                    }
+
+                    labels[index] = modes.length;
+                    modes.push({ ...point, count: 1 });
+                });
+
+                return {
+                    labels,
+                    centroids: modes.map(mode => ({ x: mode.x, y: mode.y }))
+                };
+            };
+
+            const linkageDistance = (left, right, rect) => {
+                const distances = [];
+
+                left.forEach(a => {
+                    right.forEach(b => {
+                        distances.push(distancePx(state.points[a], state.points[b], rect));
+                    });
+                });
+
+                if (aggLinkage.value === 'single') return Math.min(...distances);
+                if (aggLinkage.value === 'complete') return Math.max(...distances);
+
+                return distances.reduce((sum, distance) => sum + distance, 0) / distances.length;
+            };
+
+            const runAgglomerative = (rect) => {
+                const target = Math.min(Number(aggK.value), state.points.length);
+                let groups = state.points.map((_, index) => [index]);
+
+                while (groups.length > target) {
+                    let best = { a: 0, b: 1, distance: Infinity };
+
+                    for (let a = 0; a < groups.length; a += 1) {
+                        for (let b = a + 1; b < groups.length; b += 1) {
+                            const distance = linkageDistance(groups[a], groups[b], rect);
+                            if (distance < best.distance) best = { a, b, distance };
+                        }
+                    }
+
+                    groups[best.a] = groups[best.a].concat(groups[best.b]);
+                    groups = groups.filter((_, index) => index !== best.b);
+                }
+
+                const labels = Array(state.points.length).fill(0);
+                groups.forEach((group, cluster) => {
+                    group.forEach(index => {
+                        labels[index] = cluster;
+                    });
+                });
+
+                return {
+                    labels,
+                    centroids: groups.map(group => meanPoint(group))
+                };
+            };
+
+            const clusterResult = () => {
+                const rect = canvas.getBoundingClientRect();
+
+                if (!state.points.length) {
+                    return { labels: [], centroids: [] };
+                }
+
+                if (state.algorithm === 'kmedoids') return runKmedoids(rect);
+                if (state.algorithm === 'dbscan') return runDbscan(rect);
+                if (state.algorithm === 'meanshift') return runMeanShift(rect);
+                if (state.algorithm === 'agglomerative') return runAgglomerative(rect);
+                return runKmeans(rect);
+            };
+
+            const updateMetrics = () => {
+                const clusterIds = new Set(state.labels.filter(label => label >= 0));
+                const noise = state.labels.filter(label => label === -1).length;
+
+                algorithmMetric.textContent = algorithmLabel();
+                pointsMetric.textContent = String(state.points.length);
+                clustersMetric.textContent = String(clusterIds.size);
+                noiseMetric.textContent = String(noise);
+                status.textContent = `${state.points.length} points • ${clusterIds.size} clusters${noise ? ` • ${noise} noise` : ''}`;
+            };
+
+            const runClustering = () => {
+                syncControls();
+                const result = clusterResult();
+                state.labels = result.labels;
+                state.centroids = result.centroids;
+                updateMetrics();
+                draw();
+            };
+
+            const drawCentroid = (point, rect, color) => {
+                const p = pointToCanvas(point, rect);
+                ctx.globalAlpha = 0.95;
+                ctx.strokeStyle = color;
+                ctx.lineWidth = 2.4;
+                ctx.beginPath();
+                ctx.moveTo(p.x - 7, p.y - 7);
+                ctx.lineTo(p.x + 7, p.y + 7);
+                ctx.moveTo(p.x + 7, p.y - 7);
+                ctx.lineTo(p.x - 7, p.y + 7);
+                ctx.stroke();
+            };
+
+            const draw = () => {
+                resizeCanvas();
+
+                const rect = canvas.getBoundingClientRect();
+                const colors = clusterColors();
+                const text = cssVar('--text', '#e9d3b3');
+                const muted = cssVar('--muted', '#dadbe0');
+                const border = cssVar('--border', 'rgba(255,255,255,.12)');
+
+                ctx.clearRect(0, 0, rect.width, rect.height);
+
+                ctx.globalAlpha = 0.75;
+                ctx.fillStyle = muted;
+                ctx.font = '700 12px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif';
+                ctx.textAlign = 'left';
+                ctx.fillText('Click to add points. Drag points to move them.', 18, 26);
+
+                if ((state.algorithm === 'dbscan' || state.algorithm === 'meanshift') && state.hovered !== null) {
+                    const p = pointToCanvas(state.points[state.hovered], rect);
+                    const radius = state.algorithm === 'dbscan'
+                        ? Number(dbscanRadius.value)
+                        : Number(meanShiftBandwidth.value);
+
+                    ctx.globalAlpha = 0.16;
+                    ctx.fillStyle = cssVar('--accent2', '#64f5e1');
+                    ctx.beginPath();
+                    ctx.arc(p.x, p.y, radius, 0, Math.PI * 2);
+                    ctx.fill();
+                    ctx.globalAlpha = 0.38;
+                    ctx.strokeStyle = cssVar('--accent2', '#64f5e1');
+                    ctx.stroke();
+                }
+
+                if (!state.points.length) {
+                    ctx.globalAlpha = 0.92;
+                    ctx.fillStyle = text;
+                    ctx.font = '750 16px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif';
+                    ctx.textAlign = 'center';
+                    ctx.fillText('Add your first point anywhere in the canvas', rect.width / 2, rect.height / 2);
+                    ctx.globalAlpha = 1;
+                    return;
+                }
+
+                state.points.forEach((point, index) => {
+                    const p = pointToCanvas(point, rect);
+                    const label = state.labels[index] ?? -1;
+                    const isNoise = label < 0;
+                    const isActive = index === state.hovered || index === state.dragging;
+                    const color = isNoise ? muted : colors[label % colors.length];
+
+                    ctx.globalAlpha = isNoise ? 0.50 : 0.88;
+                    ctx.fillStyle = color;
+                    ctx.beginPath();
+                    ctx.arc(p.x, p.y, isActive ? 8.5 : 6.5, 0, Math.PI * 2);
+                    ctx.fill();
+
+                    ctx.globalAlpha = isActive ? 0.95 : 0.48;
+                    ctx.strokeStyle = isActive ? text : border;
+                    ctx.lineWidth = isActive ? 2 : 1;
+                    ctx.stroke();
+                });
+
+                if (state.algorithm !== 'dbscan') {
+                    state.centroids.forEach((centroid, index) => {
+                        drawCentroid(centroid, rect, colors[index % colors.length]);
+                    });
+                }
+
+                ctx.globalAlpha = 1;
+            };
+
+            const seededPoint = (x, y, jitter = 0.06) => ({
+                x: clamp(x + (Math.random() - 0.5) * jitter),
+                y: clamp(y + (Math.random() - 0.5) * jitter)
+            });
+
+            const seedBlobs = () => {
+                state.points = [];
+                const centers = [
+                    [0.25, 0.30],
+                    [0.70, 0.35],
+                    [0.48, 0.72]
+                ];
+
+                centers.forEach(([x, y]) => {
+                    for (let index = 0; index < 15; index += 1) {
+                        state.points.push(seededPoint(x, y, 0.18));
+                    }
+                });
+
+                runClustering();
+            };
+
+            const seedBridge = () => {
+                state.points = [];
+
+                for (let index = 0; index < 16; index += 1) {
+                    state.points.push(seededPoint(0.25, 0.34, 0.16));
+                    state.points.push(seededPoint(0.75, 0.64, 0.16));
+                }
+
+                for (let index = 0; index < 14; index += 1) {
+                    const t = index / 13;
+                    state.points.push(seededPoint(0.28 + t * 0.44, 0.37 + t * 0.24, 0.045));
+                }
+
+                state.points.push({ x: 0.15, y: 0.78 }, { x: 0.88, y: 0.22 });
+                runClustering();
+            };
+
+            algorithmButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    state.algorithm = button.dataset.clusterAlgorithm;
+                    runClustering();
+                });
+            });
+
+            [kmeansK, kmeansIterations, kmedoidsK, kmedoidsIterations, dbscanRadius, dbscanMin, meanShiftBandwidth, meanShiftMerge, aggK].forEach(input => {
+                input.addEventListener('input', runClustering);
+            });
+
+            aggLinkage.addEventListener('change', runClustering);
+
+            presetButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    if (button.dataset.clusterPreset === 'bridge') {
+                        seedBridge();
+                    } else {
+                        seedBlobs();
+                    }
+                });
+            });
+
+            undoButton.addEventListener('click', () => {
+                state.points.pop();
+                state.hovered = null;
+                state.dragging = null;
+                runClustering();
+            });
+
+            clearButton.addEventListener('click', () => {
+                state.points = [];
+                state.hovered = null;
+                state.dragging = null;
+                runClustering();
+            });
+
+            canvas.addEventListener('pointerdown', event => {
+                const hit = hitTest(event);
+
+                if (hit !== null) {
+                    state.dragging = hit;
+                    state.hovered = hit;
+                } else {
+                    state.points.push(eventPoint(event));
+                    state.dragging = state.points.length - 1;
+                    state.hovered = state.dragging;
+                }
+
+                canvas.classList.add('is-dragging');
+                canvas.setPointerCapture(event.pointerId);
+                runClustering();
+            });
+
+            canvas.addEventListener('pointermove', event => {
+                if (state.dragging !== null) {
+                    state.points[state.dragging] = eventPoint(event);
+                    runClustering();
+                    return;
+                }
+
+                state.hovered = hitTest(event);
+                draw();
+            });
+
+            const stopDragging = event => {
+                if (canvas.hasPointerCapture(event.pointerId)) {
+                    canvas.releasePointerCapture(event.pointerId);
+                }
+
+                state.dragging = null;
+                canvas.classList.remove('is-dragging');
+                draw();
+            };
+
+            canvas.addEventListener('pointerup', stopDragging);
+            canvas.addEventListener('pointercancel', stopDragging);
+            canvas.addEventListener('pointerleave', () => {
+                if (state.dragging === null) {
+                    state.hovered = null;
+                    draw();
+                }
+            });
+
+            window.addEventListener('resize', runClustering);
+
+            const observer = new MutationObserver(runClustering);
+            observer.observe(document.documentElement, {
+                attributes: true,
+                attributeFilter: ['data-theme']
+            });
+
+            seedBlobs();
+        });
+    </script>
+</body>
+
+</html>

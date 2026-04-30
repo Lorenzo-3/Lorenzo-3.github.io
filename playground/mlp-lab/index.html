@@ -1,0 +1,737 @@
+<!doctype html>
+<html lang="en" data-palette="triad">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>MLP Decision Boundary Lab · Playground · Lorenzo Marinelli</title>
+    <meta name="description"
+        content="Interactive MLP playground by Lorenzo Marinelli - tune layers, neurons, activation functions, learning rate, and datasets while watching a decision boundary train." />
+    <link rel="stylesheet" href="/assets/style.css" />
+
+    <link rel="alternate" hreflang="en" href="/playground/mlp-lab/" />
+    <link rel="icon" href="/assets/favicon.ico" sizes="any">
+    <link rel="icon" type="image/png" href="/assets/favicon-32.png" sizes="32x32">
+    <link rel="icon" type="image/png" href="/assets/favicon-16.png" sizes="16x16">
+    <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
+</head>
+
+<body class="mlp-page">
+    <div class="wrap mlp-wrap">
+        <nav class="nav">
+            <a class="nav__brand" href="/" aria-label="Home">LM</a>
+
+            <div class="lang" aria-label="Language">
+                <a class="lang__btn is-active" href="/playground/mlp-lab/" aria-label="English" title="English">
+                    <span class="flag" aria-hidden="true">🇬🇧</span>
+                    <span class="sr-only" lang="en">English</span>
+                </a>
+                <a class="lang__btn" href="/it/playground/" aria-label="Italiano" title="Italiano">
+                    <span class="flag" aria-hidden="true">🇮🇹</span>
+                    <span class="sr-only" lang="it">Italiano</span>
+                </a>
+            </div>
+
+            <button class="theme-toggle" type="button" data-theme-toggle aria-label="Toggle theme" title="Toggle theme">
+                <span data-theme-icon aria-hidden="true">◐</span>
+            </button>
+
+            <div class="nav__links">
+                <a href="/">Home</a>
+                <a href="/about/">About</a>
+                <a href="/projects/">Projects</a>
+                <a href="/notes/">Notes</a>
+                <a href="/contact/">Contact</a>
+                <a aria-current="page" href="/playground/">Playground</a>
+            </div>
+        </nav>
+
+        <header class="hero mlp-hero">
+            <p class="kicker">Playground experiment</p>
+            <h1>MLP Decision Boundary Lab</h1>
+            <p class="lead hero-line">
+                Build a tiny neural net, switch activation functions, and watch its decision surface bend around a 2D
+                dataset as training updates the weights.
+            </p>
+
+            <div class="hero__cta">
+                <a class="btn btn--ghost" href="/playground/">Back to Playground</a>
+            </div>
+        </header>
+
+        <main class="mlp-window" aria-label="MLP decision boundary visualization canvas">
+            <div class="mlp-hint">
+                <span>Decision surface behind the points</span>
+                <small>blue/red regions show the current class probability</small>
+            </div>
+        </main>
+
+        <p style="margin-bottom:3cm;"></p>
+
+        <footer class="footer">
+            <small>© 2026 Lorenzo Marinelli</small>
+        </footer>
+    </div>
+
+    <aside class="mlp-hud" data-mlp-hud>
+        <div class="mlp-hud__top">
+            <div>
+                <h2>MLP controls</h2>
+                <p data-mlp-status>Choose a dataset, then train the network.</p>
+            </div>
+            <div class="mlp-actions">
+                <button class="btn" type="button" data-mlp-train>Train</button>
+                <button class="mini-btn" type="button" data-mlp-step>Step</button>
+                <button class="mini-btn" type="button" data-mlp-reset>Reset</button>
+            </div>
+        </div>
+
+        <div class="mlp-metrics" aria-label="Training metrics">
+            <div>
+                <span>Loss</span>
+                <strong data-mlp-loss>--</strong>
+            </div>
+            <div>
+                <span>Accuracy</span>
+                <strong data-mlp-accuracy>--</strong>
+            </div>
+            <div>
+                <span>Updates</span>
+                <strong data-mlp-updates>0</strong>
+            </div>
+        </div>
+
+        <div class="mlp-panel">
+            <strong>Dataset</strong>
+            <div class="mlp-chip-grid" data-mlp-datasets>
+                <button class="mini-btn is-active" type="button" data-dataset="xor">XOR</button>
+                <button class="mini-btn" type="button" data-dataset="circles">Circles</button>
+                <button class="mini-btn" type="button" data-dataset="moons">Moons</button>
+                <button class="mini-btn" type="button" data-dataset="blobs">Blobs</button>
+            </div>
+        </div>
+
+        <div class="mlp-panel">
+            <strong>Activation</strong>
+            <div class="mlp-chip-grid" data-mlp-activations>
+                <button class="mini-btn is-active" type="button" data-activation="tanh">Tanh</button>
+                <button class="mini-btn" type="button" data-activation="relu">ReLU</button>
+                <button class="mini-btn" type="button" data-activation="sigmoid">Sigmoid</button>
+                <button class="mini-btn" type="button" data-activation="linear">Linear</button>
+            </div>
+        </div>
+
+        <div class="mlp-controls">
+            <label class="range-control">
+                <span>Hidden layers <strong data-mlp-layers-value>2</strong></span>
+                <input type="range" min="1" max="3" value="2" step="1" data-mlp-layers>
+            </label>
+
+            <label class="range-control">
+                <span>Neurons/layer <strong data-mlp-neurons-value>6</strong></span>
+                <input type="range" min="2" max="12" value="6" step="1" data-mlp-neurons>
+            </label>
+
+            <label class="range-control">
+                <span>Learning rate <strong data-mlp-rate-value>0.030</strong></span>
+                <input type="range" min="3" max="90" value="30" step="1" data-mlp-rate>
+            </label>
+
+            <label class="range-control">
+                <span>Dataset noise <strong data-mlp-noise-value>8%</strong></span>
+                <input type="range" min="0" max="35" value="8" step="1" data-mlp-noise>
+            </label>
+
+            <label class="range-control">
+                <span>Steps/tick <strong data-mlp-speed-value>10</strong></span>
+                <input type="range" min="1" max="35" value="10" step="1" data-mlp-speed>
+            </label>
+
+            <button class="mini-btn" type="button" data-mlp-regenerate>New points</button>
+        </div>
+
+        <p class="mlp-note" data-mlp-note>
+            Tanh bends smoothly around the origin, which works well for centered toy data.
+        </p>
+    </aside>
+
+    <script src="/assets/script.js" defer></script>
+
+    <script>
+        window.addEventListener('load', () => {
+            document.querySelectorAll('.network-bg').forEach(canvas => canvas.remove());
+
+            const canvas = document.createElement('canvas');
+            canvas.className = 'network-bg mlp-bg-canvas';
+            canvas.setAttribute('aria-hidden', 'true');
+            document.body.prepend(canvas);
+
+            const ctx = canvas.getContext('2d');
+            const root = document.documentElement;
+            const hud = document.querySelector('[data-mlp-hud]');
+            const status = document.querySelector('[data-mlp-status]');
+            const trainButton = document.querySelector('[data-mlp-train]');
+            const stepButton = document.querySelector('[data-mlp-step]');
+            const resetButton = document.querySelector('[data-mlp-reset]');
+            const regenerateButton = document.querySelector('[data-mlp-regenerate]');
+            const datasetButtons = Array.from(document.querySelectorAll('[data-dataset]'));
+            const activationButtons = Array.from(document.querySelectorAll('[data-activation]'));
+            const layersInput = document.querySelector('[data-mlp-layers]');
+            const neuronsInput = document.querySelector('[data-mlp-neurons]');
+            const rateInput = document.querySelector('[data-mlp-rate]');
+            const noiseInput = document.querySelector('[data-mlp-noise]');
+            const speedInput = document.querySelector('[data-mlp-speed]');
+            const layersValue = document.querySelector('[data-mlp-layers-value]');
+            const neuronsValue = document.querySelector('[data-mlp-neurons-value]');
+            const rateValue = document.querySelector('[data-mlp-rate-value]');
+            const noiseValue = document.querySelector('[data-mlp-noise-value]');
+            const speedValue = document.querySelector('[data-mlp-speed-value]');
+            const lossValue = document.querySelector('[data-mlp-loss]');
+            const accuracyValue = document.querySelector('[data-mlp-accuracy]');
+            const updatesValue = document.querySelector('[data-mlp-updates]');
+            const note = document.querySelector('[data-mlp-note]');
+
+            const activationNotes = {
+                tanh: 'Tanh bends smoothly around the origin, which works well for centered toy data.',
+                relu: 'ReLU learns sharp piecewise-linear boundaries, but can leave inactive neurons behind.',
+                sigmoid: 'Sigmoid is smooth and bounded, though deep stacks can train more slowly.',
+                linear: 'Linear hidden layers collapse into one linear model, so XOR and moons stay hard.'
+            };
+
+            let width = 1;
+            let height = 1;
+            let datasetType = 'xor';
+            let activationType = 'tanh';
+            let dataSeed = 7;
+            let weightSeed = 31;
+            let data = [];
+            let network = [];
+            let isTraining = false;
+            let updateCount = 0;
+            let latestStats = { loss: 0, accuracy: 0 };
+
+            const cssVar = (name, fallback) =>
+                getComputedStyle(root).getPropertyValue(name).trim() || fallback;
+
+            const clamp = (value, min, max) => Math.min(max, Math.max(min, value));
+            const sigmoid = value => 1 / (1 + Math.exp(-clamp(value, -45, 45)));
+            const lerp = (a, b, t) => a + (b - a) * t;
+
+            const makeRandom = (seed) => {
+                let state = seed >>> 0;
+                return () => {
+                    state = (state * 1664525 + 1013904223) >>> 0;
+                    return state / 4294967296;
+                };
+            };
+
+            const gaussian = (rand) => {
+                const u = Math.max(rand(), 1e-6);
+                const v = Math.max(rand(), 1e-6);
+                return Math.sqrt(-2 * Math.log(u)) * Math.cos(2 * Math.PI * v);
+            };
+
+            const settings = () => ({
+                layers: Number(layersInput.value),
+                neurons: Number(neuronsInput.value),
+                learningRate: Number(rateInput.value) / 1000,
+                noise: Number(noiseInput.value) / 100,
+                speed: Number(speedInput.value)
+            });
+
+            const syncLabels = () => {
+                const current = settings();
+                layersValue.textContent = String(current.layers);
+                neuronsValue.textContent = String(current.neurons);
+                rateValue.textContent = current.learningRate.toFixed(3);
+                noiseValue.textContent = `${Math.round(current.noise * 100)}%`;
+                speedValue.textContent = String(current.speed);
+                note.textContent = activationNotes[activationType];
+            };
+
+            const activate = (value) => {
+                if (activationType === 'relu') return Math.max(0, value);
+                if (activationType === 'sigmoid') return sigmoid(value);
+                if (activationType === 'linear') return value;
+                return Math.tanh(value);
+            };
+
+            const activationDerivative = (value) => {
+                if (activationType === 'relu') return value > 0 ? 1 : 0;
+                if (activationType === 'sigmoid') {
+                    const s = sigmoid(value);
+                    return s * (1 - s);
+                }
+                if (activationType === 'linear') return 1;
+                const t = Math.tanh(value);
+                return 1 - t * t;
+            };
+
+            const architecture = () => {
+                const current = settings();
+                return [2, ...Array.from({ length: current.layers }, () => current.neurons), 1];
+            };
+
+            const initNetwork = () => {
+                const rand = makeRandom(weightSeed++);
+                const shape = architecture();
+                network = [];
+
+                for (let layer = 1; layer < shape.length; layer++) {
+                    const inputSize = shape[layer - 1];
+                    const outputSize = shape[layer];
+                    const scale = activationType === 'relu' ? Math.sqrt(2 / inputSize) : Math.sqrt(1 / inputSize);
+                    const weights = Array.from({ length: outputSize }, () =>
+                        Array.from({ length: inputSize }, () => (rand() * 2 - 1) * scale)
+                    );
+                    const biases = Array.from({ length: outputSize }, () => (rand() * 2 - 1) * 0.08);
+                    network.push({ weights, biases });
+                }
+
+                updateCount = 0;
+                latestStats = evaluate();
+                updateStats();
+            };
+
+            const pointWithNoise = (point, rand, noise) => ({
+                x: clamp(point.x + gaussian(rand) * noise * 0.22, -1.15, 1.15),
+                y: clamp(point.y + gaussian(rand) * noise * 0.22, -1.15, 1.15),
+                label: rand() < noise * 0.18 ? 1 - point.label : point.label
+            });
+
+            const generateData = () => {
+                const rand = makeRandom(dataSeed++);
+                const noise = settings().noise;
+                const points = [];
+                const count = 150;
+
+                for (let index = 0; index < count; index++) {
+                    let point;
+
+                    if (datasetType === 'circles') {
+                        const angle = rand() * Math.PI * 2;
+                        const radius = Math.sqrt(rand()) * 0.98;
+                        point = {
+                            x: Math.cos(angle) * radius,
+                            y: Math.sin(angle) * radius,
+                            label: radius > 0.56 ? 1 : 0
+                        };
+                    } else if (datasetType === 'moons') {
+                        const upper = index % 2 === 0;
+                        const t = rand() * Math.PI;
+                        const x = upper ? Math.cos(t) * 0.72 - 0.22 : 1 - Math.cos(t) * 0.72 - 0.18;
+                        const y = upper ? Math.sin(t) * 0.56 - 0.12 : -Math.sin(t) * 0.56 + 0.20;
+                        point = { x, y, label: upper ? 0 : 1 };
+                    } else if (datasetType === 'blobs') {
+                        const label = index % 2;
+                        const cx = label ? 0.46 : -0.48;
+                        const cy = label ? 0.36 : -0.34;
+                        point = {
+                            x: cx + gaussian(rand) * 0.25,
+                            y: cy + gaussian(rand) * 0.25,
+                            label
+                        };
+                    } else {
+                        const x = rand() * 2 - 1;
+                        const y = rand() * 2 - 1;
+                        point = { x, y, label: x * y > 0 ? 1 : 0 };
+                    }
+
+                    points.push(pointWithNoise(point, rand, noise));
+                }
+
+                data = points;
+                latestStats = evaluate();
+                updateStats();
+            };
+
+            const forward = (input) => {
+                const activations = [input];
+                const zs = [];
+                let current = input;
+
+                network.forEach((layer, layerIndex) => {
+                    const isOutput = layerIndex === network.length - 1;
+                    const z = layer.weights.map((weights, neuronIndex) => {
+                        return weights.reduce((sum, weight, inputIndex) => sum + weight * current[inputIndex], layer.biases[neuronIndex]);
+                    });
+                    current = z.map(value => isOutput ? sigmoid(value) : activate(value));
+                    zs.push(z);
+                    activations.push(current);
+                });
+
+                return { output: current[0], activations, zs };
+            };
+
+            const trainOne = (point) => {
+                const pass = forward([point.x, point.y]);
+                const deltas = Array.from({ length: network.length });
+                deltas[deltas.length - 1] = [pass.output - point.label];
+
+                for (let layerIndex = network.length - 2; layerIndex >= 0; layerIndex--) {
+                    const nextLayer = network[layerIndex + 1];
+                    deltas[layerIndex] = pass.zs[layerIndex].map((zValue, neuronIndex) => {
+                        const upstream = nextLayer.weights.reduce((sum, weights, nextIndex) => {
+                            return sum + weights[neuronIndex] * deltas[layerIndex + 1][nextIndex];
+                        }, 0);
+                        return upstream * activationDerivative(zValue);
+                    });
+                }
+
+                const learningRate = settings().learningRate;
+                network.forEach((layer, layerIndex) => {
+                    const previous = pass.activations[layerIndex];
+                    layer.weights.forEach((weights, neuronIndex) => {
+                        weights.forEach((weight, inputIndex) => {
+                            weights[inputIndex] = weight - learningRate * deltas[layerIndex][neuronIndex] * previous[inputIndex];
+                        });
+                        layer.biases[neuronIndex] -= learningRate * deltas[layerIndex][neuronIndex];
+                    });
+                });
+
+                updateCount += 1;
+            };
+
+            const trainSteps = (steps) => {
+                for (let step = 0; step < steps; step++) {
+                    const point = data[(updateCount + step * 17) % data.length];
+                    trainOne(point);
+                }
+                latestStats = evaluate();
+                updateStats();
+            };
+
+            const evaluate = () => {
+                if (!data.length || !network.length) return { loss: 0, accuracy: 0 };
+                let loss = 0;
+                let correct = 0;
+
+                data.forEach(point => {
+                    const prediction = clamp(forward([point.x, point.y]).output, 1e-4, 1 - 1e-4);
+                    loss += -(point.label * Math.log(prediction) + (1 - point.label) * Math.log(1 - prediction));
+                    correct += (prediction >= 0.5 ? 1 : 0) === point.label ? 1 : 0;
+                });
+
+                return {
+                    loss: loss / data.length,
+                    accuracy: correct / data.length
+                };
+            };
+
+            const updateStats = () => {
+                lossValue.textContent = latestStats.loss.toFixed(3);
+                accuracyValue.textContent = `${Math.round(latestStats.accuracy * 100)}%`;
+                updatesValue.textContent = String(updateCount);
+            };
+
+            const resize = () => {
+                const dpr = Math.min(window.devicePixelRatio || 1, 2);
+                width = window.innerWidth;
+                height = window.innerHeight;
+                canvas.width = Math.floor(width * dpr);
+                canvas.height = Math.floor(height * dpr);
+                canvas.style.width = `${width}px`;
+                canvas.style.height = `${height}px`;
+                ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+            };
+
+            const layout = () => {
+                const hudRect = hud.getBoundingClientRect();
+                const desktop = width > 1120;
+                const availableWidth = desktop ? Math.max(520, width - hudRect.width - 72) : width;
+                const topPad = desktop ? 168 : 156;
+                const bottomLimit = desktop
+                    ? height - 56
+                    : Math.max(topPad + 330, Math.min(height - 28, hudRect.top - 22));
+                let fieldSize = desktop
+                    ? Math.min(620, availableWidth - 100, height * 0.58)
+                    : Math.min(width - 28, height * 0.42, 520);
+                let fieldX = desktop ? Math.max(34, availableWidth * 0.10) : (width - fieldSize) / 2;
+                const sideRoom = availableWidth - (fieldX + fieldSize + 42);
+                const useSideNetwork = desktop && sideRoom > 230;
+                const stackedNetworkHeight = width < 720 ? 106 : 124;
+                const networkH = useSideNetwork ? Math.min(260, fieldSize - 44) : stackedNetworkHeight;
+                const networkY = useSideNetwork ? Math.max(topPad, height * 0.34) : topPad;
+                let fieldY = useSideNetwork ? Math.max(topPad, Math.min(height - fieldSize - 56, height * 0.34)) : networkY + networkH + 28;
+
+                if (!useSideNetwork) {
+                    const maxStackedField = bottomLimit - fieldY;
+                    fieldSize = Math.max(260, Math.min(fieldSize, maxStackedField));
+                    fieldX = desktop ? Math.max(34, (availableWidth - fieldSize) / 2) : (width - fieldSize) / 2;
+                }
+
+                const networkX = useSideNetwork ? fieldX + fieldSize + 34 : fieldX;
+                const networkW = useSideNetwork ? Math.min(280, sideRoom - 18) : fieldSize;
+
+                return {
+                    field: { x: fieldX, y: fieldY, size: fieldSize },
+                    net: { x: networkX, y: networkY, w: networkW, h: networkH }
+                };
+            };
+
+            const classColor = (label, alpha = 1) => {
+                const color = label ? cssVar('--accent3', '#e74976') : cssVar('--accent2', '#64f5e1');
+                ctx.globalAlpha = alpha;
+                return color;
+            };
+
+            const drawBackground = () => {
+                ctx.clearRect(0, 0, width, height);
+                const bg = cssVar('--bg', '#101115');
+                ctx.fillStyle = bg;
+                ctx.globalAlpha = 0.18;
+                ctx.fillRect(0, 0, width, height);
+                ctx.globalAlpha = 1;
+
+                ctx.strokeStyle = cssVar('--border', 'rgba(255,255,255,.16)');
+                ctx.globalAlpha = 0.14;
+                ctx.lineWidth = 1;
+                const gap = 46;
+                for (let x = -gap; x < width + gap; x += gap) {
+                    ctx.beginPath();
+                    ctx.moveTo(x, 0);
+                    ctx.lineTo(x + height * 0.14, height);
+                    ctx.stroke();
+                }
+                for (let y = 0; y < height + gap; y += gap) {
+                    ctx.beginPath();
+                    ctx.moveTo(0, y);
+                    ctx.lineTo(width, y - width * 0.14);
+                    ctx.stroke();
+                }
+                ctx.globalAlpha = 1;
+            };
+
+            const drawDecisionField = (field) => {
+                const cells = width < 720 ? 34 : 48;
+                const cellSize = field.size / cells;
+                ctx.save();
+                ctx.beginPath();
+                ctx.roundRect(field.x, field.y, field.size, field.size, 22);
+                ctx.clip();
+
+                for (let row = 0; row < cells; row++) {
+                    for (let col = 0; col < cells; col++) {
+                        const nx = ((col + 0.5) / cells) * 2 - 1;
+                        const ny = 1 - ((row + 0.5) / cells) * 2;
+                        const prediction = forward([nx, ny]).output;
+                        ctx.globalAlpha = 0.18 + Math.abs(prediction - 0.5) * 0.46;
+                        ctx.fillStyle = prediction >= 0.5
+                            ? cssVar('--accent3', '#e74976')
+                            : cssVar('--accent2', '#64f5e1');
+                        ctx.fillRect(field.x + col * cellSize, field.y + row * cellSize, cellSize + 1, cellSize + 1);
+                    }
+                }
+
+                ctx.globalAlpha = 1;
+                ctx.strokeStyle = cssVar('--border', 'rgba(255,255,255,.16)');
+                ctx.lineWidth = 1;
+                for (let i = 0; i <= 4; i++) {
+                    const offset = field.size * i / 4;
+                    ctx.beginPath();
+                    ctx.moveTo(field.x + offset, field.y);
+                    ctx.lineTo(field.x + offset, field.y + field.size);
+                    ctx.moveTo(field.x, field.y + offset);
+                    ctx.lineTo(field.x + field.size, field.y + offset);
+                    ctx.stroke();
+                }
+
+                data.forEach(point => {
+                    const px = field.x + (point.x + 1) * 0.5 * field.size;
+                    const py = field.y + (1 - (point.y + 1) * 0.5) * field.size;
+                    const prediction = forward([point.x, point.y]).output >= 0.5 ? 1 : 0;
+                    ctx.beginPath();
+                    ctx.fillStyle = classColor(point.label, 0.95);
+                    ctx.arc(px, py, prediction === point.label ? 4 : 5.8, 0, Math.PI * 2);
+                    ctx.fill();
+                    ctx.globalAlpha = 1;
+                    ctx.strokeStyle = prediction === point.label ? cssVar('--bg', '#101115') : cssVar('--accent', '#ffd025');
+                    ctx.lineWidth = prediction === point.label ? 1.2 : 2.2;
+                    ctx.stroke();
+                });
+
+                ctx.restore();
+                ctx.globalAlpha = 1;
+                ctx.strokeStyle = colorMixBorder();
+                ctx.lineWidth = 1.4;
+                ctx.beginPath();
+                ctx.roundRect(field.x, field.y, field.size, field.size, 22);
+                ctx.stroke();
+
+                ctx.fillStyle = cssVar('--text', '#f7f7f2');
+                ctx.font = '700 13px system-ui, sans-serif';
+                ctx.fillText(`${datasetType.toUpperCase()} dataset`, field.x + 14, field.y + 24);
+                ctx.fillStyle = cssVar('--muted', '#a9adb8');
+                ctx.font = '12px system-ui, sans-serif';
+                ctx.fillText('Class probability surface', field.x + 14, field.y + 42);
+            };
+
+            const colorMixBorder = () => cssVar('--border', 'rgba(255,255,255,.18)');
+
+            const drawNetwork = (rect) => {
+                const shape = architecture();
+                const maxNeurons = Math.max(...shape);
+                const radius = width < 720 ? 4.5 : 5.5;
+
+                ctx.save();
+                ctx.globalAlpha = 0.92;
+                ctx.fillStyle = 'rgba(0, 0, 0, 0.08)';
+                ctx.strokeStyle = colorMixBorder();
+                ctx.lineWidth = 1;
+                ctx.beginPath();
+                ctx.roundRect(rect.x, rect.y, rect.w, rect.h, 18);
+                ctx.fill();
+                ctx.stroke();
+
+                const points = shape.map((count, layerIndex) => {
+                    const x = rect.x + rect.w * (shape.length === 1 ? 0.5 : layerIndex / (shape.length - 1));
+                    const visible = Math.min(count, 9);
+                    return Array.from({ length: visible }, (_, neuronIndex) => {
+                        const y = rect.y + rect.h * 0.5 + (neuronIndex - (visible - 1) / 2) * Math.min(22, rect.h / Math.max(maxNeurons, 5));
+                        return { x, y, clipped: count > visible && neuronIndex === visible - 1 };
+                    });
+                });
+
+                ctx.strokeStyle = cssVar('--muted', '#a9adb8');
+                ctx.globalAlpha = 0.20;
+                for (let layerIndex = 0; layerIndex < points.length - 1; layerIndex++) {
+                    points[layerIndex].forEach(from => {
+                        points[layerIndex + 1].forEach(to => {
+                            ctx.beginPath();
+                            ctx.moveTo(from.x, from.y);
+                            ctx.lineTo(to.x, to.y);
+                            ctx.stroke();
+                        });
+                    });
+                }
+
+                points.forEach((layer, layerIndex) => {
+                    layer.forEach((point, neuronIndex) => {
+                        ctx.beginPath();
+                        ctx.globalAlpha = point.clipped ? 0.45 : 0.95;
+                        ctx.fillStyle = layerIndex === 0
+                            ? cssVar('--accent2', '#64f5e1')
+                            : layerIndex === points.length - 1
+                                ? cssVar('--accent3', '#e74976')
+                                : cssVar('--accent', '#ffd025');
+                        ctx.arc(point.x, point.y, point.clipped ? radius * 0.74 : radius, 0, Math.PI * 2);
+                        ctx.fill();
+                    });
+                });
+
+                ctx.globalAlpha = 1;
+                ctx.fillStyle = cssVar('--text', '#f7f7f2');
+                ctx.font = '700 12px system-ui, sans-serif';
+                ctx.fillText(`${shape.join(' - ')} MLP`, rect.x + 12, rect.y + 20);
+                ctx.fillStyle = cssVar('--muted', '#a9adb8');
+                ctx.font = '12px system-ui, sans-serif';
+                ctx.fillText(`${activationType} hidden activation`, rect.x + 12, rect.y + rect.h - 14);
+                ctx.restore();
+            };
+
+            const draw = () => {
+                drawBackground();
+                const currentLayout = layout();
+                drawDecisionField(currentLayout.field);
+                drawNetwork(currentLayout.net);
+            };
+
+            const setActiveButton = (buttons, activeValue, attribute) => {
+                buttons.forEach(button => {
+                    button.classList.toggle('is-active', button.dataset[attribute] === activeValue);
+                });
+            };
+
+            const resetAll = (message = 'Weights reset. Train to reshape the boundary.') => {
+                isTraining = false;
+                trainButton.textContent = 'Train';
+                syncLabels();
+                initNetwork();
+                status.textContent = message;
+                draw();
+            };
+
+            datasetButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    datasetType = button.dataset.dataset;
+                    setActiveButton(datasetButtons, datasetType, 'dataset');
+                    generateData();
+                    resetAll('Dataset changed. The points are ready for training.');
+                });
+            });
+
+            activationButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    activationType = button.dataset.activation;
+                    setActiveButton(activationButtons, activationType, 'activation');
+                    resetAll('Activation changed. Weights were reinitialized.');
+                });
+            });
+
+            [layersInput, neuronsInput].forEach(input => {
+                input.addEventListener('input', () => {
+                    resetAll('Architecture changed. The network is fresh.');
+                });
+            });
+
+            [rateInput, speedInput].forEach(input => {
+                input.addEventListener('input', () => {
+                    syncLabels();
+                });
+            });
+
+            noiseInput.addEventListener('input', () => {
+                syncLabels();
+                generateData();
+                resetAll('Noise changed. Dataset regenerated.');
+            });
+
+            trainButton.addEventListener('click', () => {
+                isTraining = !isTraining;
+                trainButton.textContent = isTraining ? 'Pause' : 'Train';
+                status.textContent = isTraining ? 'Training continuously.' : 'Paused. Step or resume training.';
+            });
+
+            stepButton.addEventListener('click', () => {
+                trainSteps(settings().speed * 8);
+                status.textContent = 'One manual training burst ran.';
+                draw();
+            });
+
+            resetButton.addEventListener('click', () => {
+                resetAll();
+            });
+
+            regenerateButton.addEventListener('click', () => {
+                generateData();
+                resetAll('New points generated. The model was reset.');
+            });
+
+            window.addEventListener('resize', () => {
+                resize();
+                draw();
+            });
+
+            const observer = new MutationObserver(draw);
+            observer.observe(root, { attributes: true, attributeFilter: ['data-theme', 'data-palette'] });
+
+            const loop = () => {
+                if (isTraining) {
+                    trainSteps(settings().speed);
+                    status.textContent = `Training: loss ${latestStats.loss.toFixed(3)}, accuracy ${Math.round(latestStats.accuracy * 100)}%.`;
+                }
+                draw();
+                requestAnimationFrame(loop);
+            };
+
+            resize();
+            syncLabels();
+            generateData();
+            initNetwork();
+            draw();
+            requestAnimationFrame(loop);
+        });
+    </script>
+</body>
+
+</html>

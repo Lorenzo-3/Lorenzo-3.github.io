@@ -51,8 +51,7 @@
       <p class="kicker">Interactive map</p>
       <h1>Playground-WIP</h1>
       <p class="lead hero-line">
-        A browser-native map of graph thinking, data science, anomaly detection, music theory,
-        and the small visual experiments that connect them.
+        A browser-native map of little experiments related to topics I find interesting. DESKTOP USE RECOMMENDED.
       </p>
     </header>
 
@@ -65,11 +64,39 @@
 
     <section class="card playground-minimal-note">
       <p class="project-kicker">Live experiments</p>
-      <h2>Four sketches, one shared graph</h2>
+      <h2>Eleven sketches, one shared graph</h2>
       <ul class="notes-list playground-live-list">
         <li>
           <strong><a href="/playground/graph-diffusion/">Graph Signal Diffusion</a></strong>
           <p>Inject a signal into one node and see how local neighborhoods carry it.</p>
+        </li>
+        <li>
+          <strong><a href="/playground/gnn-toy/">GNN Message Passing Toy</a></strong>
+          <p>Choose node features, stack message-passing layers, and watch embeddings smooth over edges.</p>
+        </li>
+        <li>
+          <strong><a href="/playground/clustering/">Clustering Lab</a></strong>
+          <p>Add points in 2D, compare clustering algorithms, and tune the grouping assumptions.</p>
+        </li>
+        <li>
+          <strong><a href="/playground/gravity-assist/">Gravity Assist Sandbox</a></strong>
+          <p>Launch a probe through a miniature solar system and use flybys to reach a target planet.</p>
+        </li>
+        <li>
+          <strong><a href="/playground/fourier/">Fourier Transform Playground</a></strong>
+          <p>Add sine waves one at a time, hear the mixed sound, and watch the spectrum change.</p>
+        </li>
+        <li>
+          <strong><a href="/playground/signal-filters/">Signal Filter Playground</a></strong>
+          <p>Try classic signal filters on simple tones and compare input, output, and frequency response.</p>
+        </li>
+        <li>
+          <strong><a href="/playground/mlp-lab/">MLP Decision Boundary Lab</a></strong>
+          <p>Customize a tiny neural net, switch activations, and watch its learned boundary change while it trains.</p>
+        </li>
+        <li>
+          <strong><a href="/playground/convolution-kernels/">Convolution Kernel Playground</a></strong>
+          <p>Edit custom 3x3 and 5x5 image kernels and compare the original and convolved image.</p>
         </li>
         <li>
           <strong><a href="/playground/anomaly-node/">Anomaly Node Game</a></strong>
@@ -135,21 +162,105 @@
       const nodes = [
         {
           id: 'graph-diffusion',
-          label: 'GNNs',
-          x: 0.48,
-          y: 0.43,
-          kicker: 'Graph intuition',
+          label: 'Diffusion',
+          x: 0.30,
+          y: 0.57,
+          kicker: 'Signal flow',
           title: 'Graph Signal Diffusion',
-          text: 'Inject a signal into one node and watch it spread through local neighborhoods. A compact visual intuition for graph neural networks, interactomes, and network medicine.',
+          text: 'Inject a signal into one node and watch it spread through local neighborhoods. A compact visual intuition for graph neighborhoods, interactomes, and network medicine.',
           href: '/playground/graph-diffusion/',
+          linkLabel: 'Open experiment',
+          kind: 'experiment'
+        },
+        {
+          id: 'gnn-toy',
+          label: 'GNN Toy',
+          x: 0.43,
+          y: 0.66,
+          kicker: 'Message passing',
+          title: 'GNN Message Passing Toy',
+          text: 'Choose node features, run one to three message-passing layers, and compare before/after node colors and embedding positions as the graph smooths them.',
+          href: '/playground/gnn-toy/',
+          linkLabel: 'Open experiment',
+          kind: 'experiment'
+        },
+        {
+          id: 'clustering',
+          label: 'Clusters',
+          x: 0.38,
+          y: 0.80,
+          kicker: 'Unsupervised learning',
+          title: 'Clustering Lab',
+          text: 'Place points freely in 2D, then compare k-means, k-medoids, DBSCAN, Mean Shift, and agglomerative clustering with settings that change the grouping behavior.',
+          href: '/playground/clustering/',
+          linkLabel: 'Open experiment',
+          kind: 'experiment'
+        },
+        {
+          id: 'gravity-assist',
+          label: 'Gravity',
+          x: 0.77,
+          y: 0.49,
+          kicker: 'Orbital sandbox',
+          title: 'Gravity Assist Sandbox',
+          text: 'Launch a probe through a small 2D solar system, tune launch speed, planet mass, time scale, and trail length, then try to reach the target planet with a flyby.',
+          href: '/playground/gravity-assist/',
+          linkLabel: 'Open experiment',
+          kind: 'experiment'
+        },
+        {
+          id: 'fourier',
+          label: 'Fourier',
+          x: 0.20,
+          y: 0.30,
+          kicker: 'Sound decomposition',
+          title: 'Fourier Transform Playground',
+          text: 'Add sine waves one by one, then listen to the mixed signal while the waveform and frequency spectrum update on the page background.',
+          href: '/playground/fourier/',
+          linkLabel: 'Open experiment',
+          kind: 'experiment'
+        },
+        {
+          id: 'signal-filters',
+          label: 'Filters',
+          x: 0.31,
+          y: 0.37,
+          kicker: 'Signal processing',
+          title: 'Signal Filter Playground',
+          text: 'Run simple signals through low-pass, high-pass, band-pass, notch, peaking, shelf, and all-pass filters while the waveform and response curve update live.',
+          href: '/playground/signal-filters/',
+          linkLabel: 'Open experiment',
+          kind: 'experiment'
+        },
+        {
+          id: 'mlp-lab',
+          label: 'MLP',
+          x: 0.50,
+          y: 0.55,
+          kicker: 'Neural network',
+          title: 'MLP Decision Boundary Lab',
+          text: 'Customize a small multilayer perceptron, choose tanh, ReLU, sigmoid, or linear hidden activations, then train it on toy 2D datasets and watch the decision boundary adapt.',
+          href: '/playground/mlp-lab/',
+          linkLabel: 'Open experiment',
+          kind: 'experiment'
+        },
+        {
+          id: 'convolution-kernels',
+          label: 'Kernels',
+          x: 0.44,
+          y: 0.34,
+          kicker: 'Image filtering',
+          title: 'Convolution Kernel Playground',
+          text: 'Edit a 3x3 or 5x5 convolution kernel, apply it to a generated or uploaded image, and compare the original with the filtered output.',
+          href: '/playground/convolution-kernels/',
           linkLabel: 'Open experiment',
           kind: 'experiment'
         },
         {
           id: 'bioinformatics',
           label: 'Bioinformatics',
-          x: 0.22,
-          y: 0.52,
+          x: 0.62,
+          y: 0.73,
           kicker: 'Biology + computation',
           title: 'Protein Interaction Networks',
           text: 'This node anchors the biology side of the map: genes, proteins, disease modules, enrichment, and the graph structure behind biological data.',
@@ -160,8 +271,8 @@
         {
           id: 'anomaly-detection',
           label: 'Anomaly',
-          x: 0.42,
-          y: 0.74,
+          x: 0.57,
+          y: 0.83,
           kicker: 'Detection game',
           title: 'Anomaly Node Game',
           text: 'One node behaves differently. Try to find it by watching motion, connectivity, and signal response.',
@@ -172,8 +283,8 @@
         {
           id: 'computer-vision',
           label: 'Vision',
-          x: 0.70,
-          y: 0.66,
+          x: 0.58,
+          y: 0.36,
           kicker: 'Visual systems',
           title: 'Computer Vision Mini Lab',
           text: 'Small visual toys around detection, saliency, reconstruction error, masks, and image intuition.',
@@ -184,8 +295,8 @@
         {
           id: 'circle-fifths',
           label: 'Fifths',
-          x: 0.63,
-          y: 0.22,
+          x: 0.73,
+          y: 0.26,
           kicker: 'Music theory',
           title: 'Circle of Fifths Network',
           text: 'Keys, fifths, relative minors, and harmonic neighborhoods shown as an interactive graph instead of a static diagram.',
@@ -195,14 +306,52 @@
         }
       ];
 
+      const groups = [
+        {
+          label: 'signals',
+          x: 0.29,
+          y: 0.22
+        },
+        {
+          label: 'neural models',
+          x: 0.46,
+          y: 0.50
+        },
+        {
+          label: 'graph learning',
+          x: 0.40,
+          y: 0.61
+        },
+        {
+          label: 'systems',
+          x: 0.76,
+          y: 0.38
+        }
+      ];
+
       const edges = [
+        ['graph-diffusion', 'gnn-toy'],
         ['graph-diffusion', 'bioinformatics'],
         ['graph-diffusion', 'anomaly-detection'],
-        ['graph-diffusion', 'computer-vision'],
         ['graph-diffusion', 'circle-fifths'],
 
+        ['gnn-toy', 'bioinformatics'],
+        ['gnn-toy', 'anomaly-detection'],
+        ['gnn-toy', 'mlp-lab'],
         ['bioinformatics', 'anomaly-detection'],
-        ['anomaly-detection', 'computer-vision']
+        ['clustering', 'gnn-toy'],
+        ['clustering', 'anomaly-detection'],
+        ['clustering', 'mlp-lab'],
+        ['gravity-assist', 'circle-fifths'],
+        ['gravity-assist', 'clustering'],
+        ['fourier', 'circle-fifths'],
+        ['fourier', 'signal-filters'],
+        ['signal-filters', 'mlp-lab'],
+        ['signal-filters', 'convolution-kernels'],
+        ['mlp-lab', 'computer-vision'],
+        ['mlp-lab', 'anomaly-detection'],
+        ['convolution-kernels', 'computer-vision'],
+        ['computer-vision', 'anomaly-detection']
       ];
 
       const byId = new Map(nodes.map(node => [node.id, node]));
@@ -313,6 +462,18 @@
         const hoveredRelated = new Set(hoveredId ? relatedIds(hoveredId) : []);
 
         ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
+
+        if (window.innerWidth > 760) {
+          groups.forEach(group => {
+            const p = pointFor(group);
+            ctx.globalAlpha = 0.34;
+            ctx.fillStyle = warm;
+            ctx.font = '700 11px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText(group.label.toUpperCase(), p.x, p.y);
+          });
+        }
 
         edges.forEach(([aId, bId]) => {
           const a = byId.get(aId);

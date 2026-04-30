@@ -1,0 +1,789 @@
+<!doctype html>
+<html lang="en" data-palette="triad">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Convolution Kernel Playground · Playground · Lorenzo Marinelli</title>
+    <meta name="description"
+        content="Interactive image convolution playground by Lorenzo Marinelli - edit custom 3x3 and 5x5 kernels and see how they change an image." />
+    <link rel="stylesheet" href="/assets/style.css" />
+
+    <link rel="alternate" hreflang="en" href="/playground/convolution-kernels/" />
+    <link rel="icon" href="/assets/favicon.ico" sizes="any">
+    <link rel="icon" type="image/png" href="/assets/favicon-32.png" sizes="32x32">
+    <link rel="icon" type="image/png" href="/assets/favicon-16.png" sizes="16x16">
+    <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
+</head>
+
+<body class="conv-page">
+    <div class="wrap conv-wrap">
+        <nav class="nav">
+            <a class="nav__brand" href="/" aria-label="Home">LM</a>
+
+            <div class="lang" aria-label="Language">
+                <a class="lang__btn is-active" href="/playground/convolution-kernels/" aria-label="English"
+                    title="English">
+                    <span class="flag" aria-hidden="true">🇬🇧</span>
+                    <span class="sr-only" lang="en">English</span>
+                </a>
+                <a class="lang__btn" href="/it/playground/" aria-label="Italiano" title="Italiano">
+                    <span class="flag" aria-hidden="true">🇮🇹</span>
+                    <span class="sr-only" lang="it">Italiano</span>
+                </a>
+            </div>
+
+            <button class="theme-toggle" type="button" data-theme-toggle aria-label="Toggle theme" title="Toggle theme">
+                <span data-theme-icon aria-hidden="true">◐</span>
+            </button>
+
+            <div class="nav__links">
+                <a href="/">Home</a>
+                <a href="/about/">About</a>
+                <a href="/projects/">Projects</a>
+                <a href="/notes/">Notes</a>
+                <a href="/contact/">Contact</a>
+                <a aria-current="page" href="/playground/">Playground</a>
+            </div>
+        </nav>
+
+        <header class="hero conv-hero">
+            <p class="kicker">Playground experiment</p>
+            <h1>Convolution Kernel Playground</h1>
+            <p class="lead hero-line">
+                Edit a small image kernel and apply it across every pixel. Try blur, sharpen, edge, emboss, and your own
+                custom 5x5 filters.
+            </p>
+
+            <div class="hero__cta">
+                <a class="btn btn--ghost" href="/playground/">Back to Playground</a>
+            </div>
+        </header>
+
+        <main class="conv-window" aria-label="Image convolution visualization canvas">
+            <div class="conv-hint">
+                <span>Original left, convolved right</span>
+                <small>each output pixel is a weighted neighborhood sum</small>
+            </div>
+            <canvas class="conv-visual-canvas" data-conv-canvas></canvas>
+        </main>
+
+        <footer class="footer">
+            <small>© 2026 Lorenzo Marinelli</small>
+        </footer>
+    </div>
+
+    <aside class="conv-hud" data-conv-hud>
+        <div class="conv-hud__top">
+            <div>
+                <h2>Kernel editor</h2>
+                <p data-conv-status>Identity kernel loaded. Change weights to transform the image.</p>
+            </div>
+            <div class="conv-actions">
+                <label class="mini-btn conv-upload">
+                    Image
+                    <input type="file" accept="image/*" data-conv-upload>
+                </label>
+                <button class="mini-btn" type="button" data-conv-sample>Sample</button>
+                <button class="mini-btn" type="button" data-conv-reset>Reset</button>
+            </div>
+        </div>
+
+        <div class="conv-panel">
+            <strong>Kernel size</strong>
+            <div class="filter-chip-grid" data-conv-size>
+                <button class="mini-btn is-active" type="button" data-size="3">3x3</button>
+                <button class="mini-btn" type="button" data-size="5">5x5</button>
+            </div>
+        </div>
+
+        <div class="conv-panel">
+            <strong>Presets</strong>
+            <div class="conv-preset-grid" data-conv-presets>
+                <button class="mini-btn is-active" type="button" data-preset="identity">Identity</button>
+                <button class="mini-btn" type="button" data-preset="boxBlur">Box blur</button>
+                <button class="mini-btn" type="button" data-preset="gaussian">Gaussian</button>
+                <button class="mini-btn" type="button" data-preset="sharpen">Sharpen</button>
+                <button class="mini-btn" type="button" data-preset="edge">Edges</button>
+                <button class="mini-btn" type="button" data-preset="emboss">Emboss</button>
+                <button class="mini-btn" type="button" data-preset="sobelX">Sobel X</button>
+                <button class="mini-btn" type="button" data-preset="sobelY">Sobel Y</button>
+            </div>
+        </div>
+
+        <div class="conv-panel">
+            <strong>Weights</strong>
+            <div class="conv-kernel-grid" data-conv-grid></div>
+        </div>
+
+        <div class="conv-controls">
+            <label class="range-control conv-number-control">
+                <span>Divisor <strong data-conv-divisor-value>1</strong></span>
+                <input type="number" min="-100" max="100" value="1" step="0.1" data-conv-divisor>
+            </label>
+
+            <label class="range-control">
+                <span>Bias <strong data-conv-bias-value>0</strong></span>
+                <input type="range" min="-128" max="128" value="0" step="1" data-conv-bias>
+            </label>
+
+            <label class="range-control">
+                <span>Blend <strong data-conv-blend-value>100%</strong></span>
+                <input type="range" min="0" max="100" value="100" step="1" data-conv-blend>
+            </label>
+        </div>
+
+        <p class="conv-note">
+            Positive weights brighten matching neighborhoods. Negative weights subtract neighbors, which is why edge
+            kernels reveal sudden changes.
+        </p>
+    </aside>
+
+    <script src="/assets/script.js" defer></script>
+
+    <script>
+        window.addEventListener('load', () => {
+            const canvas = document.querySelector('[data-conv-canvas]');
+            const ctx = canvas.getContext('2d');
+            const root = document.documentElement;
+
+            const ensureNetworkBackground = () => {
+                if (document.querySelector('.network-bg')) return;
+
+                const bgCanvas = document.createElement('canvas');
+                bgCanvas.className = 'network-bg';
+                bgCanvas.setAttribute('aria-hidden', 'true');
+                document.body.prepend(bgCanvas);
+
+                const bgCtx = bgCanvas.getContext('2d');
+                const nodes = [];
+                const edges = [];
+                const nodeCount = 52;
+                const reduceGraphMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+                const bgCssVar = (name, fallback) =>
+                    getComputedStyle(root).getPropertyValue(name).trim() || fallback;
+
+                const resizeBackground = () => {
+                    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+                    bgCanvas.width = Math.floor(window.innerWidth * dpr);
+                    bgCanvas.height = Math.floor(window.innerHeight * dpr);
+                    bgCanvas.style.width = `${window.innerWidth}px`;
+                    bgCanvas.style.height = `${window.innerHeight}px`;
+                    bgCtx.setTransform(dpr, 0, 0, dpr, 0, 0);
+                };
+
+                const seedBackground = () => {
+                    nodes.length = 0;
+                    edges.length = 0;
+
+                    for (let index = 0; index < nodeCount; index += 1) {
+                        nodes.push({
+                            x: Math.random() * window.innerWidth,
+                            y: Math.random() * window.innerHeight,
+                            vx: (Math.random() - 0.5) * 0.16,
+                            vy: (Math.random() - 0.5) * 0.16,
+                            r: Math.random() * 1.8 + 0.9,
+                            phase: Math.random() * Math.PI * 2
+                        });
+                    }
+
+                    nodes.forEach((node, index) => {
+                        const nearest = nodes
+                            .map((candidate, candidateIndex) => ({
+                                index: candidateIndex,
+                                distance: index === candidateIndex ? Infinity : Math.hypot(node.x - candidate.x, node.y - candidate.y)
+                            }))
+                            .sort((a, b) => a.distance - b.distance)
+                            .slice(0, 2);
+
+                        nearest.forEach(candidate => {
+                            if (candidate.distance < 190 && index < candidate.index) {
+                                edges.push([index, candidate.index, Math.random() * 0.18 + 0.12]);
+                            }
+                        });
+                    });
+                };
+
+                const drawBackgroundGraph = (now = 0) => {
+                    const accent = bgCssVar('--accent2', '#64f5e1');
+                    const warm = bgCssVar('--accent', '#ffd025');
+                    bgCtx.clearRect(0, 0, window.innerWidth, window.innerHeight);
+
+                    nodes.forEach(node => {
+                        node.x += node.vx;
+                        node.y += node.vy;
+                        node.phase += 0.018;
+
+                        if (node.x < 20 || node.x > window.innerWidth - 20) node.vx *= -1;
+                        if (node.y < 20 || node.y > window.innerHeight - 20) node.vy *= -1;
+                    });
+
+                    edges.forEach(([aIndex, bIndex, strength]) => {
+                        const a = nodes[aIndex];
+                        const b = nodes[bIndex];
+                        const distance = Math.hypot(a.x - b.x, a.y - b.y);
+                        if (distance > 260) return;
+
+                        bgCtx.globalAlpha = strength * Math.max(0, 1 - distance / 260);
+                        bgCtx.strokeStyle = now % 7000 < 900 ? warm : accent;
+                        bgCtx.lineWidth = 1;
+                        bgCtx.beginPath();
+                        bgCtx.moveTo(a.x, a.y);
+                        bgCtx.lineTo(b.x, b.y);
+                        bgCtx.stroke();
+                    });
+
+                    nodes.forEach(node => {
+                        bgCtx.globalAlpha = 0.24 + Math.sin(node.phase) * 0.06;
+                        bgCtx.fillStyle = accent;
+                        bgCtx.beginPath();
+                        bgCtx.arc(node.x, node.y, node.r, 0, Math.PI * 2);
+                        bgCtx.fill();
+                    });
+
+                    bgCtx.globalAlpha = 1;
+                    if (!reduceGraphMotion) requestAnimationFrame(drawBackgroundGraph);
+                };
+
+                resizeBackground();
+                seedBackground();
+                drawBackgroundGraph();
+                window.addEventListener('resize', () => {
+                    resizeBackground();
+                    seedBackground();
+                });
+            };
+
+            ensureNetworkBackground();
+
+            const status = document.querySelector('[data-conv-status]');
+            const uploadInput = document.querySelector('[data-conv-upload]');
+            const sampleButton = document.querySelector('[data-conv-sample]');
+            const resetButton = document.querySelector('[data-conv-reset]');
+            const sizeButtons = Array.from(document.querySelectorAll('[data-size]'));
+            const presetButtons = Array.from(document.querySelectorAll('[data-preset]'));
+            const grid = document.querySelector('[data-conv-grid]');
+            const divisorInput = document.querySelector('[data-conv-divisor]');
+            const biasInput = document.querySelector('[data-conv-bias]');
+            const blendInput = document.querySelector('[data-conv-blend]');
+            const divisorValue = document.querySelector('[data-conv-divisor-value]');
+            const biasValue = document.querySelector('[data-conv-bias-value]');
+            const blendValue = document.querySelector('[data-conv-blend-value]');
+
+            const sourceCanvas = document.createElement('canvas');
+            const sourceCtx = sourceCanvas.getContext('2d', { willReadFrequently: true });
+            const outputCanvas = document.createElement('canvas');
+            const outputCtx = outputCanvas.getContext('2d', { willReadFrequently: true });
+            const maxImageWidth = 540;
+            const maxImageHeight = 380;
+            const presets = {
+                identity: {
+                    size: 3,
+                    divisor: 1,
+                    bias: 0,
+                    values: [
+                        0, 0, 0,
+                        0, 1, 0,
+                        0, 0, 0
+                    ],
+                    note: 'Identity copies the image without changing neighboring pixels.'
+                },
+                boxBlur: {
+                    size: 3,
+                    divisor: 9,
+                    bias: 0,
+                    values: [
+                        1, 1, 1,
+                        1, 1, 1,
+                        1, 1, 1
+                    ],
+                    note: 'Box blur averages each pixel with its neighbors.'
+                },
+                gaussian: {
+                    size: 5,
+                    divisor: 256,
+                    bias: 0,
+                    values: [
+                        1, 4, 6, 4, 1,
+                        4, 16, 24, 16, 4,
+                        6, 24, 36, 24, 6,
+                        4, 16, 24, 16, 4,
+                        1, 4, 6, 4, 1
+                    ],
+                    note: 'Gaussian blur uses larger weights near the center for a softer blur.'
+                },
+                sharpen: {
+                    size: 3,
+                    divisor: 1,
+                    bias: 0,
+                    values: [
+                        0, -1, 0,
+                        -1, 5, -1,
+                        0, -1, 0
+                    ],
+                    note: 'Sharpen subtracts nearby pixels and boosts the center pixel.'
+                },
+                edge: {
+                    size: 3,
+                    divisor: 1,
+                    bias: 128,
+                    values: [
+                        -1, -1, -1,
+                        -1, 8, -1,
+                        -1, -1, -1
+                    ],
+                    note: 'Edge detection responds strongly where neighboring pixels differ.'
+                },
+                emboss: {
+                    size: 3,
+                    divisor: 1,
+                    bias: 128,
+                    values: [
+                        -2, -1, 0,
+                        -1, 1, 1,
+                        0, 1, 2
+                    ],
+                    note: 'Emboss compares opposite directions and adds a gray offset.'
+                },
+                sobelX: {
+                    size: 3,
+                    divisor: 1,
+                    bias: 128,
+                    values: [
+                        -1, 0, 1,
+                        -2, 0, 2,
+                        -1, 0, 1
+                    ],
+                    note: 'Sobel X highlights vertical edges.'
+                },
+                sobelY: {
+                    size: 3,
+                    divisor: 1,
+                    bias: 128,
+                    values: [
+                        -1, -2, -1,
+                        0, 0, 0,
+                        1, 2, 1
+                    ],
+                    note: 'Sobel Y highlights horizontal edges.'
+                }
+            };
+
+            let width = 1;
+            let height = 1;
+            let kernelSize = 3;
+            let kernelValues = presets.identity.values.slice();
+            let activePreset = 'identity';
+            let lastImageName = 'Sample image';
+            let frame = 0;
+            let dirty = true;
+
+            const cssVar = (name, fallback) =>
+                getComputedStyle(root).getPropertyValue(name).trim() || fallback;
+
+            const clamp = (value, min, max) => Math.min(max, Math.max(min, value));
+
+            const colorWithAlpha = (color, alpha) => {
+                if (color.startsWith('#') && color.length === 7) {
+                    const r = parseInt(color.slice(1, 3), 16);
+                    const g = parseInt(color.slice(3, 5), 16);
+                    const b = parseInt(color.slice(5, 7), 16);
+                    return `rgba(${r}, ${g}, ${b}, ${alpha})`;
+                }
+                return color;
+            };
+
+            const resize = () => {
+                const dpr = Math.min(window.devicePixelRatio || 1, 2);
+                const rect = canvas.getBoundingClientRect();
+                width = Math.max(1, rect.width);
+                height = Math.max(1, rect.height);
+                canvas.width = Math.floor(width * dpr);
+                canvas.height = Math.floor(height * dpr);
+                ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+            };
+
+            const syncLabels = () => {
+                divisorValue.textContent = Number(divisorInput.value).toFixed(1).replace(/\.0$/, '');
+                biasValue.textContent = biasInput.value;
+                blendValue.textContent = `${blendInput.value}%`;
+                const presetText = activePreset === 'custom'
+                    ? 'Custom kernel'
+                    : presetButtons.find(button => button.dataset.preset === activePreset)?.textContent || 'Custom kernel';
+                status.textContent = `${presetText}: ${kernelSize}x${kernelSize} on ${lastImageName}.`;
+            };
+
+            const padKernel = (values, fromSize, toSize) => {
+                if (fromSize === toSize) return values.slice();
+
+                const next = Array(toSize * toSize).fill(0);
+                const offset = Math.floor((toSize - fromSize) / 2);
+
+                for (let y = 0; y < fromSize; y += 1) {
+                    for (let x = 0; x < fromSize; x += 1) {
+                        next[(y + offset) * toSize + x + offset] = values[y * fromSize + x];
+                    }
+                }
+                return next;
+            };
+
+            const setActivePreset = (name) => {
+                activePreset = name;
+                presetButtons.forEach(button => {
+                    button.classList.toggle('is-active', button.dataset.preset === activePreset);
+                });
+            };
+
+            const renderKernelGrid = () => {
+                grid.innerHTML = '';
+                grid.style.setProperty('--kernel-size', kernelSize);
+
+                kernelValues.forEach((value, index) => {
+                    const input = document.createElement('input');
+                    input.type = 'number';
+                    input.step = '0.1';
+                    input.value = String(value);
+                    input.setAttribute('aria-label', `Kernel weight ${index + 1}`);
+                    input.addEventListener('input', () => {
+                        kernelValues[index] = Number(input.value) || 0;
+                        setActivePreset('custom');
+                        syncLabels();
+                        applyConvolution();
+                    });
+                    grid.appendChild(input);
+                });
+            };
+
+            const chooseSize = (size) => {
+                if (size === kernelSize) return;
+
+                kernelValues = padKernel(kernelValues, kernelSize, size);
+                kernelSize = size;
+                sizeButtons.forEach(button => {
+                    button.classList.toggle('is-active', Number(button.dataset.size) === kernelSize);
+                });
+                setActivePreset('custom');
+                renderKernelGrid();
+                syncLabels();
+                applyConvolution();
+            };
+
+            const applyPreset = (name) => {
+                const preset = presets[name];
+                if (!preset) return;
+
+                kernelSize = preset.size;
+                kernelValues = preset.values.slice();
+                divisorInput.value = preset.divisor;
+                biasInput.value = preset.bias;
+                sizeButtons.forEach(button => {
+                    button.classList.toggle('is-active', Number(button.dataset.size) === kernelSize);
+                });
+                setActivePreset(name);
+                renderKernelGrid();
+                syncLabels();
+                applyConvolution();
+            };
+
+            const drawSampleImage = () => {
+                sourceCanvas.width = maxImageWidth;
+                sourceCanvas.height = maxImageHeight;
+                outputCanvas.width = maxImageWidth;
+                outputCanvas.height = maxImageHeight;
+                const gradient = sourceCtx.createLinearGradient(0, 0, maxImageWidth, maxImageHeight);
+                gradient.addColorStop(0, '#203a8f');
+                gradient.addColorStop(0.42, '#64f5e1');
+                gradient.addColorStop(0.72, '#ffd025');
+                gradient.addColorStop(1, '#e74976');
+                sourceCtx.fillStyle = gradient;
+                sourceCtx.fillRect(0, 0, maxImageWidth, maxImageHeight);
+
+                sourceCtx.globalAlpha = 0.28;
+                for (let x = 0; x < maxImageWidth; x += 24) {
+                    sourceCtx.fillStyle = x % 48 === 0 ? '#ffffff' : '#0a0f18';
+                    sourceCtx.fillRect(x, 0, 10, maxImageHeight);
+                }
+                sourceCtx.globalAlpha = 1;
+
+                sourceCtx.fillStyle = 'rgba(10, 15, 24, .72)';
+                sourceCtx.fillRect(42, 52, 150, 112);
+                sourceCtx.fillStyle = 'rgba(255, 255, 255, .82)';
+                sourceCtx.fillRect(64, 78, 106, 18);
+                sourceCtx.fillRect(64, 116, 78, 18);
+
+                sourceCtx.fillStyle = 'rgba(255, 255, 255, .86)';
+                sourceCtx.beginPath();
+                sourceCtx.arc(390, 104, 62, 0, Math.PI * 2);
+                sourceCtx.fill();
+                sourceCtx.fillStyle = 'rgba(231, 73, 118, .92)';
+                sourceCtx.beginPath();
+                sourceCtx.arc(390, 104, 31, 0, Math.PI * 2);
+                sourceCtx.fill();
+
+                sourceCtx.strokeStyle = 'rgba(10, 15, 24, .82)';
+                sourceCtx.lineWidth = 10;
+                sourceCtx.beginPath();
+                sourceCtx.moveTo(62, 290);
+                sourceCtx.quadraticCurveTo(184, 206, 292, 286);
+                sourceCtx.quadraticCurveTo(388, 354, 478, 252);
+                sourceCtx.stroke();
+
+                sourceCtx.strokeStyle = 'rgba(255, 255, 255, .80)';
+                sourceCtx.lineWidth = 4;
+                for (let index = 0; index < 11; index += 1) {
+                    const y = 208 + index * 13;
+                    sourceCtx.beginPath();
+                    sourceCtx.moveTo(272, y);
+                    sourceCtx.lineTo(494, y + Math.sin(index) * 18);
+                    sourceCtx.stroke();
+                }
+
+                sourceCtx.fillStyle = 'rgba(10, 15, 24, .70)';
+                sourceCtx.font = '900 64px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif';
+                sourceCtx.fillText('K', 224, 150);
+                sourceCtx.fillStyle = 'rgba(255, 255, 255, .78)';
+                sourceCtx.font = '700 18px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif';
+                sourceCtx.fillText('smooth areas + sharp edges', 54, 340);
+                lastImageName = 'Sample image';
+                applyConvolution();
+            };
+
+            const drawUploadedImage = (image, name) => {
+                const scale = Math.min(maxImageWidth / image.naturalWidth, maxImageHeight / image.naturalHeight, 1);
+                const nextWidth = Math.max(1, Math.round(image.naturalWidth * scale));
+                const nextHeight = Math.max(1, Math.round(image.naturalHeight * scale));
+                sourceCanvas.width = nextWidth;
+                sourceCanvas.height = nextHeight;
+                outputCanvas.width = nextWidth;
+                outputCanvas.height = nextHeight;
+                sourceCtx.clearRect(0, 0, nextWidth, nextHeight);
+                sourceCtx.drawImage(image, 0, 0, nextWidth, nextHeight);
+                lastImageName = name || 'Custom image';
+                applyConvolution();
+            };
+
+            const applyConvolution = () => {
+                if (!sourceCanvas.width || !sourceCanvas.height) return;
+
+                const divisor = Number(divisorInput.value) || 1;
+                const bias = Number(biasInput.value) || 0;
+                const blend = Number(blendInput.value) / 100;
+                const widthPx = sourceCanvas.width;
+                const heightPx = sourceCanvas.height;
+                const input = sourceCtx.getImageData(0, 0, widthPx, heightPx);
+                const output = outputCtx.createImageData(widthPx, heightPx);
+                const radius = Math.floor(kernelSize / 2);
+                const src = input.data;
+                const dst = output.data;
+
+                for (let y = 0; y < heightPx; y += 1) {
+                    for (let x = 0; x < widthPx; x += 1) {
+                        let red = 0;
+                        let green = 0;
+                        let blue = 0;
+
+                        for (let ky = 0; ky < kernelSize; ky += 1) {
+                            const py = clamp(y + ky - radius, 0, heightPx - 1);
+
+                            for (let kx = 0; kx < kernelSize; kx += 1) {
+                                const px = clamp(x + kx - radius, 0, widthPx - 1);
+                                const sourceIndex = (py * widthPx + px) * 4;
+                                const weight = kernelValues[ky * kernelSize + kx];
+                                red += src[sourceIndex] * weight;
+                                green += src[sourceIndex + 1] * weight;
+                                blue += src[sourceIndex + 2] * weight;
+                            }
+                        }
+
+                        const index = (y * widthPx + x) * 4;
+                        const filteredRed = clamp(red / divisor + bias, 0, 255);
+                        const filteredGreen = clamp(green / divisor + bias, 0, 255);
+                        const filteredBlue = clamp(blue / divisor + bias, 0, 255);
+                        dst[index] = src[index] * (1 - blend) + filteredRed * blend;
+                        dst[index + 1] = src[index + 1] * (1 - blend) + filteredGreen * blend;
+                        dst[index + 2] = src[index + 2] * (1 - blend) + filteredBlue * blend;
+                        dst[index + 3] = src[index + 3];
+                    }
+                }
+
+                outputCtx.putImageData(output, 0, 0);
+                dirty = false;
+            };
+
+            const drawBackground = () => {
+                const bg = cssVar('--bg', '#1a1a16');
+                ctx.clearRect(0, 0, width, height);
+                ctx.fillStyle = bg;
+                ctx.fillRect(0, 0, width, height);
+
+                const glow = ctx.createRadialGradient(width * 0.44, height * 0.48, 0, width * 0.44, height * 0.48, Math.max(width, height) * 0.72);
+                glow.addColorStop(0, 'rgba(231, 73, 118, .13)');
+                glow.addColorStop(0.42, 'rgba(100, 245, 225, .06)');
+                glow.addColorStop(1, 'rgba(0, 0, 0, 0)');
+                ctx.fillStyle = glow;
+                ctx.fillRect(0, 0, width, height);
+
+                const gridSize = width < 760 ? 42 : 56;
+                ctx.strokeStyle = colorWithAlpha(cssVar('--muted', '#dadbe0'), 0.18);
+                ctx.lineWidth = 1;
+                for (let x = (frame * -0.018) % gridSize; x < width; x += gridSize) {
+                    ctx.globalAlpha = 0.10;
+                    ctx.beginPath();
+                    ctx.moveTo(x, 0);
+                    ctx.lineTo(x, height);
+                    ctx.stroke();
+                }
+                for (let y = 0; y < height; y += gridSize) {
+                    ctx.globalAlpha = 0.08;
+                    ctx.beginPath();
+                    ctx.moveTo(0, y);
+                    ctx.lineTo(width, y);
+                    ctx.stroke();
+                }
+                ctx.globalAlpha = 1;
+            };
+
+            const drawImagePanel = (imageCanvas, rect, label, color) => {
+                const text = cssVar('--text', '#e9d3b3');
+                const muted = cssVar('--muted', '#dadbe0');
+                const scale = Math.min(rect.w / imageCanvas.width, rect.h / imageCanvas.height);
+                const drawWidth = imageCanvas.width * scale;
+                const drawHeight = imageCanvas.height * scale;
+                const x = rect.x + (rect.w - drawWidth) / 2;
+                const y = rect.y + (rect.h - drawHeight) / 2;
+
+                ctx.fillStyle = colorWithAlpha(cssVar('--card', '#24231f'), 0.50);
+                ctx.strokeStyle = colorWithAlpha(color, 0.48);
+                ctx.lineWidth = 1.2;
+                ctx.beginPath();
+                ctx.roundRect(rect.x, rect.y, rect.w, rect.h, 18);
+                ctx.fill();
+                ctx.stroke();
+
+                ctx.drawImage(imageCanvas, x, y, drawWidth, drawHeight);
+
+                ctx.fillStyle = text;
+                ctx.font = '700 13px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif';
+                ctx.textAlign = 'left';
+                ctx.fillText(label, rect.x, rect.y - 12);
+                ctx.fillStyle = muted;
+                ctx.font = '500 11px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif';
+                ctx.fillText(`${imageCanvas.width} x ${imageCanvas.height}px`, rect.x, rect.y + rect.h + 18);
+            };
+
+            const drawKernelMini = (rect) => {
+                const accent = cssVar('--accent2', '#64f5e1');
+                const warm = cssVar('--accent', '#ffd025');
+                const muted = cssVar('--muted', '#dadbe0');
+                const text = cssVar('--text', '#e9d3b3');
+                const cell = Math.min(rect.w, rect.h) / kernelSize;
+                const startX = rect.x + (rect.w - cell * kernelSize) / 2;
+                const startY = rect.y + (rect.h - cell * kernelSize) / 2;
+                const maxAbs = Math.max(1, ...kernelValues.map(value => Math.abs(value)));
+
+                ctx.fillStyle = text;
+                ctx.font = '700 13px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif';
+                ctx.textAlign = 'left';
+                ctx.fillText('Kernel map', rect.x, rect.y - 12);
+
+                for (let y = 0; y < kernelSize; y += 1) {
+                    for (let x = 0; x < kernelSize; x += 1) {
+                        const value = kernelValues[y * kernelSize + x];
+                        const strength = Math.min(0.85, Math.abs(value) / maxAbs * 0.85 + 0.08);
+                        ctx.fillStyle = value >= 0 ? colorWithAlpha(accent, strength) : colorWithAlpha(warm, strength);
+                        ctx.fillRect(startX + x * cell + 2, startY + y * cell + 2, cell - 4, cell - 4);
+                        ctx.strokeStyle = colorWithAlpha(muted, 0.28);
+                        ctx.strokeRect(startX + x * cell + 2, startY + y * cell + 2, cell - 4, cell - 4);
+                    }
+                }
+            };
+
+            const draw = (now = 0) => {
+                frame = now;
+                if (dirty) applyConvolution();
+
+                const accent = cssVar('--accent2', '#64f5e1');
+                const hot = cssVar('--accent3', '#e74976');
+                const left = width < 760 ? 18 : 24;
+                const available = Math.max(220, width - left * 2);
+                const top = width < 760 ? 42 : 54;
+                const gap = width < 760 ? 46 : 28;
+
+                drawBackground();
+
+                if (width < 760) {
+                    const panelHeight = Math.min(190, Math.max(130, (height - top - 180) / 2));
+                    const kernelTop = top + (panelHeight + gap) * 2;
+                    drawImagePanel(sourceCanvas, { x: left, y: top, w: available, h: panelHeight }, 'Original image', accent);
+                    drawImagePanel(outputCanvas, { x: left, y: top + panelHeight + gap, w: available, h: panelHeight }, 'Convolved image', hot);
+                    drawKernelMini({ x: left, y: kernelTop, w: available, h: Math.max(74, height - kernelTop - 28) });
+                } else {
+                    const panelHeight = Math.min(360, Math.max(250, height * 0.56));
+                    const half = (available - gap) / 2;
+                    const kernelTop = top + panelHeight + 74;
+                    drawImagePanel(sourceCanvas, { x: left, y: top, w: half, h: panelHeight }, 'Original image', accent);
+                    drawImagePanel(outputCanvas, { x: left + half + gap, y: top, w: half, h: panelHeight }, 'Convolved image', hot);
+                    drawKernelMini({ x: left, y: kernelTop, w: Math.min(320, available), h: Math.max(96, height - kernelTop - 28) });
+                }
+
+                requestAnimationFrame(draw);
+            };
+
+            sizeButtons.forEach(button => {
+                button.addEventListener('click', () => chooseSize(Number(button.dataset.size)));
+            });
+
+            presetButtons.forEach(button => {
+                button.addEventListener('click', () => applyPreset(button.dataset.preset));
+            });
+
+            [divisorInput, biasInput, blendInput].forEach(input => {
+                input.addEventListener('input', () => {
+                    setActivePreset('custom');
+                    syncLabels();
+                    applyConvolution();
+                });
+            });
+
+            sampleButton.addEventListener('click', () => {
+                uploadInput.value = '';
+                drawSampleImage();
+                syncLabels();
+            });
+
+            resetButton.addEventListener('click', () => {
+                uploadInput.value = '';
+                drawSampleImage();
+                applyPreset('identity');
+            });
+
+            uploadInput.addEventListener('change', () => {
+                const file = uploadInput.files && uploadInput.files[0];
+                if (!file) return;
+
+                const image = new Image();
+                const url = URL.createObjectURL(file);
+                image.addEventListener('load', () => {
+                    drawUploadedImage(image, file.name);
+                    URL.revokeObjectURL(url);
+                    syncLabels();
+                }, { once: true });
+                image.src = url;
+            });
+
+            window.addEventListener('resize', resize);
+            const observer = new MutationObserver(() => draw(performance.now()));
+            observer.observe(document.documentElement, {
+                attributes: true,
+                attributeFilter: ['data-theme']
+            });
+
+            resize();
+            applyPreset('identity');
+            drawSampleImage();
+            requestAnimationFrame(draw);
+        });
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,588 @@
+<!doctype html>
+<html lang="en" data-palette="triad">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Fourier Transform Playground · Playground · Lorenzo Marinelli</title>
+    <meta name="description"
+        content="Interactive Fourier transform playground by Lorenzo Marinelli - add sine waves one at a time and hear how they change the sound." />
+    <link rel="stylesheet" href="/assets/style.css" />
+
+    <link rel="alternate" hreflang="en" href="/playground/fourier/" />
+    <link rel="icon" href="/assets/favicon.ico" sizes="any">
+    <link rel="icon" type="image/png" href="/assets/favicon-32.png" sizes="32x32">
+    <link rel="icon" type="image/png" href="/assets/favicon-16.png" sizes="16x16">
+    <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
+</head>
+
+<body class="fourier-page">
+    <div class="wrap fourier-wrap">
+        <nav class="nav">
+            <a class="nav__brand" href="/" aria-label="Home">LM</a>
+
+            <div class="lang" aria-label="Language">
+                <a class="lang__btn is-active" href="/playground/fourier/" aria-label="English" title="English">
+                    <span class="flag" aria-hidden="true">🇬🇧</span>
+                    <span class="sr-only" lang="en">English</span>
+                </a>
+                <a class="lang__btn" href="/it/playground/" aria-label="Italiano" title="Italiano">
+                    <span class="flag" aria-hidden="true">🇮🇹</span>
+                    <span class="sr-only" lang="it">Italiano</span>
+                </a>
+            </div>
+
+            <button class="theme-toggle" type="button" data-theme-toggle aria-label="Toggle theme" title="Toggle theme">
+                <span data-theme-icon aria-hidden="true">◐</span>
+            </button>
+
+            <div class="nav__links">
+                <a href="/">Home</a>
+                <a href="/about/">About</a>
+                <a href="/projects/">Projects</a>
+                <a href="/notes/">Notes</a>
+                <a href="/contact/">Contact</a>
+                <a aria-current="page" href="/playground/">Playground</a>
+            </div>
+        </nav>
+
+        <header class="hero fourier-hero">
+            <p class="kicker">Playground experiment</p>
+            <h1>Fourier Transform Playground</h1>
+            <p class="lead hero-line">
+                Add sine waves one by one, then watch the time waveform and frequency spectrum change as the sound
+                becomes richer.
+            </p>
+
+            <div class="hero__cta">
+                <a class="btn btn--ghost" href="/playground/">Back to Playground</a>
+            </div>
+        </header>
+
+        <main class="fourier-window" aria-label="Fourier waveform and spectrum canvas">
+            <div class="fourier-hint">
+                <span>Waveform above, spectrum below</span>
+                <small>each bar is one sine component in the mix</small>
+            </div>
+        </main>
+
+        <footer class="footer">
+            <small>© 2026 Lorenzo Marinelli</small>
+        </footer>
+    </div>
+
+    <aside class="fourier-hud" data-fourier-hud>
+        <div class="fourier-hud__top">
+            <div>
+                <h2>Fourier mixer</h2>
+                <p data-fourier-status>One sine wave is loaded. Add more partials to reshape the sound.</p>
+            </div>
+            <div class="fourier-actions">
+                <button class="btn" type="button" data-fourier-play>Hear mix</button>
+                <button class="mini-btn" type="button" data-fourier-add>Add sine</button>
+                <button class="mini-btn" type="button" data-fourier-clear>Clear</button>
+            </div>
+        </div>
+
+        <div class="fourier-global-controls">
+            <label class="range-control">
+                <span>Fundamental <strong data-fourier-fundamental-value>220 Hz</strong></span>
+                <input type="range" min="80" max="440" value="220" step="1" data-fourier-fundamental>
+            </label>
+
+            <label class="range-control">
+                <span>Volume <strong data-fourier-volume-value>45%</strong></span>
+                <input type="range" min="0" max="80" value="45" step="1" data-fourier-volume>
+            </label>
+        </div>
+
+        <div class="fourier-components" data-fourier-components aria-label="Sine components"></div>
+
+        <p class="fourier-note">
+            Harmonic 1 is the base pitch. Higher harmonics add brightness; phase changes the shape without moving the
+            spectrum bar.
+        </p>
+    </aside>
+
+    <script src="/assets/script.js" defer></script>
+
+    <script>
+        window.addEventListener('load', () => {
+            document.querySelectorAll('.network-bg').forEach(canvas => canvas.remove());
+
+            const canvas = document.createElement('canvas');
+            canvas.className = 'network-bg fourier-bg-canvas';
+            canvas.setAttribute('aria-hidden', 'true');
+            document.body.prepend(canvas);
+
+            const ctx = canvas.getContext('2d');
+            const root = document.documentElement;
+
+            const status = document.querySelector('[data-fourier-status]');
+            const playButton = document.querySelector('[data-fourier-play]');
+            const addButton = document.querySelector('[data-fourier-add]');
+            const clearButton = document.querySelector('[data-fourier-clear]');
+            const fundamentalInput = document.querySelector('[data-fourier-fundamental]');
+            const volumeInput = document.querySelector('[data-fourier-volume]');
+            const fundamentalValue = document.querySelector('[data-fourier-fundamental-value]');
+            const volumeValue = document.querySelector('[data-fourier-volume-value]');
+            const componentList = document.querySelector('[data-fourier-components]');
+
+            const partialLimit = 16;
+            const palette = ['#64f5e1', '#ffd025', '#e74976', '#b7a1ff', '#72d572', '#ff9f6e'];
+            let width = 1;
+            let height = 1;
+            let time = 0;
+            let nextId = 1;
+            let components = [];
+            let audioContext = null;
+            let oscillator = null;
+            let masterGain = null;
+            let isPlaying = false;
+
+            const cssVar = (name, fallback) =>
+                getComputedStyle(root).getPropertyValue(name).trim() || fallback;
+
+            const clamp = (value, min, max) => Math.min(max, Math.max(min, value));
+            const fundamental = () => Number(fundamentalInput.value);
+            const volume = () => Number(volumeInput.value) / 100;
+            const componentColor = (index) => palette[index % palette.length];
+
+            const resize = () => {
+                const dpr = Math.min(window.devicePixelRatio || 1, 2);
+                width = window.innerWidth;
+                height = window.innerHeight;
+                canvas.width = Math.floor(width * dpr);
+                canvas.height = Math.floor(height * dpr);
+                canvas.style.width = `${width}px`;
+                canvas.style.height = `${height}px`;
+                ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+            };
+
+            const activeComponents = () => components.filter(component => !component.muted && component.amplitude > 0);
+
+            const arraysForComponents = () => {
+                const real = new Float32Array(partialLimit + 1);
+                const imag = new Float32Array(partialLimit + 1);
+                let total = 0;
+
+                activeComponents().forEach(component => {
+                    const harmonic = clamp(Math.round(component.harmonic), 1, partialLimit);
+                    const phase = component.phase / 180 * Math.PI;
+                    real[harmonic] += component.amplitude * Math.sin(phase);
+                    imag[harmonic] += component.amplitude * Math.cos(phase);
+                    total += component.amplitude;
+                });
+
+                return { real, imag, total };
+            };
+
+            const sampleAt = (theta) => {
+                let value = 0;
+                activeComponents().forEach(component => {
+                    value += component.amplitude * Math.sin(component.harmonic * theta + component.phase / 180 * Math.PI);
+                });
+                return value;
+            };
+
+            const syncGlobalLabels = () => {
+                fundamentalValue.textContent = `${fundamental()} Hz`;
+                volumeValue.textContent = `${Math.round(volume() * 100)}%`;
+
+                componentList.querySelectorAll('[data-frequency-label]').forEach(label => {
+                    const id = Number(label.closest('[data-component-id]').dataset.componentId);
+                    const component = components.find(item => item.id === id);
+                    if (component) label.textContent = `${Math.round(component.harmonic * fundamental())} Hz`;
+                });
+            };
+
+            const setStatus = () => {
+                const count = activeComponents().length;
+                const noun = count === 1 ? 'sine wave' : 'sine waves';
+                if (isPlaying) {
+                    status.textContent = count ? `Listening to ${count} ${noun}.` : 'The mix is silent.';
+                } else {
+                    status.textContent = count ? `${count} ${noun} in the mix. Press Hear mix to listen.` : 'Add a sine wave to start building a sound.';
+                }
+            };
+
+            const makePeriodicWave = () => {
+                if (!audioContext) return null;
+
+                const { real, imag, total } = arraysForComponents();
+                if (total <= 0) imag[1] = 0.0001;
+                return audioContext.createPeriodicWave(real, imag, { disableNormalization: false });
+            };
+
+            const stopOscillator = () => {
+                if (!oscillator) return;
+
+                try {
+                    oscillator.stop();
+                } catch (error) {
+                    // The oscillator may already be stopped by the browser.
+                }
+                oscillator.disconnect();
+                oscillator = null;
+            };
+
+            const refreshAudio = () => {
+                if (!audioContext || !oscillator || !masterGain) return;
+
+                const now = audioContext.currentTime;
+                const { total } = arraysForComponents();
+                oscillator.frequency.setTargetAtTime(fundamental(), now, 0.015);
+                oscillator.setPeriodicWave(makePeriodicWave());
+                masterGain.gain.setTargetAtTime(isPlaying && total > 0 ? volume() : 0, now, 0.018);
+            };
+
+            const startAudio = async () => {
+                const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+                if (!AudioContextClass) {
+                    status.textContent = 'Web Audio is not available in this browser.';
+                    return;
+                }
+
+                if (!audioContext) {
+                    audioContext = new AudioContextClass();
+                    masterGain = audioContext.createGain();
+                    masterGain.gain.value = 0;
+                    masterGain.connect(audioContext.destination);
+                }
+
+                stopOscillator();
+                oscillator = audioContext.createOscillator();
+                oscillator.frequency.value = fundamental();
+                oscillator.setPeriodicWave(makePeriodicWave());
+                oscillator.connect(masterGain);
+                oscillator.start();
+
+                await audioContext.resume();
+                isPlaying = true;
+                playButton.textContent = 'Pause';
+                refreshAudio();
+                setStatus();
+            };
+
+            const pauseAudio = () => {
+                isPlaying = false;
+                playButton.textContent = 'Hear mix';
+                if (masterGain && audioContext) {
+                    masterGain.gain.setTargetAtTime(0, audioContext.currentTime, 0.018);
+                }
+                stopOscillator();
+                setStatus();
+            };
+
+            const updateAll = () => {
+                syncGlobalLabels();
+                refreshAudio();
+                setStatus();
+            };
+
+            const nextHarmonic = () => {
+                const used = new Set(components.map(component => Math.round(component.harmonic)));
+                for (let harmonic = 1; harmonic <= partialLimit; harmonic += 1) {
+                    if (!used.has(harmonic)) return harmonic;
+                }
+                return clamp(components.length + 1, 1, partialLimit);
+            };
+
+            const addComponent = (settings = {}) => {
+                const harmonic = settings.harmonic || nextHarmonic();
+                components.push({
+                    id: nextId,
+                    harmonic,
+                    amplitude: settings.amplitude ?? clamp(0.85 / harmonic, 0.16, 0.85),
+                    phase: settings.phase ?? 0,
+                    muted: false
+                });
+                nextId += 1;
+                renderComponents();
+                updateAll();
+            };
+
+            const renderComponents = () => {
+                componentList.innerHTML = '';
+
+                if (!components.length) {
+                    const empty = document.createElement('p');
+                    empty.className = 'fourier-empty';
+                    empty.textContent = 'No sine waves yet.';
+                    componentList.appendChild(empty);
+                    return;
+                }
+
+                components.forEach((component, index) => {
+                    const row = document.createElement('article');
+                    row.className = 'fourier-component';
+                    row.dataset.componentId = String(component.id);
+                    row.style.setProperty('--component-color', componentColor(index));
+                    row.innerHTML = `
+                        <div class="fourier-component__head">
+                            <div>
+                                <strong>Sine ${index + 1}</strong>
+                                <span><span data-frequency-label>${Math.round(component.harmonic * fundamental())} Hz</span></span>
+                            </div>
+                            <button class="mini-btn" type="button" data-remove>Remove</button>
+                        </div>
+                        <label class="range-control">
+                            <span>Harmonic <strong data-harmonic-value>${component.harmonic}</strong></span>
+                            <input type="range" min="1" max="${partialLimit}" value="${component.harmonic}" step="1" data-harmonic>
+                        </label>
+                        <label class="range-control">
+                            <span>Amplitude <strong data-amplitude-value>${Math.round(component.amplitude * 100)}%</strong></span>
+                            <input type="range" min="0" max="100" value="${Math.round(component.amplitude * 100)}" step="1" data-amplitude>
+                        </label>
+                        <label class="range-control">
+                            <span>Phase <strong data-phase-value>${component.phase} deg</strong></span>
+                            <input type="range" min="0" max="360" value="${component.phase}" step="5" data-phase>
+                        </label>
+                    `;
+
+                    const harmonicInput = row.querySelector('[data-harmonic]');
+                    const harmonicValue = row.querySelector('[data-harmonic-value]');
+                    const amplitudeInput = row.querySelector('[data-amplitude]');
+                    const amplitudeValue = row.querySelector('[data-amplitude-value]');
+                    const phaseInput = row.querySelector('[data-phase]');
+                    const phaseValue = row.querySelector('[data-phase-value]');
+                    const frequencyLabel = row.querySelector('[data-frequency-label]');
+
+                    harmonicInput.addEventListener('input', () => {
+                        component.harmonic = Number(harmonicInput.value);
+                        harmonicValue.textContent = String(component.harmonic);
+                        frequencyLabel.textContent = `${Math.round(component.harmonic * fundamental())} Hz`;
+                        updateAll();
+                    });
+
+                    amplitudeInput.addEventListener('input', () => {
+                        component.amplitude = Number(amplitudeInput.value) / 100;
+                        amplitudeValue.textContent = `${Math.round(component.amplitude * 100)}%`;
+                        updateAll();
+                    });
+
+                    phaseInput.addEventListener('input', () => {
+                        component.phase = Number(phaseInput.value);
+                        phaseValue.textContent = `${component.phase} deg`;
+                        updateAll();
+                    });
+
+                    row.querySelector('[data-remove]').addEventListener('click', () => {
+                        components = components.filter(item => item.id !== component.id);
+                        renderComponents();
+                        updateAll();
+                    });
+
+                    componentList.appendChild(row);
+                });
+            };
+
+            const drawBackground = () => {
+                const bg = cssVar('--bg', '#1a1a16');
+                ctx.clearRect(0, 0, width, height);
+                ctx.fillStyle = bg;
+                ctx.fillRect(0, 0, width, height);
+
+                const glow = ctx.createRadialGradient(width * 0.38, height * 0.45, 0, width * 0.38, height * 0.45, Math.max(width, height) * 0.7);
+                glow.addColorStop(0, 'rgba(100, 245, 225, .14)');
+                glow.addColorStop(0.45, 'rgba(255, 208, 37, .055)');
+                glow.addColorStop(1, 'rgba(0, 0, 0, 0)');
+                ctx.fillStyle = glow;
+                ctx.fillRect(0, 0, width, height);
+
+                ctx.strokeStyle = colorMix(cssVar('--muted', '#dadbe0'), 0.18);
+                ctx.lineWidth = 1;
+                const grid = width < 760 ? 52 : 72;
+                for (let x = (time * -0.018) % grid; x < width; x += grid) {
+                    ctx.globalAlpha = 0.12;
+                    ctx.beginPath();
+                    ctx.moveTo(x, 0);
+                    ctx.lineTo(x, height);
+                    ctx.stroke();
+                }
+                for (let y = 0; y < height; y += grid) {
+                    ctx.globalAlpha = 0.09;
+                    ctx.beginPath();
+                    ctx.moveTo(0, y);
+                    ctx.lineTo(width, y);
+                    ctx.stroke();
+                }
+                ctx.globalAlpha = 1;
+            };
+
+            const colorMix = (color, alpha) => {
+                if (color.startsWith('#') && color.length === 7) {
+                    const r = parseInt(color.slice(1, 3), 16);
+                    const g = parseInt(color.slice(3, 5), 16);
+                    const b = parseInt(color.slice(5, 7), 16);
+                    return `rgba(${r}, ${g}, ${b}, ${alpha})`;
+                }
+                return color;
+            };
+
+            const drawWaveform = () => {
+                const accent = cssVar('--accent2', '#64f5e1');
+                const warm = cssVar('--accent', '#ffd025');
+                const text = cssVar('--text', '#e9d3b3');
+                const muted = cssVar('--muted', '#dadbe0');
+                const top = height * (width < 760 ? 0.27 : 0.25);
+                const bandHeight = height * (width < 760 ? 0.30 : 0.34);
+                const centerY = top + bandHeight / 2;
+                const amp = Math.min(150, bandHeight * 0.42);
+                const total = Math.max(1, activeComponents().reduce((sum, component) => sum + component.amplitude, 0));
+                const cycles = 2.15;
+                const offset = time * 0.0012;
+
+                ctx.globalAlpha = 0.55;
+                ctx.strokeStyle = colorMix(muted, 0.38);
+                ctx.lineWidth = 1;
+                ctx.beginPath();
+                ctx.moveTo(0, centerY);
+                ctx.lineTo(width, centerY);
+                ctx.stroke();
+
+                components.forEach((component, index) => {
+                    if (component.amplitude <= 0) return;
+
+                    ctx.globalAlpha = 0.18;
+                    ctx.strokeStyle = componentColor(index);
+                    ctx.lineWidth = 1.1;
+                    ctx.beginPath();
+                    for (let x = 0; x <= width; x += 4) {
+                        const theta = (x / width * Math.PI * 2 * cycles) + offset;
+                        const value = component.amplitude * Math.sin(component.harmonic * theta + component.phase / 180 * Math.PI);
+                        const y = centerY - value / total * amp;
+                        if (x === 0) ctx.moveTo(x, y);
+                        else ctx.lineTo(x, y);
+                    }
+                    ctx.stroke();
+                });
+
+                ctx.globalAlpha = 0.96;
+                ctx.strokeStyle = accent;
+                ctx.lineWidth = 3;
+                ctx.beginPath();
+                for (let x = 0; x <= width; x += 3) {
+                    const theta = (x / width * Math.PI * 2 * cycles) + offset;
+                    const y = centerY - sampleAt(theta) / total * amp;
+                    if (x === 0) ctx.moveTo(x, y);
+                    else ctx.lineTo(x, y);
+                }
+                ctx.stroke();
+
+                ctx.globalAlpha = 1;
+                ctx.fillStyle = text;
+                ctx.font = '700 13px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif';
+                ctx.textAlign = 'left';
+                ctx.fillText('Time waveform', 24, top + 18);
+                ctx.fillStyle = muted;
+                ctx.font = '500 12px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif';
+                ctx.fillText(`${activeComponents().length} partials at ${fundamental()} Hz base pitch`, 24, top + 38);
+
+                ctx.globalAlpha = 0.72;
+                ctx.fillStyle = warm;
+                ctx.beginPath();
+                ctx.arc(width < 760 ? width - 34 : width * 0.58, centerY, 4, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.globalAlpha = 1;
+            };
+
+            const drawSpectrum = () => {
+                const text = cssVar('--text', '#e9d3b3');
+                const muted = cssVar('--muted', '#dadbe0');
+                const hot = cssVar('--accent3', '#e74976');
+                const { real, imag } = arraysForComponents();
+                const left = width < 760 ? 20 : 28;
+                const right = width < 760 ? 20 : Math.max(420, width * 0.35);
+                const chartWidth = Math.max(220, width - left - right);
+                const chartBottom = height * (width < 760 ? 0.80 : 0.82);
+                const chartHeight = height * (width < 760 ? 0.22 : 0.25);
+                const barGap = width < 760 ? 5 : 8;
+                const barWidth = Math.max(9, (chartWidth - barGap * (partialLimit - 1)) / partialLimit);
+                const maxMagnitude = Math.max(0.08, ...Array.from({ length: partialLimit }, (_, index) => {
+                    const harmonic = index + 1;
+                    return Math.hypot(real[harmonic], imag[harmonic]);
+                }));
+
+                ctx.globalAlpha = 0.48;
+                ctx.strokeStyle = colorMix(muted, 0.36);
+                ctx.lineWidth = 1;
+                ctx.beginPath();
+                ctx.moveTo(left, chartBottom);
+                ctx.lineTo(left + chartWidth, chartBottom);
+                ctx.stroke();
+
+                for (let harmonic = 1; harmonic <= partialLimit; harmonic += 1) {
+                    const magnitude = Math.hypot(real[harmonic], imag[harmonic]);
+                    const x = left + (harmonic - 1) * (barWidth + barGap);
+                    const h = magnitude / maxMagnitude * chartHeight;
+                    const componentIndex = components.findIndex(component => Math.round(component.harmonic) === harmonic);
+                    const color = componentIndex >= 0 ? componentColor(componentIndex) : hot;
+
+                    ctx.globalAlpha = magnitude > 0 ? 0.86 : 0.16;
+                    ctx.fillStyle = color;
+                    ctx.fillRect(x, chartBottom - h, barWidth, h);
+
+                    if (harmonic <= 8 || harmonic % 2 === 0) {
+                        ctx.globalAlpha = 0.64;
+                        ctx.fillStyle = muted;
+                        ctx.font = '500 10px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif';
+                        ctx.textAlign = 'center';
+                        ctx.fillText(String(harmonic), x + barWidth / 2, chartBottom + 15);
+                    }
+                }
+
+                ctx.globalAlpha = 1;
+                ctx.fillStyle = text;
+                ctx.font = '700 13px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif';
+                ctx.textAlign = 'left';
+                ctx.fillText('Frequency spectrum', left, chartBottom - chartHeight - 18);
+                ctx.fillStyle = muted;
+                ctx.font = '500 12px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif';
+                ctx.fillText('harmonic number', left, chartBottom + 34);
+            };
+
+            const draw = (now = 0) => {
+                time = now;
+                drawBackground();
+                drawWaveform();
+                drawSpectrum();
+                requestAnimationFrame(draw);
+            };
+
+            playButton.addEventListener('click', () => {
+                if (isPlaying) pauseAudio();
+                else startAudio();
+            });
+
+            addButton.addEventListener('click', () => addComponent());
+
+            clearButton.addEventListener('click', () => {
+                components = [];
+                renderComponents();
+                updateAll();
+            });
+
+            fundamentalInput.addEventListener('input', updateAll);
+            volumeInput.addEventListener('input', updateAll);
+            window.addEventListener('resize', resize);
+            document.addEventListener('visibilitychange', () => {
+                if (document.hidden) pauseAudio();
+            });
+
+            const observer = new MutationObserver(() => {
+                draw(performance.now());
+            });
+            observer.observe(document.documentElement, {
+                attributes: true,
+                attributeFilter: ['data-theme']
+            });
+
+            resize();
+            addComponent({ harmonic: 1, amplitude: 0.85, phase: 0 });
+            requestAnimationFrame(draw);
+        });
+    </script>
+</body>
+
+</html>

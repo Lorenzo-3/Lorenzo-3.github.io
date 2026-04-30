@@ -163,7 +163,9 @@
 
     const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-    if (!reduceMotion && window.innerWidth >= 700) {
+    const forceNetworkBackground = document.body.classList.contains('conv-page');
+
+    if (!reduceMotion && (window.innerWidth >= 700 || forceNetworkBackground)) {
         const canvas = document.createElement('canvas');
         canvas.className = 'network-bg';
         canvas.setAttribute('aria-hidden', 'true');

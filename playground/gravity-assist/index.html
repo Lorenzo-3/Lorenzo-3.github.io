@@ -1,0 +1,632 @@
+<!doctype html>
+<html lang="en" data-palette="triad">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Gravity Assist Sandbox · Playground · Lorenzo Marinelli</title>
+    <meta name="description"
+        content="Interactive 2D gravity-assist sandbox by Lorenzo Marinelli - launch a probe through a miniature solar system and try to reach a target planet." />
+    <link rel="stylesheet" href="/assets/style.css" />
+
+    <link rel="alternate" hreflang="en" href="/playground/gravity-assist/" />
+    <link rel="icon" href="/assets/favicon.ico" sizes="any">
+    <link rel="icon" type="image/png" href="/assets/favicon-32.png" sizes="32x32">
+    <link rel="icon" type="image/png" href="/assets/favicon-16.png" sizes="16x16">
+    <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
+</head>
+
+<body class="gravity-page">
+    <div class="wrap gravity-wrap">
+        <nav class="nav">
+            <a class="nav__brand" href="/" aria-label="Home">LM</a>
+
+            <div class="lang" aria-label="Language">
+                <a class="lang__btn is-active" href="/playground/gravity-assist/" aria-label="English" title="English">
+                    <span class="flag" aria-hidden="true">🇬🇧</span>
+                    <span class="sr-only" lang="en">English</span>
+                </a>
+                <a class="lang__btn" href="/it/playground/" aria-label="Italiano" title="Italiano">
+                    <span class="flag" aria-hidden="true">🇮🇹</span>
+                    <span class="sr-only" lang="it">Italiano</span>
+                </a>
+            </div>
+
+            <button class="theme-toggle" type="button" data-theme-toggle aria-label="Toggle theme" title="Toggle theme">
+                <span data-theme-icon aria-hidden="true">◐</span>
+            </button>
+
+            <div class="nav__links">
+                <a href="/">Home</a>
+                <a href="/about/">About</a>
+                <a href="/projects/">Projects</a>
+                <a href="/notes/">Notes</a>
+                <a href="/contact/">Contact</a>
+                <a aria-current="page" href="/playground/">Playground</a>
+            </div>
+        </nav>
+
+        <header class="hero gravity-hero">
+            <p class="kicker">Playground experiment</p>
+            <h1>Gravity Assist Sandbox</h1>
+            <p class="lead hero-line">
+                Launch a probe through a small 2D solar system. Tune the launch and planetary gravity,
+                then try to bend the trajectory toward the target planet.
+            </p>
+
+            <div class="hero__cta">
+                <a class="btn btn--ghost" href="/playground/">← Back to Playground</a>
+            </div>
+        </header>
+
+        <main class="gravity-window" aria-label="Gravity assist simulation area">
+            <div class="gravity-hint">
+                <span>Aim from the cyan planet</span>
+                <small>move the pointer, then launch toward the red target</small>
+            </div>
+        </main>
+
+        <p style="margin-bottom:9cm;"></p>
+
+
+        <footer class="footer">
+            <small>© 2026 Lorenzo Marinelli</small>
+        </footer>
+    </div>
+
+    <aside class="gravity-hud gravity-stats-panel" data-gravity-hud>
+        <div>
+            <h2>Probe stats</h2>
+            <div class="gravity-status" data-gravity-status>Aim, then launch.</div>
+        </div>
+
+        <div class="gravity-metrics">
+            <div>
+                <span>Distance</span>
+                <strong data-gravity-distance>--</strong>
+            </div>
+            <div>
+                <span>Closest</span>
+                <strong data-gravity-closest>--</strong>
+            </div>
+            <div>
+                <span>Flight time</span>
+                <strong data-gravity-flight>0.0s</strong>
+            </div>
+        </div>
+
+    </aside>
+
+    <aside class="gravity-hud gravity-controls-panel">
+        <h2>Probe controls</h2>
+
+        <div class="gravity-actions">
+            <button class="btn" type="button" data-gravity-launch>Launch</button>
+            <button class="mini-btn" type="button" data-gravity-reset>Reset</button>
+            <button class="mini-btn" type="button" data-gravity-alignment>New alignment</button>
+        </div>
+
+        <details class="gravity-settings">
+            <summary>Settings</summary>
+
+            <div class="gravity-controls" aria-label="Gravity assist controls">
+                <label class="range-control">
+                    <span>Initial velocity <strong data-gravity-velocity-value>205</strong></span>
+                    <input type="range" min="100" max="400" value="145" step="5" data-gravity-velocity>
+                </label>
+
+                <label class="range-control">
+                    <span>Planet mass <strong data-gravity-mass-value>25.0×</strong></span>
+                    <input type="range" min="15" max="50" value="25" step="1" data-gravity-mass>
+                </label>
+
+                <label class="range-control">
+                    <span>Time scale <strong data-gravity-time-value>1.0×</strong></span>
+                    <input type="range" min="0.2" max="4" value="1" step="0.1" data-gravity-time>
+                </label>
+
+                <label class="range-control">
+                    <span>Trail length <strong data-gravity-trail-value>260</strong></span>
+                    <input type="range" min="40" max="900" value="260" step="20" data-gravity-trail>
+                </label>
+            </div>
+        </details>
+    </aside>
+
+    <script src="/assets/script.js" defer></script>
+
+    <script>
+        window.addEventListener('load', () => {
+            document.querySelectorAll('.network-bg').forEach(canvas => canvas.remove());
+
+            const canvas = document.createElement('canvas');
+            canvas.className = 'network-bg gravity-bg-canvas is-aiming';
+            canvas.setAttribute('aria-hidden', 'true');
+            document.body.prepend(canvas);
+
+            const ctx = canvas.getContext('2d');
+            const root = document.documentElement;
+
+            const velocityInput = document.querySelector('[data-gravity-velocity]');
+            const massInput = document.querySelector('[data-gravity-mass]');
+            const timeInput = document.querySelector('[data-gravity-time]');
+            const trailInput = document.querySelector('[data-gravity-trail]');
+            const velocityValue = document.querySelector('[data-gravity-velocity-value]');
+            const massValue = document.querySelector('[data-gravity-mass-value]');
+            const timeValue = document.querySelector('[data-gravity-time-value]');
+            const trailValue = document.querySelector('[data-gravity-trail-value]');
+            const status = document.querySelector('[data-gravity-status]');
+            const distanceText = document.querySelector('[data-gravity-distance]');
+            const closestText = document.querySelector('[data-gravity-closest]');
+            const flightText = document.querySelector('[data-gravity-flight]');
+            const launchButton = document.querySelector('[data-gravity-launch]');
+            const resetButton = document.querySelector('[data-gravity-reset]');
+            const alignmentButton = document.querySelector('[data-gravity-alignment]');
+
+            let width = 1;
+            let height = 1;
+            let center = { x: 0, y: 0 };
+            let simTime = 0;
+            let aimAngle = -0.45;
+            let closestDistance = Infinity;
+            let lastFrame = 0;
+            let stars = [];
+
+            const probe = {
+                active: false,
+                reached: false,
+                ended: false,
+                x: 0,
+                y: 0,
+                vx: 0,
+                vy: 0,
+                flight: 0,
+                trail: []
+            };
+
+            const cssVar = (name, fallback) =>
+                getComputedStyle(root).getPropertyValue(name).trim() || fallback;
+
+            const resize = () => {
+                const dpr = Math.min(window.devicePixelRatio || 1, 2);
+                width = window.innerWidth;
+                height = window.innerHeight;
+                canvas.width = Math.floor(width * dpr);
+                canvas.height = Math.floor(height * dpr);
+                canvas.style.width = `${width}px`;
+                canvas.style.height = `${height}px`;
+                ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+                center = {
+                    x: width * (width < 760 ? 0.50 : 0.53),
+                    y: height * (width < 760 ? 0.43 : 0.50)
+                };
+                stars = Array.from({ length: Math.round(Math.min(180, Math.max(80, width * height / 8000))) }, () => ({
+                    x: Math.random() * width,
+                    y: Math.random() * height,
+                    r: Math.random() * 1.3 + 0.25,
+                    a: Math.random() * 0.6 + 0.2
+                }));
+            };
+
+            const controls = () => ({
+                velocity: Number(velocityInput.value),
+                mass: Number(massInput.value),
+                timeScale: Number(timeInput.value),
+                trailLength: Number(trailInput.value)
+            });
+
+            const syncLabels = () => {
+                const settings = controls();
+                velocityValue.textContent = String(settings.velocity);
+                massValue.textContent = `${settings.mass.toFixed(1)}×`;
+                timeValue.textContent = `${settings.timeScale.toFixed(1)}×`;
+                trailValue.textContent = String(settings.trailLength);
+            };
+
+            const solarScale = () => Math.min(width, height) * (width < 720 ? 0.44 : 0.48);
+
+            const planets = () => {
+                const scale = solarScale();
+                const mass = controls().mass;
+                const defs = [
+                    {
+                        key: 'inner',
+                        name: 'Inner',
+                        orbit: scale * 0.32,
+                        baseAngle: 0.7,
+                        speed: 0.48,
+                        gm: 5200 * mass,
+                        radius: 6,
+                        color: cssVar('--muted', '#dadbe0')
+                    },
+                    {
+                        key: 'launch',
+                        name: 'Launch',
+                        orbit: scale * 0.66,
+                        fixedAngle: Math.PI,
+                        speed: 0,
+                        gm: 10200 * mass,
+                        radius: 9,
+                        color: cssVar('--accent2', '#64f5e1')
+                    },
+                    {
+                        key: 'assist',
+                        name: 'Assist',
+                        orbit: scale * 0.74,
+                        baseAngle: 4.15,
+                        speed: 0.21,
+                        gm: 32000 * mass,
+                        radius: 14,
+                        color: cssVar('--accent', '#ffd025')
+                    },
+                    {
+                        key: 'target',
+                        name: 'Target',
+                        orbit: scale * 0.9,
+                        fixedAngle: 0,
+                        speed: 0,
+                        gm: 22000 * mass,
+                        radius: 12,
+                        color: cssVar('--accent3', '#e74976')
+                    }
+                ];
+
+                return defs.map(planet => {
+                    const angle = Number.isFinite(planet.fixedAngle)
+                        ? planet.fixedAngle
+                        : planet.baseAngle + simTime * planet.speed;
+                    return {
+                        ...planet,
+                        angle,
+                        x: center.x + Math.cos(angle) * planet.orbit,
+                        y: center.y + Math.sin(angle) * planet.orbit,
+                        vx: Number.isFinite(planet.fixedAngle) ? 0 : -Math.sin(angle) * planet.orbit * planet.speed,
+                        vy: Number.isFinite(planet.fixedAngle) ? 0 : Math.cos(angle) * planet.orbit * planet.speed
+                    };
+                });
+            };
+
+            const launchPlanet = () => planets().find(planet => planet.key === 'launch');
+            const targetPlanet = () => planets().find(planet => planet.key === 'target');
+
+            const setProbeAtLaunch = () => {
+                const launch = launchPlanet();
+                probe.active = false;
+                probe.reached = false;
+                probe.ended = false;
+                probe.flight = 0;
+                probe.trail = [];
+                probe.x = launch.x + Math.cos(aimAngle) * (launch.radius + 7);
+                probe.y = launch.y + Math.sin(aimAngle) * (launch.radius + 7);
+                probe.vx = 0;
+                probe.vy = 0;
+                closestDistance = Infinity;
+                status.textContent = 'Aim, then launch.';
+            };
+
+            const launchProbe = () => {
+                const launch = launchPlanet();
+                const velocity = controls().velocity;
+                probe.active = true;
+                probe.reached = false;
+                probe.ended = false;
+                probe.flight = 0;
+                probe.trail = [];
+                probe.x = launch.x + Math.cos(aimAngle) * (launch.radius + 8);
+                probe.y = launch.y + Math.sin(aimAngle) * (launch.radius + 8);
+                probe.vx = launch.vx + Math.cos(aimAngle) * velocity;
+                probe.vy = launch.vy + Math.sin(aimAngle) * velocity;
+                closestDistance = Infinity;
+                status.textContent = 'Probe in flight.';
+            };
+
+            const resetAlignment = () => {
+                simTime += 18 + Math.random() * 22;
+                aimAngle = -0.45 + (Math.random() - 0.5) * 0.65;
+                setProbeAtLaunch();
+            };
+
+            const updateAim = (clientX, clientY) => {
+                if (probe.active && !probe.ended) return;
+                const launch = launchPlanet();
+                aimAngle = Math.atan2(clientY - launch.y, clientX - launch.x);
+                setProbeAtLaunch();
+            };
+
+            const accelerate = (body, px, py) => {
+                const dx = body.x - px;
+                const dy = body.y - py;
+                const r2 = dx * dx + dy * dy + 380;
+                const r = Math.sqrt(r2);
+                const strength = body.gm / r2;
+                return {
+                    ax: dx / r * strength,
+                    ay: dy / r * strength
+                };
+            };
+
+            const stepProbe = (dt) => {
+                if (!probe.active || probe.ended) return;
+
+                const substeps = Math.max(1, Math.ceil(dt / 0.012));
+                const step = dt / substeps;
+
+                for (let index = 0; index < substeps; index += 1) {
+                    const bodies = planets();
+                    const target = bodies.find(body => body.key === 'target');
+
+                    let ax = 0;
+                    let ay = 0;
+
+                    const sun = { x: center.x, y: center.y, gm: 3000000 };
+                    const sunAccel = accelerate(sun, probe.x, probe.y);
+                    ax += sunAccel.ax;
+                    ay += sunAccel.ay;
+
+                    bodies.forEach(body => {
+                        const planetAccel = accelerate(body, probe.x, probe.y);
+                        ax += planetAccel.ax;
+                        ay += planetAccel.ay;
+                    });
+
+                    probe.vx += ax * step;
+                    probe.vy += ay * step;
+                    probe.x += probe.vx * step;
+                    probe.y += probe.vy * step;
+                    probe.flight += step;
+                    probe.trail.push({ x: probe.x, y: probe.y });
+
+                    const maxTrail = controls().trailLength;
+                    if (probe.trail.length > maxTrail) {
+                        probe.trail.splice(0, probe.trail.length - maxTrail);
+                    }
+
+                    const targetDistance = Math.hypot(probe.x - target.x, probe.y - target.y);
+                    closestDistance = Math.min(closestDistance, targetDistance);
+
+                    if (targetDistance < target.radius + 15) {
+                        probe.reached = true;
+                        probe.ended = true;
+                        status.textContent = 'Target reached.';
+                        return;
+                    }
+
+                    const sunDistance = Math.hypot(probe.x - center.x, probe.y - center.y);
+                    if (sunDistance < 25) {
+                        probe.ended = true;
+                        status.textContent = 'Probe fell into the star.';
+                        return;
+                    }
+
+                    if (
+                        probe.x < -width * 0.55 ||
+                        probe.x > width * 1.55 ||
+                        probe.y < -height * 0.55 ||
+                        probe.y > height * 1.55
+                    ) {
+                        probe.ended = true;
+                        status.textContent = 'Probe escaped the system.';
+                        return;
+                    }
+                }
+            };
+
+            const drawBackground = () => {
+                const bg = cssVar('--bg', '#1a1a16');
+                ctx.clearRect(0, 0, width, height);
+                ctx.fillStyle = bg;
+                ctx.fillRect(0, 0, width, height);
+
+                const glow = ctx.createRadialGradient(center.x, center.y, 0, center.x, center.y, solarScale() * 1.25);
+                glow.addColorStop(0, 'rgba(255, 208, 37, .16)');
+                glow.addColorStop(0.42, 'rgba(100, 245, 225, .045)');
+                glow.addColorStop(1, 'rgba(0, 0, 0, 0)');
+                ctx.fillStyle = glow;
+                ctx.fillRect(0, 0, width, height);
+
+                stars.forEach(star => {
+                    ctx.globalAlpha = star.a;
+                    ctx.fillStyle = '#ffffff';
+                    ctx.beginPath();
+                    ctx.arc(star.x, star.y, star.r, 0, Math.PI * 2);
+                    ctx.fill();
+                });
+                ctx.globalAlpha = 1;
+            };
+
+            const drawSun = () => {
+                const warm = cssVar('--accent', '#ffd025');
+                const hot = cssVar('--accent3', '#e74976');
+                const gradient = ctx.createRadialGradient(center.x, center.y, 2, center.x, center.y, 45);
+                gradient.addColorStop(0, '#ffffff');
+                gradient.addColorStop(0.20, warm);
+                gradient.addColorStop(1, 'rgba(255, 208, 37, 0)');
+
+                ctx.fillStyle = gradient;
+                ctx.beginPath();
+                ctx.arc(center.x, center.y, 45, 0, Math.PI * 2);
+                ctx.fill();
+
+                ctx.fillStyle = warm;
+                ctx.beginPath();
+                ctx.arc(center.x, center.y, 20, 0, Math.PI * 2);
+                ctx.fill();
+
+                ctx.globalAlpha = 0.55;
+                ctx.strokeStyle = hot;
+                ctx.lineWidth = 1.2;
+                ctx.beginPath();
+                ctx.arc(center.x, center.y, 25, 0, Math.PI * 2);
+                ctx.stroke();
+                ctx.globalAlpha = 1;
+            };
+
+            const drawOrbit = (planet) => {
+                if (Number.isFinite(planet.fixedAngle)) return;
+
+                ctx.globalAlpha = planet.key === 'target' ? 0.34 : 0.18;
+                ctx.strokeStyle = planet.key === 'target' ? planet.color : cssVar('--muted', '#dadbe0');
+                ctx.lineWidth = planet.key === 'target' ? 1.4 : 1;
+                ctx.beginPath();
+                ctx.arc(center.x, center.y, planet.orbit, 0, Math.PI * 2);
+                ctx.stroke();
+                ctx.globalAlpha = 1;
+            };
+
+            const drawPlanet = (planet) => {
+                ctx.globalAlpha = 0.18;
+                ctx.fillStyle = planet.color;
+                ctx.beginPath();
+                ctx.arc(planet.x, planet.y, planet.radius * 2.45, 0, Math.PI * 2);
+                ctx.fill();
+
+                ctx.globalAlpha = 1;
+                ctx.fillStyle = planet.color;
+                ctx.beginPath();
+                ctx.arc(planet.x, planet.y, planet.radius, 0, Math.PI * 2);
+                ctx.fill();
+
+                if (planet.key === 'target') {
+                    ctx.strokeStyle = planet.color;
+                    ctx.lineWidth = 2;
+                    ctx.globalAlpha = 0.85;
+                    ctx.beginPath();
+                    ctx.arc(planet.x, planet.y, planet.radius + 14, 0, Math.PI * 2);
+                    ctx.stroke();
+                    ctx.globalAlpha = 1;
+                }
+
+                ctx.fillStyle = cssVar('--text', '#e9d3b3');
+                ctx.font = '700 11px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif';
+                ctx.textAlign = 'center';
+                ctx.fillText(planet.name, planet.x, planet.y + planet.radius + 16);
+            };
+
+            const drawAim = () => {
+                if (probe.active && !probe.ended) return;
+                const launch = launchPlanet();
+                const velocity = controls().velocity;
+                const length = Math.min(300, Math.max(58, velocity * 0.72));
+                const endX = launch.x + Math.cos(aimAngle) * length;
+                const endY = launch.y + Math.sin(aimAngle) * length;
+
+                ctx.strokeStyle = cssVar('--accent2', '#64f5e1');
+                ctx.lineWidth = 2;
+                ctx.globalAlpha = 0.84;
+                ctx.beginPath();
+                ctx.moveTo(launch.x, launch.y);
+                ctx.lineTo(endX, endY);
+                ctx.stroke();
+
+                ctx.fillStyle = cssVar('--accent2', '#64f5e1');
+                ctx.beginPath();
+                ctx.arc(endX, endY, 4.5, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.globalAlpha = 1;
+            };
+
+            const drawProbe = () => {
+                if (!probe.trail.length && !probe.active) {
+                    probe.trail.push({ x: probe.x, y: probe.y });
+                }
+
+                if (probe.trail.length > 1) {
+                    ctx.lineWidth = 2;
+                    ctx.strokeStyle = probe.reached ? cssVar('--accent3', '#e74976') : cssVar('--accent2', '#64f5e1');
+
+                    for (let index = 1; index < probe.trail.length; index += 1) {
+                        const previous = probe.trail[index - 1];
+                        const point = probe.trail[index];
+                        ctx.globalAlpha = Math.max(0.08, index / probe.trail.length * 0.78);
+                        ctx.beginPath();
+                        ctx.moveTo(previous.x, previous.y);
+                        ctx.lineTo(point.x, point.y);
+                        ctx.stroke();
+                    }
+                    ctx.globalAlpha = 1;
+                }
+
+                ctx.fillStyle = probe.reached ? cssVar('--accent3', '#e74976') : '#ffffff';
+                ctx.strokeStyle = cssVar('--accent2', '#64f5e1');
+                ctx.lineWidth = 1.4;
+                ctx.beginPath();
+                ctx.arc(probe.x, probe.y, probe.reached ? 6.5 : 4.8, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.stroke();
+            };
+
+            const draw = () => {
+                const bodies = planets();
+                drawBackground();
+                bodies.forEach(drawOrbit);
+                drawSun();
+                bodies.forEach(drawPlanet);
+                drawAim();
+                drawProbe();
+
+                const target = bodies.find(planet => planet.key === 'target');
+                const distance = Math.hypot(probe.x - target.x, probe.y - target.y);
+                distanceText.textContent = `${Math.round(distance)} px`;
+                closestText.textContent = Number.isFinite(closestDistance) ? `${Math.round(closestDistance)} px` : '--';
+                flightText.textContent = `${probe.flight.toFixed(1)}s`;
+            };
+
+            const animate = (now) => {
+                const elapsed = lastFrame ? Math.min(0.045, (now - lastFrame) / 1000) : 0.016;
+                lastFrame = now;
+
+                const dt = elapsed * controls().timeScale;
+                simTime += dt;
+                stepProbe(dt);
+
+                if (!probe.active && !probe.ended) {
+                    const launch = launchPlanet();
+                    probe.x = launch.x + Math.cos(aimAngle) * (launch.radius + 7);
+                    probe.y = launch.y + Math.sin(aimAngle) * (launch.radius + 7);
+                }
+
+                draw();
+                requestAnimationFrame(animate);
+            };
+
+            canvas.addEventListener('pointermove', event => {
+                updateAim(event.clientX, event.clientY);
+            });
+
+            canvas.addEventListener('click', event => {
+                if (probe.active && !probe.ended) return;
+                updateAim(event.clientX, event.clientY);
+                launchProbe();
+            });
+
+            launchButton.addEventListener('click', launchProbe);
+            resetButton.addEventListener('click', setProbeAtLaunch);
+            alignmentButton.addEventListener('click', resetAlignment);
+
+            [velocityInput, massInput, timeInput, trailInput].forEach(input => {
+                input.addEventListener('input', () => {
+                    syncLabels();
+                    if (!probe.active || probe.ended) setProbeAtLaunch();
+                });
+            });
+
+            window.addEventListener('resize', () => {
+                resize();
+                setProbeAtLaunch();
+            });
+
+            const observer = new MutationObserver(draw);
+            observer.observe(document.documentElement, {
+                attributes: true,
+                attributeFilter: ['data-theme']
+            });
+
+            resize();
+            syncLabels();
+            setProbeAtLaunch();
+            requestAnimationFrame(animate);
+        });
+    </script>
+</body>
+
+</html>
