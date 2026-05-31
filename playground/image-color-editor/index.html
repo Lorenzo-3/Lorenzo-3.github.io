@@ -1,0 +1,585 @@
+<!doctype html>
+<html lang="en" data-palette="triad">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Image Color Editor · Playground · Lorenzo Marinelli</title>
+    <meta name="description"
+        content="Interactive image color editor by Lorenzo Marinelli - shift hue, saturation, contrast, warmth, grayscale, inversion, and RGB channel order, then save a PNG." />
+    <link rel="stylesheet" href="/assets/style.css" />
+
+    <link rel="alternate" hreflang="en" href="/playground/image-color-editor/" />
+    <link rel="alternate" hreflang="it" href="/it/playground/image-color-editor/" />
+    <link rel="icon" href="/assets/favicon.ico" sizes="any">
+    <link rel="icon" type="image/png" href="/assets/favicon-32.png" sizes="32x32">
+    <link rel="icon" type="image/png" href="/assets/favicon-16.png" sizes="16x16">
+    <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
+</head>
+
+<body class="color-page">
+    <div class="wrap">
+        <nav class="nav">
+            <a class="nav__brand" href="/" aria-label="Home">LM</a>
+
+            <div class="lang" aria-label="Language">
+                <a class="lang__btn is-active" href="/playground/image-color-editor/" aria-label="English"
+                    title="English">
+                    <span class="flag" aria-hidden="true">🇬🇧</span>
+                    <span class="sr-only" lang="en">English</span>
+                </a>
+                <a class="lang__btn" href="/it/playground/image-color-editor/" aria-label="Italiano"
+                    title="Italiano">
+                    <span class="flag" aria-hidden="true">🇮🇹</span>
+                    <span class="sr-only" lang="it">Italiano</span>
+                </a>
+            </div>
+
+            <button class="theme-toggle" type="button" data-theme-toggle aria-label="Toggle theme" title="Toggle theme">
+                <span data-theme-icon aria-hidden="true">◐</span>
+            </button>
+
+            <div class="nav__links">
+                <a href="/">Home</a>
+                <a href="/about/">About</a>
+                <a href="/projects/">Projects</a>
+                <a href="/notes/">Notes</a>
+                <a href="/contact/">Contact</a>
+                <a aria-current="page" href="/playground/">Playground</a>
+            </div>
+        </nav>
+
+        <header class="hero">
+            <p class="kicker">Playground experiment</p>
+            <h1>Image Color Editor</h1>
+            <p class="lead hero-line">
+                Load an image or use the generated sample, then shift hue, saturation, contrast, warmth, grayscale,
+                inversion, and RGB channel order before saving the result as a PNG.
+            </p>
+
+            <div class="hero__cta">
+                <a class="btn btn--ghost" href="/playground/">← Back to Playground</a>
+            </div>
+        </header>
+
+        <main class="card color-editor-app" data-color-editor>
+            <div class="color-editor-app__top">
+                <div>
+                    <p class="project-kicker">Pixel color lab</p>
+                    <h2>One image, live color transforms</h2>
+                    <p>
+                        The left canvas keeps the source image unchanged. The right canvas applies every color control
+                        in the browser so each slider and channel swap is visible immediately.
+                    </p>
+                </div>
+
+                <div class="color-status" data-color-status>
+                    Sample image ready.
+                </div>
+            </div>
+
+            <div class="color-editor-layout">
+                <section class="color-preview-grid" aria-label="Image previews">
+                    <div class="color-stage">
+                        <div class="color-stage__label">
+                            <span>Original</span>
+                            <small>source pixels</small>
+                        </div>
+                        <canvas class="color-canvas" data-color-source aria-label="Original image preview">
+                            Original image preview.
+                        </canvas>
+                    </div>
+
+                    <div class="color-stage">
+                        <div class="color-stage__label">
+                            <span>Edited</span>
+                            <small>modified pixels</small>
+                        </div>
+                        <canvas class="color-canvas" data-color-output aria-label="Edited image preview">
+                            Edited image preview.
+                        </canvas>
+                    </div>
+                </section>
+
+                <aside class="color-controls" aria-label="Image color controls">
+                    <div class="color-actions">
+                        <label class="mini-btn color-upload">
+                            Image
+                            <input type="file" accept="image/*" data-color-upload>
+                        </label>
+                        <button class="mini-btn" type="button" data-color-sample>Sample</button>
+                        <button class="mini-btn" type="button" data-color-reset>Reset edits</button>
+                        <button class="btn" type="button" data-color-save>Save PNG</button>
+                    </div>
+
+                    <div class="color-panel">
+                        <strong>Channel mapping</strong>
+                        <div class="color-channel-grid" data-color-channels>
+                            <button class="mini-btn is-active" type="button" data-channel="rgb">RGB</button>
+                            <button class="mini-btn" type="button" data-channel="rbg">RBG</button>
+                            <button class="mini-btn" type="button" data-channel="grb">GRB</button>
+                            <button class="mini-btn" type="button" data-channel="gbr">GBR</button>
+                            <button class="mini-btn" type="button" data-channel="brg">BRG</button>
+                            <button class="mini-btn" type="button" data-channel="bgr">BGR</button>
+                        </div>
+                    </div>
+
+                    <div class="color-control-grid">
+                        <label class="range-control">
+                            <span>Hue shift <strong data-color-hue-value>0°</strong></span>
+                            <input type="range" min="-180" max="180" value="0" step="1" data-color-hue>
+                        </label>
+
+                        <label class="range-control">
+                            <span>Saturation <strong data-color-saturation-value>100%</strong></span>
+                            <input type="range" min="0" max="220" value="100" step="1" data-color-saturation>
+                        </label>
+
+                        <label class="range-control">
+                            <span>Contrast <strong data-color-contrast-value>100%</strong></span>
+                            <input type="range" min="0" max="220" value="100" step="1" data-color-contrast>
+                        </label>
+
+                        <label class="range-control">
+                            <span>Brightness <strong data-color-brightness-value>100%</strong></span>
+                            <input type="range" min="0" max="220" value="100" step="1" data-color-brightness>
+                        </label>
+
+                        <label class="range-control">
+                            <span>Warmth <strong data-color-warmth-value>0</strong></span>
+                            <input type="range" min="-100" max="100" value="0" step="1" data-color-warmth>
+                        </label>
+
+                        <label class="range-control">
+                            <span>Invert <strong data-color-invert-value>0%</strong></span>
+                            <input type="range" min="0" max="100" value="0" step="1" data-color-invert>
+                        </label>
+
+                        <label class="range-control">
+                            <span>Grayscale mix <strong data-color-gray-value>0%</strong></span>
+                            <input type="range" min="0" max="100" value="0" step="1" data-color-gray>
+                        </label>
+                    </div>
+
+                    <p class="color-note">
+                        Hue and saturation operate in HSL space. Contrast, brightness, warmth, inversion, grayscale, and
+                        channel swaps operate directly on RGB pixels.
+                    </p>
+                </aside>
+            </div>
+        </main>
+
+        <section class="grid">
+            <article class="card">
+                <h2>What to notice</h2>
+                <p>
+                    Channel swaps are structural: red, green, and blue information trade places. Hue shifts rotate
+                    color relationships while preserving more of the original luminance.
+                </p>
+            </article>
+
+            <article class="card">
+                <h2>Why it exists</h2>
+                <p>
+                    I like art and color theory, and I kept needing quick color transformations without signing up for
+                    another account or fighting a bad free tool. This is the utility I wanted to have open.
+                </p>
+            </article>
+        </section>
+
+        <footer class="footer">
+            <small>© 2026 Lorenzo Marinelli</small>
+        </footer>
+    </div>
+
+    <script src="/assets/script.js" defer></script>
+
+    <script>
+        window.addEventListener('DOMContentLoaded', () => {
+            const root = document.querySelector('[data-color-editor]');
+            if (!root) return;
+
+            const sourceCanvas = root.querySelector('[data-color-source]');
+            const outputCanvas = root.querySelector('[data-color-output]');
+            const sourceCtx = sourceCanvas.getContext('2d', { willReadFrequently: true });
+            const outputCtx = outputCanvas.getContext('2d');
+
+            const status = root.querySelector('[data-color-status]');
+            const uploadInput = root.querySelector('[data-color-upload]');
+            const sampleButton = root.querySelector('[data-color-sample]');
+            const resetButton = root.querySelector('[data-color-reset]');
+            const saveButton = root.querySelector('[data-color-save]');
+            const channelButtons = Array.from(root.querySelectorAll('[data-channel]'));
+
+            const controls = [
+                {
+                    name: 'hue',
+                    input: root.querySelector('[data-color-hue]'),
+                    label: root.querySelector('[data-color-hue-value]'),
+                    defaultValue: 0,
+                    format: value => `${signed(value)}°`
+                },
+                {
+                    name: 'saturation',
+                    input: root.querySelector('[data-color-saturation]'),
+                    label: root.querySelector('[data-color-saturation-value]'),
+                    defaultValue: 100,
+                    format: value => `${value}%`
+                },
+                {
+                    name: 'contrast',
+                    input: root.querySelector('[data-color-contrast]'),
+                    label: root.querySelector('[data-color-contrast-value]'),
+                    defaultValue: 100,
+                    format: value => `${value}%`
+                },
+                {
+                    name: 'brightness',
+                    input: root.querySelector('[data-color-brightness]'),
+                    label: root.querySelector('[data-color-brightness-value]'),
+                    defaultValue: 100,
+                    format: value => `${value}%`
+                },
+                {
+                    name: 'warmth',
+                    input: root.querySelector('[data-color-warmth]'),
+                    label: root.querySelector('[data-color-warmth-value]'),
+                    defaultValue: 0,
+                    format: value => signed(value)
+                },
+                {
+                    name: 'invert',
+                    input: root.querySelector('[data-color-invert]'),
+                    label: root.querySelector('[data-color-invert-value]'),
+                    defaultValue: 0,
+                    format: value => `${value}%`
+                },
+                {
+                    name: 'gray',
+                    input: root.querySelector('[data-color-gray]'),
+                    label: root.querySelector('[data-color-gray-value]'),
+                    defaultValue: 0,
+                    format: value => `${value}%`
+                }
+            ];
+
+            let activeChannel = 'rgb';
+            let imageName = 'image-color-editor';
+            let sourceReady = false;
+
+            function signed(value) {
+                return value > 0 ? `+${value}` : String(value);
+            }
+
+            function clamp(value) {
+                return Math.max(0, Math.min(255, value));
+            }
+
+            function values() {
+                return Object.fromEntries(controls.map(control => [control.name, Number(control.input.value)]));
+            }
+
+            function syncLabels() {
+                controls.forEach(control => {
+                    control.label.textContent = control.format(Number(control.input.value));
+                });
+
+                channelButtons.forEach(button => {
+                    button.classList.toggle('is-active', button.dataset.channel === activeChannel);
+                    button.setAttribute('aria-pressed', String(button.dataset.channel === activeChannel));
+                });
+            }
+
+            function setCanvasSize(width, height) {
+                [sourceCanvas, outputCanvas].forEach(canvas => {
+                    canvas.width = width;
+                    canvas.height = height;
+                    canvas.style.aspectRatio = `${width} / ${height}`;
+                });
+            }
+
+            function drawSampleImage() {
+                const width = 900;
+                const height = 600;
+                setCanvasSize(width, height);
+
+                const sky = sourceCtx.createLinearGradient(0, 0, width, height);
+                sky.addColorStop(0, '#1c4fd7');
+                sky.addColorStop(0.42, '#6ed4ff');
+                sky.addColorStop(0.62, '#ffd56a');
+                sky.addColorStop(1, '#1b5b42');
+                sourceCtx.fillStyle = sky;
+                sourceCtx.fillRect(0, 0, width, height);
+
+                sourceCtx.fillStyle = 'rgba(255, 255, 255, 0.72)';
+                for (let i = 0; i < 22; i += 1) {
+                    const x = 38 + i * 41;
+                    const y = 48 + Math.sin(i * 0.8) * 22;
+                    sourceCtx.beginPath();
+                    sourceCtx.ellipse(x, y, 30 + (i % 4) * 8, 12 + (i % 3) * 5, 0.08 * i, 0, Math.PI * 2);
+                    sourceCtx.fill();
+                }
+
+                sourceCtx.fillStyle = '#f4c542';
+                sourceCtx.beginPath();
+                sourceCtx.arc(width * 0.77, height * 0.23, 72, 0, Math.PI * 2);
+                sourceCtx.fill();
+
+                const hill = sourceCtx.createLinearGradient(0, height * 0.54, 0, height);
+                hill.addColorStop(0, '#47b05f');
+                hill.addColorStop(1, '#102c22');
+                sourceCtx.fillStyle = hill;
+                sourceCtx.beginPath();
+                sourceCtx.moveTo(0, height * 0.68);
+                sourceCtx.bezierCurveTo(width * 0.16, height * 0.42, width * 0.32, height * 0.82, width * 0.50, height * 0.58);
+                sourceCtx.bezierCurveTo(width * 0.70, height * 0.33, width * 0.86, height * 0.74, width, height * 0.50);
+                sourceCtx.lineTo(width, height);
+                sourceCtx.lineTo(0, height);
+                sourceCtx.closePath();
+                sourceCtx.fill();
+
+                const swatches = ['#ef476f', '#ffd166', '#06d6a0', '#118ab2', '#8338ec', '#ff7a00'];
+                swatches.forEach((color, index) => {
+                    sourceCtx.fillStyle = color;
+                    sourceCtx.fillRect(64 + index * 120, height - 128, 86, 86);
+                });
+
+                sourceCtx.lineWidth = 14;
+                sourceCtx.strokeStyle = 'rgba(255, 255, 255, 0.62)';
+                for (let i = -3; i < 7; i += 1) {
+                    sourceCtx.beginPath();
+                    sourceCtx.moveTo(i * 170, height);
+                    sourceCtx.lineTo(i * 170 + 260, 0);
+                    sourceCtx.stroke();
+                }
+
+                sourceReady = true;
+                imageName = 'image-color-editor';
+            }
+
+            function drawUploadedImage(image, fileName) {
+                const maxSide = 1100;
+                const width = image.naturalWidth || image.width;
+                const height = image.naturalHeight || image.height;
+                const scale = Math.min(1, maxSide / Math.max(width, height));
+                const targetWidth = Math.max(1, Math.round(width * scale));
+                const targetHeight = Math.max(1, Math.round(height * scale));
+
+                setCanvasSize(targetWidth, targetHeight);
+                sourceCtx.clearRect(0, 0, targetWidth, targetHeight);
+                sourceCtx.imageSmoothingEnabled = true;
+                sourceCtx.imageSmoothingQuality = 'high';
+                sourceCtx.drawImage(image, 0, 0, targetWidth, targetHeight);
+                sourceReady = true;
+                imageName = fileName || 'uploaded-image';
+            }
+
+            function rgbToHsl(r, g, b) {
+                r /= 255;
+                g /= 255;
+                b /= 255;
+                const max = Math.max(r, g, b);
+                const min = Math.min(r, g, b);
+                let h = 0;
+                let s = 0;
+                const l = (max + min) / 2;
+
+                if (max !== min) {
+                    const d = max - min;
+                    s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
+
+                    if (max === r) h = (g - b) / d + (g < b ? 6 : 0);
+                    else if (max === g) h = (b - r) / d + 2;
+                    else h = (r - g) / d + 4;
+
+                    h /= 6;
+                }
+
+                return [h, s, l];
+            }
+
+            function hueToRgb(p, q, t) {
+                if (t < 0) t += 1;
+                if (t > 1) t -= 1;
+                if (t < 1 / 6) return p + (q - p) * 6 * t;
+                if (t < 1 / 2) return q;
+                if (t < 2 / 3) return p + (q - p) * (2 / 3 - t) * 6;
+                return p;
+            }
+
+            function hslToRgb(h, s, l) {
+                if (s === 0) {
+                    const gray = l * 255;
+                    return [gray, gray, gray];
+                }
+
+                const q = l < 0.5 ? l * (1 + s) : l + s - l * s;
+                const p = 2 * l - q;
+                return [
+                    hueToRgb(p, q, h + 1 / 3) * 255,
+                    hueToRgb(p, q, h) * 255,
+                    hueToRgb(p, q, h - 1 / 3) * 255
+                ];
+            }
+
+            function applyEdits() {
+                if (!sourceReady) return;
+
+                syncLabels();
+
+                const width = sourceCanvas.width;
+                const height = sourceCanvas.height;
+                const settings = values();
+                const source = sourceCtx.getImageData(0, 0, width, height);
+                const output = outputCtx.createImageData(width, height);
+                const src = source.data;
+                const dst = output.data;
+
+                const hueShift = settings.hue / 360;
+                const saturation = settings.saturation / 100;
+                const contrast = settings.contrast / 100;
+                const brightness = settings.brightness / 100;
+                const warmth = settings.warmth;
+                const invertMix = settings.invert / 100;
+                const grayMix = settings.gray / 100;
+
+                for (let index = 0; index < src.length; index += 4) {
+                    const channelSource = {
+                        r: src[index],
+                        g: src[index + 1],
+                        b: src[index + 2]
+                    };
+
+                    let r = channelSource[activeChannel[0]];
+                    let g = channelSource[activeChannel[1]];
+                    let b = channelSource[activeChannel[2]];
+
+                    let hsl = rgbToHsl(r, g, b);
+                    hsl[0] = (hsl[0] + hueShift + 1) % 1;
+                    hsl[1] = Math.max(0, Math.min(1, hsl[1] * saturation));
+                    [r, g, b] = hslToRgb(hsl[0], hsl[1], hsl[2]);
+
+                    r = (r - 128) * contrast + 128;
+                    g = (g - 128) * contrast + 128;
+                    b = (b - 128) * contrast + 128;
+
+                    r = r * brightness + warmth * 0.65;
+                    g = g * brightness + warmth * 0.08;
+                    b = b * brightness - warmth * 0.65;
+
+                    r = r * (1 - invertMix) + (255 - r) * invertMix;
+                    g = g * (1 - invertMix) + (255 - g) * invertMix;
+                    b = b * (1 - invertMix) + (255 - b) * invertMix;
+
+                    const gray = 0.2126 * r + 0.7152 * g + 0.0722 * b;
+                    r = r * (1 - grayMix) + gray * grayMix;
+                    g = g * (1 - grayMix) + gray * grayMix;
+                    b = b * (1 - grayMix) + gray * grayMix;
+
+                    dst[index] = clamp(Math.round(r));
+                    dst[index + 1] = clamp(Math.round(g));
+                    dst[index + 2] = clamp(Math.round(b));
+                    dst[index + 3] = src[index + 3];
+                }
+
+                outputCtx.putImageData(output, 0, 0);
+                status.textContent = `Edited image · Hue ${signed(settings.hue)}° · saturation ${settings.saturation}% · ${activeChannel.toUpperCase()}`;
+            }
+
+            function resetEdits() {
+                controls.forEach(control => {
+                    control.input.value = String(control.defaultValue);
+                });
+                activeChannel = 'rgb';
+                applyEdits();
+                status.textContent = 'Edits reset.';
+            }
+
+            function safeDownloadName() {
+                if (imageName === 'image-color-editor') return 'image-color-editor.png';
+                const base = imageName
+                    .replace(/\.[^.]+$/, '')
+                    .replace(/[^a-z0-9_-]+/gi, '-')
+                    .replace(/^-+|-+$/g, '')
+                    .toLowerCase() || 'image';
+                return `${base}-color-editor.png`;
+            }
+
+            function downloadBlob(blob) {
+                const url = URL.createObjectURL(blob);
+                const link = document.createElement('a');
+                link.href = url;
+                link.download = safeDownloadName();
+                document.body.appendChild(link);
+                link.click();
+                link.remove();
+                window.setTimeout(() => URL.revokeObjectURL(url), 1000);
+                status.textContent = `Saved ${link.download}.`;
+            }
+
+            function savePng() {
+                if (!sourceReady) return;
+
+                if (outputCanvas.toBlob) {
+                    outputCanvas.toBlob(blob => {
+                        if (blob) downloadBlob(blob);
+                    }, 'image/png');
+                    return;
+                }
+
+                const dataUrl = outputCanvas.toDataURL('image/png');
+                fetch(dataUrl)
+                    .then(response => response.blob())
+                    .then(downloadBlob);
+            }
+
+            controls.forEach(control => {
+                control.input.addEventListener('input', applyEdits);
+            });
+
+            channelButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    activeChannel = button.dataset.channel;
+                    applyEdits();
+                });
+            });
+
+            sampleButton.addEventListener('click', () => {
+                uploadInput.value = '';
+                drawSampleImage();
+                applyEdits();
+                status.textContent = 'Sample image loaded.';
+            });
+
+            resetButton.addEventListener('click', resetEdits);
+            saveButton.addEventListener('click', savePng);
+
+            uploadInput.addEventListener('change', () => {
+                const file = uploadInput.files && uploadInput.files[0];
+                if (!file) return;
+
+                const image = new Image();
+                const url = URL.createObjectURL(file);
+
+                image.addEventListener('load', () => {
+                    drawUploadedImage(image, file.name);
+                    URL.revokeObjectURL(url);
+                    applyEdits();
+                    status.textContent = `Loaded ${file.name}.`;
+                }, { once: true });
+
+                image.addEventListener('error', () => {
+                    URL.revokeObjectURL(url);
+                    status.textContent = 'Could not load that image.';
+                }, { once: true });
+
+                image.src = url;
+            });
+
+            drawSampleImage();
+            applyEdits();
+        });
+    </script>
+</body>
+
+</html>

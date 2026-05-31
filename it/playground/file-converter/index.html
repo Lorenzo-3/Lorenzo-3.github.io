@@ -1,0 +1,1579 @@
+<!doctype html>
+<html lang="it" data-palette="triad">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>File Converter · Playground · Lorenzo Marinelli</title>
+    <meta name="description"
+        content="Convertitore file locale di Lorenzo Marinelli: converti immagini nativamente, esporta WAV e usa FFmpeg.wasm per MP3, FLAC, MP4, WebM, MOV, MKV e AVI." />
+    <link rel="stylesheet" href="/assets/style.css" />
+
+    <link rel="alternate" hreflang="en" href="/playground/file-converter/" />
+    <link rel="alternate" hreflang="it" href="/it/playground/file-converter/" />
+    <link rel="icon" href="/assets/favicon.ico" sizes="any">
+    <link rel="icon" type="image/png" href="/assets/favicon-32.png" sizes="32x32">
+    <link rel="icon" type="image/png" href="/assets/favicon-16.png" sizes="16x16">
+    <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
+</head>
+
+<body class="converter-page">
+    <div class="wrap">
+        <nav class="nav">
+            <a class="nav__brand" href="/it/" aria-label="Home">LM</a>
+
+            <div class="lang" aria-label="Lingua">
+                <a class="lang__btn" href="/playground/file-converter/" aria-label="English" title="English">
+                    <span class="flag" aria-hidden="true">🇬🇧</span>
+                    <span class="sr-only" lang="en">English</span>
+                </a>
+                <a class="lang__btn is-active" href="/it/playground/file-converter/" aria-label="Italiano"
+                    title="Italiano">
+                    <span class="flag" aria-hidden="true">🇮🇹</span>
+                    <span class="sr-only" lang="it">Italiano</span>
+                </a>
+            </div>
+
+            <button class="theme-toggle" type="button" data-theme-toggle aria-label="Cambia tema" title="Cambia tema">
+                <span data-theme-icon aria-hidden="true">◐</span>
+            </button>
+
+            <div class="nav__links">
+                <a href="/it/">Home</a>
+                <a href="/it/about/">Info</a>
+                <a href="/it/projects/">Progetti</a>
+                <a href="/it/notes/">Appunti</a>
+                <a href="/it/contact/">Contatti</a>
+                <a aria-current="page" href="/it/playground/">Playground</a>
+            </div>
+        </nav>
+
+        <header class="hero">
+            <p class="kicker">Utility del playground</p>
+            <h1>File Converter, VERY-WIP</h1>
+            <p class="lead hero-line">
+                Converti immagini, esporta audio in WAV, MP3 o FLAC, e transcodifica video in MP4, WebM, MOV, MKV o
+                AVI. I file restano locali nel browser.
+            </p>
+
+            <div class="hero__cta">
+                <a class="btn btn--ghost" href="/it/playground/">← Torna al Playground</a>
+            </div>
+        </header>
+
+        <main class="card converter-app" data-converter>
+            <div class="converter-app__top">
+                <div>
+                    <p class="project-kicker">Convertitore media locale</p>
+                    <h2>Niente account, niente upload, niente server</h2>
+                    <p>
+                        Trascina un’immagine, un file audio o un video. Le API native del browser gestiscono i percorsi
+                        rapidi; FFmpeg.wasm viene caricato su richiesta per conversioni audio e video più pesanti.
+                    </p>
+                </div>
+
+                <div class="converter-status" data-converter-status>
+                    Scegli un file da ispezionare.
+                </div>
+            </div>
+
+            <div class="converter-layout">
+                <section class="converter-workspace">
+                    <label class="converter-drop" data-converter-drop>
+                        <input type="file"
+                            accept="image/*,audio/*,video/*,.heic,.heif,.tif,.tiff,.pdf,.mp3,.flac,.webm,.mp4,.mov,.mkv,.avi"
+                            data-converter-input>
+                        <span>Trascina qui un file media</span>
+                        <small>oppure clicca per scegliere media, inclusi HEIC, TIFF e PDF per i dettagli di supporto</small>
+                    </label>
+
+                    <div class="converter-samples">
+                        <button class="mini-btn" type="button" data-sample-image>Immagine campione</button>
+                        <button class="mini-btn" type="button" data-sample-audio>Tono campione</button>
+                        <button class="mini-btn" type="button" data-sample-video>Video campione</button>
+                        <button class="mini-btn" type="button" data-converter-clear>Svuota</button>
+                    </div>
+
+                    <div class="converter-preview" data-preview-empty>
+                        <p class="project-kicker">Anteprima</p>
+                        <h2>In attesa di un file</h2>
+                        <p>Dettagli, controlli e download appaiono dopo che il browser identifica il tipo di file.</p>
+                    </div>
+
+                    <div class="converter-preview converter-preview--image" data-image-preview hidden>
+                        <div class="converter-preview__top">
+                            <div>
+                                <p class="project-kicker">Anteprima immagine</p>
+                                <h2>Canvas sorgente e output</h2>
+                            </div>
+                        </div>
+                        <div class="converter-canvas-grid">
+                            <canvas class="converter-canvas" data-image-source aria-label="Immagine sorgente"></canvas>
+                            <canvas class="converter-canvas" data-image-output aria-label="Immagine convertita"></canvas>
+                        </div>
+                    </div>
+
+                    <div class="converter-preview converter-preview--audio" data-audio-preview hidden>
+                        <div class="converter-preview__top">
+                            <div>
+                                <p class="project-kicker">Anteprima audio</p>
+                                <h2>Forma d’onda decodificata</h2>
+                            </div>
+                        </div>
+                        <canvas class="converter-waveform" data-audio-waveform aria-label="Forma d’onda audio"></canvas>
+                    </div>
+
+                    <div class="converter-preview converter-preview--video" data-video-preview hidden>
+                        <div class="converter-preview__top">
+                            <div>
+                                <p class="project-kicker">Anteprima video</p>
+                                <h2>Estrazione frame e registrazione WebM</h2>
+                            </div>
+                        </div>
+                        <video class="converter-video" data-video-player controls playsinline></video>
+                        <canvas class="converter-canvas converter-frame-canvas" data-video-frame
+                            aria-label="Frame video estratto"></canvas>
+                    </div>
+                </section>
+
+                <aside class="converter-panel" data-converter-panel hidden>
+                    <div class="converter-details" aria-label="Dettagli file">
+                        <div>
+                            <span>Nome</span>
+                            <strong data-detail-name>Nessuno</strong>
+                        </div>
+                        <div>
+                            <span>Dimensione</span>
+                            <strong data-detail-size>--</strong>
+                        </div>
+                        <div>
+                            <span>Tipo MIME</span>
+                            <strong data-detail-type>--</strong>
+                        </div>
+                        <div>
+                            <span>Tipo rilevato</span>
+                            <strong data-detail-kind>--</strong>
+                        </div>
+                        <div>
+                            <span>Risoluzione</span>
+                            <strong data-detail-dimensions>--</strong>
+                        </div>
+                        <div>
+                            <span>Durata</span>
+                            <strong data-detail-duration>--</strong>
+                        </div>
+                        <div>
+                            <span>Output selezionato</span>
+                            <strong data-detail-output>--</strong>
+                        </div>
+                        <div>
+                            <span>Supporto</span>
+                            <strong data-detail-support>In attesa</strong>
+                        </div>
+                        <div>
+                            <span>FFmpeg</span>
+                            <strong data-detail-ffmpeg>Non caricato</strong>
+                        </div>
+                        <div class="converter-details__wide">
+                            <span>Avvisi</span>
+                            <strong data-detail-warnings>I file restano locali. Il supporto dipende dal browser.</strong>
+                        </div>
+                        <div class="converter-details__wide">
+                            <span>Ultimo log FFmpeg</span>
+                            <strong data-detail-log>--</strong>
+                        </div>
+                    </div>
+
+                    <div class="converter-controls" data-image-controls hidden>
+                        <h2>Conversione immagine</h2>
+                        <div class="converter-chip-grid" data-image-formats>
+                            <button class="mini-btn is-active" type="button" data-image-format="image/png">PNG</button>
+                            <button class="mini-btn" type="button" data-image-format="image/jpeg">JPEG</button>
+                            <button class="mini-btn" type="button" data-image-format="image/webp">WebP</button>
+                        </div>
+
+                        <div class="converter-number-grid">
+                            <label class="converter-number-control">
+                                <span>Larghezza max</span>
+                                <input type="number" min="1" max="4096" placeholder="auto" data-image-max-width>
+                            </label>
+                            <label class="converter-number-control">
+                                <span>Altezza max</span>
+                                <input type="number" min="1" max="4096" placeholder="auto" data-image-max-height>
+                            </label>
+                        </div>
+
+                        <label class="range-control">
+                            <span>Qualità <strong data-image-quality-value>92%</strong></span>
+                            <input type="range" min="10" max="100" value="92" step="1" data-image-quality>
+                        </label>
+
+                        <button class="btn" type="button" data-convert-image>Converti immagine</button>
+                    </div>
+
+                    <div class="converter-controls" data-audio-controls hidden>
+                        <h2>Conversione audio</h2>
+                        <label class="converter-select-control">
+                            <span>Output</span>
+                            <select data-audio-format>
+                                <option value="audio/wav" selected>WAV PCM</option>
+                                <option value="audio/mpeg">MP3</option>
+                                <option value="audio/flac">FLAC</option>
+                            </select>
+                        </label>
+                        <label class="converter-select-control">
+                            <span>Preset qualità</span>
+                            <select data-audio-quality>
+                                <option value="small">Piccolo</option>
+                                <option value="balanced" selected>Bilanciato</option>
+                                <option value="high">Alta qualità</option>
+                            </select>
+                        </label>
+                        <label class="converter-select-control">
+                            <span>Canali</span>
+                            <select data-audio-channels>
+                                <option value="original" selected>Originale</option>
+                                <option value="1">Mono</option>
+                                <option value="2">Stereo</option>
+                            </select>
+                        </label>
+                        <label class="converter-select-control">
+                            <span>Sample rate</span>
+                            <select data-audio-rate>
+                                <option value="original" selected>Originale</option>
+                                <option value="48000">48 kHz</option>
+                                <option value="44100">44.1 kHz</option>
+                                <option value="22050">22.05 kHz</option>
+                            </select>
+                        </label>
+                        <button class="btn" type="button" data-convert-audio>Converti audio</button>
+                    </div>
+
+                    <div class="converter-controls" data-video-controls hidden>
+                        <h2>Conversione video</h2>
+                        <div class="converter-chip-grid" data-frame-formats>
+                            <button class="mini-btn is-active" type="button" data-frame-format="image/png">Frame PNG</button>
+                            <button class="mini-btn" type="button" data-frame-format="image/jpeg">Frame JPEG</button>
+                            <button class="mini-btn" type="button" data-frame-format="image/webp">Frame WebP</button>
+                        </div>
+
+                        <label class="range-control">
+                            <span>Qualità frame <strong data-frame-quality-value>92%</strong></span>
+                            <input type="range" min="10" max="100" value="92" step="1" data-frame-quality>
+                        </label>
+
+                        <label class="converter-select-control">
+                            <span>Output video</span>
+                            <select data-video-format>
+                                <option value="video/mp4" selected>MP4 · H.264 + AAC</option>
+                                <option value="video/webm">WebM · VP9 + Opus</option>
+                                <option value="video/quicktime">MOV · H.264 + AAC</option>
+                                <option value="video/x-matroska">MKV · H.264 + AAC</option>
+                                <option value="video/x-msvideo">AVI · MPEG-4 + MP3</option>
+                            </select>
+                        </label>
+
+                        <label class="converter-select-control">
+                            <span>Preset video</span>
+                            <select data-video-quality>
+                                <option value="small">Piccolo</option>
+                                <option value="balanced" selected>Bilanciato</option>
+                                <option value="high">Alta qualità</option>
+                            </select>
+                        </label>
+
+                        <div class="converter-action-row">
+                            <button class="btn" type="button" data-convert-video>Converti video</button>
+                            <button class="btn" type="button" data-extract-frame>Estrai frame corrente</button>
+                            <button class="mini-btn" type="button" data-record-webm>Registra WebM</button>
+                            <button class="mini-btn" type="button" data-stop-recording hidden>Stop</button>
+                        </div>
+
+                        <progress class="converter-progress" value="0" max="100" data-video-progress hidden></progress>
+                    </div>
+
+                    <div class="converter-action-row converter-ffmpeg-row" data-ffmpeg-row hidden>
+                        <progress class="converter-progress" value="0" max="100" data-ffmpeg-progress hidden></progress>
+                        <button class="mini-btn" type="button" data-cancel-ffmpeg hidden>Annulla FFmpeg</button>
+                    </div>
+
+                    <a class="btn converter-download" href="#" data-download hidden>Scarica output</a>
+
+                    <p class="converter-note">
+                        Nota power-user: l’output immagine resta browser-native. MP3, FLAC e preset video caricano su
+                        richiesta il core FFmpeg.wasm single-thread da CDN, poi girano localmente nel browser. I video
+                        grandi possono essere lenti e pesanti in memoria.
+                    </p>
+                </aside>
+            </div>
+        </main>
+
+        <section class="grid">
+            <article class="card">
+                <h2>Perché esiste</h2>
+                <p>
+                    I convertitori utili finiscono spesso dietro account, upload poco chiari o limiti minuscoli. Questo
+                    serve per conversioni locali rapide dove privacy e velocità contano più della transcodifica completa.
+                </p>
+            </article>
+
+            <article class="card">
+                <h2>Cosa può fare</h2>
+                <p>
+                    Le immagini passano da canvas verso PNG, JPEG o WebP quando il browser decodifica l’input. L’audio
+                    può uscire in WAV, MP3 o FLAC, e il video supporta MP4, WebM, MOV, MKV, AVI, export di frame e
+                    registrazione WebM del browser quando disponibile.
+                </p>
+            </article>
+        </section>
+
+        <footer class="footer">
+            <small>© 2026 Lorenzo Marinelli</small>
+        </footer>
+    </div>
+
+    <script src="/assets/script.js" defer></script>
+
+    <script>
+        window.addEventListener('DOMContentLoaded', () => {
+            const root = document.querySelector('[data-converter]');
+            if (!root) return;
+
+            const copy = {
+                chooseFile: 'Scegli un file da ispezionare.',
+                localDefault: 'I file restano locali. Il supporto dipende dal browser.',
+                noFile: 'Nessun file caricato.',
+                droppedUnsupported: 'Questo tipo di file non è supportato dal convertitore browser-native.',
+                imageReady: 'Immagine pronta. Scegli output PNG, JPEG o WebP e un eventuale ridimensionamento.',
+                audioReady: 'Audio pronto. Output WAV, MP3 e FLAC disponibili.',
+                audioPreviewUnavailable: 'Il browser non riesce a disegnare la forma d’onda, ma la conversione FFmpeg può comunque funzionare.',
+                videoReady: 'Video pronto. Converti con FFmpeg, estrai un frame o registra WebM se supportato.',
+                videoPreviewUnavailable: 'Il browser non riesce ad aprire l’anteprima video, ma la conversione FFmpeg può comunque funzionare.',
+                convertingImage: 'Conversione immagine...',
+                convertingAudio: 'Rendering WAV...',
+                convertingWithFFmpeg: 'Conversione FFmpeg in corso...',
+                loadingFFmpeg: 'Caricamento di FFmpeg.wasm da CDN...',
+                ffmpegReady: 'FFmpeg pronto.',
+                ffmpegLoadFailed: 'FFmpeg non è stato caricato. Controlla connessione del browser o accesso al CDN.',
+                ffmpegWorkerLoadFailed: 'Il worker CDN di FFmpeg non è stato caricato. Controlla accesso di rete del browser o blocchi sul CDN.',
+                ffmpegCancelled: 'Conversione FFmpeg annullata.',
+                ffmpegNotLoaded: 'Non caricato',
+                ffmpegLoading: 'Caricamento',
+                ffmpegLoaded: 'Pronto',
+                ffmpegRunning: 'In esecuzione',
+                ffmpegError: 'Errore',
+                ffmpegCancelledStatus: 'Annullato',
+                extractingFrame: 'Estrazione frame corrente...',
+                recordingVideo: 'Registrazione video in tempo reale...',
+                stoppedRecording: 'Registrazione fermata.',
+                outputReady: 'Output pronto.',
+                supportWaiting: 'In attesa',
+                supportSupported: 'Supportato',
+                supportLimited: 'Limitato',
+                supportUnsupported: 'Non supportato',
+                noAvvisi: 'Nessun avviso.',
+                browserCannotDecode: 'Il browser non riesce a decodificare questo file con le API native.',
+                imageOutputUnsupported: 'Il browser non riesce a codificare quel formato di output tramite canvas.',
+                webpEncodingUnsupported: 'Questo browser non riesce a codificare WebP tramite canvas, quindi l’output WebP è disabilitato.',
+                gifStillFrame: 'I file GIF vengono convertiti come frame statico renderizzato dal browser, non come animazione.',
+                tiffUnsupported: 'TIFF rilevato, ma il canvas nativo del browser di solito non decodifica TIFF in questa versione statica.',
+                heicUnsupported: 'HEIC/HEIF rilevato, ma serve una libreria decoder o WASM prima della conversione canvas.',
+                pdfUnsupported: 'PDF rilevato, ma la conversione delle pagine richiede un renderer PDF come PDF.js.',
+                rasterBrowserSupport: 'Il supporto BMP e AVIF dipende dal browser corrente.',
+                audioUnavailable: 'AudioContext non è disponibile in questo browser.',
+                videoRecorderUnavailable: 'MediaRecorder o captureStream non è disponibile in questo browser.',
+                videoDurationWarning: 'La registrazione WebM procede in tempo reale per la durata del video corrente.',
+                imageDownscaled: 'Immagine grande ridimensionata per la memoria del browser.',
+                largeFileWarning: 'I file grandi possono essere lenti e pesanti in memoria con FFmpeg.wasm.',
+                downloadPrefix: 'Scarica',
+                sampleImageLoaded: 'Immagine campione caricata.',
+                sampleAudioLoaded: 'Tono campione caricato.',
+                sampleVideoLoaded: 'Video campione caricato.',
+                sampleVideoUnavailable: 'Il video campione richiede supporto canvas captureStream e MediaRecorder.',
+                cleared: 'Svuotato.',
+                webmUnsupported: 'Questo browser non può registrare WebM per questo video.',
+                recordNeedsVideo: 'Carica un video prima di registrare.',
+                frameNeedsVideo: 'Carica un video visualizzabile dal browser prima di estrarre un frame.',
+                videoConvertNeedsFile: 'Carica un video prima di avviare la conversione FFmpeg.',
+                audioConvertNeedsFile: 'Carica un file audio prima di avviare la conversione FFmpeg.',
+                lastLogDefault: '--'
+            };
+
+            const dropZone = root.querySelector('[data-converter-drop]');
+            const input = root.querySelector('[data-converter-input]');
+            const status = root.querySelector('[data-converter-status]');
+            const sampleImageButton = root.querySelector('[data-sample-image]');
+            const sampleAudioButton = root.querySelector('[data-sample-audio]');
+            const sampleVideoButton = root.querySelector('[data-sample-video]');
+            const clearButton = root.querySelector('[data-converter-clear]');
+
+            const emptyPreview = root.querySelector('[data-preview-empty]');
+            const converterPanel = root.querySelector('[data-converter-panel]');
+            const imagePreview = root.querySelector('[data-image-preview]');
+            const audioPreview = root.querySelector('[data-audio-preview]');
+            const videoPreview = root.querySelector('[data-video-preview]');
+            const imageControls = root.querySelector('[data-image-controls]');
+            const audioControls = root.querySelector('[data-audio-controls]');
+            const videoControls = root.querySelector('[data-video-controls]');
+
+            const sourceCanvas = root.querySelector('[data-image-source]');
+            const outputCanvas = root.querySelector('[data-image-output]');
+            const sourceCtx = sourceCanvas.getContext('2d', { willReadFrequently: true });
+            const outputCtx = outputCanvas.getContext('2d');
+            const waveformCanvas = root.querySelector('[data-audio-waveform]');
+            const waveformCtx = waveformCanvas.getContext('2d');
+            const video = root.querySelector('[data-video-player]');
+            const frameCanvas = root.querySelector('[data-video-frame]');
+            const frameCtx = frameCanvas.getContext('2d');
+
+            const imageFormatButtons = Array.from(root.querySelectorAll('[data-image-format]'));
+            const imageMaxWidth = root.querySelector('[data-image-max-width]');
+            const imageMaxHeight = root.querySelector('[data-image-max-height]');
+            const imageQuality = root.querySelector('[data-image-quality]');
+            const imageQualityValue = root.querySelector('[data-image-quality-value]');
+            const convertImageButton = root.querySelector('[data-convert-image]');
+
+            const audioFormat = root.querySelector('[data-audio-format]');
+            const audioQuality = root.querySelector('[data-audio-quality]');
+            const audioChannels = root.querySelector('[data-audio-channels]');
+            const audioRate = root.querySelector('[data-audio-rate]');
+            const convertAudioButton = root.querySelector('[data-convert-audio]');
+
+            const frameFormatButtons = Array.from(root.querySelectorAll('[data-frame-format]'));
+            const frameQuality = root.querySelector('[data-frame-quality]');
+            const frameQualityValue = root.querySelector('[data-frame-quality-value]');
+            const videoFormat = root.querySelector('[data-video-format]');
+            const videoQuality = root.querySelector('[data-video-quality]');
+            const convertVideoButton = root.querySelector('[data-convert-video]');
+            const extractFrameButton = root.querySelector('[data-extract-frame]');
+            const recordWebmButton = root.querySelector('[data-record-webm]');
+            const stopRecordingButton = root.querySelector('[data-stop-recording]');
+            const videoProgress = root.querySelector('[data-video-progress]');
+            const ffmpegRow = root.querySelector('[data-ffmpeg-row]');
+            const ffmpegProgress = root.querySelector('[data-ffmpeg-progress]');
+            const cancelFFmpegButton = root.querySelector('[data-cancel-ffmpeg]');
+            const downloadLink = root.querySelector('[data-download]');
+
+            const details = {
+                name: root.querySelector('[data-detail-name]'),
+                size: root.querySelector('[data-detail-size]'),
+                type: root.querySelector('[data-detail-type]'),
+                kind: root.querySelector('[data-detail-kind]'),
+                dimensions: root.querySelector('[data-detail-dimensions]'),
+                duration: root.querySelector('[data-detail-duration]'),
+                output: root.querySelector('[data-detail-output]'),
+                support: root.querySelector('[data-detail-support]'),
+                ffmpeg: root.querySelector('[data-detail-ffmpeg]'),
+                warnings: root.querySelector('[data-detail-warnings]'),
+                log: root.querySelector('[data-detail-log]')
+            };
+
+            const state = {
+                file: null,
+                kind: null,
+                kindLabel: null,
+                objectUrl: null,
+                outputUrl: null,
+                imageFormat: 'image/png',
+                frameFormat: 'image/png',
+                sourceWidth: 0,
+                sourceHeight: 0,
+                audioBuffer: null,
+                videoReady: false,
+                mediaRecorder: null,
+                recordingChunks: [],
+                warnings: [],
+                ffmpeg: null,
+                ffmpegFetchFile: null,
+                ffmpegToBlobURL: null,
+                ffmpegLoaded: false,
+                ffmpegLoadingPromise: null,
+                ffmpegBusy: false,
+                ffmpegCancelled: false,
+                ffmpegRunId: 0,
+                ffmpegWorkerUrl: null,
+                ffmpegStatus: copy.ffmpegNotLoaded,
+                ffmpegLastLog: copy.lastLogDefault
+            };
+
+            const imageOutputSupport = {
+                'image/png': true,
+                'image/jpeg': true,
+                'image/webp': true
+            };
+
+            const ffmpegUrls = {
+                wrapper: 'https://cdn.jsdelivr.net/npm/@ffmpeg/ffmpeg@0.12.15/dist/esm/index.js',
+                util: 'https://cdn.jsdelivr.net/npm/@ffmpeg/util@0.12.2/dist/esm/index.js',
+                core: 'https://cdn.jsdelivr.net/npm/@ffmpeg/core@0.12.10/dist/umd',
+                worker: 'https://cdn.jsdelivr.net/npm/@ffmpeg/ffmpeg@0.12.15/dist/esm/worker.js'
+            };
+
+            const audioQualityPresets = {
+                small: { mp3: '5', flac: '8' },
+                balanced: { mp3: '2', flac: '5' },
+                high: { mp3: '0', flac: '3' }
+            };
+
+            const videoQualityPresets = {
+                small: { crf: '32', vp9Crf: '36', audio: '96k', aviQ: '8' },
+                balanced: { crf: '26', vp9Crf: '32', audio: '128k', aviQ: '5' },
+                high: { crf: '20', vp9Crf: '24', audio: '192k', aviQ: '3' }
+            };
+
+            const formatBytes = bytes => {
+                if (!Number.isFinite(bytes) || bytes <= 0) return '--';
+                const units = ['B', 'KB', 'MB', 'GB'];
+                let value = bytes;
+                let unit = 0;
+                while (value >= 1024 && unit < units.length - 1) {
+                    value /= 1024;
+                    unit += 1;
+                }
+                return `${value.toFixed(value >= 10 || unit === 0 ? 0 : 1)} ${units[unit]}`;
+            };
+
+            const formatDuration = seconds => {
+                if (!Number.isFinite(seconds)) return '--';
+                const minutes = Math.floor(seconds / 60);
+                const rest = seconds - minutes * 60;
+                return `${minutes}:${rest.toFixed(1).padStart(4, '0')}`;
+            };
+
+            const extensionFor = type => ({
+                'image/png': 'png',
+                'image/jpeg': 'jpg',
+                'image/webp': 'webp',
+                'audio/mpeg': 'mp3',
+                'audio/flac': 'flac',
+                'audio/wav': 'wav',
+                'video/mp4': 'mp4',
+                'video/webm': 'webm',
+                'video/quicktime': 'mov',
+                'video/x-matroska': 'mkv',
+                'video/x-msvideo': 'avi'
+            })[type] || 'bin';
+
+            const safeBaseName = file => {
+                const name = file?.name || 'file-convertito';
+                return name
+                    .replace(/\.[^.]+$/, '')
+                    .replace(/[^a-z0-9_-]+/gi, '-')
+                    .replace(/^-+|-+$/g, '')
+                    .toLowerCase() || 'file-convertito';
+            };
+
+            const setStatus = message => {
+                status.textContent = message;
+            };
+
+            const setWarning = warning => {
+                if (warning && !state.warnings.includes(warning)) state.warnings.push(warning);
+                updateDetails();
+            };
+
+            const setFFmpegStatus = value => {
+                state.ffmpegStatus = value;
+                updateDetails();
+            };
+
+            const clearOutput = () => {
+                if (state.outputUrl) URL.revokeObjectURL(state.outputUrl);
+                state.outputUrl = null;
+                downloadLink.hidden = true;
+                downloadLink.removeAttribute('href');
+                downloadLink.removeAttribute('download');
+            };
+
+            const setOutput = (blob, name) => {
+                clearOutput();
+                state.outputUrl = URL.createObjectURL(blob);
+                downloadLink.href = state.outputUrl;
+                downloadLink.download = name;
+                downloadLink.textContent = `${copy.downloadPrefix} ${name}`;
+                downloadLink.hidden = false;
+                setStatus(copy.outputReady);
+                updateDetails();
+            };
+
+            const selectedOutput = () => {
+                if (state.kind === 'image') return state.imageFormat.split('/')[1].toUpperCase();
+                if (state.kind === 'audio') {
+                    return audioFormat.options[audioFormat.selectedIndex]?.text || 'WAV PCM';
+                }
+                if (state.kind === 'video') {
+                    const videoText = videoFormat.options[videoFormat.selectedIndex]?.text.split('·')[0].trim() || 'MP4';
+                    return `${videoText} / frame ${state.frameFormat.split('/')[1].toUpperCase()}`;
+                }
+                return '--';
+            };
+
+            const updateDetails = (support = null) => {
+                const file = state.file;
+                details.name.textContent = file?.name || 'Nessuno';
+                details.size.textContent = file ? formatBytes(file.size) : '--';
+                details.type.textContent = file?.type || '--';
+                details.kind.textContent = state.kindLabel || state.kind || '--';
+                details.dimensions.textContent = state.sourceWidth && state.sourceHeight
+                    ? `${state.sourceWidth} × ${state.sourceHeight}`
+                    : '--';
+                details.duration.textContent = state.audioBuffer
+                    ? formatDuration(state.audioBuffer.duration)
+                    : state.videoReady
+                        ? formatDuration(video.duration)
+                        : '--';
+                details.output.textContent = selectedOutput();
+                if (support) details.support.textContent = support;
+                details.ffmpeg.textContent = state.ffmpegStatus;
+                details.warnings.textContent = state.warnings.length ? state.warnings.join(' ') : copy.noAvvisi;
+                details.log.textContent = state.ffmpegLastLog || copy.lastLogDefault;
+            };
+
+            const setMode = kind => {
+                emptyPreview.hidden = Boolean(kind);
+                imagePreview.hidden = kind !== 'image';
+                audioPreview.hidden = kind !== 'audio';
+                videoPreview.hidden = kind !== 'video';
+                imageControls.hidden = kind !== 'image';
+                audioControls.hidden = kind !== 'audio';
+                videoControls.hidden = kind !== 'video';
+            };
+
+            const fileExtension = file => (file.name.split('.').pop() || '').toLowerCase();
+
+            const detectKind = file => {
+                const type = (file.type || '').toLowerCase();
+                const ext = fileExtension(file);
+                const imageLabels = {
+                    png: 'Immagine PNG',
+                    jpg: 'Immagine JPEG',
+                    jpeg: 'Immagine JPEG',
+                    webp: 'Immagine WebP',
+                    gif: 'Immagine GIF',
+                    bmp: 'Immagine BMP',
+                    avif: 'Immagine AVIF'
+                };
+                const audioLabels = {
+                    wav: 'Audio WAV',
+                    mp3: 'Audio MP3',
+                    m4a: 'Audio M4A',
+                    ogg: 'Audio OGG',
+                    flac: 'Audio FLAC',
+                    aac: 'Audio AAC'
+                };
+                const videoLabels = {
+                    mp4: 'Video MP4',
+                    webm: 'Video WebM',
+                    mov: 'Video MOV',
+                    m4v: 'Video M4V',
+                    mkv: 'Video MKV',
+                    avi: 'Video AVI',
+                    ogv: 'Video OGV'
+                };
+
+                if (type === 'application/pdf' || ext === 'pdf') {
+                    return { kind: 'image-unsupported', label: 'Pagine PDF', warning: copy.pdfUnsupported };
+                }
+                if (['image/heic', 'image/heif'].includes(type) || ['heic', 'heif'].includes(ext)) {
+                    return { kind: 'image-unsupported', label: 'Immagine HEIC/HEIF', warning: copy.heicUnsupported };
+                }
+                if (['image/tiff', 'image/x-tiff', 'image/tif'].includes(type) || ['tif', 'tiff'].includes(ext)) {
+                    return { kind: 'image-unsupported', label: 'Immagine TIFF', warning: copy.tiffUnsupported };
+                }
+                if (type.startsWith('image/') || ['png', 'jpg', 'jpeg', 'webp', 'gif', 'bmp', 'avif'].includes(ext)) {
+                    const isGif = type === 'image/gif' || ext === 'gif';
+                    const isBrowserDependent = ['image/bmp', 'image/avif'].includes(type) || ['bmp', 'avif'].includes(ext);
+                    return {
+                        kind: 'image',
+                        label: imageLabels[ext] || 'Immagine decodificabile dal browser',
+                        warning: isGif ? copy.gifStillFrame : isBrowserDependent ? copy.rasterBrowserSupport : '',
+                        limited: isGif || isBrowserDependent
+                    };
+                }
+                if (type.startsWith('audio/')) return { kind: 'audio', label: audioLabels[ext] || 'File audio' };
+                if (type.startsWith('video/')) return { kind: 'video', label: videoLabels[ext] || 'File video' };
+                if (['wav', 'mp3', 'm4a', 'ogg', 'flac', 'aac'].includes(ext)) return { kind: 'audio', label: audioLabels[ext] || 'File audio' };
+                if (['mp4', 'webm', 'mov', 'm4v', 'mkv', 'avi', 'ogv'].includes(ext)) return { kind: 'video', label: videoLabels[ext] || 'File video' };
+                return { kind: 'unsupported', label: 'File non supportato', warning: copy.droppedUnsupported };
+            };
+
+            const disposeObjectUrl = () => {
+                if (state.objectUrl) URL.revokeObjectURL(state.objectUrl);
+                state.objectUrl = null;
+            };
+
+            const revokeFFmpegWorkerUrl = () => {
+                if (state.ffmpegWorkerUrl) URL.revokeObjectURL(state.ffmpegWorkerUrl);
+                state.ffmpegWorkerUrl = null;
+            };
+
+            const createFFmpegWorkerUrl = () => {
+                revokeFFmpegWorkerUrl();
+                const workerSource = `import ${JSON.stringify(ffmpegUrls.worker)};`;
+                state.ffmpegWorkerUrl = URL.createObjectURL(new Blob([workerSource], {
+                    type: 'text/javascript'
+                }));
+                return state.ffmpegWorkerUrl;
+            };
+
+            const resetState = () => {
+                if (state.ffmpegBusy) {
+                    state.ffmpegCancelled = true;
+                    if (state.ffmpeg) state.ffmpeg.terminate();
+                    state.ffmpeg = null;
+                    state.ffmpegLoaded = false;
+                    state.ffmpegLoadingPromise = null;
+                    state.ffmpegBusy = false;
+                    state.ffmpegRunId += 1;
+                    revokeFFmpegWorkerUrl();
+                }
+                disposeObjectUrl();
+                clearOutput();
+                state.file = null;
+                state.kind = null;
+                state.kindLabel = null;
+                state.sourceWidth = 0;
+                state.sourceHeight = 0;
+                state.audioBuffer = null;
+                state.videoReady = false;
+                state.warnings = [];
+                state.ffmpegCancelled = false;
+                state.ffmpegLastLog = copy.lastLogDefault;
+                state.ffmpegStatus = state.ffmpegLoaded ? copy.ffmpegLoaded : copy.ffmpegNotLoaded;
+                video.removeAttribute('src');
+                video.load();
+                videoProgress.hidden = true;
+                videoProgress.value = 0;
+                ffmpegRow.hidden = true;
+                ffmpegProgress.hidden = true;
+                ffmpegProgress.value = 0;
+                cancelFFmpegButton.hidden = true;
+                converterPanel.hidden = true;
+                setMode(null);
+                setStatus(copy.chooseFile);
+                updateDetails(copy.supportWaiting);
+            };
+
+            const resizeCanvas = (canvas, width, height) => {
+                canvas.width = Math.max(1, Math.round(width));
+                canvas.height = Math.max(1, Math.round(height));
+                canvas.style.aspectRatio = `${canvas.width} / ${canvas.height}`;
+            };
+
+            const drawImageToCanvases = image => {
+                const maxSide = 4096;
+                const naturalWidth = image.naturalWidth || image.width;
+                const naturalHeight = image.naturalHeight || image.height;
+                const scale = Math.min(1, maxSide / Math.max(naturalWidth, naturalHeight));
+                const width = Math.round(naturalWidth * scale);
+                const height = Math.round(naturalHeight * scale);
+                if (scale < 1) setWarning(copy.imageDownscaled);
+                state.sourceWidth = width;
+                state.sourceHeight = height;
+                resizeCanvas(sourceCanvas, width, height);
+                resizeCanvas(outputCanvas, width, height);
+                sourceCtx.clearRect(0, 0, width, height);
+                outputCtx.clearRect(0, 0, width, height);
+                sourceCtx.drawImage(image, 0, 0, width, height);
+                outputCtx.drawImage(sourceCanvas, 0, 0);
+            };
+
+            const loadImage = file => new Promise((resolve, reject) => {
+                const url = URL.createObjectURL(file);
+                const image = new Image();
+                image.addEventListener('load', () => {
+                    drawImageToCanvases(image);
+                    URL.revokeObjectURL(url);
+                    resolve();
+                }, { once: true });
+                image.addEventListener('error', () => {
+                    URL.revokeObjectURL(url);
+                    reject(new Error(copy.browserCannotDecode));
+                }, { once: true });
+                image.src = url;
+            });
+
+            const getFitSize = () => {
+                const maxWidth = Number(imageMaxWidth.value) || state.sourceWidth;
+                const maxHeight = Number(imageMaxHeight.value) || state.sourceHeight;
+                const scale = Math.min(1, maxWidth / state.sourceWidth, maxHeight / state.sourceHeight);
+                return {
+                    width: Math.max(1, Math.round(state.sourceWidth * scale)),
+                    height: Math.max(1, Math.round(state.sourceHeight * scale))
+                };
+            };
+
+            const canvasToBlob = (canvas, type, quality) => new Promise(resolve => {
+                if (canvas.toBlob) {
+                    canvas.toBlob(resolve, type, quality);
+                    return;
+                }
+                fetch(canvas.toDataURL(type, quality))
+                    .then(response => response.blob())
+                    .then(resolve);
+            });
+
+            const canEncodeCanvasType = type => {
+                const canvas = document.createElement('canvas');
+                canvas.width = 1;
+                canvas.height = 1;
+                try {
+                    return canvas.toDataURL(type).startsWith(`data:${type}`);
+                } catch (error) {
+                    return false;
+                }
+            };
+
+            const syncImageFormatButtons = () => {
+                imageFormatButtons.forEach(button => {
+                    button.classList.toggle('is-active', button.dataset.imageFormat === state.imageFormat);
+                });
+            };
+
+            const updateImageOutputSupport = () => {
+                imageOutputSupport['image/webp'] = canEncodeCanvasType('image/webp');
+                imageFormatButtons.forEach(button => {
+                    const supported = imageOutputSupport[button.dataset.imageFormat] !== false;
+                    button.disabled = !supported;
+                    if (supported) {
+                        button.removeAttribute('aria-disabled');
+                        button.removeAttribute('title');
+                    } else {
+                        button.setAttribute('aria-disabled', 'true');
+                        button.title = copy.webpEncodingUnsupported;
+                    }
+                });
+                if (!imageOutputSupport[state.imageFormat]) state.imageFormat = 'image/png';
+                syncImageFormatButtons();
+            };
+
+            const convertImage = async () => {
+                if (state.kind !== 'image') return;
+                if (!imageOutputSupport[state.imageFormat]) {
+                    setWarning(copy.imageOutputUnsupported);
+                    setStatus(copy.imageOutputUnsupported);
+                    updateDetails(copy.supportLimited);
+                    return;
+                }
+                setStatus(copy.convertingImage);
+                try {
+                    const { width, height } = getFitSize();
+                    resizeCanvas(outputCanvas, width, height);
+                    outputCtx.clearRect(0, 0, width, height);
+                    outputCtx.drawImage(sourceCanvas, 0, 0, width, height);
+                    const quality = Number(imageQuality.value) / 100;
+                    const blob = await canvasToBlob(outputCanvas, state.imageFormat, quality);
+                    if (!blob || (blob.type && blob.type !== state.imageFormat)) {
+                        throw new Error(copy.imageOutputUnsupported);
+                    }
+                    const ext = extensionFor(state.imageFormat);
+                    setOutput(blob, `${safeBaseName(state.file)}.${ext}`);
+                } catch (error) {
+                    setWarning(error.message || copy.imageOutputUnsupported);
+                    setStatus(error.message || copy.imageOutputUnsupported);
+                    updateDetails(copy.supportLimited);
+                }
+            };
+
+            const setFFmpegBusy = busy => {
+                state.ffmpegBusy = busy;
+                ffmpegRow.hidden = !busy;
+                ffmpegProgress.hidden = !busy;
+                cancelFFmpegButton.hidden = !busy;
+                convertAudioButton.disabled = busy;
+                convertVideoButton.disabled = busy;
+                convertImageButton.disabled = busy;
+                extractFrameButton.disabled = busy;
+                recordWebmButton.disabled = busy;
+                if (!busy) {
+                    ffmpegProgress.value = 0;
+                    ffmpegProgress.hidden = true;
+                    cancelFFmpegButton.hidden = true;
+                }
+                updateDetails();
+            };
+
+            const ensureFFmpeg = async () => {
+                if (state.ffmpegLoaded && state.ffmpeg) return state.ffmpeg;
+                if (state.ffmpegLoadingPromise) return state.ffmpegLoadingPromise;
+
+                state.ffmpegLoadingPromise = (async () => {
+                    try {
+                        setFFmpegStatus(copy.ffmpegLoading);
+                        setStatus(copy.loadingFFmpeg);
+                        const [{ FFmpeg }, { fetchFile, toBlobURL }] = await Promise.all([
+                            import(ffmpegUrls.wrapper),
+                            import(ffmpegUrls.util)
+                        ]);
+                        const ffmpeg = new FFmpeg();
+                        state.ffmpeg = ffmpeg;
+                        state.ffmpegFetchFile = fetchFile;
+                        state.ffmpegToBlobURL = toBlobURL;
+                        ffmpeg.on('log', ({ message }) => {
+                            if (message) {
+                                state.ffmpegLastLog = message;
+                                updateDetails();
+                            }
+                        });
+                        ffmpeg.on('progress', ({ progress }) => {
+                            if (!state.ffmpegBusy || !Number.isFinite(progress)) return;
+                            ffmpegProgress.hidden = false;
+                            ffmpegProgress.value = Math.max(0, Math.min(100, progress * 100));
+                        });
+                        const classWorkerURL = createFFmpegWorkerUrl();
+                        await ffmpeg.load({
+                            classWorkerURL,
+                            coreURL: await toBlobURL(`${ffmpegUrls.core}/ffmpeg-core.js`, 'text/javascript'),
+                            wasmURL: await toBlobURL(`${ffmpegUrls.core}/ffmpeg-core.wasm`, 'application/wasm')
+                        });
+                        state.ffmpeg = ffmpeg;
+                        state.ffmpegLoaded = true;
+                        setFFmpegStatus(copy.ffmpegLoaded);
+                        setStatus(copy.ffmpegReady);
+                        return ffmpeg;
+                    } catch (error) {
+                        if (state.ffmpeg) state.ffmpeg.terminate();
+                        state.ffmpeg = null;
+                        state.ffmpegLoaded = false;
+                        revokeFFmpegWorkerUrl();
+                        state.ffmpegLastLog = error.message || copy.ffmpegWorkerLoadFailed;
+                        setWarning(copy.ffmpegWorkerLoadFailed);
+                        setFFmpegStatus(copy.ffmpegError);
+                        setStatus(copy.ffmpegWorkerLoadFailed);
+                        throw error;
+                    } finally {
+                        state.ffmpegLoadingPromise = null;
+                    }
+                })();
+
+                return state.ffmpegLoadingPromise;
+            };
+
+            const ffmpegInputName = file => `input.${fileExtension(file) || 'bin'}`;
+
+            const ffmpegOutputName = (file, type, suffix = '') =>
+                `${safeBaseName(file)}${suffix}.${extensionFor(type)}`;
+
+            const addAudioOptions = args => {
+                if (audioChannels.value !== 'original') args.push('-ac', audioChannels.value);
+                if (audioRate.value !== 'original') args.push('-ar', audioRate.value);
+                return args;
+            };
+
+            const audioFFmpegCommand = () => {
+                const outputType = audioFormat.value;
+                const outputName = ffmpegOutputName(state.file, outputType);
+                const args = ['-i', ffmpegInputName(state.file), '-vn'];
+                addAudioOptions(args);
+                if (outputType === 'audio/mpeg') {
+                    args.push('-codec:a', 'libmp3lame', '-q:a', audioQualityPresets[audioQuality.value].mp3);
+                } else if (outputType === 'audio/flac') {
+                    args.push('-codec:a', 'flac', '-compression_level', audioQualityPresets[audioQuality.value].flac);
+                } else {
+                    args.push('-codec:a', 'pcm_s16le');
+                }
+                args.push(outputName);
+                return { args, outputName, outputType };
+            };
+
+            const videoFFmpegCommand = () => {
+                const outputType = videoFormat.value;
+                const outputName = ffmpegOutputName(state.file, outputType);
+                const preset = videoQualityPresets[videoQuality.value];
+                const inputName = ffmpegInputName(state.file);
+                const args = ['-i', inputName, '-map', '0:v:0?', '-map', '0:a:0?'];
+
+                if (outputType === 'video/webm') {
+                    args.push('-c:v', 'libvpx-vp9', '-b:v', '0', '-crf', preset.vp9Crf, '-c:a', 'libopus', '-b:a', preset.audio);
+                } else if (outputType === 'video/x-msvideo') {
+                    args.push('-c:v', 'mpeg4', '-q:v', preset.aviQ, '-c:a', 'libmp3lame', '-q:a', '4');
+                } else {
+                    args.push('-c:v', 'libx264', '-preset', 'veryfast', '-crf', preset.crf, '-pix_fmt', 'yuv420p', '-c:a', 'aac', '-b:a', preset.audio);
+                    if (outputType === 'video/mp4') args.push('-movflags', '+faststart');
+                }
+
+                args.push(outputName);
+                return { args, outputName, outputType };
+            };
+
+            const runFFmpeg = async ({ args, outputName, outputType }) => {
+                if (!state.file) return;
+                const runId = state.ffmpegRunId + 1;
+                state.ffmpegRunId = runId;
+                clearOutput();
+                setFFmpegBusy(true);
+                state.ffmpegCancelled = false;
+                state.ffmpegLastLog = copy.lastLogDefault;
+                ffmpegProgress.value = 0;
+                setFFmpegStatus(copy.ffmpegRunning);
+                setStatus(copy.convertingWithFFmpeg);
+                const inputName = ffmpegInputName(state.file);
+
+                try {
+                    const ffmpeg = await ensureFFmpeg();
+                    await ffmpeg.writeFile(inputName, await state.ffmpegFetchFile(state.file));
+                    await ffmpeg.exec(args);
+                    const data = await ffmpeg.readFile(outputName);
+                    const blob = new Blob([data.buffer], { type: outputType });
+                    setOutput(blob, outputName);
+                    setFFmpegStatus(copy.ffmpegLoaded);
+                    if (ffmpeg.deleteFile) {
+                        await Promise.allSettled([ffmpeg.deleteFile(inputName), ffmpeg.deleteFile(outputName)]);
+                    }
+                } catch (error) {
+                    if (runId !== state.ffmpegRunId) return;
+                    if (state.ffmpegCancelled) {
+                        setStatus(copy.ffmpegCancelled);
+                        state.ffmpegLastLog = copy.ffmpegCancelled;
+                        setFFmpegStatus(copy.ffmpegCancelledStatus);
+                    } else {
+                        const message = error.message || copy.ffmpegLoadFailed;
+                        state.ffmpegLastLog = message;
+                        setWarning(message);
+                        setStatus(message);
+                        setFFmpegStatus(copy.ffmpegError);
+                    }
+                } finally {
+                    if (runId === state.ffmpegRunId) setFFmpegBusy(false);
+                }
+            };
+
+            const cancelFFmpeg = () => {
+                if (!state.ffmpegBusy) return;
+                state.ffmpegCancelled = true;
+                if (state.ffmpeg) state.ffmpeg.terminate();
+                state.ffmpeg = null;
+                state.ffmpegLoaded = false;
+                state.ffmpegLoadingPromise = null;
+                revokeFFmpegWorkerUrl();
+                setFFmpegStatus(copy.ffmpegCancelledStatus);
+                setStatus(copy.ffmpegCancelled);
+                setFFmpegBusy(false);
+            };
+
+            const ensureAudioContext = () => {
+                const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+                if (!AudioContextClass) throw new Error(copy.audioUnavailable);
+                return new AudioContextClass();
+            };
+
+            const drawWaveform = audioBuffer => {
+                const width = 1000;
+                const height = 260;
+                resizeCanvas(waveformCanvas, width, height);
+                waveformCtx.clearRect(0, 0, width, height);
+                waveformCtx.fillStyle = 'rgba(255, 255, 255, 0.05)';
+                waveformCtx.fillRect(0, 0, width, height);
+                waveformCtx.strokeStyle = getComputedStyle(document.documentElement).getPropertyValue('--accent2').trim() || '#64f5e1';
+                waveformCtx.lineWidth = 2;
+                const channel = audioBuffer.getChannelData(0);
+                const step = Math.max(1, Math.floor(channel.length / width));
+                waveformCtx.beginPath();
+                for (let x = 0; x < width; x += 1) {
+                    let min = 1;
+                    let max = -1;
+                    for (let j = 0; j < step; j += 1) {
+                        const value = channel[x * step + j] || 0;
+                        min = Math.min(min, value);
+                        max = Math.max(max, value);
+                    }
+                    waveformCtx.moveTo(x, (1 + min) * height / 2);
+                    waveformCtx.lineTo(x, (1 + max) * height / 2);
+                }
+                waveformCtx.stroke();
+            };
+
+            const loadAudio = async file => {
+                const context = ensureAudioContext();
+                const buffer = await file.arrayBuffer();
+                state.audioBuffer = await context.decodeAudioData(buffer.slice(0));
+                if (context.close) context.close();
+                drawWaveform(state.audioBuffer);
+            };
+
+            const renderAudio = async () => {
+                const source = state.audioBuffer;
+                const targetRate = audioRate.value === 'original' ? source.sampleRate : Number(audioRate.value);
+                const targetChannels = audioChannels.value === 'original' ? source.numberOfChannels : Number(audioChannels.value);
+                const length = Math.ceil(source.duration * targetRate);
+                const OfflineAudioContextClass = window.OfflineAudioContext || window.webkitOfflineAudioContext;
+                if (!OfflineAudioContextClass) throw new Error(copy.audioUnavailable);
+                const offline = new OfflineAudioContextClass(targetChannels, length, targetRate);
+                const node = offline.createBufferSource();
+                node.buffer = source;
+                node.connect(offline.destination);
+                node.start(0);
+                return offline.startRendering();
+            };
+
+            const encodeWav = audioBuffer => {
+                const channels = audioBuffer.numberOfChannels;
+                const sampleRate = audioBuffer.sampleRate;
+                const length = audioBuffer.length * channels * 2;
+                const buffer = new ArrayBuffer(44 + length);
+                const view = new DataView(buffer);
+                const writeString = (offset, string) => {
+                    for (let i = 0; i < string.length; i += 1) view.setUint8(offset + i, string.charCodeAt(i));
+                };
+                writeString(0, 'RIFF');
+                view.setUint32(4, 36 + length, true);
+                writeString(8, 'WAVE');
+                writeString(12, 'fmt ');
+                view.setUint32(16, 16, true);
+                view.setUint16(20, 1, true);
+                view.setUint16(22, channels, true);
+                view.setUint32(24, sampleRate, true);
+                view.setUint32(28, sampleRate * channels * 2, true);
+                view.setUint16(32, channels * 2, true);
+                view.setUint16(34, 16, true);
+                writeString(36, 'data');
+                view.setUint32(40, length, true);
+                let offset = 44;
+                const channelData = Array.from({ length: channels }, (_, index) => audioBuffer.getChannelData(index));
+                for (let i = 0; i < audioBuffer.length; i += 1) {
+                    for (let channel = 0; channel < channels; channel += 1) {
+                        const sample = Math.max(-1, Math.min(1, channelData[channel][i] || 0));
+                        view.setInt16(offset, sample < 0 ? sample * 0x8000 : sample * 0x7fff, true);
+                        offset += 2;
+                    }
+                }
+                return new Blob([buffer], { type: 'audio/wav' });
+            };
+
+            const convertAudio = async () => {
+                if (state.kind !== 'audio' || !state.file) {
+                    setWarning(copy.audioConvertNeedsFile);
+                    setStatus(copy.audioConvertNeedsFile);
+                    return;
+                }
+                if (audioFormat.value !== 'audio/wav') {
+                    await runFFmpeg(audioFFmpegCommand());
+                    return;
+                }
+                if (!state.audioBuffer) {
+                    await runFFmpeg(audioFFmpegCommand());
+                    return;
+                }
+                setStatus(copy.convertingAudio);
+                try {
+                    const rendered = await renderAudio();
+                    setOutput(encodeWav(rendered), `${safeBaseName(state.file)}.wav`);
+                } catch (error) {
+                    setWarning(error.message || copy.browserCannotDecode);
+                    setStatus(copy.browserCannotDecode);
+                    updateDetails(copy.supportLimited);
+                }
+            };
+
+            const convertVideo = async () => {
+                if (state.kind !== 'video' || !state.file) {
+                    setWarning(copy.videoConvertNeedsFile);
+                    setStatus(copy.videoConvertNeedsFile);
+                    return;
+                }
+                await runFFmpeg(videoFFmpegCommand());
+            };
+
+            const loadVideo = file => new Promise((resolve, reject) => {
+                state.objectUrl = URL.createObjectURL(file);
+                video.src = state.objectUrl;
+                video.muted = true;
+                video.addEventListener('loadedmetadata', () => {
+                    state.sourceWidth = video.videoWidth;
+                    state.sourceHeight = video.videoHeight;
+                    state.videoReady = true;
+                    resizeCanvas(frameCanvas, video.videoWidth || 16, video.videoHeight || 9);
+                    resolve();
+                }, { once: true });
+                video.addEventListener('error', () => reject(new Error(copy.browserCannotDecode)), { once: true });
+                video.load();
+            });
+
+            const drawCurrentFrame = () => {
+                if (!state.videoReady) throw new Error(copy.frameNeedsVideo);
+                resizeCanvas(frameCanvas, video.videoWidth || state.sourceWidth, video.videoHeight || state.sourceHeight);
+                frameCtx.drawImage(video, 0, 0, frameCanvas.width, frameCanvas.height);
+            };
+
+            const extractFrame = async () => {
+                try {
+                    setStatus(copy.extractingFrame);
+                    drawCurrentFrame();
+                    const blob = await canvasToBlob(frameCanvas, state.frameFormat, Number(frameQuality.value) / 100);
+                    const ext = extensionFor(state.frameFormat);
+                    setOutput(blob, `${safeBaseName(state.file)}-frame.${ext}`);
+                } catch (error) {
+                    setWarning(error.message || copy.frameNeedsVideo);
+                    setStatus(copy.frameNeedsVideo);
+                }
+            };
+
+            const supportedWebmMime = () => {
+                if (!window.MediaRecorder) return '';
+                return [
+                    'video/webm;codecs=vp9,opus',
+                    'video/webm;codecs=vp8,opus',
+                    'video/webm'
+                ].find(type => MediaRecorder.isTypeSupported(type)) || '';
+            };
+
+            const captureVideoStream = () => {
+                if (video.captureStream) return video.captureStream();
+                if (video.mozCaptureStream) return video.mozCaptureStream();
+                return null;
+            };
+
+            const canRecordVideo = () =>
+                Boolean((video.captureStream || video.mozCaptureStream) && window.MediaRecorder);
+
+            const seekVideoToStart = () => new Promise(resolve => {
+                if (video.currentTime <= 0.01) {
+                    resolve();
+                    return;
+                }
+                video.addEventListener('seeked', resolve, { once: true });
+                video.currentTime = 0;
+            });
+
+            const stopRecording = () => {
+                if (state.mediaRecorder && state.mediaRecorder.state !== 'inactive') {
+                    state.mediaRecorder.stop();
+                }
+            };
+
+            const recordWebm = async () => {
+                if (!state.videoReady) {
+                    setWarning(copy.recordNeedsVideo);
+                    return;
+                }
+                if (!window.MediaRecorder) {
+                    setWarning(copy.videoRecorderUnavailable);
+                    setStatus(copy.videoRecorderUnavailable);
+                    updateDetails(copy.supportUnsupported);
+                    return;
+                }
+                const mimeType = supportedWebmMime();
+                if (!mimeType) {
+                    setWarning(copy.webmUnsupported);
+                    setStatus(copy.webmUnsupported);
+                    updateDetails(copy.supportUnsupported);
+                    return;
+                }
+                if (!Number.isFinite(video.duration) || video.duration <= 0) {
+                    setWarning(copy.webmUnsupported);
+                    return;
+                }
+
+                clearOutput();
+                setWarning(copy.videoDurationWarning);
+                state.recordingChunks = [];
+                videoProgress.hidden = false;
+                videoProgress.value = 0;
+                stopRecordingButton.hidden = false;
+                recordWebmButton.disabled = true;
+
+                video.pause();
+                await seekVideoToStart();
+
+                const stream = captureVideoStream();
+                if (!stream) {
+                    setWarning(copy.videoRecorderUnavailable);
+                    setStatus(copy.videoRecorderUnavailable);
+                    updateDetails(copy.supportUnsupported);
+                    stopRecordingButton.hidden = true;
+                    recordWebmButton.disabled = false;
+                    videoProgress.hidden = true;
+                    return;
+                }
+                state.mediaRecorder = new MediaRecorder(stream, { mimeType });
+                state.mediaRecorder.addEventListener('dataavailable', event => {
+                    if (event.data && event.data.size) state.recordingChunks.push(event.data);
+                });
+                state.mediaRecorder.addEventListener('stop', () => {
+                    const blob = new Blob(state.recordingChunks, { type: 'video/webm' });
+                    setOutput(blob, `${safeBaseName(state.file)}.webm`);
+                    stopRecordingButton.hidden = true;
+                    recordWebmButton.disabled = false;
+                    videoProgress.hidden = true;
+                    setStatus(copy.stoppedRecording);
+                }, { once: true });
+
+                const progressTimer = window.setInterval(() => {
+                    if (!video.duration) return;
+                    videoProgress.value = Math.min(100, video.currentTime / video.duration * 100);
+                    if (!state.mediaRecorder || state.mediaRecorder.state === 'inactive') {
+                        window.clearInterval(progressTimer);
+                    }
+                }, 200);
+
+                video.addEventListener('ended', stopRecording, { once: true });
+                state.mediaRecorder.start(250);
+                setStatus(copy.recordingVideo);
+                await video.play();
+            };
+
+            const selectFile = async file => {
+                resetState();
+                const detected = detectKind(file);
+                state.file = file;
+                state.kind = detected.kind;
+                state.kindLabel = detected.label;
+                converterPanel.hidden = false;
+                state.warnings = [copy.localDefault];
+                if (detected.warning) state.warnings.push(detected.warning);
+                if (file.size > 100 * 1024 * 1024) state.warnings.push(copy.largeFileWarning);
+                updateDetails(copy.supportWaiting);
+                clearOutput();
+
+                if (state.kind === 'unsupported' || state.kind === 'image-unsupported') {
+                    setMode(null);
+                    setStatus(detected.warning || copy.droppedUnsupported);
+                    updateDetails(copy.supportUnsupported);
+                    return;
+                }
+
+                setMode(state.kind);
+                try {
+                    if (state.kind === 'image') {
+                        await loadImage(file);
+                        setStatus(copy.imageReady);
+                        if (!imageOutputSupport['image/webp']) setWarning(copy.webpEncodingUnsupported);
+                        updateDetails(detected.limited ? copy.supportLimited : copy.supportSupported);
+                        await convertImage();
+                    } else if (state.kind === 'audio') {
+                        try {
+                            await loadAudio(file);
+                        } catch (error) {
+                            state.audioBuffer = null;
+                            setWarning(copy.audioPreviewUnavailable);
+                        }
+                        setStatus(copy.audioReady);
+                        updateDetails(state.audioBuffer ? copy.supportSupported : copy.supportLimited);
+                    } else if (state.kind === 'video') {
+                        try {
+                            await loadVideo(file);
+                        } catch (error) {
+                            state.videoReady = false;
+                            setWarning(copy.videoPreviewUnavailable);
+                        }
+                        setStatus(copy.videoReady);
+                        if (state.videoReady) setWarning(copy.videoDurationWarning);
+                        if (state.videoReady && !canRecordVideo()) {
+                            setWarning(copy.videoRecorderUnavailable);
+                        }
+                        updateDetails(copy.supportLimited);
+                    }
+                } catch (error) {
+                    setWarning(error.message || copy.browserCannotDecode);
+                    setStatus(error.message || copy.browserCannotDecode);
+                    updateDetails(copy.supportUnsupported);
+                }
+            };
+
+            const createSampleImage = () => new Promise(resolve => {
+                const canvas = document.createElement('canvas');
+                canvas.width = 1200;
+                canvas.height = 760;
+                const ctx = canvas.getContext('2d');
+                const gradient = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
+                gradient.addColorStop(0, '#3423a6');
+                gradient.addColorStop(0.35, '#00a6fb');
+                gradient.addColorStop(0.7, '#f6ae2d');
+                gradient.addColorStop(1, '#d81159');
+                ctx.fillStyle = gradient;
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+                for (let i = 0; i < 16; i += 1) {
+                    ctx.fillStyle = `hsla(${i * 24}, 84%, 62%, 0.76)`;
+                    ctx.beginPath();
+                    ctx.arc(120 + i * 70, 180 + Math.sin(i) * 90, 72, 0, Math.PI * 2);
+                    ctx.fill();
+                }
+                ctx.fillStyle = 'rgba(255,255,255,0.72)';
+                ctx.font = '700 96px sans-serif';
+                ctx.fillText('CONVERT', 120, 610);
+                canvas.toBlob(blob => resolve(new File([blob], 'sample-convert.png', { type: 'image/png' })), 'image/png');
+            });
+
+            const createSampleTone = () => {
+                const sampleRate = 44100;
+                const duration = 2;
+                const length = sampleRate * duration;
+                const buffer = {
+                    numberOfChannels: 1,
+                    sampleRate,
+                    length,
+                    getChannelData: () => {
+                        const data = new Float32Array(length);
+                        for (let i = 0; i < length; i += 1) {
+                            const t = i / sampleRate;
+                            data[i] = Math.sin(Math.PI * 2 * 220 * t) * 0.45 + Math.sin(Math.PI * 2 * 440 * t) * 0.22;
+                        }
+                        return data;
+                    }
+                };
+                return new File([encodeWav(buffer)], 'tono-campione.wav', { type: 'audio/wav' });
+            };
+
+            const createSampleVideo = () => new Promise((resolve, reject) => {
+                if (!HTMLCanvasElement.prototype.captureStream || !window.MediaRecorder) {
+                    reject(new Error(copy.sampleVideoUnavailable));
+                    return;
+                }
+                const canvas = document.createElement('canvas');
+                canvas.width = 640;
+                canvas.height = 360;
+                const ctx = canvas.getContext('2d');
+                const stream = canvas.captureStream(24);
+                const mimeType = supportedWebmMime() || 'video/webm';
+                const recorder = new MediaRecorder(stream, { mimeType });
+                const chunks = [];
+                let frame = 0;
+                const totalFrames = 96;
+
+                const draw = () => {
+                    const t = frame / totalFrames;
+                    const hue = Math.round(220 + 100 * Math.sin(t * Math.PI * 2));
+                    const gradient = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
+                    gradient.addColorStop(0, `hsl(${hue}, 82%, 42%)`);
+                    gradient.addColorStop(1, `hsl(${(hue + 120) % 360}, 86%, 58%)`);
+                    ctx.fillStyle = gradient;
+                    ctx.fillRect(0, 0, canvas.width, canvas.height);
+                    ctx.fillStyle = 'rgba(255,255,255,.86)';
+                    ctx.beginPath();
+                    ctx.arc(140 + 350 * t, 180 + Math.sin(t * Math.PI * 4) * 80, 48, 0, Math.PI * 2);
+                    ctx.fill();
+                    ctx.fillStyle = 'rgba(10,16,24,.72)';
+                    ctx.font = '700 44px sans-serif';
+                    ctx.fillText('FFmpeg sample', 54, 304);
+                    frame += 1;
+                    if (frame > totalFrames) {
+                        window.clearInterval(timer);
+                        recorder.stop();
+                    }
+                };
+
+                const timer = window.setInterval(draw, 1000 / 24);
+                recorder.addEventListener('dataavailable', event => {
+                    if (event.data && event.data.size) chunks.push(event.data);
+                });
+                recorder.addEventListener('stop', () => {
+                    stream.getTracks().forEach(track => track.stop());
+                    resolve(new File([new Blob(chunks, { type: 'video/webm' })], 'video-campione.webm', { type: 'video/webm' }));
+                }, { once: true });
+                recorder.addEventListener('error', () => {
+                    window.clearInterval(timer);
+                    stream.getTracks().forEach(track => track.stop());
+                    reject(new Error(copy.sampleVideoUnavailable));
+                }, { once: true });
+                recorder.start(250);
+                draw();
+            });
+
+            imageFormatButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    if (button.disabled) return;
+                    state.imageFormat = button.dataset.imageFormat;
+                    syncImageFormatButtons();
+                    updateDetails();
+                });
+            });
+
+            frameFormatButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    state.frameFormat = button.dataset.frameFormat;
+                    frameFormatButtons.forEach(item => item.classList.toggle('is-active', item === button));
+                    updateDetails();
+                });
+            });
+
+            imageQuality.addEventListener('input', () => {
+                imageQualityValue.textContent = `${imageQuality.value}%`;
+            });
+            frameQuality.addEventListener('input', () => {
+                frameQualityValue.textContent = `${frameQuality.value}%`;
+            });
+            audioFormat.addEventListener('change', () => updateDetails());
+            audioQuality.addEventListener('change', () => updateDetails());
+            audioChannels.addEventListener('change', () => updateDetails());
+            audioRate.addEventListener('change', () => updateDetails());
+            videoFormat.addEventListener('change', () => updateDetails());
+            videoQuality.addEventListener('change', () => updateDetails());
+
+            input.addEventListener('change', () => {
+                const file = input.files && input.files[0];
+                if (file) selectFile(file);
+            });
+
+            ['dragenter', 'dragover'].forEach(type => {
+                dropZone.addEventListener(type, event => {
+                    event.preventDefault();
+                    dropZone.classList.add('is-dragging');
+                });
+            });
+
+            ['dragleave', 'drop'].forEach(type => {
+                dropZone.addEventListener(type, event => {
+                    event.preventDefault();
+                    dropZone.classList.remove('is-dragging');
+                });
+            });
+
+            dropZone.addEventListener('drop', event => {
+                const file = event.dataTransfer.files && event.dataTransfer.files[0];
+                if (file) selectFile(file);
+            });
+
+            sampleImageButton.addEventListener('click', async () => {
+                const file = await createSampleImage();
+                await selectFile(file);
+                setStatus(copy.sampleImageLoaded);
+            });
+
+            sampleAudioButton.addEventListener('click', async () => {
+                const file = createSampleTone();
+                await selectFile(file);
+                setStatus(copy.sampleAudioLoaded);
+            });
+
+            sampleVideoButton.addEventListener('click', async () => {
+                try {
+                    const file = await createSampleVideo();
+                    await selectFile(file);
+                    setStatus(copy.sampleVideoLoaded);
+                } catch (error) {
+                    setWarning(error.message || copy.sampleVideoUnavailable);
+                    setStatus(error.message || copy.sampleVideoUnavailable);
+                }
+            });
+
+            clearButton.addEventListener('click', () => {
+                resetState();
+                input.value = '';
+                setStatus(copy.cleared);
+            });
+
+            convertImageButton.addEventListener('click', convertImage);
+            convertAudioButton.addEventListener('click', convertAudio);
+            convertVideoButton.addEventListener('click', convertVideo);
+            extractFrameButton.addEventListener('click', extractFrame);
+            recordWebmButton.addEventListener('click', recordWebm);
+            stopRecordingButton.addEventListener('click', stopRecording);
+            cancelFFmpegButton.addEventListener('click', cancelFFmpeg);
+
+            video.addEventListener('seeked', () => {
+                if (state.videoReady) {
+                    try {
+                        drawCurrentFrame();
+                    } catch (error) {
+                        setWarning(error.message);
+                    }
+                }
+            });
+
+            updateImageOutputSupport();
+            resetState();
+        });
+    </script>
+</body>
+
+</html>

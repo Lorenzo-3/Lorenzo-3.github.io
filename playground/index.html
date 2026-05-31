@@ -51,7 +51,7 @@
       <p class="kicker">Interactive map</p>
       <h1>Playground-WIP</h1>
       <p class="lead hero-line">
-        A browser-native map of little experiments related to topics I find interesting. DESKTOP USE RECOMMENDED.
+        A browser-native map of some utilities + little experiments related to topics I find interesting. DESKTOP USE RECOMMENDED.
       </p>
     </header>
 
@@ -64,7 +64,7 @@
 
     <section class="card playground-minimal-note">
       <p class="project-kicker">Live experiments</p>
-      <h2>Eleven sketches, one shared graph</h2>
+      <h2>Thirteen sketches, one shared graph</h2>
       <ul class="notes-list playground-live-list">
         <li>
           <strong><a href="/playground/graph-diffusion/">Graph Signal Diffusion</a></strong>
@@ -97,6 +97,14 @@
         <li>
           <strong><a href="/playground/convolution-kernels/">Convolution Kernel Playground</a></strong>
           <p>Edit custom 3x3 and 5x5 image kernels and compare the original and convolved image.</p>
+        </li>
+        <li>
+          <strong><a href="/playground/image-color-editor/">Image Color Editor</a></strong>
+          <p>Load or generate an image, shift its colors, swap RGB channels, and save the edited PNG.</p>
+        </li>
+        <li>
+          <strong><a href="/playground/file-converter/">File Converter</a></strong>
+          <p>Convert images, export audio as WAV, and extract or record video outputs locally in the browser.</p>
         </li>
         <li>
           <strong><a href="/playground/anomaly-node/">Anomaly Node Game</a></strong>
@@ -257,6 +265,30 @@
           kind: 'experiment'
         },
         {
+          id: 'image-color-editor',
+          label: 'Colors',
+          x: 0.53,
+          y: 0.29,
+          kicker: 'Color transforms',
+          title: 'Image Color Editor',
+          text: 'Load an image or use the generated sample, then shift hue, saturation, contrast, warmth, grayscale, inversion, and RGB channel order before saving a PNG.',
+          href: '/playground/image-color-editor/',
+          linkLabel: 'Open experiment',
+          kind: 'experiment'
+        },
+        {
+          id: 'file-converter',
+          label: 'Convert',
+          x: 0.42,
+          y: 0.24,
+          kicker: 'Local media utility',
+          title: 'File Converter',
+          text: 'Convert images, export decoded audio to WAV, extract frames, and record supported video to WebM without uploading files or making an account.',
+          href: '/playground/file-converter/',
+          linkLabel: 'Open utility',
+          kind: 'experiment'
+        },
+        {
           id: 'bioinformatics',
           label: 'Bioinformatics',
           x: 0.62,
@@ -348,8 +380,13 @@
         ['fourier', 'signal-filters'],
         ['signal-filters', 'mlp-lab'],
         ['signal-filters', 'convolution-kernels'],
+        ['signal-filters', 'file-converter'],
         ['mlp-lab', 'computer-vision'],
         ['mlp-lab', 'anomaly-detection'],
+        ['convolution-kernels', 'image-color-editor'],
+        ['image-color-editor', 'file-converter'],
+        ['image-color-editor', 'computer-vision'],
+        ['file-converter', 'computer-vision'],
         ['convolution-kernels', 'computer-vision'],
         ['computer-vision', 'anomaly-detection']
       ];

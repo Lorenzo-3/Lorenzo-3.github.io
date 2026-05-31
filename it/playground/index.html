@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Playground · Lorenzo Marinelli</title>
   <meta name="description"
-    content="Playground interattivo di Lorenzo Marinelli — per ora disponibile nella versione inglese mentre gli esperimenti vengono completati." />
+    content="Playground interattivo di Lorenzo Marinelli: grafi, data science, teoria musicale ed esperimenti browser-native." />
   <link rel="stylesheet" href="/assets/style.css" />
 
   <link rel="alternate" hreflang="en" href="/playground/" />
@@ -17,7 +17,7 @@
   <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
 </head>
 
-<body>
+<body class="playground-page">
   <div class="wrap">
     <nav class="nav">
       <a class="nav__brand" href="/it/" aria-label="Home">LM</a>
@@ -47,123 +47,76 @@
       </div>
     </nav>
 
-    <header class="hero">
-      <p class="kicker">Spazio interattivo</p>
-      <h1>Playground</h1>
+    <header class="hero playground-hero">
+      <p class="kicker">Mappa interattiva</p>
+      <h1>Playground-WIP</h1>
       <p class="lead hero-line">
-        Sto completando prima la versione inglese del playground, così struttura e esperimenti possono stabilizzarsi
-        prima della traduzione italiana.
+        Una mappa browser-native di alcune utilities + piccoli esperimenti legati ai temi che mi interessano. USO DESKTOP CONSIGLIATO.
       </p>
-      <div class="meta">
-        <span>Solo in inglese per ora</span>
-        <span class="sep">•</span>
-        <span>Aggiornato: Aprile 2026</span>
-      </div>
-      <div class="hero__cta">
-        <a class="btn" href="/playground/">Apri il playground in inglese</a>
-      </div>
     </header>
 
-    <section class="grid">
-      <article class="card">
-        <h2>Perché rimanda all’inglese</h2>
-        <p>
-          Le demo stanno ancora cambiando: grafi, piccoli giochi visuali, computer vision e teoria musicale. Tradurle
-          ora significherebbe mantenere due versioni instabili invece di rifinire prima l’esperienza principale.
-        </p>
-      </article>
-
-      <article class="card">
-        <h2>Cosa aspettarsi</h2>
-        <p>
-          Quando il playground sarà più maturo, questa pagina riceverà una traduzione vera. Nel frattempo, i link agli
-          esperimenti puntano alla versione inglese.
-        </p>
-      </article>
-    </section>
-
-    <section class="card">
-      <div class="filter-panel__top">
-        <h2>Esperimenti disponibili</h2>
-        <p class="filter-status">Versione inglese</p>
+    <main class="playground-graph-window" aria-label="Area interattiva del grafo del playground">
+      <div class="playground-hint">
+        <span>Clicca un nodo tematico</span>
+        <small>gli archi indicano temi collegati</small>
       </div>
-      <ul class="notes-list">
+    </main>
+
+    <section class="card playground-minimal-note">
+      <p class="project-kicker">Esperimenti disponibili</p>
+      <h2>Tredici esperimenti, un grafo condiviso</h2>
+      <ul class="notes-list playground-live-list">
         <li>
-          <p class="project-kicker">Grafi</p>
-          <strong><a href="/playground/graph-diffusion/">Graph Signal Diffusion</a></strong>
-          <p>
-            Una piccola simulazione su segnali che si propagano su una rete.
-          </p>
+          <strong><a href="/it/playground/graph-diffusion/">Graph Signal Diffusion</a></strong>
+          <p>Inietta un segnale in un nodo e osserva come i vicinati locali lo trasportano.</p>
         </li>
         <li>
-          <p class="project-kicker">GNN</p>
-          <strong><a href="/playground/gnn-toy/">GNN Message Passing Toy</a></strong>
-          <p>
-            Una demo interattiva su feature dei nodi, strati di message passing e smoothing degli embedding.
-          </p>
+          <strong><a href="/it/playground/gnn-toy/">GNN Message Passing Toy</a></strong>
+          <p>Scegli le feature dei nodi, impila strati di message passing e osserva gli embedding che si smussano sugli archi.</p>
         </li>
         <li>
-          <p class="project-kicker">Clustering</p>
-          <strong><a href="/playground/clustering/">Clustering Lab</a></strong>
-          <p>
-            Aggiungi punti in 2D e confronta k-means, k-medoids, DBSCAN, Mean Shift e clustering gerarchico.
-          </p>
+          <strong><a href="/it/playground/clustering/">Clustering Lab</a></strong>
+          <p>Aggiungi punti in 2D, confronta algoritmi di clustering e regola le ipotesi di raggruppamento.</p>
         </li>
         <li>
-          <p class="project-kicker">Orbita</p>
-          <strong><a href="/playground/gravity-assist/">Gravity Assist Sandbox</a></strong>
-          <p>
-            Lancia una sonda in un piccolo sistema solare 2D e prova a raggiungere un pianeta target.
-          </p>
+          <strong><a href="/it/playground/gravity-assist/">Gravity Assist Sandbox</a></strong>
+          <p>Lancia una sonda in un sistema solare in miniatura e usa i flyby per raggiungere un pianeta target.</p>
         </li>
         <li>
-          <p class="project-kicker">Audio</p>
-          <strong><a href="/playground/fourier/">Fourier Transform Playground</a></strong>
-          <p>
-            Aggiungi onde sinusoidali una alla volta, ascolta il mix e osserva lo spettro cambiare.
-          </p>
+          <strong><a href="/it/playground/fourier/">Fourier Transform Playground</a></strong>
+          <p>Aggiungi onde sinusoidali una alla volta, ascolta il mix e osserva lo spettro cambiare.</p>
         </li>
         <li>
-          <p class="project-kicker">Filtri audio</p>
-          <strong><a href="/playground/signal-filters/">Signal Filter Playground</a></strong>
-          <p>
-            Prova filtri classici sui segnali e confronta ingresso, uscita e risposta in frequenza.
-          </p>
+          <strong><a href="/it/playground/signal-filters/">Signal Filter Playground</a></strong>
+          <p>Prova filtri classici su segnali semplici e confronta ingresso, uscita e risposta in frequenza.</p>
         </li>
         <li>
-          <p class="project-kicker">Reti neurali</p>
-          <strong><a href="/playground/mlp-lab/">MLP Decision Boundary Lab</a></strong>
-          <p>
-            Personalizza una piccola rete neurale, cambia funzione di attivazione e osserva il confine decisionale.
-          </p>
+          <strong><a href="/it/playground/mlp-lab/">MLP Decision Boundary Lab</a></strong>
+          <p>Personalizza una piccola rete neurale, cambia attivazione e osserva il confine appreso durante il training.</p>
         </li>
         <li>
-          <p class="project-kicker">Kernel immagini</p>
-          <strong><a href="/playground/convolution-kernels/">Convolution Kernel Playground</a></strong>
-          <p>
-            Modifica kernel 3x3 e 5x5 e confronta immagine originale e risultato convoluto.
-          </p>
+          <strong><a href="/it/playground/convolution-kernels/">Convolution Kernel Playground</a></strong>
+          <p>Modifica kernel immagine 3x3 e 5x5 e confronta immagine originale e risultato convoluto.</p>
         </li>
         <li>
-          <p class="project-kicker">Rilevamento anomalie</p>
-          <strong><a href="/playground/anomaly-node/">Anomaly Node Game</a></strong>
-          <p>
-            Un gioco rapido per trovare il nodo che si comporta in modo diverso dal resto del grafo.
-          </p>
+          <strong><a href="/it/playground/image-color-editor/">Image Color Editor</a></strong>
+          <p>Carica o genera un’immagine, modifica i colori, scambia i canali RGB e salva il PNG modificato.</p>
         </li>
         <li>
-          <p class="project-kicker">Computer vision</p>
-          <strong><a href="/playground/computer-vision/">Computer Vision Mini Lab</a></strong>
-          <p>
-            Piccoli esperimenti visivi su detection, saliency, errore di ricostruzione e maschere.
-          </p>
+          <strong><a href="/it/playground/file-converter/">File Converter</a></strong>
+          <p>Converti immagini, esporta audio in WAV ed estrai o registra output video localmente nel browser.</p>
         </li>
         <li>
-          <p class="project-kicker">Musica</p>
-          <strong><a href="/playground/circle-of-fifths/">Circle of Fifths Network</a></strong>
-          <p>
-            Il circolo delle quinte letto come una rete di relazioni armoniche.
-          </p>
+          <strong><a href="/it/playground/anomaly-node/">Anomaly Node Game</a></strong>
+          <p>Osserva un grafo dinamico e identifica il nodo che reagisce in modo diverso.</p>
+        </li>
+        <li>
+          <strong><a href="/it/playground/computer-vision/">Computer Vision Mini Lab</a></strong>
+          <p>Piccoli esperimenti visivi su detection, saliency, errore di ricostruzione, maschere e intuizione sulle immagini.</p>
+        </li>
+        <li>
+          <strong><a href="/it/playground/circle-of-fifths/">Circle of Fifths Network</a></strong>
+          <p>Esplora tonalità, minori relative e vicini armonici come grafo.</p>
         </li>
       </ul>
     </section>
@@ -173,7 +126,491 @@
     </footer>
   </div>
 
+  <aside class="playground-popup" data-playground-popup hidden aria-live="polite">
+    <button class="playground-popup__close" type="button" data-playground-close aria-label="Chiudi popup">×</button>
+
+    <p class="project-kicker" data-playground-kicker>Nodo tematico</p>
+    <h2 data-playground-title>Seleziona un nodo</h2>
+    <p data-playground-text>
+      Clicca un nodo tematico per vedere come si collega agli esperimenti attuali e ai progetti.
+    </p>
+
+    <div class="playground-popup__relations">
+      <strong>Nodi collegati</strong>
+      <div data-playground-relations></div>
+    </div>
+
+    <a class="btn" href="/it/playground/graph-diffusion/" data-playground-link>Apri esperimento</a>
+  </aside>
+
   <script src="/assets/script.js" defer></script>
+
+  <script>
+    window.addEventListener('load', () => {
+      const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+      document.querySelectorAll('.network-bg').forEach(canvas => canvas.remove());
+
+      const canvas = document.createElement('canvas');
+      canvas.className = 'network-bg playground-bg-graph';
+      canvas.setAttribute('aria-hidden', 'true');
+      document.body.prepend(canvas);
+
+      const ctx = canvas.getContext('2d');
+      const root = document.documentElement;
+
+      const popup = document.querySelector('[data-playground-popup]');
+      const closeButton = document.querySelector('[data-playground-close]');
+      const popupKicker = document.querySelector('[data-playground-kicker]');
+      const popupTitle = document.querySelector('[data-playground-title]');
+      const popupText = document.querySelector('[data-playground-text]');
+      const popupRelations = document.querySelector('[data-playground-relations]');
+      const popupLink = document.querySelector('[data-playground-link]');
+
+      const nodes = [
+        {
+          id: 'graph-diffusion',
+          label: 'Diffusione',
+          x: 0.30,
+          y: 0.57,
+          kicker: 'Flusso del segnale',
+          title: 'Graph Signal Diffusion',
+          text: 'Inietta un segnale in un nodo e guardalo propagarsi nei vicinati locali. Una piccola intuizione visiva per vicinati di grafo, interactome e network medicine.',
+          href: '/it/playground/graph-diffusion/',
+          linkLabel: 'Apri esperimento',
+          kind: 'experiment'
+        },
+        {
+          id: 'gnn-toy',
+          label: 'GNN Toy',
+          x: 0.43,
+          y: 0.66,
+          kicker: 'Message passing',
+          title: 'GNN Message Passing Toy',
+          text: 'Scegli le feature dei nodi, esegui da uno a tre strati di message passing e confronta colori e posizioni degli embedding prima e dopo lo smoothing.',
+          href: '/it/playground/gnn-toy/',
+          linkLabel: 'Apri esperimento',
+          kind: 'experiment'
+        },
+        {
+          id: 'clustering',
+          label: 'Cluster',
+          x: 0.38,
+          y: 0.80,
+          kicker: 'Apprendimento non supervisionato',
+          title: 'Clustering Lab',
+          text: 'Posiziona punti liberamente in 2D, poi confronta k-means, k-medoids, DBSCAN, Mean Shift e clustering agglomerativo con controlli che cambiano il raggruppamento.',
+          href: '/it/playground/clustering/',
+          linkLabel: 'Apri esperimento',
+          kind: 'experiment'
+        },
+        {
+          id: 'gravity-assist',
+          label: 'Gravità',
+          x: 0.77,
+          y: 0.49,
+          kicker: 'Sandbox orbitale',
+          title: 'Gravity Assist Sandbox',
+          text: 'Lancia una sonda in un piccolo sistema solare 2D, regola velocità, massa dei pianeti, scala temporale e scia, poi prova a raggiungere il pianeta target con un flyby.',
+          href: '/it/playground/gravity-assist/',
+          linkLabel: 'Apri esperimento',
+          kind: 'experiment'
+        },
+        {
+          id: 'fourier',
+          label: 'Fourier',
+          x: 0.20,
+          y: 0.30,
+          kicker: 'Decomposizione del suono',
+          title: 'Fourier Transform Playground',
+          text: 'Aggiungi onde sinusoidali una alla volta, poi ascolta il segnale misto mentre forma d’onda e spettro si aggiornano sullo sfondo.',
+          href: '/it/playground/fourier/',
+          linkLabel: 'Apri esperimento',
+          kind: 'experiment'
+        },
+        {
+          id: 'signal-filters',
+          label: 'Filtri',
+          x: 0.31,
+          y: 0.37,
+          kicker: 'Elaborazione dei segnali',
+          title: 'Signal Filter Playground',
+          text: 'Fai passare segnali semplici in filtri low-pass, high-pass, band-pass, notch, peaking, shelf e all-pass mentre forma d’onda e risposta si aggiornano dal vivo.',
+          href: '/it/playground/signal-filters/',
+          linkLabel: 'Apri esperimento',
+          kind: 'experiment'
+        },
+        {
+          id: 'mlp-lab',
+          label: 'MLP',
+          x: 0.50,
+          y: 0.55,
+          kicker: 'Rete neurale',
+          title: 'MLP Decision Boundary Lab',
+          text: 'Personalizza un piccolo multilayer perceptron, scegli attivazioni tanh, ReLU, sigmoid o lineari, poi addestralo su dataset 2D giocattolo e osserva il confine decisionale adattarsi.',
+          href: '/it/playground/mlp-lab/',
+          linkLabel: 'Apri esperimento',
+          kind: 'experiment'
+        },
+        {
+          id: 'convolution-kernels',
+          label: 'Kernel',
+          x: 0.44,
+          y: 0.34,
+          kicker: 'Filtri per immagini',
+          title: 'Convolution Kernel Playground',
+          text: 'Modifica un kernel di convoluzione 3x3 o 5x5, applicalo a un’immagine generata o caricata e confronta originale e output filtrato.',
+          href: '/it/playground/convolution-kernels/',
+          linkLabel: 'Apri esperimento',
+          kind: 'experiment'
+        },
+        {
+          id: 'image-color-editor',
+          label: 'Colori',
+          x: 0.53,
+          y: 0.29,
+          kicker: 'Trasformazioni colore',
+          title: 'Image Color Editor',
+          text: 'Carica un’immagine o usa il campione generato, poi modifica hue, saturazione, contrasto, calore, scala di grigi, inversione e ordine dei canali RGB prima di salvare un PNG.',
+          href: '/it/playground/image-color-editor/',
+          linkLabel: 'Apri esperimento',
+          kind: 'experiment'
+        },
+        {
+          id: 'file-converter',
+          label: 'Converti',
+          x: 0.42,
+          y: 0.24,
+          kicker: 'Utility media locale',
+          title: 'File Converter',
+          text: 'Converti immagini, esporta audio decodificato in WAV, estrai frame e registra video supportati in WebM senza caricare file o creare un account.',
+          href: '/it/playground/file-converter/',
+          linkLabel: 'Apri utility',
+          kind: 'experiment'
+        },
+        {
+          id: 'bioinformatics',
+          label: 'Bioinformatics',
+          x: 0.62,
+          y: 0.73,
+          kicker: 'Biologia + calcolo',
+          title: 'Protein Interaction Networks',
+          text: 'Questo nodo ancora il lato biologico della mappa: geni, proteine, moduli di malattia, enrichment e struttura di grafo dietro ai dati biologici.',
+          href: '/it/projects/thesis-gnn-protein-interactions/',
+          linkLabel: 'Leggi il progetto collegato',
+          kind: 'theme'
+        },
+        {
+          id: 'anomaly-detection',
+          label: 'Anomalia',
+          x: 0.57,
+          y: 0.83,
+          kicker: 'Gioco di rilevamento',
+          title: 'Anomaly Node Game',
+          text: 'Un nodo si comporta diversamente. Prova a trovarlo osservando movimento, connettività e risposta al segnale.',
+          href: '/it/playground/anomaly-node/',
+          linkLabel: 'Apri esperimento',
+          kind: 'experiment'
+        },
+        {
+          id: 'computer-vision',
+          label: 'Visione',
+          x: 0.58,
+          y: 0.36,
+          kicker: 'Sistemi visivi',
+          title: 'Computer Vision Mini Lab',
+          text: 'Piccoli esperimenti visivi su detection, saliency, errore di ricostruzione, maschere e intuizione sulle immagini.',
+          href: '/it/playground/computer-vision/',
+          linkLabel: 'Apri esperimento',
+          kind: 'experiment'
+        },
+        {
+          id: 'circle-fifths',
+          label: 'Quinte',
+          x: 0.73,
+          y: 0.26,
+          kicker: 'Teoria musicale',
+          title: 'Circle of Fifths Network',
+          text: 'Tonalità, quinte, minori relative e vicinati armonici mostrati come grafo interattivo invece che come diagramma statico.',
+          href: '/it/playground/circle-of-fifths/',
+          linkLabel: 'Apri esperimento',
+          kind: 'experiment'
+        }
+      ];
+
+      const groups = [
+        {
+          label: 'segnali',
+          x: 0.29,
+          y: 0.22
+        },
+        {
+          label: 'modelli neurali',
+          x: 0.46,
+          y: 0.50
+        },
+        {
+          label: 'graph learning',
+          x: 0.40,
+          y: 0.61
+        },
+        {
+          label: 'sistemi',
+          x: 0.76,
+          y: 0.38
+        }
+      ];
+
+      const edges = [
+        ['graph-diffusion', 'gnn-toy'],
+        ['graph-diffusion', 'bioinformatics'],
+        ['graph-diffusion', 'anomaly-detection'],
+        ['graph-diffusion', 'circle-fifths'],
+
+        ['gnn-toy', 'bioinformatics'],
+        ['gnn-toy', 'anomaly-detection'],
+        ['gnn-toy', 'mlp-lab'],
+        ['bioinformatics', 'anomaly-detection'],
+        ['clustering', 'gnn-toy'],
+        ['clustering', 'anomaly-detection'],
+        ['clustering', 'mlp-lab'],
+        ['gravity-assist', 'circle-fifths'],
+        ['gravity-assist', 'clustering'],
+        ['fourier', 'circle-fifths'],
+        ['fourier', 'signal-filters'],
+        ['signal-filters', 'mlp-lab'],
+        ['signal-filters', 'convolution-kernels'],
+        ['signal-filters', 'file-converter'],
+        ['mlp-lab', 'computer-vision'],
+        ['mlp-lab', 'anomaly-detection'],
+        ['convolution-kernels', 'image-color-editor'],
+        ['image-color-editor', 'file-converter'],
+        ['image-color-editor', 'computer-vision'],
+        ['file-converter', 'computer-vision'],
+        ['convolution-kernels', 'computer-vision'],
+        ['computer-vision', 'anomaly-detection']
+      ];
+
+      const byId = new Map(nodes.map(node => [node.id, node]));
+      let activeId = null;
+      let hoveredId = null;
+      let time = 0;
+
+      const cssVar = (name, fallback) =>
+        getComputedStyle(root).getPropertyValue(name).trim() || fallback;
+
+      const resize = () => {
+        const dpr = Math.min(window.devicePixelRatio || 1, 2);
+        canvas.width = Math.floor(window.innerWidth * dpr);
+        canvas.height = Math.floor(window.innerHeight * dpr);
+        canvas.style.width = `${window.innerWidth}px`;
+        canvas.style.height = `${window.innerHeight}px`;
+        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      };
+
+      const relatedIds = (id) => {
+        return edges
+          .filter(([a, b]) => a === id || b === id)
+          .map(([a, b]) => a === id ? b : a);
+      };
+
+      const pointFor = (node) => {
+        const padX = window.innerWidth < 520 ? 34 : 72;
+        const graphWidth = Math.max(1, window.innerWidth - padX * 2);
+        const graphHeight = Math.max(1, window.innerHeight * (window.innerWidth < 720 ? 0.72 : 0.74));
+        const spreadX = window.innerWidth < 720 ? 1.35 : 1.45;
+        const spreadY = window.innerWidth < 720 ? 1.10 : 1.08;
+        const centerY = window.innerHeight * (window.innerWidth < 720 ? 0.68 : 0.58);
+        const waveX = reduceMotion ? 0 : Math.sin(time * 0.0012 + node.x * 8) * 6;
+        const waveY = reduceMotion ? 0 : Math.cos(time * 0.0010 + node.y * 8) * 5;
+        const x = window.innerWidth / 2 + (node.x - 0.5) * graphWidth * spreadX;
+        const y = centerY + (node.y - 0.5) * graphHeight * spreadY;
+
+        return {
+          x: Math.min(window.innerWidth - padX, Math.max(padX, x)) + waveX,
+          y: Math.min(window.innerHeight - 34, Math.max(34, y)) + waveY
+        };
+      };
+
+      const openPopup = (id) => {
+        const node = byId.get(id);
+        if (!node) return;
+
+        activeId = id;
+        popup.hidden = false;
+
+        popupKicker.textContent = node.kicker;
+        popupTitle.textContent = node.title;
+        popupText.textContent = node.text;
+
+        popupRelations.innerHTML = '';
+        relatedIds(id).forEach(relatedId => {
+          const related = byId.get(relatedId);
+          if (!related) return;
+
+          const button = document.createElement('button');
+          button.type = 'button';
+          button.className = 'playground-relation-chip';
+          button.textContent = related.label;
+          button.addEventListener('click', () => openPopup(related.id));
+          popupRelations.appendChild(button);
+        });
+
+        popupLink.hidden = !node.href;
+        popupLink.href = node.href || '#';
+        popupLink.textContent = node.linkLabel || 'Apri';
+
+        if (reduceMotion) draw(performance.now());
+      };
+
+      const closePopup = () => {
+        popup.hidden = true;
+        activeId = null;
+
+        if (reduceMotion) draw(performance.now());
+      };
+
+      const hitTest = (clientX, clientY) => {
+        let best = null;
+        let bestDistance = Infinity;
+
+        nodes.forEach(node => {
+          const p = pointFor(node);
+          const distance = Math.hypot(p.x - clientX, p.y - clientY);
+
+          if (distance < 34 && distance < bestDistance) {
+            best = node.id;
+            bestDistance = distance;
+          }
+        });
+
+        return best;
+      };
+
+      const draw = (now = 0) => {
+        time = now;
+
+        const accent = cssVar('--accent2', '#64f5e1');
+        const warm = cssVar('--accent', '#ffd025');
+        const hot = cssVar('--accent3', '#e74976');
+        const text = cssVar('--text', '#e9d3b3');
+
+        const activeRelated = new Set(activeId ? relatedIds(activeId) : []);
+        const hoveredRelated = new Set(hoveredId ? relatedIds(hoveredId) : []);
+
+        ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
+
+        if (window.innerWidth > 760) {
+          groups.forEach(group => {
+            const p = pointFor(group);
+            ctx.globalAlpha = 0.34;
+            ctx.fillStyle = warm;
+            ctx.font = '700 11px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText(group.label.toUpperCase(), p.x, p.y);
+          });
+        }
+
+        edges.forEach(([aId, bId]) => {
+          const a = byId.get(aId);
+          const b = byId.get(bId);
+          const ap = pointFor(a);
+          const bp = pointFor(b);
+
+          const highlighted =
+            aId === activeId ||
+            bId === activeId ||
+            aId === hoveredId ||
+            bId === hoveredId;
+
+          ctx.globalAlpha = highlighted ? 0.78 : 0.20;
+          ctx.strokeStyle = highlighted ? warm : accent;
+          ctx.lineWidth = highlighted ? 1.7 : 1;
+
+          ctx.beginPath();
+          ctx.moveTo(ap.x, ap.y);
+          ctx.lineTo(bp.x, bp.y);
+          ctx.stroke();
+        });
+
+        nodes.forEach(node => {
+          const p = pointFor(node);
+
+          const isActive = node.id === activeId;
+          const isHovered = node.id === hoveredId;
+          const isRelated = activeRelated.has(node.id) || hoveredRelated.has(node.id);
+          const emphasized = isActive || isHovered || isRelated || (!activeId && !hoveredId);
+
+          const pulse = reduceMotion ? 1 : 1 + Math.sin(now * 0.003 + node.x * 10) * 0.07;
+          const radius = (isActive ? 10 : isHovered ? 9 : isRelated ? 7 : 5.5) * pulse;
+
+          ctx.globalAlpha = emphasized ? 0.95 : 0.36;
+          ctx.fillStyle = isActive ? hot : isRelated ? warm : accent;
+
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, radius, 0, Math.PI * 2);
+          ctx.fill();
+
+          if (node.kind === 'experiment') {
+            ctx.globalAlpha = emphasized ? 0.76 : 0.30;
+            ctx.strokeStyle = warm;
+            ctx.lineWidth = 1.2;
+            ctx.beginPath();
+            ctx.arc(p.x, p.y, radius + 5, 0, Math.PI * 2);
+            ctx.stroke();
+          }
+
+          ctx.globalAlpha = emphasized ? 0.96 : 0.50;
+          ctx.fillStyle = isActive ? hot : text;
+          ctx.font = `${isActive ? 700 : 500} 12px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif`;
+          ctx.textAlign = 'center';
+          ctx.textBaseline = 'top';
+          ctx.fillText(node.label, p.x, p.y + radius + 9);
+        });
+
+        ctx.globalAlpha = 1;
+        if (!reduceMotion) requestAnimationFrame(draw);
+      };
+
+      canvas.addEventListener('pointermove', event => {
+        hoveredId = hitTest(event.clientX, event.clientY);
+        canvas.classList.toggle('is-clickable', Boolean(hoveredId));
+
+        if (reduceMotion) draw(performance.now());
+      });
+
+      canvas.addEventListener('pointerleave', () => {
+        hoveredId = null;
+        canvas.classList.remove('is-clickable');
+
+        if (reduceMotion) draw(performance.now());
+      });
+
+      canvas.addEventListener('click', event => {
+        const id = hitTest(event.clientX, event.clientY);
+        if (id) openPopup(id);
+      });
+
+      closeButton.addEventListener('click', closePopup);
+
+      window.addEventListener('keydown', event => {
+        if (event.key === 'Escape') closePopup();
+      });
+
+      window.addEventListener('resize', () => {
+        resize();
+        if (reduceMotion) draw(performance.now());
+      });
+
+      resize();
+      if (reduceMotion) {
+        draw(0);
+      } else {
+        requestAnimationFrame(draw);
+      }
+    });
+  </script>
 </body>
 
 </html>

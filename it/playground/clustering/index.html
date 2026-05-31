@@ -1,12 +1,12 @@
 <!doctype html>
-<html lang="en" data-palette="triad">
+<html lang="it" data-palette="triad">
 
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
     <title>Clustering Lab · Playground · Lorenzo Marinelli</title>
     <meta name="description"
-        content="Interactive clustering lab by Lorenzo Marinelli - add 2D points and compare k-means, k-medoids, DBSCAN, Mean Shift, and agglomerative clustering." />
+        content="Laboratorio di clustering interattivo di Lorenzo Marinelli: aggiungi punti 2D e confronta k-means, k-medoids, DBSCAN, Mean Shift e clustering agglomerativo." />
     <link rel="stylesheet" href="/assets/style.css" />
 
     <link rel="alternate" hreflang="en" href="/playground/clustering/" />
@@ -20,50 +20,50 @@
 <body class="cluster-page">
     <div class="wrap">
         <nav class="nav">
-            <a class="nav__brand" href="/" aria-label="Home">LM</a>
+            <a class="nav__brand" href="/it/" aria-label="Home">LM</a>
 
-            <div class="lang" aria-label="Language">
-                <a class="lang__btn is-active" href="/playground/clustering/" aria-label="English" title="English">
+            <div class="lang" aria-label="Lingua">
+                <a class="lang__btn" href="/playground/clustering/" aria-label="English" title="English">
                     <span class="flag" aria-hidden="true">🇬🇧</span>
                     <span class="sr-only" lang="en">English</span>
                 </a>
-                <a class="lang__btn" href="/it/playground/clustering/" aria-label="Italiano" title="Italiano">
+                <a class="lang__btn is-active" href="/it/playground/clustering/" aria-label="Italiano" title="Italiano">
                     <span class="flag" aria-hidden="true">🇮🇹</span>
                     <span class="sr-only" lang="it">Italiano</span>
                 </a>
             </div>
 
-            <button class="theme-toggle" type="button" data-theme-toggle aria-label="Toggle theme" title="Toggle theme">
+            <button class="theme-toggle" type="button" data-theme-toggle aria-label="Cambia tema" title="Cambia tema">
                 <span data-theme-icon aria-hidden="true">◐</span>
             </button>
 
             <div class="nav__links">
-                <a href="/">Home</a>
-                <a href="/about/">About</a>
-                <a href="/projects/">Projects</a>
-                <a href="/notes/">Notes</a>
-                <a href="/contact/">Contact</a>
-                <a aria-current="page" href="/playground/">Playground</a>
+                <a href="/it/">Home</a>
+                <a href="/it/about/">Info</a>
+                <a href="/it/projects/">Progetti</a>
+                <a href="/it/notes/">Appunti</a>
+                <a href="/it/contact/">Contatti</a>
+                <a aria-current="page" href="/it/playground/">Playground</a>
             </div>
         </nav>
 
         <header class="hero">
-            <p class="kicker">Playground experiment</p>
+            <p class="kicker">Esperimento del playground</p>
             <h1>Clustering Lab</h1>
             <p class="lead hero-line">
-                Add points in 2D, then compare how k-means, k-medoids, DBSCAN, Mean Shift, and agglomerative clustering
-                turn the same geometry into different groups.
+                Aggiungi punti in 2D, poi confronta come k-means, k-medoids, DBSCAN, Mean Shift e clustering agglomerativo
+                trasformano la stessa geometria in gruppi diversi.
             </p>
 
             <div class="hero__cta">
-                <a class="btn btn--ghost" href="/playground/">← Back to Playground</a>
+                <a class="btn btn--ghost" href="/it/playground/">← Torna al Playground</a>
             </div>
         </header>
 
         <main class="cluster-app" data-cluster-lab>
-            <section class="cluster-controls" aria-label="Clustering controls">
+            <section class="cluster-controls" aria-label="Controlli clustering">
                 <div class="cluster-control-group">
-                    <span class="cluster-control-label">Algorithm</span>
+                    <span class="cluster-control-label">Algoritmo</span>
                     <div class="cluster-button-row">
                         <button class="mini-btn is-active" type="button"
                             data-cluster-algorithm="kmeans">k-means</button>
@@ -71,42 +71,42 @@
                         <button class="mini-btn" type="button" data-cluster-algorithm="dbscan">DBSCAN</button>
                         <button class="mini-btn" type="button" data-cluster-algorithm="meanshift">Mean Shift</button>
                         <button class="mini-btn" type="button"
-                            data-cluster-algorithm="agglomerative">Agglomerative</button>
+                            data-cluster-algorithm="agglomerative">Agglomerativo</button>
                     </div>
                 </div>
 
                 <div class="cluster-control-group">
-                    <span class="cluster-control-label">Settings</span>
+                    <span class="cluster-control-label">Impostazioni</span>
 
                     <div class="cluster-settings" data-cluster-settings="kmeans">
                         <label class="range-control">
-                            <span>Clusters <strong data-kmeans-k-value>3</strong></span>
+                            <span>Cluster <strong data-kmeans-k-value>3</strong></span>
                             <input type="range" min="2" max="6" value="3" step="1" data-kmeans-k>
                         </label>
                         <label class="range-control">
-                            <span>Iterations <strong data-kmeans-iterations-value>16</strong></span>
+                            <span>Iterazioni <strong data-kmeans-iterations-value>16</strong></span>
                             <input type="range" min="2" max="30" value="16" step="1" data-kmeans-iterations>
                         </label>
                     </div>
 
                     <div class="cluster-settings" data-cluster-settings="kmedoids" hidden>
                         <label class="range-control">
-                            <span>Medoids <strong data-kmedoids-k-value>3</strong></span>
+                            <span>Medoidi <strong data-kmedoids-k-value>3</strong></span>
                             <input type="range" min="2" max="6" value="3" step="1" data-kmedoids-k>
                         </label>
                         <label class="range-control">
-                            <span>Refinement <strong data-kmedoids-iterations-value>8</strong></span>
+                            <span>Rifinitura <strong data-kmedoids-iterations-value>8</strong></span>
                             <input type="range" min="1" max="20" value="8" step="1" data-kmedoids-iterations>
                         </label>
                     </div>
 
                     <div class="cluster-settings" data-cluster-settings="dbscan" hidden>
                         <label class="range-control">
-                            <span>Radius <strong data-dbscan-radius-value>54</strong></span>
+                            <span>Raggio <strong data-dbscan-radius-value>54</strong></span>
                             <input type="range" min="18" max="120" value="54" step="2" data-dbscan-radius>
                         </label>
                         <label class="range-control">
-                            <span>Min points <strong data-dbscan-min-value>4</strong></span>
+                            <span>Punti minimi <strong data-dbscan-min-value>4</strong></span>
                             <input type="range" min="2" max="8" value="4" step="1" data-dbscan-min>
                         </label>
                     </div>
@@ -117,14 +117,14 @@
                             <input type="range" min="24" max="150" value="76" step="2" data-meanshift-bandwidth>
                         </label>
                         <label class="range-control">
-                            <span>Merge radius <strong data-meanshift-merge-value>34</strong></span>
+                            <span>Raggio fusione <strong data-meanshift-merge-value>34</strong></span>
                             <input type="range" min="12" max="80" value="34" step="2" data-meanshift-merge>
                         </label>
                     </div>
 
                     <div class="cluster-settings" data-cluster-settings="agglomerative" hidden>
                         <label class="range-control">
-                            <span>Clusters <strong data-agg-k-value>3</strong></span>
+                            <span>Cluster <strong data-agg-k-value>3</strong></span>
                             <input type="range" min="2" max="6" value="3" step="1" data-agg-k>
                         </label>
                         <label class="range-control">
@@ -139,43 +139,43 @@
                 </div>
 
                 <div class="cluster-control-group">
-                    <span class="cluster-control-label">Points</span>
+                    <span class="cluster-control-label">Punti</span>
                     <div class="cluster-button-row">
-                        <button class="mini-btn" type="button" data-cluster-preset="blobs">Seed blobs</button>
-                        <button class="mini-btn" type="button" data-cluster-preset="bridge">Seed bridge</button>
-                        <button class="mini-btn" type="button" data-cluster-undo>Undo</button>
-                        <button class="mini-btn" type="button" data-cluster-clear>Clear</button>
+                        <button class="mini-btn" type="button" data-cluster-preset="blobs">Genera blob</button>
+                        <button class="mini-btn" type="button" data-cluster-preset="bridge">Genera ponte</button>
+                        <button class="mini-btn" type="button" data-cluster-undo>Annulla</button>
+                        <button class="mini-btn" type="button" data-cluster-clear>Svuota</button>
                     </div>
                 </div>
 
                 <div class="cluster-status" data-cluster-status>
-                    Ready
+                    Pronto
                 </div>
             </section>
 
-            <section class="cluster-main" aria-label="Clustering workspace">
+            <section class="cluster-main" aria-label="Workspace clustering">
                 <div class="cluster-canvas-wrap">
                     <canvas class="cluster-canvas" data-cluster-canvas
-                        aria-label="Interactive 2D point cloud clustering canvas"></canvas>
+                        aria-label="Canvas interattivo di clustering per nuvola di punti 2D"></canvas>
                 </div>
 
                 <aside class="cluster-side-panel">
-                    <h3>Current result</h3>
+                    <h3>Risultato corrente</h3>
                     <div class="cluster-metric-list">
                         <div class="cluster-metric">
-                            <span>Algorithm</span>
+                            <span>Algoritmo</span>
                             <strong data-cluster-metric-algorithm>k-means</strong>
                         </div>
                         <div class="cluster-metric">
-                            <span>Points</span>
+                            <span>Punti</span>
                             <strong data-cluster-metric-points>0</strong>
                         </div>
                         <div class="cluster-metric">
-                            <span>Clusters</span>
+                            <span>Cluster</span>
                             <strong data-cluster-metric-clusters>0</strong>
                         </div>
                         <div class="cluster-metric">
-                            <span>Noise</span>
+                            <span>Rumore</span>
                             <strong data-cluster-metric-noise>0</strong>
                         </div>
                     </div>
@@ -188,10 +188,10 @@
                             Repeatedly assigns each point to the nearest center, then moves each center to the mean of
                             its assigned points.
                         </p>
-                        <p><strong>Best when:</strong> <span data-cluster-explanation-best>Groups are compact and
-                                roughly round.</span></p>
-                        <p><strong>Watch out:</strong> <span data-cluster-explanation-watch>The cluster count is forced
-                                even when the geometry disagrees.</span></p>
+                        <p><strong>Funziona meglio quando:</strong> <span data-cluster-explanation-best>I gruppi sono compatti e
+                                approssimativamente rotondi.</span></p>
+                        <p><strong>Attenzione:</strong> <span data-cluster-explanation-watch>Il numero di cluster è forzato
+                                anche quando la geometria non è d’accordo.</span></p>
                     </div>
                 </aside>
             </section>
@@ -280,45 +280,45 @@
                 if (state.algorithm === 'dbscan') return 'DBSCAN';
                 if (state.algorithm === 'kmedoids') return 'k-medoids';
                 if (state.algorithm === 'meanshift') return 'Mean Shift';
-                if (state.algorithm === 'agglomerative') return 'Agglomerative';
+                if (state.algorithm === 'agglomerative') return 'Agglomerativo';
                 return 'k-means';
             };
 
             const algorithmNotes = {
                 kmeans: {
                     title: 'k-means',
-                    short: 'k-means forces every point into one of k compact groups.',
-                    body: 'It alternates between assigning points to the nearest center and moving each center to the average position of its assigned points.',
-                    best: 'Compact, round-ish groups where choosing k in advance is reasonable.',
-                    watch: 'Outliers pull the mean, and non-round shapes get split or merged awkwardly.'
+                    short: 'k-means forza ogni punto in uno di k gruppi compatti.',
+                    body: 'Alterna assegnazione dei punti al centro più vicino e spostamento di ogni centro sulla posizione media dei punti assegnati.',
+                    best: 'Gruppi compatti e abbastanza rotondi dove scegliere k in anticipo è ragionevole.',
+                    watch: 'Gli outlier trascinano la media e forme non rotonde vengono divise o fuse male.'
                 },
                 kmedoids: {
                     title: 'k-medoids',
-                    short: 'k-medoids uses real points as representatives, making it more robust than k-means.',
-                    body: 'It assigns points to the nearest representative point, then chooses a better representative from inside each cluster.',
-                    best: 'Small datasets where you want each center to be an actual observed point.',
-                    watch: 'It still needs k in advance and still forces every point into some cluster.'
+                    short: 'k-medoids usa punti reali come rappresentanti, rendendolo più robusto di k-means.',
+                    body: 'Assegna i punti al rappresentante più vicino, poi sceglie un rappresentante migliore dentro ogni cluster.',
+                    best: 'Dataset piccoli in cui vuoi che ogni centro sia un punto osservato reale.',
+                    watch: 'Richiede comunque k in anticipo e forza comunque ogni punto in qualche cluster.'
                 },
                 dbscan: {
                     title: 'DBSCAN',
-                    short: 'DBSCAN groups dense neighborhoods and leaves sparse points as noise.',
-                    body: 'It starts from points with enough neighbors inside a radius, then expands clusters through connected dense regions.',
-                    best: 'Irregular shapes, bridges, and datasets where isolated points should stay unassigned.',
-                    watch: 'A single radius can fail when one cluster is dense and another is sparse.'
+                    short: 'DBSCAN raggruppa vicinati densi e lascia i punti radi come rumore.',
+                    body: 'Parte da punti con abbastanza vicini entro un raggio, poi espande i cluster attraverso regioni dense connesse.',
+                    best: 'Forme irregolari, ponti e dataset in cui i punti isolati dovrebbero restare non assegnati.',
+                    watch: 'Un singolo raggio può fallire quando un cluster è denso e un altro è sparso.'
                 },
                 meanshift: {
                     title: 'Mean Shift',
-                    short: 'Mean Shift lets dense regions define the cluster centers.',
-                    body: 'Each point repeatedly moves toward the average of nearby points until it settles near a density peak.',
-                    best: 'Exploring natural modes when you do not want to choose the number of clusters.',
-                    watch: 'Bandwidth is everything: too small creates fragments, too large merges separate peaks.'
+                    short: 'Mean Shift lascia che le regioni dense definiscano i centri dei cluster.',
+                    body: 'Ogni punto si sposta ripetutamente verso la media dei punti vicini finché si stabilizza vicino a un picco di densità.',
+                    best: 'Esplorare modi naturali quando non vuoi scegliere il numero di cluster.',
+                    watch: 'La bandwidth è tutto: troppo piccola crea frammenti, troppo grande fonde picchi separati.'
                 },
                 agglomerative: {
-                    title: 'Agglomerative',
-                    short: 'Agglomerative clustering repeatedly merges the nearest groups.',
-                    body: 'It starts with every point alone and builds a hierarchy by merging clusters according to the selected linkage rule.',
-                    best: 'Inspecting hierarchy and seeing how single, complete, and average linkage change the result.',
-                    watch: 'Single linkage can chain through bridges, while complete linkage can over-favor compact groups.'
+                    title: 'Agglomerativo',
+                    short: 'Il clustering agglomerativo fonde ripetutamente i gruppi più vicini.',
+                    body: 'Parte con ogni punto da solo e costruisce una gerarchia fondendo cluster secondo la regola di linkage selezionata.',
+                    best: 'Ispezionare la gerarchia e vedere come single, complete e average linkage cambiano il risultato.',
+                    watch: 'Single linkage può concatenare attraverso ponti, mentre complete linkage può favorire troppo gruppi compatti.'
                 }
             };
 
@@ -686,7 +686,7 @@
                 pointsMetric.textContent = String(state.points.length);
                 clustersMetric.textContent = String(clusterIds.size);
                 noiseMetric.textContent = String(noise);
-                status.textContent = `${state.points.length} points • ${clusterIds.size} clusters${noise ? ` • ${noise} noise` : ''}`;
+                status.textContent = `${state.points.length} punti • ${clusterIds.size} cluster${noise ? ` • ${noise} rumore` : ''}`;
             };
 
             const runClustering = () => {
@@ -726,7 +726,7 @@
                 ctx.fillStyle = muted;
                 ctx.font = '700 12px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif';
                 ctx.textAlign = 'left';
-                ctx.fillText('Click to add points. Drag points to move them.', 18, 26);
+                ctx.fillText('Clicca per aggiungere punti. Trascina i punti per spostarli.', 18, 26);
 
                 if ((state.algorithm === 'dbscan' || state.algorithm === 'meanshift') && state.hovered !== null) {
                     const p = pointToCanvas(state.points[state.hovered], rect);
@@ -749,7 +749,7 @@
                     ctx.fillStyle = text;
                     ctx.font = '750 16px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif';
                     ctx.textAlign = 'center';
-                    ctx.fillText('Add your first point anywhere in the canvas', rect.width / 2, rect.height / 2);
+                    ctx.fillText('Aggiungi il primo punto in qualunque punto del canvas', rect.width / 2, rect.height / 2);
                     ctx.globalAlpha = 1;
                     return;
                 }

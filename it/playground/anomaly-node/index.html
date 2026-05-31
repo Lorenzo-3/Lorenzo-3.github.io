@@ -1,12 +1,12 @@
 <!doctype html>
-<html lang="en" data-palette="triad">
+<html lang="it" data-palette="triad">
 
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
     <title>Anomaly Node Game · Playground · Lorenzo Marinelli</title>
     <meta name="description"
-        content="Interactive anomaly detection game by Lorenzo Marinelli — find the node that behaves differently in a dynamic background graph." />
+        content="Gioco interattivo di anomaly detection di Lorenzo Marinelli: trova il nodo che si comporta diversamente in un grafo dinamico." />
     <link rel="stylesheet" href="/assets/style.css" />
 
     <link rel="alternate" hreflang="en" href="/playground/anomaly-node/" />
@@ -20,50 +20,50 @@
 <body class="anomaly-bg-page">
     <div class="wrap anomaly-bg-wrap">
         <nav class="nav">
-            <a class="nav__brand" href="/" aria-label="Home">LM</a>
+            <a class="nav__brand" href="/it/" aria-label="Home">LM</a>
 
-            <div class="lang" aria-label="Language">
-                <a class="lang__btn is-active" href="/playground/anomaly-node/" aria-label="English" title="English">
+            <div class="lang" aria-label="Lingua">
+                <a class="lang__btn" href="/playground/anomaly-node/" aria-label="English" title="English">
                     <span class="flag" aria-hidden="true">🇬🇧</span>
                     <span class="sr-only" lang="en">English</span>
                 </a>
-                <a class="lang__btn" href="/it/playground/anomaly-node/" aria-label="Italiano" title="Italiano">
+                <a class="lang__btn is-active" href="/it/playground/anomaly-node/" aria-label="Italiano" title="Italiano">
                     <span class="flag" aria-hidden="true">🇮🇹</span>
                     <span class="sr-only" lang="it">Italiano</span>
                 </a>
             </div>
 
-            <button class="theme-toggle" type="button" data-theme-toggle aria-label="Toggle theme" title="Toggle theme">
+            <button class="theme-toggle" type="button" data-theme-toggle aria-label="Cambia tema" title="Cambia tema">
                 <span data-theme-icon aria-hidden="true">◐</span>
             </button>
 
             <div class="nav__links">
-                <a href="/">Home</a>
-                <a href="/about/">About</a>
-                <a href="/projects/">Projects</a>
-                <a href="/notes/">Notes</a>
-                <a href="/contact/">Contact</a>
-                <a aria-current="page" href="/playground/">Playground</a>
+                <a href="/it/">Home</a>
+                <a href="/it/about/">Info</a>
+                <a href="/it/projects/">Progetti</a>
+                <a href="/it/notes/">Appunti</a>
+                <a href="/it/contact/">Contatti</a>
+                <a aria-current="page" href="/it/playground/">Playground</a>
             </div>
         </nav>
 
         <header class="hero anomaly-bg-hero">
-            <p class="kicker">Playground experiment</p>
+            <p class="kicker">Esperimento del playground</p>
             <h1>Anomaly Node Game</h1>
             <p class="lead hero-line">
-                One node in the background graph behaves slightly differently. Watch the motion, pulses,
-                and signal response, then select the suspicious node.
+                Un nodo nel grafo di sfondo si comporta in modo leggermente diverso. Osserva movimento, impulsi
+                e risposta al segnale, poi seleziona il nodo sospetto.
             </p>
 
             <div class="hero__cta">
-                <a class="btn btn--ghost" href="/playground/">← Back to Playground</a>
+                <a class="btn btn--ghost" href="/it/playground/">← Torna al Playground</a>
             </div>
         </header>
 
-        <main class="anomaly-bg-window" aria-label="Anomaly detection graph area">
+        <main class="anomaly-bg-window" aria-label="Area grafo di anomaly detection">
             <div class="anomaly-bg-hint">
-                <span>Find the strange node</span>
-                <small>look for odd motion, pulse response, or unusual links</small>
+                <span>Trova il nodo strano</span>
+                <small>cerca movimento anomalo, risposta agli impulsi o link insoliti</small>
             </div>
         </main>
 
@@ -75,44 +75,44 @@
     </div>
 
     <aside class="anomaly-floating-panel" data-anomaly-panel>
-        <h2 data-anomaly-result>Observe the graph</h2>
+        <h2 data-anomaly-result>Osserva il grafo</h2>
 
         <div class="anomaly-floating-status" data-anomaly-status>
-            Find the anomalous node
+            Trova il nodo anomalo
         </div>
 
         <div class="anomaly-floating-list">
             <div>
-                <span>Selected</span>
-                <strong data-anomaly-selected>None</strong>
+                <span>Selezione</span>
+                <strong data-anomaly-selected>Nessuno</strong>
             </div>
             <div>
-                <span>Attempts</span>
+                <span>Tentativi</span>
                 <strong data-anomaly-attempts>0</strong>
             </div>
             <div>
-                <span>Solved</span>
+                <span>Risolti</span>
                 <strong data-anomaly-score>0</strong>
             </div>
         </div>
 
         <label class="anomaly-floating-difficulty">
-            <span>Difficulty</span>
+            <span>Difficoltà</span>
             <select data-anomaly-difficulty>
-                <option value="easy">Easy</option>
-                <option value="normal" selected>Normal</option>
-                <option value="hard">Hard</option>
+                <option value="easy">Facile</option>
+                <option value="normal" selected>Normale</option>
+                <option value="hard">Difficile</option>
             </select>
         </label>
 
         <div class="anomaly-floating-buttons">
-            <button class="btn" type="button" data-anomaly-guess>Guess selected</button>
-            <button class="mini-btn" type="button" data-anomaly-new>New round</button>
-            <button class="mini-btn" type="button" data-anomaly-reveal>Reveal</button>
+            <button class="btn" type="button" data-anomaly-guess>Verifica selezione</button>
+            <button class="mini-btn" type="button" data-anomaly-new>Nuovo round</button>
+            <button class="mini-btn" type="button" data-anomaly-reveal>Rivela</button>
         </div>
 
         <p class="anomaly-floating-note">
-            Tip: wait for a signal wave. The anomaly often reacts a little too much.
+            Suggerimento: aspetta un’onda di segnale. L’anomalia spesso reagisce un po’ troppo.
         </p>
     </aside>
 
@@ -169,7 +169,7 @@
                         jitter: 0.18,
                         radiusSwing: 0.95,
                         signalBoost: 1.35,
-                        hint: 'Easy: the anomaly is slightly more unstable.'
+                        hint: 'Facile: l’anomalia è leggermente più instabile.'
                     };
                 }
 
@@ -179,7 +179,7 @@
                         jitter: 0.045,
                         radiusSwing: 0.22,
                         signalBoost: 1.08,
-                        hint: 'Hard: the anomaly is subtle. Watch signal response carefully.'
+                        hint: 'Difficile: l’anomalia è sottile. Osserva bene la risposta al segnale.'
                     };
                 }
 
@@ -188,7 +188,7 @@
                     jitter: 0.085,
                     radiusSwing: 0.48,
                     signalBoost: 1.18,
-                    hint: 'Normal: the anomaly is visible only if you observe for a bit.'
+                    hint: "Normale: l’anomalia si nota solo osservando per un po'."
                 };
             };
 
@@ -226,17 +226,17 @@
 
             const updatePanel = () => {
                 selectedText.textContent =
-                    graph.selected === null ? 'None' : `Node ${graph.selected + 1}`;
+                    graph.selected === null ? 'Nessuno' : `Nodo ${graph.selected + 1}`;
 
                 attemptsText.textContent = String(graph.attempts);
                 scoreText.textContent = String(solvedRounds);
 
                 if (graph.revealed) {
-                    status.textContent = `Anomaly revealed: node ${graph.anomaly + 1}`;
+                    status.textContent = `Anomalia rivelata: nodo ${graph.anomaly + 1}`;
                 } else if (graph.selected !== null) {
-                    status.textContent = `Selected node ${graph.selected + 1}`;
+                    status.textContent = `Nodo selezionato ${graph.selected + 1}`;
                 } else {
-                    status.textContent = 'Find the anomalous node';
+                    status.textContent = 'Trova il nodo anomalo';
                 }
             };
 
@@ -477,7 +477,7 @@
                         ctx.textAlign = 'center';
                         ctx.textBaseline = 'top';
                         ctx.fillText(
-                            graph.revealed && isAnomaly ? 'anomaly' : `node ${index + 1}`,
+                            graph.revealed && isAnomaly ? 'anomalia' : `nodo ${index + 1}`,
                             node.x,
                             node.y + radius + 10
                         );
@@ -503,7 +503,7 @@
                 if (hit === null || graph.revealed) return;
 
                 graph.selected = hit;
-                result.textContent = `Selected node ${hit + 1}. Guess when ready.`;
+                result.textContent = `Nodo ${hit + 1} selezionato. Verifica quando vuoi.`;
                 updatePanel();
             });
 
@@ -511,7 +511,7 @@
                 if (graph.revealed) return;
 
                 if (graph.selected === null) {
-                    result.textContent = 'Select a node first.';
+                    result.textContent = 'Seleziona prima un nodo.';
                     return;
                 }
 
@@ -520,9 +520,9 @@
                 if (graph.selected === graph.anomaly) {
                     graph.revealed = true;
                     solvedRounds += 1;
-                    result.textContent = 'Correct. That node was behaving differently.';
+                    result.textContent = 'Corretto. Quel nodo si comportava diversamente.';
                 } else {
-                    result.textContent = 'Not that one. Keep watching the pulses and motion.';
+                    result.textContent = 'Non è quello. Continua a osservare impulsi e movimento.';
                 }
 
                 updatePanel();
@@ -530,7 +530,7 @@
 
             revealButton.addEventListener('click', () => {
                 graph.revealed = true;
-                result.textContent = 'Revealed. Watch how the anomaly differs from the rest.';
+                result.textContent = 'Rivelato. Osserva come l’anomalia differisce dal resto.';
                 updatePanel();
             });
 

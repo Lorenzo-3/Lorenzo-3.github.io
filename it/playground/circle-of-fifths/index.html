@@ -1,12 +1,12 @@
 <!doctype html>
-<html lang="en" data-palette="triad">
+<html lang="it" data-palette="triad">
 
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
     <title>Circle of Fifths Network · Playground · Lorenzo Marinelli</title>
     <meta name="description"
-        content="Interactive circle of fifths network by Lorenzo Marinelli — explore key relationships, relative minors, and simple harmonic motion." />
+        content="Rete interattiva del circolo delle quinte di Lorenzo Marinelli: esplora relazioni tra tonalità, minori relative e semplice movimento armonico." />
     <link rel="stylesheet" href="/assets/style.css" />
 
     <link rel="alternate" hreflang="en" href="/playground/circle-of-fifths/" />
@@ -20,100 +20,100 @@
 <body>
     <div class="wrap">
         <nav class="nav">
-            <a class="nav__brand" href="/" aria-label="Home">LM</a>
+            <a class="nav__brand" href="/it/" aria-label="Home">LM</a>
 
-            <div class="lang" aria-label="Language">
-                <a class="lang__btn is-active" href="/playground/circle-of-fifths/" aria-label="English"
+            <div class="lang" aria-label="Lingua">
+                <a class="lang__btn" href="/playground/circle-of-fifths/" aria-label="English"
                     title="English">
                     <span class="flag" aria-hidden="true">🇬🇧</span>
                     <span class="sr-only" lang="en">English</span>
                 </a>
-                <a class="lang__btn" href="/it/playground/circle-of-fifths/" aria-label="Italiano" title="Italiano">
+                <a class="lang__btn is-active" href="/it/playground/circle-of-fifths/" aria-label="Italiano" title="Italiano">
                     <span class="flag" aria-hidden="true">🇮🇹</span>
                     <span class="sr-only" lang="it">Italiano</span>
                 </a>
             </div>
 
-            <button class="theme-toggle" type="button" data-theme-toggle aria-label="Toggle theme" title="Toggle theme">
+            <button class="theme-toggle" type="button" data-theme-toggle aria-label="Cambia tema" title="Cambia tema">
                 <span data-theme-icon aria-hidden="true">◐</span>
             </button>
 
             <div class="nav__links">
-                <a href="/">Home</a>
-                <a href="/about/">About</a>
-                <a href="/projects/">Projects</a>
-                <a href="/notes/">Notes</a>
-                <a href="/contact/">Contact</a>
-                <a aria-current="page" href="/playground/">Playground</a>
+                <a href="/it/">Home</a>
+                <a href="/it/about/">Info</a>
+                <a href="/it/projects/">Progetti</a>
+                <a href="/it/notes/">Appunti</a>
+                <a href="/it/contact/">Contatti</a>
+                <a aria-current="page" href="/it/playground/">Playground</a>
             </div>
         </nav>
 
         <header class="hero">
-            <p class="kicker">Playground experiment</p>
+            <p class="kicker">Esperimento del playground</p>
             <h1>Circle of Fifths Network</h1>
             <p class="lead hero-line">
-                A small interactive music-theory graph. Click a key to highlight its closest harmonic neighbors,
-                relative minor, and a simple I–vi–IV–V progression.
+                Un piccolo grafo interattivo di teoria musicale. Clicca una tonalità per evidenziare i vicini armonici più prossimi,
+                la minore relativa e una semplice progressione I–vi–IV–V.
             </p>
 
             <div class="hero__cta">
-                <a class="btn btn--ghost" href="/playground/">← Back to Playground</a>
+                <a class="btn btn--ghost" href="/it/playground/">← Torna al Playground</a>
             </div>
         </header>
 
         <main class="card fifths-app" data-fifths-app>
             <div class="fifths-app__top">
                 <div>
-                    <p class="project-kicker">Interactive harmony graph</p>
-                    <h2>Keys as connected nodes</h2>
+                    <p class="project-kicker">Grafo armonico interattivo</p>
+                    <h2>Tonalità come nodi connessi</h2>
                     <p>
-                        Outer nodes are major keys. Inner nodes are their relative minors.
-                        Neighboring major keys are a fifth apart, which makes them natural modulation targets.
+                        I nodi esterni sono tonalità maggiori. I nodi interni sono le relative minori.
+                        Le tonalità maggiori vicine sono a distanza di quinta, quindi sono target naturali di modulazione.
                     </p>
                 </div>
 
                 <div class="fifths-status" data-fifths-status>
-                    Selected: C major
+                    Selezionata: Do maggiore
                 </div>
             </div>
 
             <div class="fifths-layout">
-                <section class="fifths-stage" aria-label="Interactive circle of fifths">
+                <section class="fifths-stage" aria-label="Circolo delle quinte interattivo">
                     <canvas class="fifths-canvas" data-fifths-canvas>
-                        Interactive circle of fifths.
+                        Circolo delle quinte interattivo.
                     </canvas>
                 </section>
 
                 <aside class="fifths-panel">
-                    <p class="project-kicker" data-fifths-kicker>Current key</p>
-                    <h2 data-fifths-title>C major</h2>
+                    <p class="project-kicker" data-fifths-kicker>Tonalità corrente</p>
+                    <h2 data-fifths-title>Do maggiore</h2>
 
                     <div class="fifths-detail-list">
                         <div>
-                            <span>Dominant</span>
-                            <strong data-fifths-dominant>G major</strong>
+                            <span>Dominante</span>
+                            <strong data-fifths-dominant>Sol maggiore</strong>
                         </div>
                         <div>
-                            <span>Subdominant</span>
-                            <strong data-fifths-subdominant>F major</strong>
+                            <span>Sottodominante</span>
+                            <strong data-fifths-subdominant>Fa maggiore</strong>
                         </div>
                         <div>
-                            <span>Relative minor</span>
+                            <span>Minore relativa</span>
                             <strong data-fifths-relative>Am</strong>
                         </div>
                         <div>
-                            <span>Progression</span>
+                            <span>Progressione</span>
                             <strong data-fifths-progression>C → Am → F → G</strong>
                         </div>
                     </div>
 
                     <button class="btn fifths-play" type="button" data-fifths-play>
-                        Play progression
+                        Riproduci progressione
                     </button>
 
                     <p class="fifths-note">
-                        The sound is intentionally simple: plain synthesized triads, just enough to hear the
-                        relationship.
+                        Il suono è volutamente semplice: triadi sintetizzate essenziali, quanto basta per sentire la
+                        relazione.
                     </p>
                 </aside>
             </div>
@@ -121,20 +121,20 @@
 
         <section class="grid">
             <article class="card">
-                <h2>What to notice</h2>
+                <h2>Cosa osservare</h2>
                 <p>
-                    Moving clockwise adds sharps and moves by fifths. Moving counterclockwise adds flats and moves by
-                    fourths.
-                    Nearby keys share many notes, which is why they are common modulation targets.
+                    Muoversi in senso orario aggiunge diesis e procede per quinte. Muoversi in senso antiorario aggiunge bemolli e procede per
+                    quarte.
+                    Le tonalità vicine condividono molte note, per questo sono target comuni di modulazione.
                 </p>
             </article>
 
             <article class="card">
-                <h2>Why in the Playground</h2>
+                <h2>Perché nel Playground</h2>
                 <p>
-                    It uses the same graph idea as the data-science toys, but applied to harmony. Chords, keys, and
-                    progressions
-                    can all be treated as nodes and transitions. + I simply like music theory
+                    Usa la stessa idea di grafo degli esperimenti di data science, ma applicata all’armonia. Accordi, tonalità e
+                    progressioni
+                    possono essere trattati come nodi e transizioni. E semplicemente mi piace la teoria musicale.
                 </p>
             </article>
         </section>
@@ -163,18 +163,18 @@
             const playButton = root.querySelector('[data-fifths-play]');
 
             const keys = [
-                { major: 'C', minor: 'Am', pc: 0, progression: ['C', 'Am', 'F', 'G'] },
-                { major: 'G', minor: 'Em', pc: 7, progression: ['G', 'Em', 'C', 'D'] },
-                { major: 'D', minor: 'Bm', pc: 2, progression: ['D', 'Bm', 'G', 'A'] },
-                { major: 'A', minor: 'F#m', pc: 9, progression: ['A', 'F#m', 'D', 'E'] },
-                { major: 'E', minor: 'C#m', pc: 4, progression: ['E', 'C#m', 'A', 'B'] },
-                { major: 'B', minor: 'G#m', pc: 11, progression: ['B', 'G#m', 'E', 'F#'] },
-                { major: 'F#/Gb', minor: 'D#m/Ebm', pc: 6, progression: ['Gb', 'Ebm', 'Cb', 'Db'] },
-                { major: 'Db', minor: 'Bbm', pc: 1, progression: ['Db', 'Bbm', 'Gb', 'Ab'] },
-                { major: 'Ab', minor: 'Fm', pc: 8, progression: ['Ab', 'Fm', 'Db', 'Eb'] },
-                { major: 'Eb', minor: 'Cm', pc: 3, progression: ['Eb', 'Cm', 'Ab', 'Bb'] },
-                { major: 'Bb', minor: 'Gm', pc: 10, progression: ['Bb', 'Gm', 'Eb', 'F'] },
-                { major: 'F', minor: 'Dm', pc: 5, progression: ['F', 'Dm', 'Bb', 'C'] }
+                { major: 'C', label: 'Do', minor: 'Am', pc: 0, progression: ['C', 'Am', 'F', 'G'] },
+                { major: 'G', label: 'Sol', minor: 'Em', pc: 7, progression: ['G', 'Em', 'C', 'D'] },
+                { major: 'D', label: 'Re', minor: 'Bm', pc: 2, progression: ['D', 'Bm', 'G', 'A'] },
+                { major: 'A', label: 'La', minor: 'F#m', pc: 9, progression: ['A', 'F#m', 'D', 'E'] },
+                { major: 'E', label: 'Mi', minor: 'C#m', pc: 4, progression: ['E', 'C#m', 'A', 'B'] },
+                { major: 'B', label: 'Si', minor: 'G#m', pc: 11, progression: ['B', 'G#m', 'E', 'F#'] },
+                { major: 'F#/Gb', label: 'Fa#/Solb', minor: 'D#m/Ebm', pc: 6, progression: ['Gb', 'Ebm', 'Cb', 'Db'] },
+                { major: 'Db', label: 'Reb', minor: 'Bbm', pc: 1, progression: ['Db', 'Bbm', 'Gb', 'Ab'] },
+                { major: 'Ab', label: 'Lab', minor: 'Fm', pc: 8, progression: ['Ab', 'Fm', 'Db', 'Eb'] },
+                { major: 'Eb', label: 'Mib', minor: 'Cm', pc: 3, progression: ['Eb', 'Cm', 'Ab', 'Bb'] },
+                { major: 'Bb', label: 'Sib', minor: 'Gm', pc: 10, progression: ['Bb', 'Gm', 'Eb', 'F'] },
+                { major: 'F', label: 'Fa', minor: 'Dm', pc: 5, progression: ['F', 'Dm', 'Bb', 'C'] }
             ];
 
             const pitchClasses = {
@@ -235,10 +235,10 @@
                 const dom = keys[(index + 1) % keys.length];
                 const sub = keys[(index - 1 + keys.length) % keys.length];
 
-                status.textContent = `Selected: ${key.major} major`;
-                title.textContent = `${key.major} major`;
-                dominant.textContent = `${dom.major} major`;
-                subdominant.textContent = `${sub.major} major`;
+                status.textContent = `Selezionata: ${key.label} maggiore`;
+                title.textContent = `${key.label} maggiore`;
+                dominant.textContent = `${dom.label} maggiore`;
+                subdominant.textContent = `${sub.label} maggiore`;
                 relative.textContent = key.minor;
                 progression.textContent = key.progression.join(' → ');
             };
@@ -352,7 +352,7 @@
                     ctx.globalAlpha = active || hover || related ? 0.98 : 0.62;
                     ctx.fillStyle = active ? hot : text;
                     ctx.font = `${active ? 800 : 700} 13px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif`;
-                    ctx.fillText(key.major, majorPoint.x, majorPoint.y - majorRadius - 14);
+                    ctx.fillText(key.label, majorPoint.x, majorPoint.y - majorRadius - 14);
 
                     ctx.globalAlpha = active || hover || related ? 0.86 : 0.48;
                     ctx.fillStyle = muted;

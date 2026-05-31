@@ -1,12 +1,12 @@
 <!doctype html>
-<html lang="en" data-palette="triad">
+<html lang="it" data-palette="triad">
 
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
     <title>Graph Signal Diffusion · Playground · Lorenzo Marinelli</title>
     <meta name="description"
-        content="Interactive graph signal diffusion toy by Lorenzo Marinelli — click a node and watch information spread across a graph." />
+        content="Toy interattivo di diffusione del segnale su grafo di Lorenzo Marinelli: clicca un nodo e osserva l’informazione propagarsi nel grafo." />
     <link rel="stylesheet" href="/assets/style.css" />
 
     <link rel="alternate" hreflang="en" href="/playground/graph-diffusion/" />
@@ -20,118 +20,116 @@
 <body>
     <div class="wrap">
         <nav class="nav">
-            <a class="nav__brand" href="/" aria-label="Home">LM</a>
+            <a class="nav__brand" href="/it/" aria-label="Home">LM</a>
 
-            <div class="lang" aria-label="Language">
-                <a class="lang__btn is-active" href="/playground/graph-diffusion/" aria-label="English" title="English">
+            <div class="lang" aria-label="Lingua">
+                <a class="lang__btn" href="/playground/graph-diffusion/" aria-label="English" title="English">
                     <span class="flag" aria-hidden="true">🇬🇧</span>
                     <span class="sr-only" lang="en">English</span>
                 </a>
-                <a class="lang__btn" href="/it/playground/graph-diffusion/" aria-label="Italiano" title="Italiano">
+                <a class="lang__btn is-active" href="/it/playground/graph-diffusion/" aria-label="Italiano" title="Italiano">
                     <span class="flag" aria-hidden="true">🇮🇹</span>
                     <span class="sr-only" lang="it">Italiano</span>
                 </a>
             </div>
 
-            <button class="theme-toggle" type="button" data-theme-toggle aria-label="Toggle theme" title="Toggle theme">
+            <button class="theme-toggle" type="button" data-theme-toggle aria-label="Cambia tema" title="Cambia tema">
                 <span data-theme-icon aria-hidden="true">◐</span>
             </button>
 
             <div class="nav__links">
-                <a href="/">Home</a>
-                <a href="/about/">About</a>
-                <a href="/projects/">Projects</a>
-                <a href="/notes/">Notes</a>
-                <a href="/contact/">Contact</a>
-                <a aria-current="page" href="/playground/">Playground</a>
+                <a href="/it/">Home</a>
+                <a href="/it/about/">Info</a>
+                <a href="/it/projects/">Progetti</a>
+                <a href="/it/notes/">Appunti</a>
+                <a href="/it/contact/">Contatti</a>
+                <a aria-current="page" href="/it/playground/">Playground</a>
             </div>
         </nav>
 
         <header class="hero">
-            <p class="kicker">Playground experiment</p>
+            <p class="kicker">Esperimento del playground</p>
             <h1>Graph Signal Diffusion</h1>
             <p class="lead hero-line">
-                Click a node to inject a signal. Nearby nodes receive a weaker version of it at each hop.
-                It is a small visual intuition for graph neighborhoods, message passing, and network effects.
+                Clicca un nodo per iniettare un segnale. I nodi vicini ne ricevono una versione più debole a ogni hop.
+                È una piccola intuizione visiva per vicinati di grafo, message passing ed effetti di rete.
             </p>
 
             <div class="hero__cta">
-                <a class="btn btn--ghost" href="/playground/">← Back to Playground</a>
-                <a class="btn" href="/playground/gnn-toy/">Open GNN toy</a>
+                <a class="btn btn--ghost" href="/it/playground/">← Torna al Playground</a>
+                <a class="btn" href="/it/playground/gnn-toy/">Apri il toy GNN</a>
             </div>
         </header>
 
         <main class="card diffusion-app" data-graph-diffusion>
             <div class="diffusion-app__top">
                 <div>
-                    <p class="project-kicker">Interactive graph</p>
-                    <h2>Inject a signal</h2>
+                    <p class="project-kicker">Grafo interattivo</p>
+                    <h2>Inietta un segnale</h2>
                     <p>
-                        Click any node in the canvas. Increase the hop count to let the signal travel farther.
-                        Increase the decay to make the signal fade more slowly.
+                        Clicca un nodo nel canvas. Aumenta il numero di hop per far viaggiare il segnale più lontano.
+                        Aumenta il decadimento per farlo svanire più lentamente.
                     </p>
                 </div>
 
                 <div class="diffusion-status" data-diffusion-status>
-                    Ready
+                    Pronto
                 </div>
             </div>
 
             <canvas class="diffusion-canvas" data-diffusion-canvas
-                aria-label="Interactive graph signal diffusion canvas">
+                aria-label="Canvas interattivo di diffusione del segnale su grafo">
             </canvas>
 
-            <section class="diffusion-controls" aria-label="Diffusion controls">
+            <section class="diffusion-controls" aria-label="Controlli diffusione">
                 <label class="range-control">
-                    <span>Hops <strong data-diffusion-hop-value>3</strong></span>
+                    <span>Hop <strong data-diffusion-hop-value>3</strong></span>
                     <input type="range" min="1" max="6" value="3" step="1" data-diffusion-hops>
                 </label>
 
                 <label class="range-control">
-                    <span>Decay <strong data-diffusion-decay-value>0.58</strong></span>
+                    <span>Decadimento <strong data-diffusion-decay-value>0.58</strong></span>
                     <input type="range" min="0.25" max="0.90" value="0.58" step="0.01" data-diffusion-decay>
                 </label>
 
                 <label class="range-control">
-                    <span>Density <strong data-diffusion-density-value>3</strong></span>
+                    <span>Densità <strong data-diffusion-density-value>3</strong></span>
                     <input type="range" min="2" max="5" value="3" step="1" data-diffusion-density>
                 </label>
 
                 <div class="diffusion-buttons">
-                    <button class="mini-btn" type="button" data-diffusion-random>New graph</button>
-                    <button class="mini-btn" type="button" data-diffusion-reset>Replay signal</button>
+                    <button class="mini-btn" type="button" data-diffusion-random>Nuovo grafo</button>
+                    <button class="mini-btn" type="button" data-diffusion-reset>Ripeti segnale</button>
                 </div>
             </section>
         </main>
 
         <section class="grid">
             <article class="card">
-                <h2>What this represents</h2>
+                <h2>Cosa rappresenta</h2>
                 <p>
-                    This is not meant to be a full GNN implementation. It shows the core intuition:
-                    a node starts with information, then its local neighborhood receives progressively weaker traces of
-                    it.
+                    Non vuole essere una implementazione completa di una GNN. Mostra l’intuizione centrale:
+                    un nodo parte con informazione, poi il suo vicinato locale ne riceve tracce progressivamente più deboli.
                 </p>
                 <p>
-                    In a real graph neural network, each node repeatedly aggregates information from its neighbors and
-                    updates
-                    its representation. More hops means a wider receptive field, but also more smoothing.
+                    In una vera graph neural network, ogni nodo aggrega ripetutamente informazioni dai vicini e aggiorna
+                    la propria rappresentazione. Più hop significano un campo recettivo più ampio, ma anche più smoothing.
                 </p>
                 <p>
-                    The follow-up GNN toy makes that update step explicit with editable node features and one to three
-                    message-passing layers.
+                    Il toy GNN collegato rende esplicito quel passo di aggiornamento con feature dei nodi modificabili e da uno a tre
+                    strati di message passing.
                 </p>
             </article>
 
             <article class="card">
-                <h2>A shared graph language</h2>
+                <h2>Un linguaggio di grafo condiviso</h2>
                 <p>
-                    The same visual metaphor connects several interests: protein interaction networks, disease modules,
-                    graph neural networks, random walks, music harmony graphs, and even idea association.
+                    La stessa metafora visiva collega diversi interessi: reti di interazione proteica, moduli di malattia,
+                    graph neural network, random walk, grafi di armonia musicale e persino associazioni di idee.
                 </p>
                 <p>
-                    Keeping it small makes the interaction reusable: a graph can be a model, a map, a composition tool,
-                    or a way to make abstract relationships easier to inspect.
+                    Mantenerlo piccolo rende l’interazione riutilizzabile: un grafo può essere un modello, una mappa, uno strumento compositivo
+                    o un modo per rendere più ispezionabili relazioni astratte.
                 </p>
             </article>
         </section>
@@ -280,7 +278,7 @@
                     node.target = depth === undefined ? 0 : Math.pow(decay, depth);
                 });
 
-                status.textContent = `${seen.size} of ${graph.nodes.length} nodes reached within ${hops} hops`;
+                status.textContent = `${seen.size} di ${graph.nodes.length} nodi raggiunti entro ${hops} hop`;
             };
 
             const hitTest = (event) => {
@@ -350,7 +348,7 @@
                         ctx.globalAlpha = 0.88;
                         ctx.fillStyle = muted;
                         ctx.font = '11px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif';
-                        ctx.fillText(isActive ? 'seed' : node.value.toFixed(2), node.x + 10, node.y - 10);
+                        ctx.fillText(isActive ? 'origine' : node.value.toFixed(2), node.x + 10, node.y - 10);
                     }
                 });
 

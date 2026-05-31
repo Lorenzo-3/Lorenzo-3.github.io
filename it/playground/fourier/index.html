@@ -1,12 +1,12 @@
 <!doctype html>
-<html lang="en" data-palette="triad">
+<html lang="it" data-palette="triad">
 
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
     <title>Fourier Transform Playground · Playground · Lorenzo Marinelli</title>
     <meta name="description"
-        content="Interactive Fourier transform playground by Lorenzo Marinelli - add sine waves one at a time and hear how they change the sound." />
+        content="Playground interattivo sulla trasformata di Fourier di Lorenzo Marinelli: aggiungi onde sinusoidali una alla volta e ascolta come cambiano il suono." />
     <link rel="stylesheet" href="/assets/style.css" />
 
     <link rel="alternate" hreflang="en" href="/playground/fourier/" />
@@ -20,50 +20,50 @@
 <body class="fourier-page">
     <div class="wrap fourier-wrap">
         <nav class="nav">
-            <a class="nav__brand" href="/" aria-label="Home">LM</a>
+            <a class="nav__brand" href="/it/" aria-label="Home">LM</a>
 
-            <div class="lang" aria-label="Language">
-                <a class="lang__btn is-active" href="/playground/fourier/" aria-label="English" title="English">
+            <div class="lang" aria-label="Lingua">
+                <a class="lang__btn" href="/playground/fourier/" aria-label="English" title="English">
                     <span class="flag" aria-hidden="true">🇬🇧</span>
                     <span class="sr-only" lang="en">English</span>
                 </a>
-                <a class="lang__btn" href="/it/playground/fourier/" aria-label="Italiano" title="Italiano">
+                <a class="lang__btn is-active" href="/it/playground/fourier/" aria-label="Italiano" title="Italiano">
                     <span class="flag" aria-hidden="true">🇮🇹</span>
                     <span class="sr-only" lang="it">Italiano</span>
                 </a>
             </div>
 
-            <button class="theme-toggle" type="button" data-theme-toggle aria-label="Toggle theme" title="Toggle theme">
+            <button class="theme-toggle" type="button" data-theme-toggle aria-label="Cambia tema" title="Cambia tema">
                 <span data-theme-icon aria-hidden="true">◐</span>
             </button>
 
             <div class="nav__links">
-                <a href="/">Home</a>
-                <a href="/about/">About</a>
-                <a href="/projects/">Projects</a>
-                <a href="/notes/">Notes</a>
-                <a href="/contact/">Contact</a>
-                <a aria-current="page" href="/playground/">Playground</a>
+                <a href="/it/">Home</a>
+                <a href="/it/about/">Info</a>
+                <a href="/it/projects/">Progetti</a>
+                <a href="/it/notes/">Appunti</a>
+                <a href="/it/contact/">Contatti</a>
+                <a aria-current="page" href="/it/playground/">Playground</a>
             </div>
         </nav>
 
         <header class="hero fourier-hero">
-            <p class="kicker">Playground experiment</p>
+            <p class="kicker">Esperimento del playground</p>
             <h1>Fourier Transform Playground</h1>
             <p class="lead hero-line">
-                Add sine waves one by one, then watch the time waveform and frequency spectrum change as the sound
-                becomes richer.
+                Aggiungi onde sinusoidali una alla volta, poi osserva forma d’onda nel tempo e spettro in frequenza mentre il suono
+                diventa più ricco.
             </p>
 
             <div class="hero__cta">
-                <a class="btn btn--ghost" href="/playground/">Back to Playground</a>
+                <a class="btn btn--ghost" href="/it/playground/">Torna al Playground</a>
             </div>
         </header>
 
-        <main class="fourier-window" aria-label="Fourier waveform and spectrum canvas">
+        <main class="fourier-window" aria-label="Canvas di forma d’onda e spettro di Fourier">
             <div class="fourier-hint">
-                <span>Waveform above, spectrum below</span>
-                <small>each bar is one sine component in the mix</small>
+                <span>Forma d’onda sopra, spettro sotto</span>
+                <small>ogni barra è una componente sinusoidale del mix</small>
             </div>
         </main>
 
@@ -75,19 +75,19 @@
     <aside class="fourier-hud" data-fourier-hud>
         <div class="fourier-hud__top">
             <div>
-                <h2>Fourier mixer</h2>
-                <p data-fourier-status>One sine wave is loaded. Add more partials to reshape the sound.</p>
+                <h2>Mixer Fourier</h2>
+                <p data-fourier-status>Una sinusoide è caricata. Aggiungi parziali per rimodellare il suono.</p>
             </div>
             <div class="fourier-actions">
-                <button class="btn" type="button" data-fourier-play>Hear mix</button>
-                <button class="mini-btn" type="button" data-fourier-add>Add sine</button>
-                <button class="mini-btn" type="button" data-fourier-clear>Clear</button>
+                <button class="btn" type="button" data-fourier-play>Ascolta mix</button>
+                <button class="mini-btn" type="button" data-fourier-add>Aggiungi sinusoide</button>
+                <button class="mini-btn" type="button" data-fourier-clear>Svuota</button>
             </div>
         </div>
 
         <div class="fourier-global-controls">
             <label class="range-control">
-                <span>Fundamental <strong data-fourier-fundamental-value>220 Hz</strong></span>
+                <span>Fondamentale <strong data-fourier-fundamental-value>220 Hz</strong></span>
                 <input type="range" min="80" max="440" value="220" step="1" data-fourier-fundamental>
             </label>
 
@@ -97,11 +97,11 @@
             </label>
         </div>
 
-        <div class="fourier-components" data-fourier-components aria-label="Sine components"></div>
+        <div class="fourier-components" data-fourier-components aria-label="Componenti sinusoidali"></div>
 
         <p class="fourier-note">
-            Harmonic 1 is the base pitch. Higher harmonics add brightness; phase changes the shape without moving the
-            spectrum bar.
+            L’armonica 1 è l’altezza di base. Le armoniche superiori aggiungono brillantezza; la fase cambia la forma senza spostare la
+            barra nello spettro.
         </p>
     </aside>
 
@@ -199,11 +199,11 @@
 
             const setStatus = () => {
                 const count = activeComponents().length;
-                const noun = count === 1 ? 'sine wave' : 'sine waves';
+                const noun = count === 1 ? 'sinusoide' : 'sinusoidi';
                 if (isPlaying) {
-                    status.textContent = count ? `Listening to ${count} ${noun}.` : 'The mix is silent.';
+                    status.textContent = count ? `Ascolto di ${count} ${noun}.` : 'Il mix è silenzioso.';
                 } else {
-                    status.textContent = count ? `${count} ${noun} in the mix. Press Hear mix to listen.` : 'Add a sine wave to start building a sound.';
+                    status.textContent = count ? `${count} ${noun} nel mix. Premi Ascolta mix per ascoltare.` : 'Aggiungi una sinusoide per iniziare a costruire un suono.';
                 }
             };
 
@@ -240,7 +240,7 @@
             const startAudio = async () => {
                 const AudioContextClass = window.AudioContext || window.webkitAudioContext;
                 if (!AudioContextClass) {
-                    status.textContent = 'Web Audio is not available in this browser.';
+                    status.textContent = 'Web Audio non è disponibile in questo browser.';
                     return;
                 }
 
@@ -260,14 +260,14 @@
 
                 await audioContext.resume();
                 isPlaying = true;
-                playButton.textContent = 'Pause';
+                playButton.textContent = 'Pausa';
                 refreshAudio();
                 setStatus();
             };
 
             const pauseAudio = () => {
                 isPlaying = false;
-                playButton.textContent = 'Hear mix';
+                playButton.textContent = 'Ascolta mix';
                 if (masterGain && audioContext) {
                     masterGain.gain.setTargetAtTime(0, audioContext.currentTime, 0.018);
                 }
@@ -309,7 +309,7 @@
                 if (!components.length) {
                     const empty = document.createElement('p');
                     empty.className = 'fourier-empty';
-                    empty.textContent = 'No sine waves yet.';
+                    empty.textContent = 'Nessuna sinusoide per ora.';
                     componentList.appendChild(empty);
                     return;
                 }
@@ -322,21 +322,21 @@
                     row.innerHTML = `
                         <div class="fourier-component__head">
                             <div>
-                                <strong>Sine ${index + 1}</strong>
+                                <strong>Sinusoide ${index + 1}</strong>
                                 <span><span data-frequency-label>${Math.round(component.harmonic * fundamental())} Hz</span></span>
                             </div>
-                            <button class="mini-btn" type="button" data-remove>Remove</button>
+                            <button class="mini-btn" type="button" data-remove>Rimuovi</button>
                         </div>
                         <label class="range-control">
-                            <span>Harmonic <strong data-harmonic-value>${component.harmonic}</strong></span>
+                            <span>Armonica <strong data-harmonic-value>${component.harmonic}</strong></span>
                             <input type="range" min="1" max="${partialLimit}" value="${component.harmonic}" step="1" data-harmonic>
                         </label>
                         <label class="range-control">
-                            <span>Amplitude <strong data-amplitude-value>${Math.round(component.amplitude * 100)}%</strong></span>
+                            <span>Ampiezza <strong data-amplitude-value>${Math.round(component.amplitude * 100)}%</strong></span>
                             <input type="range" min="0" max="100" value="${Math.round(component.amplitude * 100)}" step="1" data-amplitude>
                         </label>
                         <label class="range-control">
-                            <span>Phase <strong data-phase-value>${component.phase} deg</strong></span>
+                            <span>Fase <strong data-phase-value>${component.phase} gradi</strong></span>
                             <input type="range" min="0" max="360" value="${component.phase}" step="5" data-phase>
                         </label>
                     `;
@@ -364,7 +364,7 @@
 
                     phaseInput.addEventListener('input', () => {
                         component.phase = Number(phaseInput.value);
-                        phaseValue.textContent = `${component.phase} deg`;
+                        phaseValue.textContent = `${component.phase} gradi`;
                         updateAll();
                     });
 
@@ -475,10 +475,10 @@
                 ctx.fillStyle = text;
                 ctx.font = '700 13px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif';
                 ctx.textAlign = 'left';
-                ctx.fillText('Time waveform', 24, top + 18);
+                ctx.fillText('Forma d’onda nel tempo', 24, top + 18);
                 ctx.fillStyle = muted;
                 ctx.font = '500 12px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif';
-                ctx.fillText(`${activeComponents().length} partials at ${fundamental()} Hz base pitch`, 24, top + 38);
+                ctx.fillText(`${activeComponents().length} parziali con base a ${fundamental()} Hz`, 24, top + 38);
 
                 ctx.globalAlpha = 0.72;
                 ctx.fillStyle = warm;
@@ -537,10 +537,10 @@
                 ctx.fillStyle = text;
                 ctx.font = '700 13px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif';
                 ctx.textAlign = 'left';
-                ctx.fillText('Frequency spectrum', left, chartBottom - chartHeight - 18);
+                ctx.fillText('Spettro in frequenza', left, chartBottom - chartHeight - 18);
                 ctx.fillStyle = muted;
                 ctx.font = '500 12px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif';
-                ctx.fillText('harmonic number', left, chartBottom + 34);
+                ctx.fillText('numero armonica', left, chartBottom + 34);
             };
 
             const draw = (now = 0) => {

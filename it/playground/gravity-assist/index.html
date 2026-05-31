@@ -1,12 +1,12 @@
 <!doctype html>
-<html lang="en" data-palette="triad">
+<html lang="it" data-palette="triad">
 
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
     <title>Gravity Assist Sandbox · Playground · Lorenzo Marinelli</title>
     <meta name="description"
-        content="Interactive 2D gravity-assist sandbox by Lorenzo Marinelli - launch a probe through a miniature solar system and try to reach a target planet." />
+        content="Sandbox 2D interattiva di gravity assist di Lorenzo Marinelli: lancia una sonda in un sistema solare in miniatura e prova a raggiungere un pianeta target." />
     <link rel="stylesheet" href="/assets/style.css" />
 
     <link rel="alternate" hreflang="en" href="/playground/gravity-assist/" />
@@ -20,50 +20,50 @@
 <body class="gravity-page">
     <div class="wrap gravity-wrap">
         <nav class="nav">
-            <a class="nav__brand" href="/" aria-label="Home">LM</a>
+            <a class="nav__brand" href="/it/" aria-label="Home">LM</a>
 
-            <div class="lang" aria-label="Language">
-                <a class="lang__btn is-active" href="/playground/gravity-assist/" aria-label="English" title="English">
+            <div class="lang" aria-label="Lingua">
+                <a class="lang__btn" href="/playground/gravity-assist/" aria-label="English" title="English">
                     <span class="flag" aria-hidden="true">🇬🇧</span>
                     <span class="sr-only" lang="en">English</span>
                 </a>
-                <a class="lang__btn" href="/it/playground/gravity-assist/" aria-label="Italiano" title="Italiano">
+                <a class="lang__btn is-active" href="/it/playground/gravity-assist/" aria-label="Italiano" title="Italiano">
                     <span class="flag" aria-hidden="true">🇮🇹</span>
                     <span class="sr-only" lang="it">Italiano</span>
                 </a>
             </div>
 
-            <button class="theme-toggle" type="button" data-theme-toggle aria-label="Toggle theme" title="Toggle theme">
+            <button class="theme-toggle" type="button" data-theme-toggle aria-label="Cambia tema" title="Cambia tema">
                 <span data-theme-icon aria-hidden="true">◐</span>
             </button>
 
             <div class="nav__links">
-                <a href="/">Home</a>
-                <a href="/about/">About</a>
-                <a href="/projects/">Projects</a>
-                <a href="/notes/">Notes</a>
-                <a href="/contact/">Contact</a>
-                <a aria-current="page" href="/playground/">Playground</a>
+                <a href="/it/">Home</a>
+                <a href="/it/about/">Info</a>
+                <a href="/it/projects/">Progetti</a>
+                <a href="/it/notes/">Appunti</a>
+                <a href="/it/contact/">Contatti</a>
+                <a aria-current="page" href="/it/playground/">Playground</a>
             </div>
         </nav>
 
         <header class="hero gravity-hero">
-            <p class="kicker">Playground experiment</p>
+            <p class="kicker">Esperimento del playground</p>
             <h1>Gravity Assist Sandbox</h1>
             <p class="lead hero-line">
-                Launch a probe through a small 2D solar system. Tune the launch and planetary gravity,
-                then try to bend the trajectory toward the target planet.
+                Lancia una sonda in un piccolo sistema solare 2D. Regola lancio e gravità planetaria,
+                poi prova a piegare la traiettoria verso il pianeta target.
             </p>
 
             <div class="hero__cta">
-                <a class="btn btn--ghost" href="/playground/">← Back to Playground</a>
+                <a class="btn btn--ghost" href="/it/playground/">← Torna al Playground</a>
             </div>
         </header>
 
-        <main class="gravity-window" aria-label="Gravity assist simulation area">
+        <main class="gravity-window" aria-label="Area di simulazione gravity assist">
             <div class="gravity-hint">
-                <span>Aim from the cyan planet</span>
-                <small>move the pointer, then launch toward the red target</small>
+                <span>Mira dal pianeta ciano</span>
+                <small>muovi il puntatore, poi lancia verso il target rosso</small>
             </div>
         </main>
 
@@ -77,21 +77,21 @@
 
     <aside class="gravity-hud gravity-stats-panel" data-gravity-hud>
         <div>
-            <h2>Probe stats</h2>
-            <div class="gravity-status" data-gravity-status>Aim, then launch.</div>
+            <h2>Statistiche sonda</h2>
+            <div class="gravity-status" data-gravity-status>Mira, poi lancia.</div>
         </div>
 
         <div class="gravity-metrics">
             <div>
-                <span>Distance</span>
+                <span>Distanza</span>
                 <strong data-gravity-distance>--</strong>
             </div>
             <div>
-                <span>Closest</span>
+                <span>Più vicino</span>
                 <strong data-gravity-closest>--</strong>
             </div>
             <div>
-                <span>Flight time</span>
+                <span>Tempo di volo</span>
                 <strong data-gravity-flight>0.0s</strong>
             </div>
         </div>
@@ -99,35 +99,35 @@
     </aside>
 
     <aside class="gravity-hud gravity-controls-panel">
-        <h2>Probe controls</h2>
+        <h2>Controlli sonda</h2>
 
         <div class="gravity-actions">
-            <button class="btn" type="button" data-gravity-launch>Launch</button>
+            <button class="btn" type="button" data-gravity-launch>Lancia</button>
             <button class="mini-btn" type="button" data-gravity-reset>Reset</button>
-            <button class="mini-btn" type="button" data-gravity-alignment>New alignment</button>
+            <button class="mini-btn" type="button" data-gravity-alignment>Nuovo allineamento</button>
         </div>
 
         <details class="gravity-settings">
-            <summary>Settings</summary>
+            <summary>Impostazioni</summary>
 
-            <div class="gravity-controls" aria-label="Gravity assist controls">
+            <div class="gravity-controls" aria-label="Controlli gravity assist">
                 <label class="range-control">
-                    <span>Initial velocity <strong data-gravity-velocity-value>205</strong></span>
+                    <span>Velocità iniziale <strong data-gravity-velocity-value>205</strong></span>
                     <input type="range" min="100" max="400" value="145" step="5" data-gravity-velocity>
                 </label>
 
                 <label class="range-control">
-                    <span>Planet mass <strong data-gravity-mass-value>25.0×</strong></span>
+                    <span>Massa pianeti <strong data-gravity-mass-value>25.0×</strong></span>
                     <input type="range" min="15" max="50" value="25" step="1" data-gravity-mass>
                 </label>
 
                 <label class="range-control">
-                    <span>Time scale <strong data-gravity-time-value>1.0×</strong></span>
+                    <span>Scala temporale <strong data-gravity-time-value>1.0×</strong></span>
                     <input type="range" min="0.2" max="4" value="1" step="0.1" data-gravity-time>
                 </label>
 
                 <label class="range-control">
-                    <span>Trail length <strong data-gravity-trail-value>260</strong></span>
+                    <span>Lunghezza scia <strong data-gravity-trail-value>260</strong></span>
                     <input type="range" min="40" max="900" value="260" step="20" data-gravity-trail>
                 </label>
             </div>
@@ -232,7 +232,7 @@
                 const defs = [
                     {
                         key: 'inner',
-                        name: 'Inner',
+                        name: 'Interno',
                         orbit: scale * 0.32,
                         baseAngle: 0.7,
                         speed: 0.48,
@@ -242,7 +242,7 @@
                     },
                     {
                         key: 'launch',
-                        name: 'Launch',
+                        name: 'Lancio',
                         orbit: scale * 0.66,
                         fixedAngle: Math.PI,
                         speed: 0,
@@ -302,7 +302,7 @@
                 probe.vx = 0;
                 probe.vy = 0;
                 closestDistance = Infinity;
-                status.textContent = 'Aim, then launch.';
+                status.textContent = 'Mira, poi lancia.';
             };
 
             const launchProbe = () => {
@@ -318,7 +318,7 @@
                 probe.vx = launch.vx + Math.cos(aimAngle) * velocity;
                 probe.vy = launch.vy + Math.sin(aimAngle) * velocity;
                 closestDistance = Infinity;
-                status.textContent = 'Probe in flight.';
+                status.textContent = 'Sonda in volo.';
             };
 
             const resetAlignment = () => {
@@ -388,14 +388,14 @@
                     if (targetDistance < target.radius + 15) {
                         probe.reached = true;
                         probe.ended = true;
-                        status.textContent = 'Target reached.';
+                        status.textContent = 'Target raggiunto.';
                         return;
                     }
 
                     const sunDistance = Math.hypot(probe.x - center.x, probe.y - center.y);
                     if (sunDistance < 25) {
                         probe.ended = true;
-                        status.textContent = 'Probe fell into the star.';
+                        status.textContent = 'La sonda è caduta nella stella.';
                         return;
                     }
 
@@ -406,7 +406,7 @@
                         probe.y > height * 1.55
                     ) {
                         probe.ended = true;
-                        status.textContent = 'Probe escaped the system.';
+                        status.textContent = 'La sonda è uscita dal sistema.';
                         return;
                     }
                 }

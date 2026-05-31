@@ -1,12 +1,12 @@
 <!doctype html>
-<html lang="en" data-palette="triad">
+<html lang="it" data-palette="triad">
 
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
     <title>GNN Message Passing Toy · Playground · Lorenzo Marinelli</title>
     <meta name="description"
-        content="Interactive graph neural network toy by Lorenzo Marinelli - choose node features, run message-passing layers, and inspect embedding smoothing." />
+        content="Toy interattivo di graph neural network di Lorenzo Marinelli: scegli feature dei nodi, esegui strati di message passing e osserva lo smoothing degli embedding." />
     <link rel="stylesheet" href="/assets/style.css" />
 
     <link rel="alternate" hreflang="en" href="/playground/gnn-toy/" />
@@ -20,78 +20,78 @@
 <body class="gnn-toy-page">
     <div class="wrap">
         <nav class="nav">
-            <a class="nav__brand" href="/" aria-label="Home">LM</a>
+            <a class="nav__brand" href="/it/" aria-label="Home">LM</a>
 
-            <div class="lang" aria-label="Language">
-                <a class="lang__btn is-active" href="/playground/gnn-toy/" aria-label="English" title="English">
+            <div class="lang" aria-label="Lingua">
+                <a class="lang__btn" href="/playground/gnn-toy/" aria-label="English" title="English">
                     <span class="flag" aria-hidden="true">🇬🇧</span>
                     <span class="sr-only" lang="en">English</span>
                 </a>
-                <a class="lang__btn" href="/it/playground/gnn-toy/" aria-label="Italiano" title="Italiano">
+                <a class="lang__btn is-active" href="/it/playground/gnn-toy/" aria-label="Italiano" title="Italiano">
                     <span class="flag" aria-hidden="true">🇮🇹</span>
                     <span class="sr-only" lang="it">Italiano</span>
                 </a>
             </div>
 
-            <button class="theme-toggle" type="button" data-theme-toggle aria-label="Toggle theme" title="Toggle theme">
+            <button class="theme-toggle" type="button" data-theme-toggle aria-label="Cambia tema" title="Cambia tema">
                 <span data-theme-icon aria-hidden="true">◐</span>
             </button>
 
             <div class="nav__links">
-                <a href="/">Home</a>
-                <a href="/about/">About</a>
-                <a href="/projects/">Projects</a>
-                <a href="/notes/">Notes</a>
-                <a href="/contact/">Contact</a>
-                <a aria-current="page" href="/playground/">Playground</a>
+                <a href="/it/">Home</a>
+                <a href="/it/about/">Info</a>
+                <a href="/it/projects/">Progetti</a>
+                <a href="/it/notes/">Appunti</a>
+                <a href="/it/contact/">Contatti</a>
+                <a aria-current="page" href="/it/playground/">Playground</a>
             </div>
         </nav>
 
         <header class="hero">
-            <p class="kicker">Playground experiment</p>
+            <p class="kicker">Esperimento del playground</p>
             <h1>GNN Message Passing Toy</h1>
             <p class="lead hero-line">
-                Choose node features, apply one to three message-passing layers, and watch neighboring
-                embeddings become smoother without leaving the browser.
+                Scegli le feature dei nodi, applica da uno a tre strati di message passing e osserva gli
+                embedding vicini diventare più smooth senza uscire dal browser.
             </p>
 
             <div class="hero__cta">
-                <a class="btn btn--ghost" href="/playground/">← Back to Playground</a>
-                <a class="btn btn--ghost" href="/playground/graph-diffusion/">Graph Signal Diffusion</a>
+                <a class="btn btn--ghost" href="/it/playground/">← Torna al Playground</a>
+                <a class="btn btn--ghost" href="/it/playground/graph-diffusion/">Graph Signal Diffusion</a>
             </div>
         </header>
 
         <main class="gnn-toy-app" data-gnn-toy>
             <div class="gnn-toy-app__top">
                 <div>
-                    <p class="project-kicker">Interactive GNN</p>
-                    <h2>Average neighbor messages</h2>
+                    <p class="project-kicker">GNN interattiva</p>
+                    <h2>Media dei messaggi dei vicini</h2>
                     <p>
-                        Start from editable node features, then repeatedly replace each embedding with the average of
-                        itself and its neighbors. More layers mix farther neighborhoods and reduce edge-level contrast.
+                        Parti da feature dei nodi modificabili, poi sostituisci ripetutamente ogni embedding con la media di
+                        sé stesso e dei vicini. Più strati mescolano vicinati più lontani e riducono il contrasto sugli archi.
                     </p>
                 </div>
 
                 <div class="gnn-toy-status" data-gnn-status>
-                    Edge variation ready
+                    Variazione sugli archi pronta
                 </div>
             </div>
 
-            <section class="gnn-control-grid" aria-label="GNN controls">
+            <section class="gnn-control-grid" aria-label="Controlli GNN">
                 <div class="gnn-control-group">
-                    <span class="gnn-control-label">Feature preset</span>
+                    <span class="gnn-control-label">Preset feature</span>
                     <div class="gnn-control-buttons">
                         <button class="mini-btn is-active" type="button"
-                            data-gnn-preset="communities">Communities</button>
-                        <button class="mini-btn" type="button" data-gnn-preset="alternating">Alternating</button>
-                        <button class="mini-btn" type="button" data-gnn-preset="spike">Spike</button>
-                        <button class="mini-btn" type="button" data-gnn-preset="random">Random</button>
+                            data-gnn-preset="communities">Comunità</button>
+                        <button class="mini-btn" type="button" data-gnn-preset="alternating">Alternato</button>
+                        <button class="mini-btn" type="button" data-gnn-preset="spike">Picco</button>
+                        <button class="mini-btn" type="button" data-gnn-preset="random">Casuale</button>
                     </div>
                 </div>
 
                 <div class="gnn-control-group">
-                    <span class="gnn-control-label">Node feature</span>
-                    <span class="gnn-feature-state" data-gnn-selected-node>Node 1</span>
+                    <span class="gnn-control-label">Feature del nodo</span>
+                    <span class="gnn-feature-state" data-gnn-selected-node>Nodo 1</span>
                     <div class="gnn-feature-swatches">
                         <button class="mini-btn gnn-feature-btn is-active" type="button" data-gnn-feature="0"
                             style="--feature-color: var(--accent2)">
@@ -112,67 +112,67 @@
                 </div>
 
                 <div class="gnn-control-group">
-                    <span class="gnn-control-label">Message-passing layers</span>
+                    <span class="gnn-control-label">Strati di message passing</span>
                     <div class="gnn-layer-buttons">
-                        <button class="mini-btn" type="button" data-gnn-layer="1">1 layer</button>
-                        <button class="mini-btn is-active" type="button" data-gnn-layer="2">2 layers</button>
-                        <button class="mini-btn" type="button" data-gnn-layer="3">3 layers</button>
+                        <button class="mini-btn" type="button" data-gnn-layer="1">1 strato</button>
+                        <button class="mini-btn is-active" type="button" data-gnn-layer="2">2 strati</button>
+                        <button class="mini-btn" type="button" data-gnn-layer="3">3 strati</button>
                     </div>
                 </div>
             </section>
 
-            <section class="gnn-toy-stage" aria-label="GNN smoothing visualization">
+            <section class="gnn-toy-stage" aria-label="Visualizzazione smoothing GNN">
                 <article class="gnn-graph-panel">
                     <div class="gnn-panel-top">
-                        <h3>Before</h3>
-                        <span class="gnn-panel-metric" data-gnn-before-metric>edge variation 0.00</span>
+                        <h3>Prima</h3>
+                        <span class="gnn-panel-metric" data-gnn-before-metric>variazione archi 0.00</span>
                     </div>
                     <canvas class="gnn-canvas is-clickable" data-gnn-before
-                        aria-label="Before message passing graph canvas"></canvas>
+                        aria-label="Canvas del grafo prima del message passing"></canvas>
                 </article>
 
                 <article class="gnn-graph-panel">
                     <div class="gnn-panel-top">
-                        <h3>After</h3>
-                        <span class="gnn-panel-metric" data-gnn-after-metric>edge variation 0.00</span>
+                        <h3>Dopo</h3>
+                        <span class="gnn-panel-metric" data-gnn-after-metric>variazione archi 0.00</span>
                     </div>
-                    <canvas class="gnn-canvas" data-gnn-after aria-label="After message passing graph canvas"></canvas>
+                    <canvas class="gnn-canvas" data-gnn-after aria-label="Canvas del grafo dopo il message passing"></canvas>
                 </article>
 
                 <article class="gnn-plot-panel">
                     <div class="gnn-panel-top">
-                        <h3>Embedding plot</h3>
-                        <span class="gnn-panel-metric" data-gnn-plot-metric>2 layers</span>
+                        <h3>Plot degli embedding</h3>
+                        <span class="gnn-panel-metric" data-gnn-plot-metric>2 strati</span>
                     </div>
                     <canvas class="gnn-plot-canvas" data-gnn-plot
-                        aria-label="Two-dimensional embedding plot canvas"></canvas>
+                        aria-label="Canvas del plot bidimensionale degli embedding"></canvas>
                 </article>
             </section>
         </main>
 
         <section class="grid">
             <article class="card">
-                <h2>What changes per layer</h2>
+                <h2>Cosa cambia per strato</h2>
                 <p>
-                    Each layer expands the receptive field by one hop. A node first blends direct neighbors, then
-                    neighbors of neighbors, then a wider local patch of the graph.
+                    Ogni strato espande il campo recettivo di un hop. Un nodo mescola prima i vicini diretti, poi
+                    i vicini dei vicini, poi una porzione locale più ampia del grafo.
                 </p>
                 <p>
-                    This is useful because nearby context can improve a representation, but too many layers can make
-                    connected nodes look too similar.
+                    È utile perché il contesto vicino può migliorare una rappresentazione, ma troppi strati possono rendere
+                    i nodi connessi troppo simili.
                 </p>
             </article>
 
             <article class="card">
-                <h2>What the colors mean</h2>
+                <h2>Cosa indicano i colori</h2>
                 <p>
-                    The initial colors are hand-picked toy features A, B, and C. The after view shows the learned
-                    embeddings after
-                    aggregation, so mixed colors mean a node has absorbed neighboring feature channels.
+                    I colori iniziali sono feature giocattolo A, B e C scelte a mano. La vista dopo mostra gli
+                    embedding dopo
+                    l’aggregazione, quindi i colori misti indicano che un nodo ha assorbito canali di feature vicini.
                 </p>
                 <p>
-                    The embedding plot uses an equilateral A/B/C feature triangle. Pure features sit on the corners,
-                    while mixed embeddings move into the interior.
+                    Il plot degli embedding usa un triangolo equilatero A/B/C. Le feature pure stanno agli angoli,
+                    mentre gli embedding misti si spostano all’interno.
                 </p>
             </article>
         </section>
@@ -381,7 +381,7 @@
                 });
 
                 selectedNodeText.textContent =
-                    `Node ${selectedNode + 1}: ${features[nodes[selectedNode].feature].name}`;
+                    `Nodo ${selectedNode + 1}: ${features[nodes[selectedNode].feature].name}`;
             };
 
             const drawGraph = (canvas, embeddings, mode) => {
@@ -532,7 +532,7 @@
                         ctx.fillStyle = text;
                         ctx.font = '700 10px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif';
                         ctx.textAlign = 'left';
-                        ctx.fillText(`node ${index + 1}`, end.x + 8, end.y - 8);
+                        ctx.fillText(`nodo ${index + 1}`, end.x + 8, end.y - 8);
                     }
                 });
 
@@ -547,10 +547,10 @@
                 const smoothed = edgeVariation(after);
                 const reduction = before > 0 ? Math.max(0, 1 - smoothed / before) : 0;
 
-                beforeMetric.textContent = `edge variation ${before.toFixed(2)}`;
-                afterMetric.textContent = `edge variation ${smoothed.toFixed(2)}`;
-                plotMetric.textContent = `${layers} layer${layers === 1 ? '' : 's'}`;
-                status.textContent = `Edge variation ${before.toFixed(2)} → ${smoothed.toFixed(2)} (${Math.round(reduction * 100)}% smoother)`;
+                beforeMetric.textContent = `variazione archi ${before.toFixed(2)}`;
+                afterMetric.textContent = `variazione archi ${smoothed.toFixed(2)}`;
+                plotMetric.textContent = `${layers} strat${layers === 1 ? 'o' : 'i'}`;
+                status.textContent = `Variazione archi ${before.toFixed(2)} → ${smoothed.toFixed(2)} (${Math.round(reduction * 100)}% più smooth)`;
 
                 drawGraph(beforeCanvas, initial, 'before');
                 drawGraph(afterCanvas, after, 'after');

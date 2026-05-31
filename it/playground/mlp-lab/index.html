@@ -1,12 +1,12 @@
 <!doctype html>
-<html lang="en" data-palette="triad">
+<html lang="it" data-palette="triad">
 
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
     <title>MLP Decision Boundary Lab · Playground · Lorenzo Marinelli</title>
     <meta name="description"
-        content="Interactive MLP playground by Lorenzo Marinelli - tune layers, neurons, activation functions, learning rate, and datasets while watching a decision boundary train." />
+        content="Playground MLP interattivo di Lorenzo Marinelli: regola strati, neuroni, funzioni di attivazione, learning rate e dataset osservando il confine decisionale durante il training." />
     <link rel="stylesheet" href="/assets/style.css" />
 
     <link rel="alternate" hreflang="en" href="/playground/mlp-lab/" />
@@ -20,50 +20,50 @@
 <body class="mlp-page">
     <div class="wrap mlp-wrap">
         <nav class="nav">
-            <a class="nav__brand" href="/" aria-label="Home">LM</a>
+            <a class="nav__brand" href="/it/" aria-label="Home">LM</a>
 
-            <div class="lang" aria-label="Language">
-                <a class="lang__btn is-active" href="/playground/mlp-lab/" aria-label="English" title="English">
+            <div class="lang" aria-label="Lingua">
+                <a class="lang__btn" href="/playground/mlp-lab/" aria-label="English" title="English">
                     <span class="flag" aria-hidden="true">🇬🇧</span>
                     <span class="sr-only" lang="en">English</span>
                 </a>
-                <a class="lang__btn" href="/it/playground/mlp-lab/" aria-label="Italiano" title="Italiano">
+                <a class="lang__btn is-active" href="/it/playground/mlp-lab/" aria-label="Italiano" title="Italiano">
                     <span class="flag" aria-hidden="true">🇮🇹</span>
                     <span class="sr-only" lang="it">Italiano</span>
                 </a>
             </div>
 
-            <button class="theme-toggle" type="button" data-theme-toggle aria-label="Toggle theme" title="Toggle theme">
+            <button class="theme-toggle" type="button" data-theme-toggle aria-label="Cambia tema" title="Cambia tema">
                 <span data-theme-icon aria-hidden="true">◐</span>
             </button>
 
             <div class="nav__links">
-                <a href="/">Home</a>
-                <a href="/about/">About</a>
-                <a href="/projects/">Projects</a>
-                <a href="/notes/">Notes</a>
-                <a href="/contact/">Contact</a>
-                <a aria-current="page" href="/playground/">Playground</a>
+                <a href="/it/">Home</a>
+                <a href="/it/about/">Info</a>
+                <a href="/it/projects/">Progetti</a>
+                <a href="/it/notes/">Appunti</a>
+                <a href="/it/contact/">Contatti</a>
+                <a aria-current="page" href="/it/playground/">Playground</a>
             </div>
         </nav>
 
         <header class="hero mlp-hero">
-            <p class="kicker">Playground experiment</p>
+            <p class="kicker">Esperimento del playground</p>
             <h1>MLP Decision Boundary Lab</h1>
             <p class="lead hero-line">
-                Build a tiny neural net, switch activation functions, and watch its decision surface bend around a 2D
-                dataset as training updates the weights.
+                Costruisci una piccola rete neurale, cambia funzione di attivazione e osserva la superficie decisionale piegarsi attorno a un
+                dataset 2D mentre il training aggiorna i pesi.
             </p>
 
             <div class="hero__cta">
-                <a class="btn btn--ghost" href="/playground/">Back to Playground</a>
+                <a class="btn btn--ghost" href="/it/playground/">Torna al Playground</a>
             </div>
         </header>
 
-        <main class="mlp-window" aria-label="MLP decision boundary visualization canvas">
+        <main class="mlp-window" aria-label="Canvas di visualizzazione del confine decisionale MLP">
             <div class="mlp-hint">
-                <span>Decision surface behind the points</span>
-                <small>blue/red regions show the current class probability</small>
+                <span>Superficie decisionale dietro ai punti</span>
+                <small>le regioni blu/rosse mostrano la probabilità di classe corrente</small>
             </div>
         </main>
 
@@ -77,27 +77,27 @@
     <aside class="mlp-hud" data-mlp-hud>
         <div class="mlp-hud__top">
             <div>
-                <h2>MLP controls</h2>
-                <p data-mlp-status>Choose a dataset, then train the network.</p>
+                <h2>Controlli MLP</h2>
+                <p data-mlp-status>Scegli un dataset, poi addestra la rete.</p>
             </div>
             <div class="mlp-actions">
-                <button class="btn" type="button" data-mlp-train>Train</button>
+                <button class="btn" type="button" data-mlp-train>Addestra</button>
                 <button class="mini-btn" type="button" data-mlp-step>Step</button>
                 <button class="mini-btn" type="button" data-mlp-reset>Reset</button>
             </div>
         </div>
 
-        <div class="mlp-metrics" aria-label="Training metrics">
+        <div class="mlp-metrics" aria-label="Metriche training">
             <div>
                 <span>Loss</span>
                 <strong data-mlp-loss>--</strong>
             </div>
             <div>
-                <span>Accuracy</span>
+                <span>Accuratezza</span>
                 <strong data-mlp-accuracy>--</strong>
             </div>
             <div>
-                <span>Updates</span>
+                <span>Aggiornamenti</span>
                 <strong data-mlp-updates>0</strong>
             </div>
         </div>
@@ -106,14 +106,14 @@
             <strong>Dataset</strong>
             <div class="mlp-chip-grid" data-mlp-datasets>
                 <button class="mini-btn is-active" type="button" data-dataset="xor">XOR</button>
-                <button class="mini-btn" type="button" data-dataset="circles">Circles</button>
-                <button class="mini-btn" type="button" data-dataset="moons">Moons</button>
-                <button class="mini-btn" type="button" data-dataset="blobs">Blobs</button>
+                <button class="mini-btn" type="button" data-dataset="circles">Cerchi</button>
+                <button class="mini-btn" type="button" data-dataset="moons">Lune</button>
+                <button class="mini-btn" type="button" data-dataset="blobs">Blob</button>
             </div>
         </div>
 
         <div class="mlp-panel">
-            <strong>Activation</strong>
+            <strong>Attivazione</strong>
             <div class="mlp-chip-grid" data-mlp-activations>
                 <button class="mini-btn is-active" type="button" data-activation="tanh">Tanh</button>
                 <button class="mini-btn" type="button" data-activation="relu">ReLU</button>
@@ -124,12 +124,12 @@
 
         <div class="mlp-controls">
             <label class="range-control">
-                <span>Hidden layers <strong data-mlp-layers-value>2</strong></span>
+                <span>Strati nascosti <strong data-mlp-layers-value>2</strong></span>
                 <input type="range" min="1" max="3" value="2" step="1" data-mlp-layers>
             </label>
 
             <label class="range-control">
-                <span>Neurons/layer <strong data-mlp-neurons-value>6</strong></span>
+                <span>Neuroni/strato <strong data-mlp-neurons-value>6</strong></span>
                 <input type="range" min="2" max="12" value="6" step="1" data-mlp-neurons>
             </label>
 
@@ -139,7 +139,7 @@
             </label>
 
             <label class="range-control">
-                <span>Dataset noise <strong data-mlp-noise-value>8%</strong></span>
+                <span>Rumore dataset <strong data-mlp-noise-value>8%</strong></span>
                 <input type="range" min="0" max="35" value="8" step="1" data-mlp-noise>
             </label>
 
@@ -148,11 +148,11 @@
                 <input type="range" min="1" max="35" value="10" step="1" data-mlp-speed>
             </label>
 
-            <button class="mini-btn" type="button" data-mlp-regenerate>New points</button>
+            <button class="mini-btn" type="button" data-mlp-regenerate>Nuovi punti</button>
         </div>
 
         <p class="mlp-note" data-mlp-note>
-            Tanh bends smoothly around the origin, which works well for centered toy data.
+            Tanh curva dolcemente attorno all’origine, cosa utile per dati giocattolo centrati.
         </p>
     </aside>
 
@@ -193,10 +193,10 @@
             const note = document.querySelector('[data-mlp-note]');
 
             const activationNotes = {
-                tanh: 'Tanh bends smoothly around the origin, which works well for centered toy data.',
-                relu: 'ReLU learns sharp piecewise-linear boundaries, but can leave inactive neurons behind.',
-                sigmoid: 'Sigmoid is smooth and bounded, though deep stacks can train more slowly.',
-                linear: 'Linear hidden layers collapse into one linear model, so XOR and moons stay hard.'
+                tanh: 'Tanh curva dolcemente attorno all’origine, cosa utile per dati giocattolo centrati.',
+                relu: 'ReLU apprende confini spezzati e netti, ma può lasciare indietro neuroni inattivi.',
+                sigmoid: 'Sigmoid è liscia e limitata, anche se stack profondi possono addestrarsi più lentamente.',
+                linear: 'Strati nascosti lineari collassano in un unico modello lineare, quindi XOR e lune restano difficili.'
             };
 
             let width = 1;
@@ -561,10 +561,10 @@
 
                 ctx.fillStyle = cssVar('--text', '#f7f7f2');
                 ctx.font = '700 13px system-ui, sans-serif';
-                ctx.fillText(`${datasetType.toUpperCase()} dataset`, field.x + 14, field.y + 24);
+                ctx.fillText(`dataset ${datasetType.toUpperCase()}`, field.x + 14, field.y + 24);
                 ctx.fillStyle = cssVar('--muted', '#a9adb8');
                 ctx.font = '12px system-ui, sans-serif';
-                ctx.fillText('Class probability surface', field.x + 14, field.y + 42);
+                ctx.fillText('Superficie di probabilità di classe', field.x + 14, field.y + 42);
             };
 
             const colorMixBorder = () => cssVar('--border', 'rgba(255,255,255,.18)');
@@ -626,7 +626,7 @@
                 ctx.fillText(`${shape.join(' - ')} MLP`, rect.x + 12, rect.y + 20);
                 ctx.fillStyle = cssVar('--muted', '#a9adb8');
                 ctx.font = '12px system-ui, sans-serif';
-                ctx.fillText(`${activationType} hidden activation`, rect.x + 12, rect.y + rect.h - 14);
+                ctx.fillText(`attivazione nascosta ${activationType}`, rect.x + 12, rect.y + rect.h - 14);
                 ctx.restore();
             };
 
@@ -643,9 +643,9 @@
                 });
             };
 
-            const resetAll = (message = 'Weights reset. Train to reshape the boundary.') => {
+            const resetAll = (message = 'Pesi resettati. Addestra per rimodellare il confine.') => {
                 isTraining = false;
-                trainButton.textContent = 'Train';
+                trainButton.textContent = 'Addestra';
                 syncLabels();
                 initNetwork();
                 status.textContent = message;
@@ -657,7 +657,7 @@
                     datasetType = button.dataset.dataset;
                     setActiveButton(datasetButtons, datasetType, 'dataset');
                     generateData();
-                    resetAll('Dataset changed. The points are ready for training.');
+                    resetAll('Dataset cambiato. I punti sono pronti per il training.');
                 });
             });
 
@@ -665,13 +665,13 @@
                 button.addEventListener('click', () => {
                     activationType = button.dataset.activation;
                     setActiveButton(activationButtons, activationType, 'activation');
-                    resetAll('Activation changed. Weights were reinitialized.');
+                    resetAll('Attivazione cambiata. I pesi sono stati reinizializzati.');
                 });
             });
 
             [layersInput, neuronsInput].forEach(input => {
                 input.addEventListener('input', () => {
-                    resetAll('Architecture changed. The network is fresh.');
+                    resetAll('Architettura cambiata. La rete è nuova.');
                 });
             });
 
@@ -684,18 +684,18 @@
             noiseInput.addEventListener('input', () => {
                 syncLabels();
                 generateData();
-                resetAll('Noise changed. Dataset regenerated.');
+                resetAll('Rumore cambiato. Dataset rigenerato.');
             });
 
             trainButton.addEventListener('click', () => {
                 isTraining = !isTraining;
-                trainButton.textContent = isTraining ? 'Pause' : 'Train';
-                status.textContent = isTraining ? 'Training continuously.' : 'Paused. Step or resume training.';
+                trainButton.textContent = isTraining ? 'Pausa' : 'Addestra';
+                status.textContent = isTraining ? 'Training continuo.' : 'In pausa. Esegui uno step o riprendi il training.';
             });
 
             stepButton.addEventListener('click', () => {
                 trainSteps(settings().speed * 8);
-                status.textContent = 'One manual training burst ran.';
+                status.textContent = 'Eseguito un burst manuale di training.';
                 draw();
             });
 
@@ -705,7 +705,7 @@
 
             regenerateButton.addEventListener('click', () => {
                 generateData();
-                resetAll('New points generated. The model was reset.');
+                resetAll('Nuovi punti generati. Il modello è stato resettato.');
             });
 
             window.addEventListener('resize', () => {
@@ -719,7 +719,7 @@
             const loop = () => {
                 if (isTraining) {
                     trainSteps(settings().speed);
-                    status.textContent = `Training: loss ${latestStats.loss.toFixed(3)}, accuracy ${Math.round(latestStats.accuracy * 100)}%.`;
+                    status.textContent = `Training: loss ${latestStats.loss.toFixed(3)}, accuratezza ${Math.round(latestStats.accuracy * 100)}%.`;
                 }
                 draw();
                 requestAnimationFrame(loop);

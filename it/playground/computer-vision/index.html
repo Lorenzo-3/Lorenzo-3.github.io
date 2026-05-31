@@ -1,12 +1,12 @@
 <!doctype html>
-<html lang="en" data-palette="triad">
+<html lang="it" data-palette="triad">
 
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
     <title>Computer Vision Mini Lab · Playground · Lorenzo Marinelli</title>
     <meta name="description"
-        content="Interactive computer vision toy by Lorenzo Marinelli — small visual toys around detection, saliency, reconstruction error, masks, and image intuition." />
+        content="Toy interattivo di computer vision di Lorenzo Marinelli: piccoli esperimenti visivi su detection, saliency, errore di ricostruzione, maschere e intuizione sulle immagini." />
     <link rel="stylesheet" href="/assets/style.css" />
 
     <link rel="alternate" hreflang="en" href="/playground/computer-vision/" />
@@ -20,118 +20,118 @@
 <body class="vision-page">
     <div class="wrap">
         <nav class="nav">
-            <a class="nav__brand" href="/" aria-label="Home">LM</a>
+            <a class="nav__brand" href="/it/" aria-label="Home">LM</a>
 
-            <div class="lang" aria-label="Language">
-                <a class="lang__btn is-active" href="/playground/computer-vision/" aria-label="English"
+            <div class="lang" aria-label="Lingua">
+                <a class="lang__btn" href="/playground/computer-vision/" aria-label="English"
                     title="English">
                     <span class="flag" aria-hidden="true">🇬🇧</span>
                     <span class="sr-only" lang="en">English</span>
                 </a>
-                <a class="lang__btn" href="/it/playground/computer-vision/" aria-label="Italiano" title="Italiano">
+                <a class="lang__btn is-active" href="/it/playground/computer-vision/" aria-label="Italiano" title="Italiano">
                     <span class="flag" aria-hidden="true">🇮🇹</span>
                     <span class="sr-only" lang="it">Italiano</span>
                 </a>
             </div>
 
-            <button class="theme-toggle" type="button" data-theme-toggle aria-label="Toggle theme" title="Toggle theme">
+            <button class="theme-toggle" type="button" data-theme-toggle aria-label="Cambia tema" title="Cambia tema">
                 <span data-theme-icon aria-hidden="true">◐</span>
             </button>
 
             <div class="nav__links">
-                <a href="/">Home</a>
-                <a href="/about/">About</a>
-                <a href="/projects/">Projects</a>
-                <a href="/notes/">Notes</a>
-                <a href="/contact/">Contact</a>
-                <a aria-current="page" href="/playground/">Playground</a>
+                <a href="/it/">Home</a>
+                <a href="/it/about/">Info</a>
+                <a href="/it/projects/">Progetti</a>
+                <a href="/it/notes/">Appunti</a>
+                <a href="/it/contact/">Contatti</a>
+                <a aria-current="page" href="/it/playground/">Playground</a>
             </div>
         </nav>
 
         <header class="hero">
-            <p class="kicker">Playground experiment</p>
+            <p class="kicker">Esperimento del playground</p>
             <h1>Computer Vision Mini Lab</h1>
             <p class="lead hero-line">
-                Small visual toys around detection, saliency, reconstruction error, masks, and image intuition.
+                Piccoli esperimenti visivi su detection, saliency, errore di ricostruzione, maschere e intuizione sulle immagini.
             </p>
 
             <div class="hero__cta">
-                <a class="btn btn--ghost" href="/playground/">← Back to Playground</a>
+                <a class="btn btn--ghost" href="/it/playground/">← Torna al Playground</a>
             </div>
         </header>
 
         <main class="card vision-app" data-vision-app>
             <div class="vision-app__top">
                 <div>
-                    <p class="project-kicker">Synthetic image probe</p>
-                    <h2>One scene, five model views</h2>
+                    <p class="project-kicker">Sonda su immagine sintetica</p>
+                    <h2>Una scena, cinque viste del modello</h2>
                     <p>
-                        A neutral generated image is reused across five views, so the model overlay changes while the
-                        underlying scene stays visually stable.
+                        Una immagine generata neutra viene riusata in cinque viste, così l’overlay del modello cambia mentre
+                        la scena sottostante resta visivamente stabile.
                     </p>
                 </div>
 
                 <div class="vision-status" data-vision-status>
-                    Raw image
+                    Immagine raw
                 </div>
             </div>
 
-            <div class="vision-modebar" aria-label="Vision view mode">
+            <div class="vision-modebar" aria-label="Modalità vista vision">
                 <button class="mini-btn is-active" type="button" data-vision-mode="raw">Raw</button>
                 <button class="mini-btn" type="button" data-vision-mode="detection">Detection</button>
                 <button class="mini-btn" type="button" data-vision-mode="saliency">Saliency</button>
-                <button class="mini-btn" type="button" data-vision-mode="error">Error</button>
-                <button class="mini-btn" type="button" data-vision-mode="mask">Mask</button>
+                <button class="mini-btn" type="button" data-vision-mode="error">Errore</button>
+                <button class="mini-btn" type="button" data-vision-mode="mask">Maschera</button>
             </div>
 
             <div class="vision-layout">
-                <section class="vision-stage" aria-label="Interactive computer vision canvas">
+                <section class="vision-stage" aria-label="Canvas interattivo di computer vision">
                     <canvas class="vision-canvas" data-vision-canvas>
-                        Interactive computer vision canvas.
+                        Canvas interattivo di computer vision.
                     </canvas>
                 </section>
 
                 <aside class="vision-panel">
-                    <p class="project-kicker">Probe readout</p>
-                    <h2 data-vision-title>Scene overview</h2>
+                    <p class="project-kicker">Lettura probe</p>
+                    <h2 data-vision-title>Panoramica scena</h2>
 
                     <div class="vision-detail-list">
                         <div>
-                            <span>Detector focus</span>
-                            <strong data-vision-detections>0 regions</strong>
+                            <span>Focus detector</span>
+                            <strong data-vision-detections>0 regioni</strong>
                         </div>
                         <div>
-                            <span>Mask coverage</span>
+                            <span>Copertura maschera</span>
                             <strong data-vision-mask>0%</strong>
                         </div>
                         <div>
-                            <span>Reconstruction error</span>
+                            <span>Errore ricostruzione</span>
                             <strong data-vision-error>Low</strong>
                         </div>
                         <div>
-                            <span>Selected pixel</span>
-                            <strong data-vision-probe>Background</strong>
+                            <span>Pixel selezionato</span>
+                            <strong data-vision-probe>Sfondo</strong>
                         </div>
                     </div>
 
                     <label class="range-control">
-                        <span>Threshold <strong data-vision-threshold-value>0.58</strong></span>
+                        <span>Soglia <strong data-vision-threshold-value>0.58</strong></span>
                         <input type="range" min="0.25" max="0.90" value="0.58" step="0.01" data-vision-threshold>
                     </label>
 
                     <label class="range-control">
-                        <span>Image noise <strong data-vision-noise-value>0.16</strong></span>
+                        <span>Rumore immagine <strong data-vision-noise-value>0.16</strong></span>
                         <input type="range" min="0.00" max="0.45" value="0.16" step="0.01" data-vision-noise>
                     </label>
 
                     <div class="vision-buttons">
-                        <button class="mini-btn" type="button" data-vision-new>New scene</button>
-                        <button class="mini-btn" type="button" data-vision-reveal>Reveal target</button>
+                        <button class="mini-btn" type="button" data-vision-new>Nuova scena</button>
+                        <button class="mini-btn" type="button" data-vision-reveal>Rivela target</button>
                     </div>
 
-                    <div class="vision-legend" aria-label="Vision overlay legend">
-                        <span><i class="vision-swatch vision-swatch--accent"></i> model overlay</span>
-                        <span><i class="vision-swatch vision-swatch--hot"></i> error / reveal</span>
+                    <div class="vision-legend" aria-label="Legenda overlay vision">
+                        <span><i class="vision-swatch vision-swatch--accent"></i> overlay modello</span>
+                        <span><i class="vision-swatch vision-swatch--hot"></i> errore / reveal</span>
                         <span><i class="vision-swatch vision-swatch--warm"></i> probe</span>
                     </div>
                 </aside>
@@ -140,18 +140,18 @@
 
         <section class="grid">
             <article class="card">
-                <h2>What to notice</h2>
+                <h2>Cosa osservare</h2>
                 <p>
-                    Detection compresses an image into boxes and confidence scores. Saliency spreads attention over
-                    pixels. Reconstruction error shows where a simple prior fails to explain what is visible.
+                    La detection comprime un’immagine in box e punteggi di confidenza. La saliency distribuisce attenzione sui
+                    pixel. L’errore di ricostruzione mostra dove un prior semplice non riesce a spiegare ciò che è visibile.
                 </p>
             </article>
 
             <article class="card">
-                <h2>From pixels to pipeline</h2>
+                <h2>Dai pixel alla pipeline</h2>
                 <p>
-                    The scene is synthetic, but the habits are real: compare views, move thresholds, inspect false
-                    certainty, and keep the model output tied to the image that produced it.
+                    La scena è sintetica, ma le abitudini sono reali: confrontare viste, spostare soglie, ispezionare false
+                    certezze e tenere l’output del modello legato all’immagine che lo ha prodotto.
                 </p>
             </article>
         </section>
@@ -235,7 +235,7 @@
                 const width = rect.width || 760;
                 const height = rect.height || 500;
                 const objectCount = width < 560 ? 6 : 8;
-                const names = ['ridge', 'grain', 'edge', 'patch', 'mark', 'cell', 'speck', 'blob'];
+                const names = ['cresta', 'grana', 'bordo', 'patch', 'segno', 'cella', 'speck', 'blob'];
 
                 scene = {
                     width,
@@ -280,7 +280,7 @@
                 }
 
                 const anomaly = scene.objects[Math.floor(Math.random() * scene.objects.length)];
-                anomaly.name = 'unusual seam';
+                anomaly.name = 'giunzione insolita';
                 anomaly.score = random(0.82, 0.97);
                 anomaly.error = random(0.74, 0.96);
                 anomaly.saliency = random(0.76, 0.98);
@@ -324,25 +324,25 @@
             };
 
             const modeLabel = () => ({
-                raw: 'Raw image',
-                detection: 'Detected regions',
-                saliency: 'Saliency map',
-                error: 'Reconstruction error',
-                mask: 'Segmentation mask'
+                raw: 'Immagine raw',
+                detection: 'Regioni rilevate',
+                saliency: 'Mappa saliency',
+                error: 'Errore di ricostruzione',
+                mask: 'Maschera di segmentazione'
             })[state.mode];
 
             const scoreLabel = (value) => {
-                if (value >= 0.78) return 'High';
-                if (value >= 0.48) return 'Medium';
-                return 'Low';
+                if (value >= 0.78) return 'Alto';
+                if (value >= 0.48) return 'Medio';
+                return 'Basso';
             };
 
             const selectedLabel = () => {
-                if (!state.selected) return 'Background';
-                if (!state.selected.object) return 'Background';
+                if (!state.selected) return 'Sfondo';
+                if (!state.selected.object) return 'Sfondo';
                 return state.reveal || !state.selected.object.anomaly
                     ? `${state.selected.object.name} · ${state.selected.object.score.toFixed(2)}`
-                    : `candidate · ${state.selected.object.score.toFixed(2)}`;
+                    : `candidato · ${state.selected.object.score.toFixed(2)}`;
             };
 
             const syncPanel = () => {
@@ -351,9 +351,9 @@
                 const visible = highConfidenceObjects().length;
                 const anomaly = scene.objects.find(item => item.anomaly);
 
-                status.textContent = `${modeLabel()} · ${visible} regions`;
-                title.textContent = state.selected?.object ? 'Selected region' : 'Scene overview';
-                detections.textContent = `${visible} regions`;
+                status.textContent = `${modeLabel()} · ${visible} regioni`;
+                title.textContent = state.selected?.object ? 'Regione selezionata' : 'Panoramica scena';
+                detections.textContent = `${visible} regioni`;
                 mask.textContent = `${maskCoverage()}%`;
                 error.textContent = scoreLabel(anomaly.error);
                 probe.textContent = selectedLabel();
@@ -366,7 +366,7 @@
                     button.setAttribute('aria-pressed', String(active));
                 });
 
-                revealButton.textContent = state.reveal ? 'Hide target' : 'Reveal target';
+                revealButton.textContent = state.reveal ? 'Nascondi target' : 'Rivela target';
             };
 
             const drawEllipse = (item, fill, stroke, lineWidth = 1.4, alpha = 1) => {
@@ -438,7 +438,7 @@
                     const y = item.y - item.ry - 8;
                     const w = item.rx * 2 + 16;
                     const h = item.ry * 2 + 16;
-                    const label = state.reveal && item.anomaly ? 'target' : 'region';
+                    const label = state.reveal && item.anomaly ? 'target' : 'regione';
                     const labelText = `${label} ${item.score.toFixed(2)}`;
 
                     drawEllipse(item, alphaColor(color, 0.11), color, state.reveal && item.anomaly ? 2.6 : 1.7, 1);
