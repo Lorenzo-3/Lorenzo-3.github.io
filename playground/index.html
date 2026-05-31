@@ -64,7 +64,7 @@
 
     <section class="card playground-minimal-note">
       <p class="project-kicker">Live experiments</p>
-      <h2>Thirteen sketches, one shared graph</h2>
+      <h2>Fourteen sketches, one shared graph</h2>
       <ul class="notes-list playground-live-list">
         <li>
           <strong><a href="/playground/graph-diffusion/">Graph Signal Diffusion</a></strong>
@@ -95,6 +95,10 @@
           <p>Customize a tiny neural net, switch activations, and watch its learned boundary change while it trains.</p>
         </li>
         <li>
+          <strong><a href="/playground/diffusion-models/">Diffusion Model Denoising Toy</a></strong>
+          <p>Add noise to a generated image, then step backward through a simplified denoising process.</p>
+        </li>
+        <li>
           <strong><a href="/playground/convolution-kernels/">Convolution Kernel Playground</a></strong>
           <p>Edit custom 3x3 and 5x5 image kernels and compare the original and convolved image.</p>
         </li>
@@ -104,7 +108,7 @@
         </li>
         <li>
           <strong><a href="/playground/file-converter/">File Converter</a></strong>
-          <p>Convert images, export audio as WAV, and extract or record video outputs locally in the browser.</p>
+          <p>Convert images, audio, and video locally with browser-native tools and FFmpeg.wasm.</p>
         </li>
         <li>
           <strong><a href="/playground/anomaly-node/">Anomaly Node Game</a></strong>
@@ -253,6 +257,18 @@
           kind: 'experiment'
         },
         {
+          id: 'diffusion-models',
+          label: 'Denoise',
+          x: 0.64,
+          y: 0.50,
+          kicker: 'Generative denoising',
+          title: 'Diffusion Model Denoising Toy',
+          text: 'Step through a simplified generative diffusion process: add noise to a generated image, then watch a deterministic reverse estimate clean it back up. This is separate from graph signal diffusion.',
+          href: '/playground/diffusion-models/',
+          linkLabel: 'Open experiment',
+          kind: 'experiment'
+        },
+        {
           id: 'convolution-kernels',
           label: 'Kernels',
           x: 0.44,
@@ -283,7 +299,7 @@
           y: 0.24,
           kicker: 'Local media utility',
           title: 'File Converter',
-          text: 'Convert images, export decoded audio to WAV, extract frames, and record supported video to WebM without uploading files or making an account.',
+          text: 'Convert images, audio, and video locally with browser-native tools and FFmpeg.wasm without uploading files or making an account.',
           href: '/playground/file-converter/',
           linkLabel: 'Open utility',
           kind: 'experiment'
@@ -366,6 +382,7 @@
         ['graph-diffusion', 'bioinformatics'],
         ['graph-diffusion', 'anomaly-detection'],
         ['graph-diffusion', 'circle-fifths'],
+        ['graph-diffusion', 'diffusion-models'],
 
         ['gnn-toy', 'bioinformatics'],
         ['gnn-toy', 'anomaly-detection'],
@@ -382,12 +399,15 @@
         ['signal-filters', 'convolution-kernels'],
         ['signal-filters', 'file-converter'],
         ['mlp-lab', 'computer-vision'],
+        ['mlp-lab', 'diffusion-models'],
         ['mlp-lab', 'anomaly-detection'],
         ['convolution-kernels', 'image-color-editor'],
         ['image-color-editor', 'file-converter'],
         ['image-color-editor', 'computer-vision'],
+        ['image-color-editor', 'diffusion-models'],
         ['file-converter', 'computer-vision'],
         ['convolution-kernels', 'computer-vision'],
+        ['computer-vision', 'diffusion-models'],
         ['computer-vision', 'anomaly-detection']
       ];
 

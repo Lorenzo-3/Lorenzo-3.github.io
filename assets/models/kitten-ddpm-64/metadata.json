@@ -1,0 +1,40 @@
+{
+  "name": "Tiny Kitten DDPM 64",
+  "status": "not_trained_yet",
+  "description": "Metadata target for the tiny kitten DDPM notebook. Run notebooks/tiny_kitten_ddpm_64.ipynb to export kitten_denoiser.onnx and overwrite this file with trained-model metadata.",
+  "modelPath": "/assets/models/kitten-ddpm-64/kitten_denoiser.onnx",
+  "imageSize": 64,
+  "channels": 3,
+  "normalization": {
+    "inputRange": [-1, 1],
+    "outputRange": [-1, 1],
+    "canvasRange": [0, 255]
+  },
+  "model": {
+    "architecture": "TinyUNet",
+    "predictionType": "epsilon",
+    "baseChannels": 32,
+    "channelMultipliers": [1, 2, 2],
+    "timeEmbeddingDim": 128,
+    "inputs": {
+      "sample": [1, 3, 64, 64],
+      "timestep": [1]
+    },
+    "outputs": {
+      "epsilon": [1, 3, 64, 64]
+    }
+  },
+  "trainingSchedule": {
+    "type": "linear",
+    "timesteps": 1000,
+    "betaStart": 0.0001,
+    "betaEnd": 0.02
+  },
+  "browserSampling": {
+    "method": "ddim",
+    "defaultSteps": 40,
+    "defaultTemperature": 1.0,
+    "ddimTimesteps": [0, 26, 51, 77, 102, 128, 154, 179, 205, 231, 256, 282, 307, 333, 359, 384, 410, 435, 461, 487, 512, 538, 564, 589, 615, 640, 666, 692, 717, 743, 768, 794, 820, 845, 871, 897, 922, 948, 973, 999],
+    "alphaBars": [0.9999, 0.99035288, 0.96886911, 0.93458126, 0.89134687, 0.8373472, 0.77606957, 0.71225011, 0.64286057, 0.57243776, 0.505518, 0.43834852, 0.37734367, 0.31862485, 0.26542044, 0.21982924, 0.17831258, 0.14395069, 0.11369471, 0.08858573, 0.0687996, 0.05219411, 0.03906114, 0.0291831, 0.02126419, 0.01548353, 0.01098423, 0.00768673, 0.00538374, 0.00366792, 0.00250362, 0.00166057, 0.00108643, 0.00071322, 0.00045426, 0.00028539, 0.00018018, 0.00011019, 0.00006779, 0.00004036]
+  }
+}

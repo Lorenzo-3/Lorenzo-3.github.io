@@ -50,7 +50,7 @@
 
         <header class="hero">
             <p class="kicker">Utility del playground</p>
-            <h1>File Converter, VERY-WIP</h1>
+            <h1>File Converter, WIP</h1>
             <p class="lead hero-line">
                 Converti immagini, esporta audio in WAV, MP3 o FLAC, e transcodifica video in MP4, WebM, MOV, MKV o
                 AVI. I file restano locali nel browser.
@@ -65,10 +65,11 @@
             <div class="converter-app__top">
                 <div>
                     <p class="project-kicker">Convertitore media locale</p>
-                    <h2>Niente account, niente upload, niente server</h2>
+                    <h2>Nessun account, tutto in locale</h2>
                     <p>
                         Trascina un’immagine, un file audio o un video. Le API native del browser gestiscono i percorsi
                         rapidi; FFmpeg.wasm viene caricato su richiesta per conversioni audio e video più pesanti.
+                        Attenzione: la conversione audio e video viene eseguita localmente sul dispositivo e può causare rallentamenti o surriscaldamento durante operazioni intensive.
                     </p>
                 </div>
 
@@ -127,7 +128,7 @@
                         <div class="converter-preview__top">
                             <div>
                                 <p class="project-kicker">Anteprima video</p>
-                                <h2>Estrazione frame e registrazione WebM</h2>
+                                <h2>Estrazione frame e conversione FFmpeg</h2>
                             </div>
                         </div>
                         <video class="converter-video" data-video-player controls playsinline></video>
@@ -285,11 +286,8 @@
                         <div class="converter-action-row">
                             <button class="btn" type="button" data-convert-video>Converti video</button>
                             <button class="btn" type="button" data-extract-frame>Estrai frame corrente</button>
-                            <button class="mini-btn" type="button" data-record-webm>Registra WebM</button>
-                            <button class="mini-btn" type="button" data-stop-recording hidden>Stop</button>
                         </div>
 
-                        <progress class="converter-progress" value="0" max="100" data-video-progress hidden></progress>
                     </div>
 
                     <div class="converter-action-row converter-ffmpeg-row" data-ffmpeg-row hidden>
@@ -312,8 +310,8 @@
             <article class="card">
                 <h2>Perché esiste</h2>
                 <p>
-                    I convertitori utili finiscono spesso dietro account, upload poco chiari o limiti minuscoli. Questo
-                    serve per conversioni locali rapide dove privacy e velocità contano più della transcodifica completa.
+                    I convertitori utili online spesso richiedono un account o sono su siti dalla dubbia privacy e sicurezza,con tempi di upload o limiti minuscoli. Questa pagina
+                    serve per conversioni locali rapide con privacy e velocità. se non ti fidi sulla parola puoi sempre controllare la repo :3 (o farla controllare a un llm...).
                 </p>
             </article>
 
@@ -321,8 +319,7 @@
                 <h2>Cosa può fare</h2>
                 <p>
                     Le immagini passano da canvas verso PNG, JPEG o WebP quando il browser decodifica l’input. L’audio
-                    può uscire in WAV, MP3 o FLAC, e il video supporta MP4, WebM, MOV, MKV, AVI, export di frame e
-                    registrazione WebM del browser quando disponibile.
+                    può uscire in WAV, MP3 o FLAC, e il video supporta MP4, WebM, MOV, MKV, AVI ed export di frame.
                 </p>
             </article>
         </section>
@@ -347,7 +344,7 @@
                 imageReady: 'Immagine pronta. Scegli output PNG, JPEG o WebP e un eventuale ridimensionamento.',
                 audioReady: 'Audio pronto. Output WAV, MP3 e FLAC disponibili.',
                 audioPreviewUnavailable: 'Il browser non riesce a disegnare la forma d’onda, ma la conversione FFmpeg può comunque funzionare.',
-                videoReady: 'Video pronto. Converti con FFmpeg, estrai un frame o registra WebM se supportato.',
+                videoReady: 'Video pronto. Converti con FFmpeg o estrai un frame.',
                 videoPreviewUnavailable: 'Il browser non riesce ad aprire l’anteprima video, ma la conversione FFmpeg può comunque funzionare.',
                 convertingImage: 'Conversione immagine...',
                 convertingAudio: 'Rendering WAV...',
@@ -363,9 +360,8 @@
                 ffmpegRunning: 'In esecuzione',
                 ffmpegError: 'Errore',
                 ffmpegCancelledStatus: 'Annullato',
+                ffmpegCompleted: 'Conversione completata. Output pronto da scaricare.',
                 extractingFrame: 'Estrazione frame corrente...',
-                recordingVideo: 'Registrazione video in tempo reale...',
-                stoppedRecording: 'Registrazione fermata.',
                 outputReady: 'Output pronto.',
                 supportWaiting: 'In attesa',
                 supportSupported: 'Supportato',
@@ -381,8 +377,6 @@
                 pdfUnsupported: 'PDF rilevato, ma la conversione delle pagine richiede un renderer PDF come PDF.js.',
                 rasterBrowserSupport: 'Il supporto BMP e AVIF dipende dal browser corrente.',
                 audioUnavailable: 'AudioContext non è disponibile in questo browser.',
-                videoRecorderUnavailable: 'MediaRecorder o captureStream non è disponibile in questo browser.',
-                videoDurationWarning: 'La registrazione WebM procede in tempo reale per la durata del video corrente.',
                 imageDownscaled: 'Immagine grande ridimensionata per la memoria del browser.',
                 largeFileWarning: 'I file grandi possono essere lenti e pesanti in memoria con FFmpeg.wasm.',
                 downloadPrefix: 'Scarica',
@@ -391,8 +385,6 @@
                 sampleVideoLoaded: 'Video campione caricato.',
                 sampleVideoUnavailable: 'Il video campione richiede supporto canvas captureStream e MediaRecorder.',
                 cleared: 'Svuotato.',
-                webmUnsupported: 'Questo browser non può registrare WebM per questo video.',
-                recordNeedsVideo: 'Carica un video prima di registrare.',
                 frameNeedsVideo: 'Carica un video visualizzabile dal browser prima di estrarre un frame.',
                 videoConvertNeedsFile: 'Carica un video prima di avviare la conversione FFmpeg.',
                 audioConvertNeedsFile: 'Carica un file audio prima di avviare la conversione FFmpeg.',
@@ -446,9 +438,6 @@
             const videoQuality = root.querySelector('[data-video-quality]');
             const convertVideoButton = root.querySelector('[data-convert-video]');
             const extractFrameButton = root.querySelector('[data-extract-frame]');
-            const recordWebmButton = root.querySelector('[data-record-webm]');
-            const stopRecordingButton = root.querySelector('[data-stop-recording]');
-            const videoProgress = root.querySelector('[data-video-progress]');
             const ffmpegRow = root.querySelector('[data-ffmpeg-row]');
             const ffmpegProgress = root.querySelector('[data-ffmpeg-progress]');
             const cancelFFmpegButton = root.querySelector('[data-cancel-ffmpeg]');
@@ -480,8 +469,6 @@
                 sourceHeight: 0,
                 audioBuffer: null,
                 videoReady: false,
-                mediaRecorder: null,
-                recordingChunks: [],
                 warnings: [],
                 ffmpeg: null,
                 ffmpegFetchFile: null,
@@ -490,6 +477,7 @@
                 ffmpegLoadingPromise: null,
                 ffmpegBusy: false,
                 ffmpegCancelled: false,
+                ffmpegIgnoreAbortLog: false,
                 ffmpegRunId: 0,
                 ffmpegWorkerUrl: null,
                 ffmpegStatus: copy.ffmpegNotLoaded,
@@ -505,7 +493,7 @@
             const ffmpegUrls = {
                 wrapper: 'https://cdn.jsdelivr.net/npm/@ffmpeg/ffmpeg@0.12.15/dist/esm/index.js',
                 util: 'https://cdn.jsdelivr.net/npm/@ffmpeg/util@0.12.2/dist/esm/index.js',
-                core: 'https://cdn.jsdelivr.net/npm/@ffmpeg/core@0.12.10/dist/umd',
+                core: 'https://cdn.jsdelivr.net/npm/@ffmpeg/core@0.12.10/dist/esm',
                 worker: 'https://cdn.jsdelivr.net/npm/@ffmpeg/ffmpeg@0.12.15/dist/esm/worker.js'
             };
 
@@ -738,12 +726,11 @@
                 state.videoReady = false;
                 state.warnings = [];
                 state.ffmpegCancelled = false;
+                state.ffmpegIgnoreAbortLog = false;
                 state.ffmpegLastLog = copy.lastLogDefault;
                 state.ffmpegStatus = state.ffmpegLoaded ? copy.ffmpegLoaded : copy.ffmpegNotLoaded;
                 video.removeAttribute('src');
                 video.load();
-                videoProgress.hidden = true;
-                videoProgress.value = 0;
                 ffmpegRow.hidden = true;
                 ffmpegProgress.hidden = true;
                 ffmpegProgress.value = 0;
@@ -884,7 +871,6 @@
                 convertVideoButton.disabled = busy;
                 convertImageButton.disabled = busy;
                 extractFrameButton.disabled = busy;
-                recordWebmButton.disabled = busy;
                 if (!busy) {
                     ffmpegProgress.value = 0;
                     ffmpegProgress.hidden = true;
@@ -911,6 +897,8 @@
                         state.ffmpegToBlobURL = toBlobURL;
                         ffmpeg.on('log', ({ message }) => {
                             if (message) {
+                                const isAbortLog = /^aborted\(\)$/i.test(message.trim());
+                                if (isAbortLog && (state.ffmpegIgnoreAbortLog || state.ffmpegCancelled || !state.ffmpegBusy)) return;
                                 state.ffmpegLastLog = message;
                                 updateDetails();
                             }
@@ -1003,6 +991,7 @@
                 clearOutput();
                 setFFmpegBusy(true);
                 state.ffmpegCancelled = false;
+                state.ffmpegIgnoreAbortLog = false;
                 state.ffmpegLastLog = copy.lastLogDefault;
                 ffmpegProgress.value = 0;
                 setFFmpegStatus(copy.ffmpegRunning);
@@ -1016,7 +1005,11 @@
                     const data = await ffmpeg.readFile(outputName);
                     const blob = new Blob([data.buffer], { type: outputType });
                     setOutput(blob, outputName);
+                    state.ffmpegIgnoreAbortLog = true;
+                    state.ffmpegLastLog = copy.ffmpegCompleted;
+                    setStatus(copy.ffmpegCompleted);
                     setFFmpegStatus(copy.ffmpegLoaded);
+                    updateDetails();
                     if (ffmpeg.deleteFile) {
                         await Promise.allSettled([ffmpeg.deleteFile(inputName), ffmpeg.deleteFile(outputName)]);
                     }
@@ -1041,6 +1034,7 @@
             const cancelFFmpeg = () => {
                 if (!state.ffmpegBusy) return;
                 state.ffmpegCancelled = true;
+                state.ffmpegIgnoreAbortLog = true;
                 if (state.ffmpeg) state.ffmpeg.terminate();
                 state.ffmpeg = null;
                 state.ffmpegLoaded = false;
@@ -1048,6 +1042,7 @@
                 revokeFFmpegWorkerUrl();
                 setFFmpegStatus(copy.ffmpegCancelledStatus);
                 setStatus(copy.ffmpegCancelled);
+                state.ffmpegLastLog = copy.ffmpegCancelled;
                 setFFmpegBusy(false);
             };
 
@@ -1217,101 +1212,6 @@
                 ].find(type => MediaRecorder.isTypeSupported(type)) || '';
             };
 
-            const captureVideoStream = () => {
-                if (video.captureStream) return video.captureStream();
-                if (video.mozCaptureStream) return video.mozCaptureStream();
-                return null;
-            };
-
-            const canRecordVideo = () =>
-                Boolean((video.captureStream || video.mozCaptureStream) && window.MediaRecorder);
-
-            const seekVideoToStart = () => new Promise(resolve => {
-                if (video.currentTime <= 0.01) {
-                    resolve();
-                    return;
-                }
-                video.addEventListener('seeked', resolve, { once: true });
-                video.currentTime = 0;
-            });
-
-            const stopRecording = () => {
-                if (state.mediaRecorder && state.mediaRecorder.state !== 'inactive') {
-                    state.mediaRecorder.stop();
-                }
-            };
-
-            const recordWebm = async () => {
-                if (!state.videoReady) {
-                    setWarning(copy.recordNeedsVideo);
-                    return;
-                }
-                if (!window.MediaRecorder) {
-                    setWarning(copy.videoRecorderUnavailable);
-                    setStatus(copy.videoRecorderUnavailable);
-                    updateDetails(copy.supportUnsupported);
-                    return;
-                }
-                const mimeType = supportedWebmMime();
-                if (!mimeType) {
-                    setWarning(copy.webmUnsupported);
-                    setStatus(copy.webmUnsupported);
-                    updateDetails(copy.supportUnsupported);
-                    return;
-                }
-                if (!Number.isFinite(video.duration) || video.duration <= 0) {
-                    setWarning(copy.webmUnsupported);
-                    return;
-                }
-
-                clearOutput();
-                setWarning(copy.videoDurationWarning);
-                state.recordingChunks = [];
-                videoProgress.hidden = false;
-                videoProgress.value = 0;
-                stopRecordingButton.hidden = false;
-                recordWebmButton.disabled = true;
-
-                video.pause();
-                await seekVideoToStart();
-
-                const stream = captureVideoStream();
-                if (!stream) {
-                    setWarning(copy.videoRecorderUnavailable);
-                    setStatus(copy.videoRecorderUnavailable);
-                    updateDetails(copy.supportUnsupported);
-                    stopRecordingButton.hidden = true;
-                    recordWebmButton.disabled = false;
-                    videoProgress.hidden = true;
-                    return;
-                }
-                state.mediaRecorder = new MediaRecorder(stream, { mimeType });
-                state.mediaRecorder.addEventListener('dataavailable', event => {
-                    if (event.data && event.data.size) state.recordingChunks.push(event.data);
-                });
-                state.mediaRecorder.addEventListener('stop', () => {
-                    const blob = new Blob(state.recordingChunks, { type: 'video/webm' });
-                    setOutput(blob, `${safeBaseName(state.file)}.webm`);
-                    stopRecordingButton.hidden = true;
-                    recordWebmButton.disabled = false;
-                    videoProgress.hidden = true;
-                    setStatus(copy.stoppedRecording);
-                }, { once: true });
-
-                const progressTimer = window.setInterval(() => {
-                    if (!video.duration) return;
-                    videoProgress.value = Math.min(100, video.currentTime / video.duration * 100);
-                    if (!state.mediaRecorder || state.mediaRecorder.state === 'inactive') {
-                        window.clearInterval(progressTimer);
-                    }
-                }, 200);
-
-                video.addEventListener('ended', stopRecording, { once: true });
-                state.mediaRecorder.start(250);
-                setStatus(copy.recordingVideo);
-                await video.play();
-            };
-
             const selectFile = async file => {
                 resetState();
                 const detected = detectKind(file);
@@ -1357,10 +1257,6 @@
                             setWarning(copy.videoPreviewUnavailable);
                         }
                         setStatus(copy.videoReady);
-                        if (state.videoReady) setWarning(copy.videoDurationWarning);
-                        if (state.videoReady && !canRecordVideo()) {
-                            setWarning(copy.videoRecorderUnavailable);
-                        }
                         updateDetails(copy.supportLimited);
                     }
                 } catch (error) {
@@ -1556,8 +1452,6 @@
             convertAudioButton.addEventListener('click', convertAudio);
             convertVideoButton.addEventListener('click', convertVideo);
             extractFrameButton.addEventListener('click', extractFrame);
-            recordWebmButton.addEventListener('click', recordWebm);
-            stopRecordingButton.addEventListener('click', stopRecording);
             cancelFFmpegButton.addEventListener('click', cancelFFmpeg);
 
             video.addEventListener('seeked', () => {

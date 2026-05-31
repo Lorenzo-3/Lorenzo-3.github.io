@@ -1,0 +1,767 @@
+<!doctype html>
+<html lang="en" data-palette="triad">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Diffusion Model Denoising Toy · Playground · Lorenzo Marinelli</title>
+    <meta name="description"
+        content="Interactive diffusion model denoising toy by Lorenzo Marinelli — add noise to a generated image and step through a simplified reverse denoising process." />
+    <link rel="stylesheet" href="/assets/style.css" />
+
+    <link rel="alternate" hreflang="en" href="/playground/diffusion-models/" />
+    <link rel="alternate" hreflang="it" href="/it/playground/diffusion-models/" />
+    <link rel="icon" href="/assets/favicon.ico" sizes="any">
+    <link rel="icon" type="image/png" href="/assets/favicon-32.png" sizes="32x32">
+    <link rel="icon" type="image/png" href="/assets/favicon-16.png" sizes="16x16">
+    <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
+</head>
+
+<body class="diffusion-model-page">
+    <div class="wrap">
+        <nav class="nav">
+            <a class="nav__brand" href="/" aria-label="Home">LM</a>
+
+            <div class="lang" aria-label="Language">
+                <a class="lang__btn is-active" href="/playground/diffusion-models/" aria-label="English"
+                    title="English">
+                    <span class="flag" aria-hidden="true">🇬🇧</span>
+                    <span class="sr-only" lang="en">English</span>
+                </a>
+                <a class="lang__btn" href="/it/playground/diffusion-models/" aria-label="Italiano" title="Italiano">
+                    <span class="flag" aria-hidden="true">🇮🇹</span>
+                    <span class="sr-only" lang="it">Italiano</span>
+                </a>
+            </div>
+
+            <button class="theme-toggle" type="button" data-theme-toggle aria-label="Toggle theme" title="Toggle theme">
+                <span data-theme-icon aria-hidden="true">◐</span>
+            </button>
+
+            <div class="nav__links">
+                <a href="/">Home</a>
+                <a href="/about/">About</a>
+                <a href="/projects/">Projects</a>
+                <a href="/notes/">Notes</a>
+                <a href="/contact/">Contact</a>
+                <a aria-current="page" href="/playground/">Playground</a>
+            </div>
+        </nav>
+
+        <header class="hero">
+            <p class="kicker">Playground experiment</p>
+            <h1>Diffusion Model Denoising Toy</h1>
+            <p class="lead hero-line">
+                Add noise to a generated image, then step backward through a simplified denoising process.
+                It is a canvas intuition for generative diffusion models, not a trained model.
+            </p>
+
+            <div class="hero__cta">
+                <a class="btn btn--ghost" href="/playground/">← Back to Playground</a>
+                <a class="btn" href="/playground/computer-vision/">Open Computer Vision</a>
+            </div>
+        </header>
+
+        <main class="card denoise-app" data-diffusion-model>
+            <div class="denoise-app__top">
+                <div>
+                    <p class="project-kicker">Noise schedule</p>
+                    <h2>Forward noise, reverse estimate</h2>
+                    <p>
+                        The timestep slider controls how much noise has been added. Play the reverse process to watch
+                        the noisy image move back toward a structured sample.
+                    </p>
+                </div>
+
+                <div class="denoise-status" data-denoise-status>
+                    Ready
+                </div>
+            </div>
+
+            <div class="denoise-layout">
+                <section class="denoise-stage" aria-label="Diffusion model canvas panels">
+                    <article class="denoise-canvas-card">
+                        <p class="project-kicker">Clean target</p>
+                        <canvas class="denoise-canvas" data-denoise-clean aria-label="Clean generated sample"></canvas>
+                    </article>
+
+                    <article class="denoise-canvas-card">
+                        <p class="project-kicker">Noisy timestep</p>
+                        <canvas class="denoise-canvas" data-denoise-noisy aria-label="Noisy diffusion timestep"></canvas>
+                    </article>
+
+                    <article class="denoise-canvas-card">
+                        <p class="project-kicker">Denoised estimate</p>
+                        <canvas class="denoise-canvas" data-denoise-estimate
+                            aria-label="Simplified denoised estimate"></canvas>
+                    </article>
+                </section>
+
+                <aside class="denoise-panel">
+                    <p class="project-kicker">Schedule readout</p>
+                    <h2 data-denoise-title>Step 18 of 30</h2>
+
+                    <div class="denoise-detail-list">
+                        <div>
+                            <span>Noise amount</span>
+                            <strong data-denoise-noise-readout>51%</strong>
+                        </div>
+                        <div>
+                            <span>Reverse estimate</span>
+                            <strong data-denoise-estimate-readout>41%</strong>
+                        </div>
+                        <div>
+                            <span>Seed</span>
+                            <strong data-denoise-seed>#431</strong>
+                        </div>
+                    </div>
+
+                    <label class="range-control">
+                        <span>Timestep <strong data-denoise-step-value>18/30</strong></span>
+                        <input type="range" min="0" max="30" value="18" step="1" data-denoise-step>
+                    </label>
+
+                    <label class="range-control">
+                        <span>Noise strength <strong data-denoise-noise-value>0.85</strong></span>
+                        <input type="range" min="0.10" max="1.20" value="0.85" step="0.01" data-denoise-noise>
+                    </label>
+
+                    <label class="range-control">
+                        <span>Denoise strength <strong data-denoise-strength-value>0.72</strong></span>
+                        <input type="range" min="0.00" max="1.00" value="0.72" step="0.01" data-denoise-strength>
+                    </label>
+
+                    <div class="denoise-buttons">
+                        <button class="mini-btn" type="button" data-denoise-play>Play reverse</button>
+                        <button class="mini-btn" type="button" data-denoise-new>New sample</button>
+                        <button class="mini-btn" type="button" data-denoise-reset>Reset</button>
+                    </div>
+                </aside>
+            </div>
+        </main>
+
+        <section class="card kitten-sampler" data-kitten-sampler>
+            <div class="kitten-sampler__top">
+                <div>
+                    <p class="project-kicker">Model-backed sampler</p>
+                    <h2>Kitten sampler</h2>
+                    <p>
+                        After the notebook exports the tiny ONNX denoiser, this panel samples from pure noise in the
+                        browser with DDIM-style steps.
+                    </p>
+                </div>
+
+                <div class="denoise-status" data-kitten-status>
+                    Waiting for trained model
+                </div>
+            </div>
+
+            <div class="kitten-sampler__layout">
+                <section class="kitten-sampler__stage" aria-label="Kitten diffusion sampler canvases">
+                    <article class="denoise-canvas-card">
+                        <p class="project-kicker">Current noise</p>
+                        <canvas class="kitten-canvas" data-kitten-current aria-label="Current sampling state"></canvas>
+                    </article>
+
+                    <article class="denoise-canvas-card">
+                        <p class="project-kicker">Predicted clean</p>
+                        <canvas class="kitten-canvas" data-kitten-predicted aria-label="Predicted clean kitten"></canvas>
+                    </article>
+
+                    <article class="denoise-canvas-card">
+                        <p class="project-kicker">Final sample</p>
+                        <canvas class="kitten-canvas" data-kitten-final aria-label="Final generated kitten sample"></canvas>
+                    </article>
+                </section>
+
+                <aside class="denoise-panel">
+                    <p class="project-kicker">Browser inference</p>
+                    <h2 data-kitten-title>ONNX not loaded</h2>
+
+                    <div class="denoise-detail-list">
+                        <div>
+                            <span>Step</span>
+                            <strong data-kitten-step>0/40</strong>
+                        </div>
+                        <div>
+                            <span>Seed</span>
+                            <strong data-kitten-seed>#2026</strong>
+                        </div>
+                        <div>
+                            <span>Model</span>
+                            <strong data-kitten-model>Missing</strong>
+                        </div>
+                    </div>
+
+                    <label class="range-control">
+                        <span>Steps <strong data-kitten-steps-value>40</strong></span>
+                        <input type="range" min="8" max="80" value="40" step="1" data-kitten-steps>
+                    </label>
+
+                    <label class="range-control">
+                        <span>Noise temperature <strong data-kitten-temp-value>1.00</strong></span>
+                        <input type="range" min="0.50" max="1.40" value="1.00" step="0.01" data-kitten-temp>
+                    </label>
+
+                    <div class="denoise-buttons">
+                        <button class="mini-btn" type="button" data-kitten-sample>Sample kitten</button>
+                        <button class="mini-btn" type="button" data-kitten-stop disabled>Stop</button>
+                        <button class="mini-btn" type="button" data-kitten-seed-button>New seed</button>
+                    </div>
+
+                    <p class="kitten-sampler__note" data-kitten-note>
+                        Run <code>notebooks/tiny_kitten_ddpm_64.ipynb</code> and export
+                        <code>assets/models/kitten-ddpm-64/kitten_denoiser.onnx</code> to enable live sampling.
+                    </p>
+                </aside>
+            </div>
+        </section>
+
+        <section class="grid">
+            <article class="card">
+                <h2>Forward diffusion</h2>
+                <p>
+                    The forward process gradually mixes a clean sample with random noise. At high timesteps the image
+                    keeps less visible structure, which is why real diffusion models learn many small denoising steps.
+                </p>
+            </article>
+
+            <article class="card">
+                <h2>Reverse denoising</h2>
+                <p>
+                    The reverse panel is a deterministic canvas approximation. It uses the hidden clean sample as a
+                    guide so the interaction stays understandable; a real model would learn that guide from data.
+                </p>
+            </article>
+        </section>
+
+        <footer class="footer">
+            <small>© 2026 Lorenzo Marinelli</small>
+        </footer>
+    </div>
+
+    <script src="/assets/script.js" defer></script>
+
+    <script>
+        window.addEventListener('DOMContentLoaded', () => {
+            const root = document.querySelector('[data-diffusion-model]');
+            if (!root) return;
+
+            const size = 256;
+            const maxSteps = 30;
+            const cleanCanvas = root.querySelector('[data-denoise-clean]');
+            const noisyCanvas = root.querySelector('[data-denoise-noisy]');
+            const estimateCanvas = root.querySelector('[data-denoise-estimate]');
+            const status = root.querySelector('[data-denoise-status]');
+            const title = root.querySelector('[data-denoise-title]');
+            const noiseReadout = root.querySelector('[data-denoise-noise-readout]');
+            const estimateReadout = root.querySelector('[data-denoise-estimate-readout]');
+            const seedReadout = root.querySelector('[data-denoise-seed]');
+            const stepInput = root.querySelector('[data-denoise-step]');
+            const noiseInput = root.querySelector('[data-denoise-noise]');
+            const strengthInput = root.querySelector('[data-denoise-strength]');
+            const stepValue = root.querySelector('[data-denoise-step-value]');
+            const noiseValue = root.querySelector('[data-denoise-noise-value]');
+            const strengthValue = root.querySelector('[data-denoise-strength-value]');
+            const playButton = root.querySelector('[data-denoise-play]');
+            const newButton = root.querySelector('[data-denoise-new]');
+            const resetButton = root.querySelector('[data-denoise-reset]');
+
+            const copy = {
+                ready: 'Denoising step ready.',
+                playing: 'Playing reverse process...',
+                paused: 'Paused.',
+                finished: 'Reverse process reached the clean sample.',
+                newSample: 'New generated sample ready.',
+                reset: 'Schedule reset.',
+                play: 'Play reverse',
+                pause: 'Pause',
+                title: step => `Step ${step} of ${maxSteps}`,
+                status: (step, noise, estimate) =>
+                    `Step ${step}/${maxSteps} · noise ${Math.round(noise * 100)}% · estimate ${Math.round(estimate * 100)}%`
+            };
+
+            const state = {
+                seed: 431,
+                cleanImage: null,
+                noiseImage: null,
+                playing: false,
+                raf: null,
+                lastFrame: 0
+            };
+
+            const clamp = (value, min, max) => Math.max(min, Math.min(max, value));
+
+            const randomFrom = seed => () => {
+                seed = (seed * 1664525 + 1013904223) >>> 0;
+                return seed / 4294967296;
+            };
+
+            const prepareCanvas = canvas => {
+                canvas.width = size;
+                canvas.height = size;
+                const ctx = canvas.getContext('2d');
+                ctx.imageSmoothingEnabled = true;
+                return ctx;
+            };
+
+            const cleanCtx = prepareCanvas(cleanCanvas);
+            const noisyCtx = prepareCanvas(noisyCanvas);
+            const estimateCtx = prepareCanvas(estimateCanvas);
+
+            const buildCleanImage = () => {
+                const rand = randomFrom(state.seed);
+                const canvas = document.createElement('canvas');
+                canvas.width = size;
+                canvas.height = size;
+                const ctx = canvas.getContext('2d');
+                const gradient = ctx.createLinearGradient(0, 0, size, size);
+                gradient.addColorStop(0, '#101c28');
+                gradient.addColorStop(0.46, '#1a3a42');
+                gradient.addColorStop(1, '#2a1d3f');
+                ctx.fillStyle = gradient;
+                ctx.fillRect(0, 0, size, size);
+
+                const colors = ['#64f5e1', '#f5c36a', '#ff6b8a', '#8f7dff', '#b9f56a'];
+                ctx.globalCompositeOperation = 'screen';
+                for (let i = 0; i < 10; i += 1) {
+                    const radius = 20 + rand() * 62;
+                    const x = rand() * size;
+                    const y = rand() * size;
+                    const blob = ctx.createRadialGradient(x, y, 0, x, y, radius);
+                    blob.addColorStop(0, `${colors[i % colors.length]}cc`);
+                    blob.addColorStop(1, `${colors[(i + 2) % colors.length]}00`);
+                    ctx.fillStyle = blob;
+                    ctx.beginPath();
+                    ctx.arc(x, y, radius, 0, Math.PI * 2);
+                    ctx.fill();
+                }
+
+                ctx.globalCompositeOperation = 'source-over';
+                ctx.lineWidth = 5;
+                ctx.lineCap = 'round';
+                ctx.strokeStyle = 'rgba(255, 255, 255, 0.72)';
+                ctx.beginPath();
+                ctx.moveTo(38, 176 + rand() * 10);
+                ctx.bezierCurveTo(82, 92, 124, 218, 174, 88);
+                ctx.bezierCurveTo(198, 34, 224, 94, 226, 138);
+                ctx.stroke();
+
+                ctx.fillStyle = 'rgba(255, 255, 255, 0.84)';
+                for (let i = 0; i < 28; i += 1) {
+                    const r = 1 + rand() * 2.3;
+                    ctx.beginPath();
+                    ctx.arc(rand() * size, rand() * size, r, 0, Math.PI * 2);
+                    ctx.fill();
+                }
+
+                return ctx.getImageData(0, 0, size, size);
+            };
+
+            const buildNoiseImage = () => {
+                const rand = randomFrom(state.seed + 9001);
+                const image = new ImageData(size, size);
+                for (let i = 0; i < image.data.length; i += 4) {
+                    const grain = (rand() + rand() + rand()) / 3 * 255;
+                    image.data[i] = clamp(grain + (rand() - 0.5) * 120, 0, 255);
+                    image.data[i + 1] = clamp(grain + (rand() - 0.5) * 120, 0, 255);
+                    image.data[i + 2] = clamp(grain + (rand() - 0.5) * 120, 0, 255);
+                    image.data[i + 3] = 255;
+                }
+                return image;
+            };
+
+            const rebuildSample = () => {
+                state.cleanImage = buildCleanImage();
+                state.noiseImage = buildNoiseImage();
+                cleanCtx.putImageData(state.cleanImage, 0, 0);
+            };
+
+            const settings = () => ({
+                step: Number(stepInput.value),
+                noiseStrength: Number(noiseInput.value),
+                denoiseStrength: Number(strengthInput.value)
+            });
+
+            const render = () => {
+                const { step, noiseStrength, denoiseStrength } = settings();
+                const progress = step / maxSteps;
+                const noiseAmount = clamp(progress * noiseStrength, 0, 1);
+                const estimateMix = clamp(denoiseStrength * (0.22 + 0.78 * (1 - noiseAmount)), 0, 0.96);
+                const noisyImage = new ImageData(size, size);
+                const estimateImage = new ImageData(size, size);
+                const clean = state.cleanImage.data;
+                const noise = state.noiseImage.data;
+
+                for (let i = 0; i < clean.length; i += 4) {
+                    const r = clean[i] * (1 - noiseAmount) + noise[i] * noiseAmount;
+                    const g = clean[i + 1] * (1 - noiseAmount) + noise[i + 1] * noiseAmount;
+                    const b = clean[i + 2] * (1 - noiseAmount) + noise[i + 2] * noiseAmount;
+                    noisyImage.data[i] = r;
+                    noisyImage.data[i + 1] = g;
+                    noisyImage.data[i + 2] = b;
+                    noisyImage.data[i + 3] = 255;
+                    estimateImage.data[i] = r * (1 - estimateMix) + clean[i] * estimateMix;
+                    estimateImage.data[i + 1] = g * (1 - estimateMix) + clean[i + 1] * estimateMix;
+                    estimateImage.data[i + 2] = b * (1 - estimateMix) + clean[i + 2] * estimateMix;
+                    estimateImage.data[i + 3] = 255;
+                }
+
+                noisyCtx.putImageData(noisyImage, 0, 0);
+                estimateCtx.putImageData(estimateImage, 0, 0);
+                stepValue.textContent = `${step}/${maxSteps}`;
+                noiseValue.textContent = noiseStrength.toFixed(2);
+                strengthValue.textContent = denoiseStrength.toFixed(2);
+                noiseReadout.textContent = `${Math.round(noiseAmount * 100)}%`;
+                estimateReadout.textContent = `${Math.round(estimateMix * 100)}%`;
+                seedReadout.textContent = `#${state.seed}`;
+                title.textContent = copy.title(step);
+                status.textContent = copy.status(step, noiseAmount, estimateMix);
+            };
+
+            const stopPlayback = message => {
+                state.playing = false;
+                if (state.raf) window.cancelAnimationFrame(state.raf);
+                state.raf = null;
+                playButton.textContent = copy.play;
+                if (message) status.textContent = message;
+            };
+
+            const tick = time => {
+                if (!state.playing) return;
+                if (!state.lastFrame || time - state.lastFrame > 95) {
+                    const nextStep = Math.max(0, Number(stepInput.value) - 1);
+                    stepInput.value = String(nextStep);
+                    render();
+                    state.lastFrame = time;
+                    if (nextStep === 0) {
+                        stopPlayback(copy.finished);
+                        return;
+                    }
+                }
+                state.raf = window.requestAnimationFrame(tick);
+            };
+
+            const togglePlayback = () => {
+                if (state.playing) {
+                    stopPlayback(copy.paused);
+                    return;
+                }
+                if (Number(stepInput.value) === 0) stepInput.value = String(maxSteps);
+                state.playing = true;
+                state.lastFrame = 0;
+                playButton.textContent = copy.pause;
+                status.textContent = copy.playing;
+                state.raf = window.requestAnimationFrame(tick);
+            };
+
+            const resetSchedule = () => {
+                stopPlayback();
+                stepInput.value = '18';
+                noiseInput.value = '0.85';
+                strengthInput.value = '0.72';
+                render();
+                status.textContent = copy.reset;
+            };
+
+            const newSample = () => {
+                stopPlayback();
+                state.seed = (state.seed + 7919) % 100000;
+                rebuildSample();
+                render();
+                status.textContent = copy.newSample;
+            };
+
+            [stepInput, noiseInput, strengthInput].forEach(input => {
+                input.addEventListener('input', () => {
+                    stopPlayback();
+                    render();
+                });
+            });
+            playButton.addEventListener('click', togglePlayback);
+            newButton.addEventListener('click', newSample);
+            resetButton.addEventListener('click', resetSchedule);
+
+            rebuildSample();
+            render();
+            status.textContent = copy.ready;
+        });
+    </script>
+
+    <script>
+        window.addEventListener('DOMContentLoaded', () => {
+            const root = document.querySelector('[data-kitten-sampler]');
+            if (!root) return;
+
+            const copy = {
+                waiting: 'Waiting for trained model',
+                loadingMetadata: 'Checking exported model...',
+                loadingRuntime: 'Loading ONNX Runtime Web...',
+                loadingModel: 'Loading kitten denoiser...',
+                ready: 'Model loaded. Ready to sample.',
+                missing: 'Train/export the notebook first: kitten_denoiser.onnx is missing.',
+                runtimeFailed: 'ONNX Runtime Web could not load. Check network/CDN access.',
+                running: step => `Sampling step ${step}`,
+                stopped: 'Sampling stopped.',
+                finished: 'Kitten sample ready.',
+                newSeed: 'New seed ready.',
+                modelMissing: 'Missing',
+                modelReady: 'Ready',
+                modelLoading: 'Loading',
+                titleMissing: 'ONNX not loaded',
+                titleReady: 'Tiny kitten DDPM',
+                titleRunning: 'Sampling from noise'
+            };
+
+            const modelRoot = '/assets/models/kitten-ddpm-64';
+            const metadataPath = `${modelRoot}/metadata.json`;
+            const runtimeUrl = 'https://cdn.jsdelivr.net/npm/onnxruntime-web@1.22.0/dist/ort.min.mjs';
+            const runtimeWasmPath = 'https://cdn.jsdelivr.net/npm/onnxruntime-web@1.22.0/dist/';
+            const currentCanvas = root.querySelector('[data-kitten-current]');
+            const predictedCanvas = root.querySelector('[data-kitten-predicted]');
+            const finalCanvas = root.querySelector('[data-kitten-final]');
+            const status = root.querySelector('[data-kitten-status]');
+            const title = root.querySelector('[data-kitten-title]');
+            const stepReadout = root.querySelector('[data-kitten-step]');
+            const seedReadout = root.querySelector('[data-kitten-seed]');
+            const modelReadout = root.querySelector('[data-kitten-model]');
+            const stepsInput = root.querySelector('[data-kitten-steps]');
+            const stepsValue = root.querySelector('[data-kitten-steps-value]');
+            const tempInput = root.querySelector('[data-kitten-temp]');
+            const tempValue = root.querySelector('[data-kitten-temp-value]');
+            const sampleButton = root.querySelector('[data-kitten-sample]');
+            const stopButton = root.querySelector('[data-kitten-stop]');
+            const seedButton = root.querySelector('[data-kitten-seed-button]');
+
+            const state = {
+                seed: 2026,
+                ort: null,
+                session: null,
+                metadata: null,
+                alphaBars: null,
+                abort: false,
+                running: false
+            };
+
+            const clamp = (value, min, max) => Math.max(min, Math.min(max, value));
+
+            const randomFrom = seed => () => {
+                seed = (seed * 1664525 + 1013904223) >>> 0;
+                return seed / 4294967296;
+            };
+
+            const gaussianFrom = rand => {
+                const u = Math.max(rand(), 1e-7);
+                const v = rand();
+                return Math.sqrt(-2 * Math.log(u)) * Math.cos(Math.PI * 2 * v);
+            };
+
+            const prepareCanvas = canvas => {
+                canvas.width = 64;
+                canvas.height = 64;
+                const ctx = canvas.getContext('2d');
+                ctx.imageSmoothingEnabled = false;
+                return ctx;
+            };
+
+            const currentCtx = prepareCanvas(currentCanvas);
+            const predictedCtx = prepareCanvas(predictedCanvas);
+            const finalCtx = prepareCanvas(finalCanvas);
+
+            const tensorToCanvas = (tensor, ctx) => {
+                const image = new ImageData(64, 64);
+                const plane = 64 * 64;
+                for (let i = 0; i < plane; i += 1) {
+                    image.data[i * 4] = clamp((tensor[i] + 1) * 127.5, 0, 255);
+                    image.data[i * 4 + 1] = clamp((tensor[plane + i] + 1) * 127.5, 0, 255);
+                    image.data[i * 4 + 2] = clamp((tensor[plane * 2 + i] + 1) * 127.5, 0, 255);
+                    image.data[i * 4 + 3] = 255;
+                }
+                ctx.putImageData(image, 0, 0);
+            };
+
+            const makeNoise = () => {
+                const rand = randomFrom(state.seed);
+                const temp = Number(tempInput.value);
+                const data = new Float32Array(3 * 64 * 64);
+                for (let i = 0; i < data.length; i += 1) {
+                    data[i] = clamp(gaussianFrom(rand) * temp, -2.5, 2.5);
+                }
+                return data;
+            };
+
+            const buildAlphaBars = metadata => {
+                const schedule = metadata.trainingSchedule || {};
+                const count = schedule.timesteps || 1000;
+                const betaStart = schedule.betaStart || 0.0001;
+                const betaEnd = schedule.betaEnd || 0.02;
+                const alphaBars = new Float32Array(count);
+                let product = 1;
+                for (let i = 0; i < count; i += 1) {
+                    const beta = betaStart + (betaEnd - betaStart) * (i / Math.max(1, count - 1));
+                    product *= 1 - beta;
+                    alphaBars[i] = product;
+                }
+                return alphaBars;
+            };
+
+            const timestepsFor = steps => {
+                const last = (state.metadata?.trainingSchedule?.timesteps || 1000) - 1;
+                return Array.from({ length: steps }, (_, index) =>
+                    Math.round((1 - index / Math.max(1, steps - 1)) * last));
+            };
+
+            const setIdleUi = () => {
+                sampleButton.disabled = false;
+                stopButton.disabled = true;
+                state.running = false;
+            };
+
+            const syncLabels = () => {
+                stepsValue.textContent = stepsInput.value;
+                tempValue.textContent = Number(tempInput.value).toFixed(2);
+                seedReadout.textContent = `#${state.seed}`;
+            };
+
+            const drawSeedNoise = () => {
+                const noise = makeNoise();
+                tensorToCanvas(noise, currentCtx);
+                tensorToCanvas(noise, predictedCtx);
+                tensorToCanvas(noise, finalCtx);
+                syncLabels();
+            };
+
+            const ensureModel = async () => {
+                if (state.session) return state.session;
+                status.textContent = copy.loadingMetadata;
+                modelReadout.textContent = copy.modelLoading;
+                title.textContent = copy.titleMissing;
+
+                const metadataResponse = await fetch(metadataPath, { cache: 'no-store' });
+                if (!metadataResponse.ok) throw new Error(copy.missing);
+                state.metadata = await metadataResponse.json();
+                state.alphaBars = buildAlphaBars(state.metadata);
+                const modelPath = state.metadata.modelPath || `${modelRoot}/kitten_denoiser.onnx`;
+
+                const modelResponse = await fetch(modelPath, { method: 'HEAD', cache: 'no-store' });
+                if (!modelResponse.ok) throw new Error(copy.missing);
+
+                status.textContent = copy.loadingRuntime;
+                let ort;
+                try {
+                    ort = await import(runtimeUrl);
+                } catch (error) {
+                    throw new Error(copy.runtimeFailed);
+                }
+                ort.env.wasm.wasmPaths = runtimeWasmPath;
+                ort.env.wasm.numThreads = 1;
+
+                status.textContent = copy.loadingModel;
+                state.ort = ort;
+                state.session = await ort.InferenceSession.create(modelPath, { executionProviders: ['wasm'] });
+                modelReadout.textContent = copy.modelReady;
+                title.textContent = copy.titleReady;
+                status.textContent = copy.ready;
+                return state.session;
+            };
+
+            const runDenoiser = async (session, sample, timestep) => {
+                const ort = state.ort;
+                const sampleName = session.inputNames.includes('sample') ? 'sample' : session.inputNames[0];
+                const timestepName = session.inputNames.includes('timestep') ? 'timestep' : session.inputNames[1];
+                const outputName = session.outputNames.includes('epsilon') ? 'epsilon' : session.outputNames[0];
+                const feeds = {
+                    [sampleName]: new ort.Tensor('float32', sample, [1, 3, 64, 64]),
+                    [timestepName]: new ort.Tensor('float32', new Float32Array([timestep]), [1])
+                };
+                const result = await session.run(feeds);
+                return result[outputName].data;
+            };
+
+            const sampleKitten = async () => {
+                if (state.running) return;
+                state.abort = false;
+                state.running = true;
+                sampleButton.disabled = true;
+                stopButton.disabled = false;
+                try {
+                    const session = await ensureModel();
+                    const steps = Number(stepsInput.value);
+                    const sequence = timestepsFor(steps);
+                    let x = makeNoise();
+                    tensorToCanvas(x, currentCtx);
+                    title.textContent = copy.titleRunning;
+
+                    for (let i = 0; i < sequence.length; i += 1) {
+                        if (state.abort) {
+                            status.textContent = copy.stopped;
+                            break;
+                        }
+                        const t = sequence[i];
+                        const nextT = sequence[i + 1] ?? -1;
+                        stepReadout.textContent = `${i + 1}/${sequence.length}`;
+                        status.textContent = copy.running(`${i + 1}/${sequence.length}`);
+                        const eps = await runDenoiser(session, x, t);
+                        const alpha = state.alphaBars[t];
+                        const sqrtAlpha = Math.sqrt(alpha);
+                        const sqrtOneMinus = Math.sqrt(Math.max(0, 1 - alpha));
+                        const x0 = new Float32Array(x.length);
+                        for (let j = 0; j < x.length; j += 1) {
+                            x0[j] = clamp((x[j] - sqrtOneMinus * eps[j]) / sqrtAlpha, -1, 1);
+                        }
+                        tensorToCanvas(x0, predictedCtx);
+
+                        if (nextT >= 0) {
+                            const nextAlpha = state.alphaBars[nextT];
+                            const nextSqrtAlpha = Math.sqrt(nextAlpha);
+                            const nextSqrtOneMinus = Math.sqrt(Math.max(0, 1 - nextAlpha));
+                            const next = new Float32Array(x.length);
+                            for (let j = 0; j < x.length; j += 1) {
+                                next[j] = nextSqrtAlpha * x0[j] + nextSqrtOneMinus * eps[j];
+                            }
+                            x = next;
+                        } else {
+                            x = x0;
+                        }
+                        tensorToCanvas(x, currentCtx);
+                        await new Promise(resolve => window.requestAnimationFrame(resolve));
+                    }
+
+                    if (!state.abort) {
+                        tensorToCanvas(x, finalCtx);
+                        status.textContent = copy.finished;
+                        title.textContent = copy.titleReady;
+                    }
+                } catch (error) {
+                    status.textContent = error.message || copy.missing;
+                    modelReadout.textContent = copy.modelMissing;
+                    title.textContent = copy.titleMissing;
+                } finally {
+                    setIdleUi();
+                }
+            };
+
+            sampleButton.addEventListener('click', sampleKitten);
+            stopButton.addEventListener('click', () => {
+                state.abort = true;
+            });
+            seedButton.addEventListener('click', () => {
+                state.seed = (state.seed + 104729) % 1000000;
+                drawSeedNoise();
+                status.textContent = copy.newSeed;
+            });
+            stepsInput.addEventListener('input', syncLabels);
+            tempInput.addEventListener('input', () => {
+                drawSeedNoise();
+            });
+
+            status.textContent = copy.waiting;
+            modelReadout.textContent = copy.modelMissing;
+            title.textContent = copy.titleMissing;
+            syncLabels();
+            drawSeedNoise();
+        });
+    </script>
+</body>
+
+</html>
