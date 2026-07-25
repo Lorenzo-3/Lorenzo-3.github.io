@@ -54,7 +54,7 @@
       <div class="meta">
         <span>Italia</span>
         <span class="sep">•</span>
-        <span>Aggiornato: Aprile 2026</span>
+        <span>Aggiornato: Luglio 2026</span>
       </div>
     </header>
 
@@ -111,6 +111,68 @@
     </section>
 
     <section class="grid project-grid project-grid--featured-pair">
+      <article class="card project project-card" data-tags="ml audio adversarial security">
+        <div class="project__top">
+          <p class="project-kicker">Machine learning avversario</p>
+          <h2>NoWhisper — Perturbazioni generative veloci contro Whisper ASR</h2>
+        </div>
+
+        <p class="project__desc">
+          Un attacco veloce a livello di forma d’onda che addestra una U-Net residuale 1D a generare perturbazioni
+          audio piccole e vincolate in un singolo forward pass, mantenendo il parlato comprensibile ma degradando
+          nettamente la trascrizione di Whisper.
+        </p>
+
+        <div class="tag-row" aria-label="Tags">
+          <span>ML avversario</span>
+          <span>Audio</span>
+          <span>Whisper ASR</span>
+          <span>U-Net residuale</span>
+        </div>
+
+        <ul class="bullets">
+          <li><span class="hl">Risultato:</span> il WER di Whisper Small sale da 0,047 a 3,825 con il 99% di successo.</li>
+          <li><span class="hl">Transfer:</span> lo stesso generatore addestrato su Small resta efficace su Whisper
+            Medium e Large-v3 senza riaddestramento.</li>
+        </ul>
+
+        <div class="hero__cta">
+          <a class="btn" href="/it/projects/nowhisper/">Case study</a>
+          <a class="btn btn--ghost" href="https://github.com/Reewd/NoWhisper" target="_blank"
+            rel="noopener noreferrer">Codice e setup</a>
+        </div>
+      </article>
+
+      <article class="card project project-card" data-tags="ml rl">
+        <div class="project__top">
+          <p class="project-kicker">Reinforcement learning</p>
+          <h2>RL-Nav v1 — RL guidato da oracolo in osservabilità parziale</h2>
+        </div>
+
+        <p class="project__desc">
+          Progetto d’esame che combina reinforcement learning e guida basata su LLM per navigazione in un ambiente
+          PyBullet stocastico con goal nascosto, sensing locale, embedding di guida e controllo ricorrente.
+        </p>
+
+        <div class="tag-row" aria-label="Tags">
+          <span>Reinforcement learning</span>
+          <span>Navigazione</span>
+          <span>Guida LLM</span>
+          <span>Osservabilità parziale</span>
+        </div>
+
+        <ul class="bullets">
+          <li><span class="hl">Lavoro:</span> progettazione dell’interfaccia dell’oracolo LLM e output strutturati
+            vincolati.</li>
+          <li><span class="hl">Risultato:</span> 62% di successo in held-out, evidenziando la robustezza come collo di
+            bottiglia.</li>
+        </ul>
+
+        <div class="hero__cta">
+          <a class="btn" href="/assets/RL-Nav/RL-Nav_v1_Lorenzo_Marinelli.pdf">Presentazione PDF</a>
+        </div>
+      </article>
+
       <article class="card project project-card" data-tags="ml vision uav">
         <div class="project__top">
           <p class="project-kicker">Visione artificiale</p>
@@ -174,9 +236,7 @@
           <a class="btn btn--ghost" href="/assets/old%20projects/lorenz.html">Export notebook</a>
         </div>
       </article>
-    </section>
 
-    <section class="grid project-grid">
       <article class="card project project-card" data-tags="data">
         <div class="project__top">
           <p class="project-kicker">Analisi dati</p>
@@ -206,38 +266,39 @@
         </div>
       </article>
 
-      <article class="card project project-card" data-tags="ml rl">
+      <article class="card project project-card" data-tags="web data interactive graphics audio signal">
         <div class="project__top">
-          <p class="project-kicker">Reinforcement learning</p>
-          <h2>RL-Nav v1 — RL guidato da oracolo in osservabilità parziale</h2>
+          <p class="project-kicker">Grafica interattiva</p>
+          <h2>Fourier City — Una città interattiva e audio-reattiva</h2>
         </div>
 
         <p class="project__desc">
-          Progetto d’esame che combina reinforcement learning e guida basata su LLM per navigazione in un ambiente
-          PyBullet stocastico con goal nascosto, sensing locale, embedding di guida e controllo ricorrente.
+          Un’esperienza in prima persona realizzata con Three.js che trasforma il suono in un luogo da esplorare: una
+          forma d’onda live mostra il segnale nel tempo, mentre uno skyline audio-reattivo ne rivela lo spettro.
         </p>
 
         <div class="tag-row" aria-label="Tags">
-          <span>Reinforcement learning</span>
-          <span>Navigazione</span>
-          <span>Guida LLM</span>
-          <span>Osservabilità parziale</span>
+          <span>Three.js</span>
+          <span>Web Audio</span>
+          <span>Elaborazione dei segnali</span>
+          <span>Interazione 3D</span>
         </div>
 
         <ul class="bullets">
-          <li><span class="hl">Lavoro:</span> progettazione dell’interfaccia dell’oracolo LLM e output strutturati
-            vincolati.</li>
-          <li><span class="hl">Risultato:</span> 62% di successo in held-out, evidenziando la robustezza come collo di
-            bottiglia.</li>
+          <li><span class="hl">Visualizzazione:</span> una FFT a 70 bande controlla altezza e luminosità degli edifici
+            e il flusso sul terreno.</li>
+          <li><span class="hl">Interazione:</span> sorgenti, filtri, pitch e un braccio robotico collegano in tempo
+            reale i cambiamenti udibili al feedback visivo.</li>
         </ul>
 
         <div class="hero__cta">
-          <a class="btn" href="/assets/RL-Nav/RL-Nav_v1_Lorenzo_Marinelli.pdf">Presentazione PDF</a>
+          <a class="btn" href="/it/projects/fourier-city/">Case study</a>
+          <a class="btn btn--ghost"
+            href="https://SapienzaInteractiveGraphicsCourse.github.io/final-project-fourier_people/" target="_blank"
+            rel="noreferrer">Demo live</a>
         </div>
       </article>
-    </section>
 
-    <section class="grid project-grid">
       <article class="card project project-card" data-tags="vision data ml">
         <div class="project__top">
           <p class="project-kicker">Dati sintetici</p>

@@ -1,0 +1,489 @@
+<!doctype html>
+<html lang="en" data-palette="triad">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>NoWhisper · Lorenzo Marinelli</title>
+  <meta name="description"
+    content="NoWhisper uses a residual 1D U-Net to generate bounded audio perturbations that disrupt Whisper ASR in one forward pass." />
+  <link rel="stylesheet" href="/assets/style.css" />
+
+  <link rel="alternate" hreflang="it" href="/it/projects/nowhisper/" />
+  <link rel="alternate" hreflang="en" href="/projects/nowhisper/" />
+  <link rel="icon" href="/assets/favicon.ico" sizes="any">
+  <link rel="icon" type="image/png" href="/assets/favicon-32.png" sizes="32x32">
+  <link rel="icon" type="image/png" href="/assets/favicon-16.png" sizes="16x16">
+  <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
+</head>
+
+<body class="nowhisper-page">
+  <div class="wrap">
+    <nav class="nav">
+      <a class="nav__brand" href="/" aria-label="Home">LM</a>
+
+      <div class="lang" aria-label="Language">
+        <a class="lang__btn is-active" href="/projects/nowhisper/" aria-label="English" title="English">
+          <span class="flag" aria-hidden="true">🇬🇧</span>
+          <span class="sr-only" lang="en">English</span>
+        </a>
+        <a class="lang__btn" href="/it/projects/nowhisper/" aria-label="Italiano" title="Italiano">
+          <span class="flag" aria-hidden="true">🇮🇹</span>
+          <span class="sr-only" lang="it">Italiano</span>
+        </a>
+      </div>
+
+      <button class="theme-toggle" type="button" data-theme-toggle aria-label="Toggle theme" title="Toggle theme">
+        <span data-theme-icon aria-hidden="true">◐</span>
+      </button>
+
+      <div class="nav__links">
+        <a href="/">Home</a>
+        <a href="/about/">About</a>
+        <a aria-current="page" href="/projects/">Projects</a>
+        <a href="/notes/">Notes</a>
+        <a href="/contact/">Contact</a>
+        <a href="/playground/">Playground</a>
+      </div>
+    </nav>
+
+    <header class="hero nowhisper-hero">
+      <div class="nowhisper-hero__copy">
+        <p class="kicker">Deep Learning &amp; Applied AI · Sapienza 2026</p>
+        <h1>NoWhisper</h1>
+        <p class="lead">Fast generative perturbations for breaking Whisper ASR.</p>
+        <p>
+          Train once, then perturb a new speech waveform in a single forward pass. The result stays understandable to
+          a listener while pushing Whisper far away from the original transcript.
+        </p>
+
+        <div class="tag-row" aria-label="Tags">
+          <span>Adversarial ML</span>
+          <span>Audio</span>
+          <span>Whisper ASR</span>
+          <span>PyTorch</span>
+        </div>
+
+        <div class="meta">
+          <span>Lorenzo Marinelli &amp; Andrea Venditti</span>
+          <span class="sep">•</span>
+          <span>July 2026</span>
+        </div>
+
+        <div class="hero__cta">
+          <a class="btn" href="#run-locally">Run locally</a>
+          <a class="btn btn--ghost" href="https://github.com/Reewd/NoWhisper" target="_blank"
+            rel="noopener noreferrer">View source</a>
+          <a class="btn btn--ghost" href="/assets/nowhisper/NoWhisper_Report.pdf">Read report</a>
+          <a class="btn btn--ghost" href="/projects/">← Projects</a>
+        </div>
+      </div>
+
+      <figure class="nowhisper-hero__visual">
+        <figcaption class="sr-only">
+          Clean speech and a visually similar adversarial waveform produce very different Whisper outcomes.
+        </figcaption>
+        <div class="nowhisper-signal-card">
+          <div class="nowhisper-signal-card__head">
+            <span>Clean speech</span>
+            <strong>Whisper ✓</strong>
+          </div>
+          <svg viewBox="0 0 640 120" role="img" aria-labelledby="clean-wave-title clean-wave-desc">
+            <title id="clean-wave-title">Clean audio waveform</title>
+            <desc id="clean-wave-desc">A smooth speech waveform centred around zero amplitude.</desc>
+            <path class="nowhisper-wave nowhisper-wave--clean"
+              d="M0 63 C18 62 24 39 39 48 S58 92 76 66 S99 23 117 53 S139 98 158 60 S181 32 198 54 S219 79 238 62 S259 42 276 59 S296 82 316 55 S340 24 359 53 S384 97 402 62 S424 36 443 56 S465 83 483 59 S504 43 523 60 S546 75 564 55 S589 37 606 59 S628 67 640 61" />
+          </svg>
+        </div>
+
+        <div class="nowhisper-delta" aria-label="A bounded perturbation is generated and added">
+          <span>+</span>
+          <code>δ ≤ ε</code>
+          <span>→</span>
+          <strong>G<sub>θ</sub>(x)</strong>
+        </div>
+
+        <div class="nowhisper-signal-card nowhisper-signal-card--adversarial">
+          <div class="nowhisper-signal-card__head">
+            <span>Adversarial speech</span>
+            <strong>Whisper ✕</strong>
+          </div>
+          <svg viewBox="0 0 640 120" role="img" aria-labelledby="adv-wave-title adv-wave-desc">
+            <title id="adv-wave-title">Adversarial audio waveform</title>
+            <desc id="adv-wave-desc">The clean speech waveform with a small high-frequency perturbation.</desc>
+            <path class="nowhisper-wave nowhisper-wave--shadow"
+              d="M0 63 C18 62 24 39 39 48 S58 92 76 66 S99 23 117 53 S139 98 158 60 S181 32 198 54 S219 79 238 62 S259 42 276 59 S296 82 316 55 S340 24 359 53 S384 97 402 62 S424 36 443 56 S465 83 483 59 S504 43 523 60 S546 75 564 55 S589 37 606 59 S628 67 640 61" />
+            <path class="nowhisper-wave nowhisper-wave--adversarial"
+              d="M0 62 L12 56 L24 66 L36 43 L48 55 L60 87 L72 62 L84 58 L96 30 L108 47 L120 58 L132 91 L144 73 L156 54 L168 41 L180 34 L192 60 L204 48 L216 75 L228 65 L240 57 L252 47 L264 57 L276 62 L288 76 L300 60 L312 50 L324 45 L336 29 L348 48 L360 59 L372 81 L384 89 L396 62 L408 51 L420 40 L432 54 L444 62 L456 75 L468 65 L480 56 L492 48 L504 57 L516 63 L528 71 L540 64 L552 52 L564 48 L576 55 L588 43 L600 58 L612 65 L624 61 L640 60" />
+          </svg>
+        </div>
+
+        <div class="nowhisper-hero__metrics" aria-label="Headline results">
+          <div><strong>0.047 → 3.825</strong><span>Whisper Small WER</span></div>
+          <div><strong>99%</strong><span>Attack success</span></div>
+          <div><strong>20.79 dB</strong><span>Mean SNR</span></div>
+        </div>
+      </figure>
+    </header>
+
+    <nav class="nowhisper-toc" aria-label="On this page">
+      <a href="#idea">The idea</a>
+      <a href="#method">Method</a>
+      <a href="#model">Model</a>
+      <a href="#results">Results</a>
+      <a href="#run-locally">Run locally</a>
+      <a href="#limits">Limits &amp; resources</a>
+    </nav>
+
+    <main class="nowhisper-content">
+      <section class="nowhisper-band nowhisper-band--intro" id="idea">
+        <div class="nowhisper-story-head">
+          <p class="project-kicker">01 · The idea</p>
+          <h2>Make transcription expensive to trust, not expensive to attack</h2>
+          <p>
+            NoWhisper turns a slow, sample-specific waveform attack into a reusable generator. It learns the attack
+            once, then produces a bounded perturbation for unseen speech without per-clip optimization.
+          </p>
+        </div>
+
+        <div class="nowhisper-problem-grid">
+          <article class="nowhisper-listener-card">
+            <span aria-hidden="true">◉</span>
+            <p class="project-kicker">Human listener</p>
+            <h3>Keep the message</h3>
+            <p>Speech remains recognizable and understandable within a strict amplitude budget.</p>
+          </article>
+          <div class="nowhisper-problem-arrow" aria-hidden="true">same audio<br>different outcome</div>
+          <article class="nowhisper-listener-card nowhisper-listener-card--asr">
+            <span aria-hidden="true">⌁</span>
+            <p class="project-kicker">Whisper ASR</p>
+            <h3>Lose the transcript</h3>
+            <p>Substitutions and insertions push the decoded text away from the original speech.</p>
+          </article>
+        </div>
+
+        <dl class="nowhisper-fact-strip">
+          <div><dt>Course</dt><dd>Deep Learning &amp; Applied AI</dd></div>
+          <div><dt>Data</dt><dd>LibriSpeech · 16 kHz mono</dd></div>
+          <div><dt>Stack</dt><dd>PyTorch · Transformers · Gradio</dd></div>
+          <div><dt>Attack</dt><dd>Untargeted · waveform-level</dd></div>
+        </dl>
+      </section>
+
+      <section class="nowhisper-band nowhisper-band--tint" id="method">
+        <div class="nowhisper-story-head">
+          <p class="project-kicker">02 · Method</p>
+          <h2>From iterative gradients to one forward pass</h2>
+          <p>Both paths optimize the same idea: increase Whisper’s reference loss while keeping the waveform bounded.</p>
+        </div>
+
+        <div class="nowhisper-method-grid">
+          <article class="nowhisper-method-card">
+            <div class="nowhisper-method-card__number">A</div>
+            <p class="project-kicker">White-box reference</p>
+            <h3>Optimize each clip</h3>
+            <div class="nowhisper-flow" aria-label="White-box attack flow">
+              <span>Audio</span><i>→</i><span>Adam</span><i>→</i><span>Project δ</span><i>→</i><span>Attack</span>
+            </div>
+            <p>Gradients pass through Whisper’s differentiable frontend for many update steps.</p>
+            <p class="nowhisper-method-card__tradeoff"><strong>Strong</strong><span>Slow per waveform</span></p>
+          </article>
+
+          <article class="nowhisper-method-card nowhisper-method-card--accent">
+            <div class="nowhisper-method-card__number">B</div>
+            <p class="project-kicker">Amortized attack</p>
+            <h3>Generate for every clip</h3>
+            <div class="nowhisper-flow" aria-label="Generator attack flow">
+              <span>Audio</span><i>→</i><span>G<sub>θ</sub></span><i>→</i><span>Bound δ</span><i>→</i><span>Attack</span>
+            </div>
+            <p>The trained network predicts a complete perturbation in a single evaluation.</p>
+            <p class="nowhisper-method-card__tradeoff"><strong>Reusable</strong><span>One forward pass</span></p>
+          </article>
+        </div>
+
+        <details class="nowhisper-details">
+          <summary>Technical note · bounded attack equations</summary>
+          <div class="nowhisper-details__body">
+            <code class="nowhisper-equation">x_adv = clip(x + Π[-ε, ε](δ), -1, 1)</code>
+            <code class="nowhisper-equation">x_gen = clip(x + ε tanh(Gθ(x)), -1, 1)</code>
+            <p>The projection and tanh parameterization enforce the same L∞ amplitude budget in both pipelines.</p>
+          </div>
+        </details>
+      </section>
+
+      <section class="nowhisper-band" id="model">
+        <div class="nowhisper-story-head">
+          <p class="project-kicker">03 · Model</p>
+          <h2>A compact residual U-Net for raw waveforms</h2>
+          <p>Skip connections preserve local speech structure while dilated residual blocks expand temporal context.</p>
+        </div>
+
+        <div class="nowhisper-model-layout">
+          <figure class="nowhisper-unet">
+            <figcaption>Four encoder levels meet a 128-channel bottleneck, then merge into a symmetric decoder.</figcaption>
+            <div class="nowhisper-unet__diagram" role="img"
+              aria-label="Residual 1D U-Net with four encoder levels, a 128-channel bottleneck, four decoder levels, and skip connections.">
+              <div class="nowhisper-unet__column">
+                <strong>Encoder</strong>
+                <span style="--level:0">8 ch</span>
+                <span style="--level:1">16 ch</span>
+                <span style="--level:2">32 ch</span>
+                <span style="--level:3">64 ch</span>
+              </div>
+              <div class="nowhisper-unet__skips" aria-hidden="true">
+                <i>skip →</i><i>skip →</i><i>skip →</i><i>skip →</i>
+              </div>
+              <div class="nowhisper-unet__bottleneck">
+                <strong>Bottleneck</strong>
+                <span>128 ch</span>
+                <small>wide context</small>
+              </div>
+              <div class="nowhisper-unet__skips nowhisper-unet__skips--right" aria-hidden="true">
+                <i>→ merge</i><i>→ merge</i><i>→ merge</i><i>→ merge</i>
+              </div>
+              <div class="nowhisper-unet__column nowhisper-unet__column--decoder">
+                <strong>Decoder</strong>
+                <span style="--level:3">64 ch</span>
+                <span style="--level:2">32 ch</span>
+                <span style="--level:1">16 ch</span>
+                <span style="--level:0">8 ch</span>
+              </div>
+            </div>
+          </figure>
+
+          <div class="nowhisper-model-notes">
+            <div class="nowhisper-metrics" aria-label="Architecture parameters">
+              <div><span>Base</span><strong>8 ch</strong></div>
+              <div><span>Depth</span><strong>4</strong></div>
+              <div><span>Kernel</span><strong>15</strong></div>
+              <div><span>Blocks</span><strong>2 / stage</strong></div>
+            </div>
+            <div class="nowhisper-principle">
+              <p><strong>The surprising result</strong></p>
+              <p>The strongest generator skipped teacher imitation and attacked Whisper’s reference loss directly.</p>
+            </div>
+          </div>
+        </div>
+
+        <details class="nowhisper-details">
+          <summary>Architecture and training objective</summary>
+          <div class="nowhisper-details__body nowhisper-details__body--columns">
+            <p><strong>Blocks:</strong> Conv1D, GroupNorm, SiLU, dilation, channel projection, and residual paths.</p>
+            <p><strong>Objective:</strong> adversarial reference loss plus waveform regularizers and optional waveform or
+              spectral teacher losses.</p>
+            <code class="nowhisper-equation">J(θ) = -w_adv L_ref(x_gen, y) + R_gen + optional teacher losses</code>
+          </div>
+        </details>
+      </section>
+
+      <section class="nowhisper-band nowhisper-band--dark" id="results">
+        <div class="nowhisper-story-head">
+          <p class="project-kicker">04 · Evidence</p>
+          <h2>Trained on Small. Effective on larger Whisper models.</h2>
+          <p>The same ε = 0.0075 generator was evaluated on 100 held-out clips per model without retraining.</p>
+        </div>
+
+        <div class="nowhisper-result-cards" aria-label="Cross-model attack success">
+          <article><span>Whisper Small</span><strong>99%</strong><small>WER 0.047 → 3.825</small></article>
+          <article><span>Whisper Medium</span><strong>98%</strong><small>WER 0.033 → 2.242</small></article>
+          <article><span>Whisper Large-v3</span><strong>96%</strong><small>WER 0.023 → 2.817</small></article>
+        </div>
+
+        <div class="nowhisper-results-layout">
+          <figure class="nowhisper-bars">
+            <figcaption>Adversarial WER · shared 0–4 scale</figcaption>
+            <div class="nowhisper-bar-row">
+              <span>Small</span><div><i style="--value:95.625%"></i></div><strong>3.825</strong>
+            </div>
+            <div class="nowhisper-bar-row">
+              <span>Medium</span><div><i style="--value:56.05%"></i></div><strong>2.242</strong>
+            </div>
+            <div class="nowhisper-bar-row">
+              <span>Large-v3</span><div><i style="--value:70.425%"></i></div><strong>2.817</strong>
+            </div>
+          </figure>
+
+          <aside class="nowhisper-result-note">
+            <span>Signal budget</span>
+            <strong>20.79 dB</strong>
+            <p>Mean SNR across all three transfer evaluations.</p>
+            <small>WER may exceed 1.0 when Whisper inserts many extra words.</small>
+          </aside>
+        </div>
+
+        <details class="nowhisper-details nowhisper-details--dark">
+          <summary>Full transfer and perturbation-budget results</summary>
+          <div class="nowhisper-details__body">
+            <div class="nowhisper-table-wrap">
+              <table class="nowhisper-table">
+                <caption>Cross-model transfer of the Whisper Small-trained generator</caption>
+                <thead>
+                  <tr>
+                    <th scope="col">Model</th>
+                    <th scope="col">WER clean → adversarial</th>
+                    <th scope="col">CER clean → adversarial</th>
+                    <th scope="col">Success</th>
+                    <th scope="col">SNR</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr><th scope="row">Small</th><td>0.047 → 3.825</td><td>0.020 → 3.028</td><td>99%</td><td>20.79 dB</td></tr>
+                  <tr><th scope="row">Medium</th><td>0.033 → 2.242</td><td>0.014 → 1.860</td><td>98%</td><td>20.79 dB</td></tr>
+                  <tr><th scope="row">Large-v3</th><td>0.023 → 2.817</td><td>0.009 → 2.248</td><td>96%</td><td>20.79 dB</td></tr>
+                </tbody>
+              </table>
+            </div>
+            <p>At ε = 0.005 the best 20-epoch run reached 2.165 WER at 23.37 dB. Strong masking raised SNR to
+              23.64 dB but reduced adversarial WER to 0.064.</p>
+          </div>
+        </details>
+      </section>
+
+      <section class="nowhisper-band nowhisper-band--run" id="run-locally">
+        <div class="nowhisper-story-head">
+          <p class="project-kicker">05 · Run locally</p>
+          <h2>The frontend and a ready checkpoint ship with the repository</h2>
+          <p>Clone, install the matching PyTorch group, and launch the Gradio interface. No generator training is required.</p>
+        </div>
+
+        <div class="nowhisper-run-grid">
+          <div class="nowhisper-setup">
+            <div class="nowhisper-terminal">
+              <div class="nowhisper-terminal__bar">
+                <span aria-hidden="true"><i></i><i></i><i></i></span>
+                <strong>CPU / Apple Silicon</strong>
+              </div>
+              <pre aria-label="Commands to clone and run NoWhisper"><code><span>git clone</span> https://github.com/Reewd/NoWhisper.git
+<span>cd</span> NoWhisper
+<span>uv sync</span> --group cpu
+<span>uv run</span> --group cpu nowhisper-ui</code></pre>
+            </div>
+
+            <div class="nowhisper-checkpoint">
+              <span class="nowhisper-checkpoint__icon" aria-hidden="true">✓</span>
+              <div>
+                <strong>Checkpoint included</strong>
+                <code>models/generators/resunet1d/latest.pt</code>
+                <small>Loaded lazily when generator mode is first used.</small>
+              </div>
+            </div>
+
+            <ul class="nowhisper-run-notes">
+              <li><strong>Python 3.13</strong> is required.</li>
+              <li>For NVIDIA GPUs, replace <code>cpu</code> with <code>cu126</code> or <code>cu130</code>.</li>
+              <li>Whisper Small weights may download on first use.</li>
+            </ul>
+
+            <a class="btn" href="https://github.com/Reewd/NoWhisper" target="_blank"
+              rel="noopener noreferrer">Open repository ↗</a>
+          </div>
+
+          <figure class="nowhisper-demo">
+            <figcaption class="sr-only">
+              Conceptual representation of the local NoWhisper frontend with audio input, attack controls, plots, and metrics.
+            </figcaption>
+            <div class="nowhisper-demo__top">
+              <span class="nowhisper-demo__brand">NoWhisper</span>
+              <span class="nowhisper-demo__status"><i aria-hidden="true"></i> local · ready</span>
+            </div>
+            <div class="nowhisper-demo__controls">
+              <div><small>Input audio</small><strong>Upload or microphone</strong></div>
+              <div><small>Language</small><strong>Auto-detect</strong></div>
+              <button type="button" disabled>Prepare audio</button>
+            </div>
+            <div class="nowhisper-demo__transcript">
+              <small>Clean transcription</small>
+              <p>Editable reference text appears here before the attack.</p>
+            </div>
+            <div class="nowhisper-demo__tabs" aria-hidden="true">
+              <span>Untargeted attack</span><span class="is-active">Generator</span>
+            </div>
+            <div class="nowhisper-demo__plots">
+              <div>
+                <small>Waveform + perturbation</small>
+                <svg viewBox="0 0 400 90" aria-hidden="true">
+                  <path d="M0 49 C20 47 29 18 44 52 S70 73 88 43 S110 18 129 51 S157 73 175 45 S201 24 220 50 S244 66 263 45 S291 25 308 53 S333 66 350 44 S382 31 400 48" />
+                </svg>
+              </div>
+              <div class="nowhisper-demo__spectrum">
+                <small>Delta spectrogram</small>
+                <span aria-hidden="true"></span>
+              </div>
+            </div>
+            <div class="nowhisper-demo__metrics" aria-label="Example frontend output metrics">
+              <div><span>WER</span><strong>3.825</strong></div>
+              <div><span>SNR</span><strong>20.79 dB</strong></div>
+              <div><span>Status</span><strong>Success</strong></div>
+            </div>
+          </figure>
+        </div>
+      </section>
+
+      <section class="nowhisper-band" id="limits">
+        <div class="nowhisper-story-head">
+          <p class="project-kicker">06 · Limits &amp; resources</p>
+          <h2>A strong proof of concept with an audible trade-off</h2>
+        </div>
+
+        <div class="nowhisper-closing-grid">
+          <div>
+            <div class="nowhisper-limit-grid">
+              <article>
+                <span>01</span>
+                <h3>Not imperceptible</h3>
+                <p>At roughly 20–23 dB SNR, the speech is understandable but the perturbation can still be audible.</p>
+              </article>
+              <article>
+                <span>02</span>
+                <h3>Masking can collapse the attack</h3>
+                <p>The strongest reported masking preserved quality but barely moved WER.</p>
+              </article>
+              <article>
+                <span>03</span>
+                <h3>Open evaluation space</h3>
+                <p>Other ASR families, languages, and over-the-air playback remain future tests.</p>
+              </article>
+            </div>
+            <details class="nowhisper-details">
+              <summary>Future directions</summary>
+              <div class="nowhisper-details__body">
+                <p>Learned perceptual objectives, multilingual evaluation, physical playback tests, and adversarial
+                  training are the clearest next steps.</p>
+              </div>
+            </details>
+          </div>
+
+          <aside class="nowhisper-credits">
+            <p class="project-kicker">Project credits</p>
+            <h3>Built jointly by Lorenzo Marinelli and Andrea Venditti</h3>
+            <p>Deep Learning and Applied AI, Sapienza University of Rome, 2026.</p>
+            <p>Experiments use LibriSpeech and Whisper through Hugging Face Transformers. The local interface uses
+              Gradio and Plotly.</p>
+
+            <div class="nowhisper-resource-list">
+              <a class="nowhisper-resource" href="https://github.com/Reewd/NoWhisper" target="_blank"
+                rel="noopener noreferrer">
+                <span><strong>Public source &amp; setup</strong><small>Frontend, checkpoint, attacks, training, and tests</small></span>
+                <b aria-hidden="true">↗</b>
+              </a>
+              <a class="nowhisper-resource" href="/assets/nowhisper/NoWhisper_Report.pdf">
+                <span><strong>Technical report</strong><small>Full method, results, discussion, and references</small></span>
+                <b aria-hidden="true">↓</b>
+              </a>
+            </div>
+
+            <a class="btn btn--ghost" href="/projects/">← Back to all projects</a>
+          </aside>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <small>© 2026 Lorenzo Marinelli</small>
+    </footer>
+  </div>
+
+  <script src="/assets/script.js" defer></script>
+</body>
+
+</html>

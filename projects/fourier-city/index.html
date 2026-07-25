@@ -1,0 +1,412 @@
+<!doctype html>
+<html lang="en" data-palette="triad">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Fourier City · Lorenzo Marinelli</title>
+  <meta name="description"
+    content="Fourier City is an interactive Three.js audio visualization that connects waveforms, frequency spectra, real-time filters, and a pitch-tracking robot arm." />
+  <link rel="stylesheet" href="/assets/style.css" />
+
+  <link rel="alternate" hreflang="it" href="/it/projects/fourier-city/" />
+  <link rel="alternate" hreflang="en" href="/projects/fourier-city/" />
+  <link rel="icon" href="/assets/favicon.ico" sizes="any">
+  <link rel="icon" type="image/png" href="/assets/favicon-32.png" sizes="32x32">
+  <link rel="icon" type="image/png" href="/assets/favicon-16.png" sizes="16x16">
+  <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
+</head>
+
+<body class="fourier-page">
+  <div class="wrap">
+    <nav class="nav">
+      <a class="nav__brand" href="/" aria-label="Home">LM</a>
+
+      <div class="lang" aria-label="Language">
+        <a class="lang__btn is-active" href="/projects/fourier-city/" aria-label="English" title="English">
+          <span class="flag" aria-hidden="true">🇬🇧</span>
+          <span class="sr-only" lang="en">English</span>
+        </a>
+        <a class="lang__btn" href="/it/projects/fourier-city/" aria-label="Italiano" title="Italiano">
+          <span class="flag" aria-hidden="true">🇮🇹</span>
+          <span class="sr-only" lang="it">Italiano</span>
+        </a>
+      </div>
+
+      <button class="theme-toggle" type="button" data-theme-toggle aria-label="Toggle theme" title="Toggle theme">
+        <span data-theme-icon aria-hidden="true">◐</span>
+      </button>
+
+      <div class="nav__links">
+        <a href="/">Home</a>
+        <a href="/about/">About</a>
+        <a aria-current="page" href="/projects/">Projects</a>
+        <a href="/notes/">Notes</a>
+        <a href="/contact/">Contact</a>
+        <a href="/playground/">Playground</a>
+      </div>
+    </nav>
+
+    <header class="hero fourier-hero">
+      <div class="fourier-hero__copy">
+        <p class="kicker">Interactive Graphics course project</p>
+        <h1>Fourier City</h1>
+        <p class="lead">
+          An interactive, audio-reactive city where sound becomes architecture: hear a signal, shape it, and watch its
+          waveform and frequency spectrum respond in the same explorable 3D scene.
+        </p>
+
+        <div class="tag-row" aria-label="Tags">
+          <span>Three.js</span>
+          <span>Web Audio API</span>
+          <span>Fourier analysis</span>
+          <span>Real-time graphics</span>
+        </div>
+
+        <div class="meta">
+          <span>Lorenzo Marinelli &amp; Alessandro Romania</span>
+          <span class="sep">•</span>
+          <span>Sapienza University of Rome · 2026</span>
+        </div>
+
+        <div class="hero__cta">
+          <a class="btn btn--ghost" href="/projects/">← Back to projects</a>
+          <a class="btn" href="https://SapienzaInteractiveGraphicsCourse.github.io/final-project-fourier_people/"
+            target="_blank" rel="noreferrer">Launch live demo</a>
+          <a class="btn btn--ghost" href="https://github.com/Lorenzo-3/Fourier-City" target="_blank"
+            rel="noreferrer">View source</a>
+          <a class="btn btn--ghost" href="/assets/fourier-city/Fourier_City_Report.pdf">Read report</a>
+        </div>
+      </div>
+
+      <figure class="fourier-hero__visual">
+        <img src="/assets/fourier-city/overview.jpg"
+          alt="Fourier City scene with a circular control desk, waveform glass, and frequency-colored skyline."
+          width="1280" height="720">
+        <figcaption>The control desk sits at the center of a skyline organized from low to high frequency.</figcaption>
+      </figure>
+    </header>
+
+    <nav class="fourier-toc" aria-label="On this page">
+      <a href="#overview">Overview</a>
+      <a href="#experience">Experience</a>
+      <a href="#audio">Audio pipeline</a>
+      <a href="#spectrum">Spectrum city</a>
+      <a href="#robot">Robot arm</a>
+      <a href="#engineering">Engineering</a>
+      <a href="#gallery">Gallery</a>
+      <a href="#credits">Credits</a>
+    </nav>
+
+    <main class="fourier-content">
+      <section class="card" id="overview">
+        <p class="project-kicker">Overview</p>
+        <h2>One signal, two domains, one city</h2>
+        <div class="fourier-grid">
+          <div>
+            <p class="fourier-section__intro">
+              Fourier City turns signal-processing concepts into visible behavior. The live waveform answers how
+              amplitude changes over time; the skyline answers where energy is distributed across frequency. In-world
+              controls let visitors change the sound and compare both views immediately.
+            </p>
+            <p>
+              The experience supports generated sine, square, triangle, sawtooth, rich-harmonic, and noise signals,
+              plus a bundled or user-selected MP3. Pitch, cutoff, gain, and resonance are changed directly on the 3D
+              desk rather than through a separate menu.
+            </p>
+          </div>
+
+          <div class="fourier-facts" aria-label="Project facts">
+            <div class="fourier-fact"><span>Team</span><strong>Lorenzo Marinelli &amp; Alessandro Romania</strong></div>
+            <div class="fourier-fact"><span>Course</span><strong>Interactive Graphics</strong></div>
+            <div class="fourier-fact"><span>Core stack</span><strong>Three.js, Web Audio, Vite</strong></div>
+            <div class="fourier-fact"><span>3D assets</span><strong>Original Blender models</strong></div>
+          </div>
+        </div>
+
+        <div class="fourier-principle">
+          <p><strong>Core principle:</strong> the waveform and FFT analyse the same post-filter signal that reaches the
+            listener, so the audible and visual responses stay aligned.</p>
+        </div>
+      </section>
+
+      <section class="card" id="experience">
+        <p class="project-kicker">Experience</p>
+        <h2>A signal-processing lab you can walk through</h2>
+        <div class="fourier-grid">
+          <figure class="fourier-media">
+            <img src="/assets/fourier-city/controls.jpg"
+              alt="Fourier City introduction showing keyboard, mouse, and audio control instructions." loading="lazy"
+              width="1280" height="720">
+            <figcaption>The intro explains movement and interaction before enabling audio and pointer lock.</figcaption>
+          </figure>
+
+          <div>
+            <p>
+              The camera uses a first-person viewpoint. The table and robot are physical obstacles, while blocked
+              diagonal movement slides along their edges to keep exploration fluid.
+            </p>
+            <div class="fourier-controls" aria-label="Fourier City controls">
+              <div class="fourier-control"><kbd>WASD</kbd><span>Walk through the city.</span></div>
+              <div class="fourier-control"><kbd>Shift</kbd><span>Sprint while moving.</span></div>
+              <div class="fourier-control"><kbd>Mouse</kbd><span>Look and aim at desk controls.</span></div>
+              <div class="fourier-control"><kbd>Click</kbd><span>Select sources and filters; drag knobs vertically.</span></div>
+              <div class="fourier-control"><kbd>Space</kbd><span>Pause or resume the active sound.</span></div>
+              <div class="fourier-control"><kbd>Escape</kbd><span>Release pointer lock.</span></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="fourier-system-grid">
+          <article class="fourier-system-card">
+            <span>Control desk</span>
+            <h3>Physical controls, exact feedback</h3>
+            <p>Buttons select sources and filters. Knobs rotate through 270° and redraw Hz, Q, dB, or playback-rate
+              labels as they move.</p>
+          </article>
+          <article class="fourier-system-card">
+            <span>Time domain</span>
+            <h3>Live waveform</h3>
+            <p>A glass display plots 2,048 post-filter samples and begins near a rising zero crossing so periodic
+              waveforms remain visually stable.</p>
+          </article>
+          <article class="fourier-system-card">
+            <span>Frequency domain</span>
+            <h3>Audio-reactive skyline</h3>
+            <p>Position and hue identify frequency; building height, line brightness, and ground motion identify
+              spectral energy.</p>
+          </article>
+          <article class="fourier-system-card">
+            <span>Pitch</span>
+            <h3>Hierarchical robot</h3>
+            <p>For periodic signals, a two-link robotic arm points to the skyline band matching the selected pitch and
+              follows that building’s roof.</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="card" id="audio">
+        <p class="project-kicker">Audio pipeline</p>
+        <h2>One processed signal drives sound and graphics</h2>
+        <p class="fourier-section__intro">
+          MP3 buffers and procedural sources share one controller. Periodic waveforms use live oscillators for smooth
+          pitch changes; noise and music use looping buffers. A selected biquad filter is inserted before analysis and
+          positional output.
+        </p>
+
+        <div class="fourier-pipeline" aria-label="Audio and visualization data flow">
+          <div class="fourier-pipeline__main">
+            <div class="fourier-pipeline__node">
+              <strong>MP3 or generated source</strong>
+              <small>Oscillator or decoded buffer</small>
+            </div>
+            <span class="fourier-pipeline__arrow" aria-hidden="true">→</span>
+            <div class="fourier-pipeline__node">
+              <strong>Optional biquad filter</strong>
+              <small>Low-, high-, band-pass, or peaking</small>
+            </div>
+            <span class="fourier-pipeline__arrow" aria-hidden="true">→</span>
+            <div class="fourier-pipeline__node fourier-pipeline__node--hub">
+              <strong>Processed signal</strong>
+              <small>Shared source of truth</small>
+            </div>
+          </div>
+          <div class="fourier-pipeline__branch" aria-hidden="true">↓</div>
+          <div class="fourier-pipeline__outputs">
+            <div class="fourier-pipeline__node"><strong>Time analyser</strong><small>2,048 waveform samples</small></div>
+            <div class="fourier-pipeline__node"><strong>FFT analyser</strong><small>70 logarithmic bands</small></div>
+            <div class="fourier-pipeline__node"><strong>PositionalAudio</strong><small>Spatial listener output</small></div>
+          </div>
+        </div>
+
+        <div class="fourier-technical-grid">
+          <article class="fourier-callout">
+            <h3>Logarithmic pitch</h3>
+            <p>A normalized knob value maps evenly across the audible range for periodic oscillators.</p>
+            <code class="fourier-equation">f(p) = 20 × (20000 / 20)<sup>p</sup> Hz, 0 ≤ p ≤ 1</code>
+            <p>Music instead maps pitch to a playback rate from 0.5× to 1.5×; noise has no single pitch.</p>
+          </article>
+          <article class="fourier-callout">
+            <h3>Filters with visible consequences</h3>
+            <p>Cutoff spans 20 Hz to 20 kHz, resonance spans Q = 0.1 to 20, and the peaking filter adds gain from -18
+              to +18 dB.</p>
+            <p>The red skyline curve predicts attenuation or emphasis while a yellow marker identifies cutoff.</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="card" id="spectrum">
+        <p class="project-kicker">Spectrum city</p>
+        <h2>From FFT bins to an animated skyline</h2>
+        <p class="fourier-section__intro">
+          A 2,048-point FFT is sampled at 30 Hz and grouped into 70 logarithmic bands from 20 Hz to 20 kHz. Mean
+          decibels in each band are normalized into a common energy value used by buildings, wireframes, and the
+          shader-driven ground flow.
+        </p>
+
+        <div class="fourier-spectrum-visual" aria-hidden="true">
+          <span style="--i:0"></span><span style="--i:1"></span><span style="--i:2"></span>
+          <span style="--i:3"></span><span style="--i:4"></span><span style="--i:5"></span>
+          <span style="--i:6"></span><span style="--i:7"></span><span style="--i:8"></span>
+          <span style="--i:9"></span><span style="--i:10"></span><span style="--i:11"></span>
+          <span style="--i:12"></span><span style="--i:13"></span><span style="--i:14"></span>
+          <span style="--i:15"></span><span style="--i:16"></span><span style="--i:17"></span>
+        </div>
+
+        <div class="fourier-metrics" aria-label="Spectrum visualization parameters">
+          <div class="fourier-metric"><span>Frequency range</span><strong>20 Hz – 20 kHz</strong></div>
+          <div class="fourier-metric"><span>Skyline bands</span><strong>70</strong></div>
+          <div class="fourier-metric"><span>Analysis rate</span><strong>30 Hz</strong></div>
+        </div>
+
+        <div class="fourier-technical-grid">
+          <article class="fourier-callout">
+            <h3>Motion without jitter</h3>
+            <p>Separate exponential rates make buildings react quickly to rising energy and fall more slowly during
+              decay. The same smoothed scale drives the solid building and its colored wireframe.</p>
+            <code class="fourier-equation">α = 1 - e<sup>-rΔt</sup> · rise r = 200 · decay r = 16</code>
+          </article>
+          <article class="fourier-callout">
+            <h3>One energy value, three visual channels</h3>
+            <p>Band energy controls building height, wireframe brightness, and a compact 70-texel texture sampled by
+              the ground shader. Color preserves frequency identity across every layer.</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="card" id="robot">
+        <p class="project-kicker">Hierarchical animation</p>
+        <h2>A robot arm that physically points to pitch</h2>
+        <div class="fourier-grid">
+          <figure class="fourier-media">
+            <img src="/assets/fourier-city/pitch-robot.jpg"
+              alt="Fourier City robot arm reaching toward the skyline band selected by oscillator pitch." loading="lazy"
+              width="1280" height="720">
+            <figcaption>The stylus follows the roof of the building mapped to the active oscillator frequency.</figcaption>
+          </figure>
+
+          <div>
+            <p>
+              The arm is a nested Three.js hierarchy. Base yaw chooses the movement plane; shoulder and elbow solve
+              reach; the wrist compensates to preserve stylus orientation. Every child inherits the transformations
+              of the joints above it.
+            </p>
+            <div class="fourier-hierarchy" aria-label="Robot scene hierarchy">
+              <span>Root</span><i>→</i><span>Base yaw</span><i>→</i><span>Shoulder</span><i>→</i><span>Elbow</span><i>→</i><span>Wrist</span><i>→</i><span>Stylus</span>
+            </div>
+            <p>
+              Periodic oscillator pitch is rounded to the nearest skyline band. MP3 playback rate and noise do not
+              represent one stable frequency, so the robot returns smoothly to its folded inactive pose.
+            </p>
+          </div>
+        </div>
+
+        <article class="fourier-callout">
+          <h3>Two-link inverse kinematics</h3>
+          <p>The target distance is clamped to the reachable interval before the joint angles are solved, preventing
+            invalid poses when the selected building lies outside the exact arm radius.</p>
+          <code class="fourier-equation fourier-equation--stacked">θ₂ = acos((d² - L₁² - L₂²) / (2L₁L₂))
+θ₁ = atan2(y, x) - atan2(L₂sinθ₂, L₁ + L₂cosθ₂)
+wrist = -(θ₁ + θ₂)</code>
+        </article>
+      </section>
+
+      <section class="card" id="engineering">
+        <p class="project-kicker">Engineering</p>
+        <h2>Keeping the explanation responsive</h2>
+        <p class="fourier-section__intro">
+          The scene uses performance techniques selectively: every optimization also protects the clarity of a visual
+          explanation that must update continuously with audio.
+        </p>
+
+        <div class="fourier-engineering-grid">
+          <article class="fourier-engineering-card">
+            <span>Geometry</span>
+            <h3>Instanced skyline</h3>
+            <p>The original Blender skyscraper is normalized and reused with instancing. Expanded line buffers keep
+              each wireframe synchronized with its solid building.</p>
+          </article>
+          <article class="fourier-engineering-card">
+            <span>Memory</span>
+            <h3>Reusable buffers</h3>
+            <p>Typed arrays, analyser buffers, matrices, and waveform geometry are updated in place to avoid
+              per-frame allocations.</p>
+          </article>
+          <article class="fourier-engineering-card">
+            <span>Rendering</span>
+            <h3>Shader-driven flow</h3>
+            <p>A small RGBA texture carries band energy to a polar ground shader with traveling waves, Voronoi edges,
+              Fresnel response, and specular highlights.</p>
+          </article>
+          <article class="fourier-engineering-card">
+            <span>Interaction</span>
+            <h3>Resilient state changes</h3>
+            <p>Versioned audio requests ignore stale MP3 callbacks; analytic collisions, pointer-lock recovery, and
+              lazy audio setup keep the experience predictable.</p>
+          </article>
+        </div>
+
+        <div class="fourier-principle">
+          <p><strong>Next steps:</strong> add band-stop filters, microphone and streamed sources, selectable FFT sizes,
+            keyboard-accessible controls, saved presets, and lower-detail modes for weaker devices.</p>
+        </div>
+      </section>
+
+      <section class="card" id="gallery">
+        <p class="project-kicker">Gallery</p>
+        <h2>Reading the scene</h2>
+        <div class="fourier-gallery">
+          <figure class="fourier-media">
+            <img src="/assets/fourier-city/controls.jpg" alt="Fourier City start panel with interaction controls."
+              loading="lazy" width="1280" height="720">
+            <figcaption>Start panel and input guide.</figcaption>
+          </figure>
+          <figure class="fourier-media">
+            <img src="/assets/fourier-city/pitch-robot.jpg"
+              alt="Robot stylus pointing at a selected frequency band in Fourier City." loading="lazy" width="1280"
+              height="720">
+            <figcaption>Pitch mapped to a physical skyline target.</figcaption>
+          </figure>
+          <figure class="fourier-media">
+            <img src="/assets/fourier-city/filter-response.jpg"
+              alt="Fourier City scene showing the red filter-response curve and yellow cutoff marker." loading="lazy"
+              width="1280" height="720">
+            <figcaption>Filter response over the frequency arc.</figcaption>
+          </figure>
+        </div>
+      </section>
+
+      <section class="card" id="credits">
+        <p class="project-kicker">Credits and resources</p>
+        <h2>Built as a joint course project</h2>
+        <p>
+          Fourier City was created by <strong>Lorenzo Marinelli</strong> and <strong>Alessandro Romania</strong> for the
+          Interactive Graphics course taught by Prof. Marco Schaerf at DIAG, Sapienza University of Rome. The table and
+          skyscraper OBJ models are original team assets made in Blender.
+        </p>
+        <p>
+          The environment uses Night Sky HDRI 001 from ambientCG under CC0 1.0. Three.js and Vite are used under their
+          published open-source licenses. Full technical references and implementation details are listed in the report.
+        </p>
+
+        <div class="fourier-resource-list">
+          <a class="fourier-resource"
+            href="https://SapienzaInteractiveGraphicsCourse.github.io/final-project-fourier_people/" target="_blank"
+            rel="noreferrer"><strong>Launch Fourier City</strong><small>Interactive WebGL demo ↗</small></a>
+          <a class="fourier-resource" href="https://github.com/Lorenzo-3/Fourier-City" target="_blank"
+            rel="noreferrer"><strong>Browse the source code</strong><small>Public GitHub repository ↗</small></a>
+          <a class="fourier-resource" href="/assets/fourier-city/Fourier_City_Report.pdf"><strong>Read the technical
+              report</strong><small>PDF · 9 pages</small></a>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <small>© 2026 Lorenzo Marinelli</small>
+    </footer>
+  </div>
+
+  <script src="/assets/script.js" defer></script>
+</body>
+
+</html>
