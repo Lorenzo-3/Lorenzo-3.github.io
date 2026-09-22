@@ -53,8 +53,8 @@
         <h1>NoWhisper</h1>
         <p class="lead">Fast generative perturbations for breaking Whisper ASR.</p>
         <p>
-          Train once, then perturb a new speech waveform in a single forward pass. The result stays understandable to
-          a listener while pushing Whisper far away from the original transcript.
+          Train once, then perturb a new speech waveform in a single forward pass. In informal listening, the
+          adversarial speech often remains understandable while pushing Whisper far away from the original transcript.
         </p>
 
         <div class="tag-row" aria-label="Tags">
@@ -96,11 +96,12 @@
           </svg>
         </div>
 
-        <div class="nowhisper-delta" aria-label="A bounded perturbation is generated and added">
-          <span>+</span>
-          <code>δ ≤ ε</code>
-          <span>→</span>
+        <div class="nowhisper-delta"
+          aria-label="The generator output is bounded to an L-infinity budget of epsilon and added to the clean audio">
           <strong>G<sub>θ</sub>(x)</strong>
+          <span>→</span>
+          <code>‖δ‖∞ ≤ ε</code>
+          <span>→ + x</span>
         </div>
 
         <div class="nowhisper-signal-card nowhisper-signal-card--adversarial">
@@ -151,7 +152,7 @@
             <span aria-hidden="true">◉</span>
             <p class="project-kicker">Human listener</p>
             <h3>Keep the message</h3>
-            <p>Speech remains recognizable and understandable within a strict amplitude budget.</p>
+            <p>Within the amplitude budget, the adversarial speech often remains understandable in informal listening.</p>
           </article>
           <div class="nowhisper-problem-arrow" aria-hidden="true">same audio<br>different outcome</div>
           <article class="nowhisper-listener-card nowhisper-listener-card--asr">
@@ -410,10 +411,10 @@
                 <span aria-hidden="true"></span>
               </div>
             </div>
-            <div class="nowhisper-demo__metrics" aria-label="Example frontend output metrics">
-              <div><span>WER</span><strong>3.825</strong></div>
-              <div><span>SNR</span><strong>20.79 dB</strong></div>
-              <div><span>Status</span><strong>Success</strong></div>
+            <div class="nowhisper-demo__metrics" aria-label="Reported aggregate metrics on 100 held-out test clips">
+              <div><span>Test WER · 100 clips</span><strong>3.825</strong></div>
+              <div><span>Mean SNR</span><strong>20.79 dB</strong></div>
+              <div><span>Attack success</span><strong>99%</strong></div>
             </div>
           </figure>
         </div>
@@ -431,12 +432,13 @@
               <article>
                 <span>01</span>
                 <h3>Not imperceptible</h3>
-                <p>At roughly 20–23 dB SNR, the speech is understandable but the perturbation can still be audible.</p>
+                <p>At roughly 20–23 dB SNR, the perturbation is not silent, although the speech often remains
+                  understandable in informal listening.</p>
               </article>
               <article>
                 <span>02</span>
                 <h3>Masking can collapse the attack</h3>
-                <p>The strongest reported masking preserved quality but barely moved WER.</p>
+                <p>The strongest reported masking increased SNR but barely moved WER.</p>
               </article>
               <article>
                 <span>03</span>
@@ -445,7 +447,7 @@
               </article>
             </div>
             <details class="nowhisper-details">
-              <summary>Future directions</summary>
+              <summary>Potential extensions beyond the report</summary>
               <div class="nowhisper-details__body">
                 <p>Learned perceptual objectives, multilingual evaluation, physical playback tests, and adversarial
                   training are the clearest next steps.</p>

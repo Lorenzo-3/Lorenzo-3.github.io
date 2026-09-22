@@ -53,8 +53,8 @@
         <h1>NoWhisper</h1>
         <p class="lead">Perturbazioni generative veloci contro Whisper ASR.</p>
         <p>
-          Addestrare una volta, poi perturbare una nuova forma d’onda in un solo forward pass. Il risultato rimane
-          comprensibile per una persona, ma porta Whisper lontano dalla trascrizione originale.
+          Addestrare una volta, poi perturbare una nuova forma d’onda in un solo forward pass. All’ascolto informale, il
+          parlato avversario rimane spesso comprensibile, ma porta Whisper lontano dalla trascrizione originale.
         </p>
 
         <div class="tag-row" aria-label="Tag">
@@ -96,11 +96,12 @@
           </svg>
         </div>
 
-        <div class="nowhisper-delta" aria-label="Viene generata e aggiunta una perturbazione vincolata">
-          <span>+</span>
-          <code>δ ≤ ε</code>
-          <span>→</span>
+        <div class="nowhisper-delta"
+          aria-label="L’output del generatore viene vincolato a un budget L-infinito epsilon e aggiunto all’audio pulito">
           <strong>G<sub>θ</sub>(x)</strong>
+          <span>→</span>
+          <code>‖δ‖∞ ≤ ε</code>
+          <span>→ + x</span>
         </div>
 
         <div class="nowhisper-signal-card nowhisper-signal-card--adversarial">
@@ -151,7 +152,7 @@
             <span aria-hidden="true">◉</span>
             <p class="project-kicker">Ascoltatore umano</p>
             <h3>Mantenere il messaggio</h3>
-            <p>Il parlato resta riconoscibile e comprensibile entro un budget di ampiezza rigoroso.</p>
+            <p>Entro il budget di ampiezza, il parlato avversario rimane spesso comprensibile all’ascolto informale.</p>
           </article>
           <div class="nowhisper-problem-arrow" aria-hidden="true">stesso audio<br>esito diverso</div>
           <article class="nowhisper-listener-card nowhisper-listener-card--asr">
@@ -410,10 +411,10 @@
                 <span aria-hidden="true"></span>
               </div>
             </div>
-            <div class="nowhisper-demo__metrics" aria-label="Esempio delle metriche prodotte dal frontend">
-              <div><span>WER</span><strong>3,825</strong></div>
-              <div><span>SNR</span><strong>20,79 dB</strong></div>
-              <div><span>Stato</span><strong>Successo</strong></div>
+            <div class="nowhisper-demo__metrics" aria-label="Metriche aggregate riportate su 100 clip di test held-out">
+              <div><span>WER test · 100 clip</span><strong>3,825</strong></div>
+              <div><span>SNR medio</span><strong>20,79 dB</strong></div>
+              <div><span>Successo attacco</span><strong>99%</strong></div>
             </div>
           </figure>
         </div>
@@ -431,12 +432,13 @@
               <article>
                 <span>01</span>
                 <h3>Non impercettibile</h3>
-                <p>Con uno SNR di circa 20–23 dB il parlato è comprensibile, ma la perturbazione può essere udibile.</p>
+                <p>Con uno SNR di circa 20–23 dB la perturbazione non è silenziosa, anche se il parlato rimane spesso
+                  comprensibile all’ascolto informale.</p>
               </article>
               <article>
                 <span>02</span>
                 <h3>Il masking può far collassare l’attacco</h3>
-                <p>Il masking più forte preserva la qualità, ma modifica appena il WER.</p>
+                <p>Il masking più forte aumenta lo SNR, ma modifica appena il WER.</p>
               </article>
               <article>
                 <span>03</span>
@@ -445,7 +447,7 @@
               </article>
             </div>
             <details class="nowhisper-details">
-              <summary>Sviluppi futuri</summary>
+              <summary>Possibili estensioni oltre il report</summary>
               <div class="nowhisper-details__body">
                 <p>Obiettivi percettivi appresi, valutazione multilingue, test di riproduzione fisica e adversarial
                   training sono i prossimi passi più chiari.</p>
