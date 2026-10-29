@@ -7,7 +7,7 @@
   <title>Fourier City · Lorenzo Marinelli</title>
   <meta name="description"
     content="Fourier City is an interactive Three.js audio visualization that connects waveforms, frequency spectra, real-time filters, and a pitch-tracking robot arm." />
-  <link rel="stylesheet" href="/assets/style.css" />
+  <link rel="stylesheet" href="/assets/style.css?v=20261017" />
 
   <link rel="alternate" hreflang="it" href="/it/projects/fourier-city/" />
   <link rel="alternate" hreflang="en" href="/projects/fourier-city/" />
@@ -41,7 +41,6 @@
         <a href="/">Home</a>
         <a href="/about/">About</a>
         <a aria-current="page" href="/projects/">Projects</a>
-        <a href="/notes/">Notes</a>
         <a href="/contact/">Contact</a>
         <a href="/playground/">Playground</a>
       </div>
@@ -52,8 +51,8 @@
         <p class="kicker">Interactive Graphics course project</p>
         <h1>Fourier City</h1>
         <p class="lead">
-          An interactive, audio-reactive city where sound becomes architecture: hear a signal, shape it, and watch its
-          waveform and frequency spectrum respond in the same explorable 3D scene.
+          Explore an interactive, audio-reactive city where sound becomes architecture. Listen to a signal,
+          shape it, and watch its waveform and frequency spectrum respond in the same 3D scene.
         </p>
 
         <div class="tag-row" aria-label="Tags">
@@ -105,14 +104,14 @@
         <div class="fourier-grid">
           <div>
             <p class="fourier-section__intro">
-              Fourier City turns signal-processing concepts into visible behavior. The live waveform answers how
-              amplitude changes over time; the skyline answers where energy is distributed across frequency. In-world
-              controls let visitors change the sound and compare both views immediately.
+              Fourier City makes signal processing visible. The live waveform shows how amplitude changes over
+              time; the skyline shows how energy is spread across frequencies. Change the sound with controls
+              in the scene and compare both views straight away.
             </p>
             <p>
-              The experience supports generated sine, square, triangle, sawtooth, rich-harmonic, and noise signals,
-              plus a bundled or user-selected MP3. Pitch, cutoff, gain, and resonance are changed directly on the 3D
-              desk rather than through a separate menu.
+              Try generated sine, square, triangle, sawtooth, rich-harmonic, and noise signals, or play the
+              bundled MP3 or one of your own. Adjust pitch, cutoff, gain, and resonance directly on the 3D
+              desk.
             </p>
           </div>
 
@@ -125,8 +124,8 @@
         </div>
 
         <div class="fourier-principle">
-          <p><strong>Core principle:</strong> the waveform and FFT analyse the same post-filter signal that reaches the
-            listener, so the audible and visual responses stay aligned.</p>
+          <p><strong>Core principle:</strong> the waveform and FFT analyse the same post-filter signal you hear, keeping
+            the sound and visuals aligned.</p>
         </div>
       </section>
 
@@ -143,8 +142,8 @@
 
           <div>
             <p>
-              The camera uses a first-person viewpoint. The table and robot are physical obstacles, while blocked
-              diagonal movement slides along their edges to keep exploration fluid.
+              You explore from a first-person viewpoint. The table and robot act as physical obstacles. If
+              they block a diagonal movement, you slide along their edges to keep moving smoothly.
             </p>
             <div class="fourier-controls" aria-label="Fourier City controls">
               <div class="fourier-control"><kbd>WASD</kbd><span>Walk through the city.</span></div>
@@ -161,26 +160,25 @@
           <article class="fourier-system-card">
             <span>Control desk</span>
             <h3>Physical controls, exact feedback</h3>
-            <p>Buttons select sources and filters. Knobs rotate through 270° and redraw Hz, Q, dB, or playback-rate
-              labels as they move.</p>
+            <p>Use the buttons to choose sources and filters. The knobs turn through 270°, updating their Hz, Q, dB, or
+              playback-rate labels as you move them.</p>
           </article>
           <article class="fourier-system-card">
             <span>Time domain</span>
             <h3>Live waveform</h3>
-            <p>A glass display plots 2,048 post-filter samples and begins near a rising zero crossing so periodic
-              waveforms remain visually stable.</p>
+            <p>A glass display plots 2,048 post-filter samples. It starts near a rising zero crossing to keep periodic
+              waveforms visually stable.</p>
           </article>
           <article class="fourier-system-card">
             <span>Frequency domain</span>
             <h3>Audio-reactive skyline</h3>
-            <p>Position and hue identify frequency; building height, line brightness, and ground motion identify
-              spectral energy.</p>
+            <p>Position and hue show frequency. Building height, line brightness, and ground motion show spectral energy.</p>
           </article>
           <article class="fourier-system-card">
             <span>Pitch</span>
             <h3>Hierarchical robot</h3>
-            <p>For periodic signals, a two-link robotic arm points to the skyline band matching the selected pitch and
-              follows that building’s roof.</p>
+            <p>For periodic signals, a two-link robotic arm points to the skyline band that matches the selected pitch and
+              follows the building’s roof.</p>
           </article>
         </div>
       </section>
@@ -189,9 +187,9 @@
         <p class="project-kicker">Audio pipeline</p>
         <h2>One processed signal drives sound and graphics</h2>
         <p class="fourier-section__intro">
-          MP3 buffers and procedural sources share one controller. Periodic waveforms use live oscillators for smooth
-          pitch changes; noise and music use looping buffers. A selected biquad filter is inserted before analysis and
-          positional output.
+          MP3 buffers and procedural sources use the same controller. Live oscillators let periodic waveforms
+          change pitch smoothly; noise and music use looping buffers. The selected biquad filter sits before
+          analysis and positional output.
         </p>
 
         <div class="fourier-pipeline" aria-label="Audio and visualization data flow">
@@ -222,15 +220,15 @@
         <div class="fourier-technical-grid">
           <article class="fourier-callout">
             <h3>Logarithmic pitch</h3>
-            <p>A normalized knob value maps evenly across the audible range for periodic oscillators.</p>
+            <p>For periodic oscillators, the normalized knob value maps evenly across the audible range.</p>
             <code class="fourier-equation">f(p) = 20 × (20000 / 20)<sup>p</sup> Hz, 0 ≤ p ≤ 1</code>
-            <p>Music instead maps pitch to a playback rate from 0.5× to 1.5×; noise has no single pitch.</p>
+            <p>For music, pitch instead maps to a playback rate between 0.5× and 1.5×. Noise has no single pitch.</p>
           </article>
           <article class="fourier-callout">
             <h3>Filters with visible consequences</h3>
-            <p>Cutoff spans 20 Hz to 20 kHz, resonance spans Q = 0.1 to 20, and the peaking filter adds gain from -18
-              to +18 dB.</p>
-            <p>The red skyline curve predicts attenuation or emphasis while a yellow marker identifies cutoff.</p>
+            <p>Cutoff ranges from 20 Hz to 20 kHz, and resonance from Q = 0.1 to 20. The peaking filter adds gain from -18 to
+              +18 dB.</p>
+            <p>The red skyline curve predicts attenuation or emphasis. The yellow marker shows the cutoff.</p>
           </article>
         </div>
       </section>
@@ -239,9 +237,9 @@
         <p class="project-kicker">Spectrum city</p>
         <h2>From FFT bins to an animated skyline</h2>
         <p class="fourier-section__intro">
-          A 2,048-point FFT is sampled at 30 Hz and grouped into 70 logarithmic bands from 20 Hz to 20 kHz. Mean
-          decibels in each band are normalized into a common energy value used by buildings, wireframes, and the
-          shader-driven ground flow.
+          A 2,048-point FFT is sampled at 30 Hz, then grouped into 70 logarithmic bands from 20 Hz to 20 kHz.
+          Each band’s mean decibels are normalized to a shared energy value that drives the buildings,
+          wireframes, and shader-driven ground flow.
         </p>
 
         <div class="fourier-spectrum-visual" aria-hidden="true">
@@ -262,14 +260,14 @@
         <div class="fourier-technical-grid">
           <article class="fourier-callout">
             <h3>Motion without jitter</h3>
-            <p>Separate exponential rates make buildings react quickly to rising energy and fall more slowly during
-              decay. The same smoothed scale drives the solid building and its colored wireframe.</p>
+            <p>Separate exponential rates let buildings rise quickly with increasing energy and fall more slowly as it
+              decays. The solid building and its colored wireframe use the same smoothed scale.</p>
             <code class="fourier-equation">α = 1 - e<sup>-rΔt</sup> · rise r = 200 · decay r = 16</code>
           </article>
           <article class="fourier-callout">
             <h3>One energy value, three visual channels</h3>
-            <p>Band energy controls building height, wireframe brightness, and a compact 70-texel texture sampled by
-              the ground shader. Color preserves frequency identity across every layer.</p>
+            <p>Band energy sets building height and wireframe brightness. It also feeds a compact 70-texel texture read by
+              the ground shader. Color keeps each frequency recognizable across every layer.</p>
           </article>
         </div>
       </section>
@@ -287,24 +285,25 @@
 
           <div>
             <p>
-              The arm is a nested Three.js hierarchy. Base yaw chooses the movement plane; shoulder and elbow solve
-              reach; the wrist compensates to preserve stylus orientation. Every child inherits the transformations
-              of the joints above it.
+              The arm is built as a nested Three.js hierarchy. Base yaw sets the movement plane; the shoulder
+              and elbow solve the reach; the wrist compensates to keep the stylus oriented. Each child
+              inherits the transformations of the joints above it.
             </p>
             <div class="fourier-hierarchy" aria-label="Robot scene hierarchy">
               <span>Root</span><i>→</i><span>Base yaw</span><i>→</i><span>Shoulder</span><i>→</i><span>Elbow</span><i>→</i><span>Wrist</span><i>→</i><span>Stylus</span>
             </div>
             <p>
-              Periodic oscillator pitch is rounded to the nearest skyline band. MP3 playback rate and noise do not
-              represent one stable frequency, so the robot returns smoothly to its folded inactive pose.
+              Periodic oscillator pitch is rounded to the nearest skyline band. MP3 playback rate and noise
+              don’t correspond to a single stable frequency, so the robot smoothly folds back into its
+              inactive pose.
             </p>
           </div>
         </div>
 
         <article class="fourier-callout">
           <h3>Two-link inverse kinematics</h3>
-          <p>The target distance is clamped to the reachable interval before the joint angles are solved, preventing
-            invalid poses when the selected building lies outside the exact arm radius.</p>
+          <p>Before solving the joint angles, the target distance is clamped to the arm’s reachable interval. This prevents
+            invalid poses when the selected building is beyond its exact reach.</p>
           <code class="fourier-equation fourier-equation--stacked">θ₂ = acos((d² - L₁² - L₂²) / (2L₁L₂))
 θ₁ = atan2(y, x) - atan2(L₂sinθ₂, L₁ + L₂cosθ₂)
 wrist = -(θ₁ + θ₂)</code>
@@ -315,40 +314,40 @@ wrist = -(θ₁ + θ₂)</code>
         <p class="project-kicker">Engineering</p>
         <h2>Keeping the explanation responsive</h2>
         <p class="fourier-section__intro">
-          The scene uses performance techniques selectively: every optimization also protects the clarity of a visual
-          explanation that must update continuously with audio.
+          The performance optimizations are chosen with the explanation in mind: the scene needs to stay clear
+          while updating continuously with the audio.
         </p>
 
         <div class="fourier-engineering-grid">
           <article class="fourier-engineering-card">
             <span>Geometry</span>
             <h3>Instanced skyline</h3>
-            <p>The original Blender skyscraper is normalized and reused with instancing. Expanded line buffers keep
-              each wireframe synchronized with its solid building.</p>
+            <p>The original Blender skyscraper is normalized and reused through instancing. Expanded line buffers keep every
+              wireframe in sync with its solid building.</p>
           </article>
           <article class="fourier-engineering-card">
             <span>Memory</span>
             <h3>Reusable buffers</h3>
-            <p>Typed arrays, analyser buffers, matrices, and waveform geometry are updated in place to avoid
-              per-frame allocations.</p>
+            <p>Typed arrays, analyser buffers, matrices, and waveform geometry are updated in place, avoiding allocations on
+              each frame.</p>
           </article>
           <article class="fourier-engineering-card">
             <span>Rendering</span>
             <h3>Shader-driven flow</h3>
-            <p>A small RGBA texture carries band energy to a polar ground shader with traveling waves, Voronoi edges,
+            <p>A small RGBA texture sends band energy to a polar ground shader, which adds traveling waves, Voronoi edges,
               Fresnel response, and specular highlights.</p>
           </article>
           <article class="fourier-engineering-card">
             <span>Interaction</span>
             <h3>Resilient state changes</h3>
-            <p>Versioned audio requests ignore stale MP3 callbacks; analytic collisions, pointer-lock recovery, and
-              lazy audio setup keep the experience predictable.</p>
+            <p>Versioned audio requests discard stale MP3 callbacks. Analytic collisions, pointer-lock recovery, and audio
+              setup on demand help keep the experience predictable.</p>
           </article>
         </div>
 
         <div class="fourier-principle">
           <p><strong>Next steps:</strong> add band-stop filters, microphone and streamed sources, selectable FFT sizes,
-            keyboard-accessible controls, saved presets, and lower-detail modes for weaker devices.</p>
+            keyboard-accessible controls, saved presets, and modes with less detail for weaker devices.</p>
         </div>
       </section>
 
@@ -380,13 +379,14 @@ wrist = -(θ₁ + θ₂)</code>
         <p class="project-kicker">Credits and resources</p>
         <h2>Built as a joint course project</h2>
         <p>
-          Fourier City was created by <strong>Lorenzo Marinelli</strong> and <strong>Alessandro Romania</strong> for the
-          Interactive Graphics course taught by Prof. Marco Schaerf at DIAG, Sapienza University of Rome. The table and
-          skyscraper OBJ models are original team assets made in Blender.
+          <strong>Lorenzo Marinelli</strong> and <strong>Alessandro Romania</strong> created Fourier City for
+          the Interactive Graphics course taught by Prof. Marco Schaerf at DIAG, Sapienza University of Rome.
+          The team made the original table and skyscraper OBJ models in Blender.
         </p>
         <p>
-          The environment uses Night Sky HDRI 001 from ambientCG under CC0 1.0. Three.js and Vite are used under their
-          published open-source licenses. Full technical references and implementation details are listed in the report.
+          The environment uses ambientCG’s Night Sky HDRI 001 under CC0 1.0. Three.js and Vite use their
+          published open-source licenses. The report lists the full technical references and implementation
+          details.
         </p>
 
         <div class="fourier-resource-list">

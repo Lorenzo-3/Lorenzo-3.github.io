@@ -402,6 +402,15 @@ small {
   box-shadow: 0 10px 30px rgba(0, 0, 0, .25);
 }
 
+.avatar--initials {
+  display: grid;
+  place-items: center;
+  color: var(--accent);
+  font-family: var(--font-serif);
+  font-size: 3rem;
+  font-weight: 700;
+}
+
 @media (max-width: 640px) {
   .profile {
     flex-direction: column;
@@ -1631,6 +1640,10 @@ html[data-theme="light"] .filter-btn.is-active {
   margin-top: 1rem;
 }
 
+.kitten-sampler[hidden] {
+  display: none;
+}
+
 .kitten-sampler:hover {
   transform: none;
 }
@@ -2102,6 +2115,7 @@ html[data-theme="light"] .mini-btn.is-active {
 }
 
 .playground-page .playground-bg-graph {
+  position: absolute;
   display: block !important;
   pointer-events: auto;
   z-index: 0;
@@ -2130,10 +2144,11 @@ html[data-theme="light"] .mini-btn.is-active {
 .playground-graph-window {
   min-height: clamp(560px, 70vh, 860px);
   position: relative;
-  pointer-events: none;
+  pointer-events: auto;
 }
 
 .playground-hint {
+  pointer-events: none;
   position: absolute;
   top: 1.25rem;
   left: 0;

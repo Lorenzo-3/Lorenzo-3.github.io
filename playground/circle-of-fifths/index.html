@@ -7,7 +7,7 @@
     <title>Circle of Fifths Network · Playground · Lorenzo Marinelli</title>
     <meta name="description"
         content="Interactive circle of fifths network by Lorenzo Marinelli — explore key relationships, relative minors, and simple harmonic motion." />
-    <link rel="stylesheet" href="/assets/style.css" />
+    <link rel="stylesheet" href="/assets/style.css?v=20261017" />
 
     <link rel="alternate" hreflang="en" href="/playground/circle-of-fifths/" />
     <link rel="alternate" hreflang="it" href="/it/playground/circle-of-fifths/" />
@@ -42,7 +42,6 @@
                 <a href="/">Home</a>
                 <a href="/about/">About</a>
                 <a href="/projects/">Projects</a>
-                <a href="/notes/">Notes</a>
                 <a href="/contact/">Contact</a>
                 <a aria-current="page" href="/playground/">Playground</a>
             </div>
@@ -52,8 +51,8 @@
             <p class="kicker">Playground experiment</p>
             <h1>Circle of Fifths Network</h1>
             <p class="lead hero-line">
-                A small interactive music-theory graph. Click a key to highlight its closest harmonic neighbors,
-                relative minor, and a simple I–vi–IV–V progression.
+                Explore music theory through a small interactive graph. Click a key to highlight its closest
+                harmonic neighbors, its relative minor, and a simple I–vi–IV–V progression.
             </p>
 
             <div class="hero__cta">
@@ -67,8 +66,8 @@
                     <p class="project-kicker">Interactive harmony graph</p>
                     <h2>Keys as connected nodes</h2>
                     <p>
-                        Outer nodes are major keys. Inner nodes are their relative minors.
-                        Neighboring major keys are a fifth apart, which makes them natural modulation targets.
+                        The outer nodes are major keys; the inner ones are their relative minors. Adjacent
+                        major keys are a fifth apart, making them natural choices for modulation.
                     </p>
                 </div>
 
@@ -112,8 +111,8 @@
                     </button>
 
                     <p class="fifths-note">
-                        The sound is intentionally simple: plain synthesized triads, just enough to hear the
-                        relationship.
+                        The sound is deliberately simple: just synthesized triads, enough to hear how the keys
+                        relate.
                     </p>
                 </aside>
             </div>
@@ -123,18 +122,17 @@
             <article class="card">
                 <h2>What to notice</h2>
                 <p>
-                    Moving clockwise adds sharps and moves by fifths. Moving counterclockwise adds flats and moves by
-                    fourths.
-                    Nearby keys share many notes, which is why they are common modulation targets.
+                    Go clockwise to add sharps and move by fifths, or counterclockwise to add flats and move
+                    by fourths. Nearby keys share many notes, so they’re common choices for modulation.
                 </p>
             </article>
 
             <article class="card">
                 <h2>Why in the Playground</h2>
                 <p>
-                    It uses the same graph idea as the data-science toys, but applied to harmony. Chords, keys, and
-                    progressions
-                    can all be treated as nodes and transitions. + I simply like music theory
+                    This takes the graph idea from the data-science toys and applies it to harmony. Chords,
+                    keys, and progressions can all be represented as nodes and transitions. Also, I just like
+                    music theory.
                 </p>
             </article>
         </section>
@@ -366,6 +364,26 @@
 
             const SINGLE_NOTE_VOLUME = 0.24;
             const CHORD_VOICE_VOLUME = 0.12;
+            let audioContext = null;
+            const getAudioContext = async () => {
+                try {
+                    const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+                    if (!AudioContextClass) throw new Error('Audio unavailable');
+                    if (!audioContext || audioContext.state === 'closed') {
+                        audioContext = new AudioContextClass();
+                    }
+                    if (audioContext.state === 'suspended') await audioContext.resume();
+                    return audioContext;
+                } catch {
+                    status.textContent = 'Audio is unavailable in this browser.';
+                    return null;
+                }
+            };
+
+            window.addEventListener('pagehide', () => {
+                if (audioContext) audioContext.close().catch(() => {});
+                audioContext = null;
+            });
 
             const cleanRootName = (name) => {
                 return name
@@ -374,8 +392,9 @@
                     .trim();
             };
 
-            const playSingleNote = (rootName, octave = 4) => {
-                const audio = new AudioContext();
+            const playSingleNote = async (rootName, octave = 4) => {
+                const audio = await getAudioContext();
+                if (!audio) return;
 
                 const root = cleanRootName(rootName);
                 const pc = pitchClasses[root] ?? 0;
@@ -392,7 +411,7 @@
                 const now = audio.currentTime;
 
                 gain.gain.setValueAtTime(0.0001, now);
-                gain.gain.exponentialRampToValueAtTime(SINGLE_NOTE_VOLUME, now + 0.025);;
+                gain.gain.exponentialRampToValueAtTime(SINGLE_NOTE_VOLUME, now + 0.025);
                 gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.65);
 
                 oscillator.connect(gain);
@@ -400,6 +419,10 @@
 
                 oscillator.start(now);
                 oscillator.stop(now + 0.7);
+                oscillator.onended = () => {
+                    oscillator.disconnect();
+                    gain.disconnect();
+                };
             };
 
             const midiToFrequency = (midi) => {
@@ -437,11 +460,16 @@
 
                     oscillator.start(startTime);
                     oscillator.stop(startTime + duration + 0.03);
+                    oscillator.onended = () => {
+                        oscillator.disconnect();
+                        gain.disconnect();
+                    };
                 });
             };
 
-            const playProgression = () => {
-                const audio = new AudioContext();
+            const playProgression = async () => {
+                const audio = await getAudioContext();
+                if (!audio) return;
                 const chords = keys[selected].progression;
                 const qualities = ['major', 'minor', 'major', 'major'];
                 const now = audio.currentTime + 0.05;

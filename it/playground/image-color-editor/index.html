@@ -7,7 +7,7 @@
     <title>Image Color Editor · Playground · Lorenzo Marinelli</title>
     <meta name="description"
         content="Editor colore interattivo di Lorenzo Marinelli: modifica hue, saturazione, contrasto, calore, scala di grigi, inversione e ordine dei canali RGB, poi salva un PNG." />
-    <link rel="stylesheet" href="/assets/style.css" />
+    <link rel="stylesheet" href="/assets/style.css?v=20261017" />
 
     <link rel="alternate" hreflang="en" href="/playground/image-color-editor/" />
     <link rel="alternate" hreflang="it" href="/it/playground/image-color-editor/" />
@@ -42,7 +42,6 @@
                 <a href="/it/">Home</a>
                 <a href="/it/about/">Info</a>
                 <a href="/it/projects/">Progetti</a>
-                <a href="/it/notes/">Appunti</a>
                 <a href="/it/contact/">Contatti</a>
                 <a aria-current="page" href="/it/playground/">Playground</a>
             </div>
@@ -52,8 +51,8 @@
             <p class="kicker">Esperimento del playground</p>
             <h1>Image Color Editor</h1>
             <p class="lead hero-line">
-                Carica un’immagine o usa il campione generato, poi modifica hue, saturazione, contrasto, calore, scala
-                di grigi, inversione e ordine dei canali RGB prima di salvare il risultato come PNG.
+                Carica un’immagine o parti dal campione generato. Regola tonalità, saturazione, contrasto,
+                calore, scala di grigi, inversione e ordine dei canali RGB, poi salva il risultato come PNG.
             </p>
 
             <div class="hero__cta">
@@ -67,8 +66,8 @@
                     <p class="project-kicker">Laboratorio colore pixel</p>
                     <h2>Un’immagine, trasformazioni colore live</h2>
                     <p>
-                        Il canvas di sinistra conserva l’immagine sorgente. Il canvas di destra applica ogni controllo
-                        colore nel browser, così ogni slider e scambio di canali è visibile subito.
+                        Il canvas a sinistra mostra l’immagine originale. Quello a destra applica i controlli
+                        colore nel browser, così vedi subito l’effetto di ogni slider e scambio di canali.
                     </p>
                 </div>
 
@@ -161,8 +160,8 @@
                     </div>
 
                     <p class="color-note">
-                        Hue e saturazione operano in spazio HSL. Contrasto, luminosità, calore, inversione, scala di
-                        grigi e scambio canali operano direttamente sui pixel RGB.
+                        Tonalità e saturazione lavorano nello spazio HSL. Contrasto, luminosità, calore,
+                        inversione, scala di grigi e scambi di canale lavorano direttamente sui pixel RGB.
                     </p>
                 </aside>
             </div>
@@ -172,17 +171,18 @@
             <article class="card">
                 <h2>Cosa osservare</h2>
                 <p>
-                    Gli scambi di canale sono strutturali: informazioni rosse, verdi e blu cambiano posto. Gli shift di
-                    hue ruotano le relazioni cromatiche preservando più luminanza originale.
+                    Scambiare i canali sposta le informazioni rosse, verdi e blu al posto delle altre.
+                    Cambiare tonalità ruota le relazioni cromatiche mantenendo una parte maggiore della
+                    luminanza originale.
                 </p>
             </article>
 
             <article class="card">
                 <h2>Perché esiste</h2>
                 <p>
-                    Mi piacciono arte e teoria del colore, e mi servivano spesso trasformazioni rapide senza creare un
-                    account o litigare con l’ennesimo tool gratuito fatto male. Questa è l’utility che volevo avere
-                    sempre a portata di mano.
+                    Mi piacciono arte e teoria del colore, e mi serviva spesso una modifica rapida senza un
+                    altro account o un tool gratuito frustrante. Questa è l’utility che volevo avere a portata
+                    di mano.
                 </p>
             </article>
         </section>

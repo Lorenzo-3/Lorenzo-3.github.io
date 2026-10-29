@@ -7,7 +7,7 @@
     <title>Fourier Transform Playground · Playground · Lorenzo Marinelli</title>
     <meta name="description"
         content="Interactive Fourier transform playground by Lorenzo Marinelli - add sine waves one at a time and hear how they change the sound." />
-    <link rel="stylesheet" href="/assets/style.css" />
+    <link rel="stylesheet" href="/assets/style.css?v=20261017" />
 
     <link rel="alternate" hreflang="en" href="/playground/fourier/" />
     <link rel="alternate" hreflang="it" href="/it/playground/fourier/" />
@@ -41,7 +41,6 @@
                 <a href="/">Home</a>
                 <a href="/about/">About</a>
                 <a href="/projects/">Projects</a>
-                <a href="/notes/">Notes</a>
                 <a href="/contact/">Contact</a>
                 <a aria-current="page" href="/playground/">Playground</a>
             </div>
@@ -51,8 +50,8 @@
             <p class="kicker">Playground experiment</p>
             <h1>Fourier Transform Playground</h1>
             <p class="lead hero-line">
-                Add sine waves one by one, then watch the time waveform and frequency spectrum change as the sound
-                becomes richer.
+                Add sine waves one at a time. Watch the waveform and frequency spectrum change as the sound
+                grows richer.
             </p>
 
             <div class="hero__cta">
@@ -76,7 +75,7 @@
         <div class="fourier-hud__top">
             <div>
                 <h2>Fourier mixer</h2>
-                <p data-fourier-status>One sine wave is loaded. Add more partials to reshape the sound.</p>
+                <p data-fourier-status>There’s one sine wave to start with. Add more partials to change the sound.</p>
             </div>
             <div class="fourier-actions">
                 <button class="btn" type="button" data-fourier-play>Hear mix</button>
@@ -100,8 +99,8 @@
         <div class="fourier-components" data-fourier-components aria-label="Sine components"></div>
 
         <p class="fourier-note">
-            Harmonic 1 is the base pitch. Higher harmonics add brightness; phase changes the shape without moving the
-            spectrum bar.
+            Harmonic 1 sets the base pitch. Higher harmonics add brightness, while phase changes the
+            waveform’s shape without moving the spectrum bar.
         </p>
     </aside>
 

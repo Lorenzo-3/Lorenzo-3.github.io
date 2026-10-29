@@ -7,7 +7,7 @@
     <title>GNN Protein Interaction Thesis · Lorenzo Marinelli</title>
     <meta name="description"
         content="Interactive summary of Lorenzo Marinelli's thesis on protein-protein interaction prediction with Graph Neural Networks and ProtT5 embeddings." />
-    <link rel="stylesheet" href="/assets/style.css" />
+    <link rel="stylesheet" href="/assets/style.css?v=20261017" />
 
     <link rel="alternate" hreflang="it" href="/it/projects/thesis-gnn-protein-interactions/" />
     <link rel="alternate" hreflang="en" href="/projects/thesis-gnn-protein-interactions/" />
@@ -393,7 +393,6 @@
                 <a href="/">Home</a>
                 <a href="/about/">About</a>
                 <a aria-current="page" href="/projects/">Projects</a>
-                <a href="/notes/">Notes</a>
                 <a href="/contact/">Contact</a>
         <a href="/playground/">Playground</a>
             </div>
@@ -403,8 +402,8 @@
             <p class="kicker">Interactive thesis summary</p>
             <h1>Unveiling Protein Connections through Graph Neural Networks and ProtT5 Embeddings</h1>
             <p class="lead">
-                A web-native summary of my bachelor’s thesis: predicting missing protein-protein interactions by
-                combining protein language-model embeddings with graph neural networks.
+                A browser-based summary of my bachelor’s thesis on predicting missing protein-protein
+                interactions with protein language-model embeddings and graph neural networks.
             </p>
 
             <div class="tag-row" aria-label="Tags">
@@ -434,9 +433,9 @@
             <section class="card thesis-section" id="pipeline">
                 <h2>From protein sequences to interaction scores</h2>
                 <p>
-                    The idea is simple: proteins become nodes, known interactions become edges, ProtT5 provides
-                    sequence-based node features,
-                    and the GNN learns graph-aware protein embeddings that can be scored pairwise.
+                    Proteins are nodes, and known interactions are edges. ProtT5 supplies sequence-based node
+                    features; the GNN learns protein embeddings that include graph context and can be scored
+                    in pairs.
                 </p>
 
                 <div class="pipeline" data-pipeline>
@@ -479,8 +478,8 @@
                 <div class="pipeline-explainer" aria-live="polite">
                     <h3 data-pipeline-title>Protein sequences</h3>
                     <p data-pipeline-text>
-                        The starting point is the amino-acid sequence of each protein. This gives the model biological
-                        information before seeing the graph.
+                        Each protein’s amino-acid sequence is the starting point, giving the model biological
+                        information before it sees the graph.
                     </p>
                 </div>
             </section>
@@ -490,10 +489,9 @@
                 <div class="thesis-hero-grid">
                     <div>
                         <p>
-                            I used the STRING v12 human protein-protein interaction network and kept only very
-                            high-confidence edges.
-                            Filtering at confidence ≥ 950 reduces noise and makes the graph more reliable for training,
-                            at the cost of removing many lower-confidence interactions.
+                            I used the STRING v12 human protein-protein interaction network, keeping only very
+                            high-confidence edges. A confidence threshold of ≥ 950 cuts noise and makes the
+                            training graph more reliable, but removes many lower-confidence interactions.
                         </p>
                         <ul class="bullets">
                             <li><span class="hl">Source:</span> STRING v12, human PPI network.</li>
@@ -533,8 +531,9 @@
                     <div>
                         <h3>Message passing intuition</h3>
                         <p>
-                            TAGConv aggregates multi-hop neighborhood information. Use the buttons to see how a center
-                            protein can receive information from 1-hop, 2-hop, and 3-hop neighborhoods.
+                            TAGConv gathers information across multiple hops. Use the buttons to see how a
+                            center protein receives information from its 1-hop, 2-hop, and 3-hop
+                            neighborhoods.
                         </p>
 
                         <div class="graph-demo" data-hop-demo aria-label="Message passing hop visualization">
@@ -589,8 +588,8 @@
 
                         <h3>Pair decoder</h3>
                         <p>
-                            Once the encoder produces graph-aware embeddings, the decoder scores pairs locally. This
-                            means the graph can be encoded once, then many candidate pairs can be ranked.
+                            Once the encoder has produced graph-aware embeddings, the decoder scores pairs
+                            locally. The graph only needs to be encoded once to rank many candidate pairs.
                         </p>
                     </div>
                 </div>
@@ -599,8 +598,8 @@
                     <article class="architecture-panel">
                         <h3>TransformerConv attention</h3>
                         <p>
-                            Each neighbor sends a message, but attention decides how much each message should matter
-                            before the center protein updates its embedding.
+                            Each neighbor sends a message. Attention determines how much weight it gets before
+                            the center protein updates its embedding.
                         </p>
 
                         <div class="attention-demo" aria-label="Attention-weighted neighbor aggregation">
@@ -649,8 +648,8 @@
                     <article class="architecture-panel">
                         <h3>Pair decoder animation</h3>
                         <p>
-                            After message passing, the graph is encoded once. The decoder only receives two node
-                            embeddings, builds pair features, and maps them to an interaction probability.
+                            After message passing, the graph is encoded once. The decoder takes just two node
+                            embeddings, builds pair features, and turns them into an interaction probability.
                         </p>
 
                         <div class="decoder-motion" aria-label="Animated pair decoder flow">
@@ -715,9 +714,9 @@
             <section class="card thesis-section" id="results">
                 <h2>Results</h2>
                 <p>
-                    The model achieved strong global separability and very high early precision. The early precision
-                    result is especially important because in a biological workflow the goal is often to produce a short
-                    list of strong candidates for further validation.
+                    The model achieved strong global separability and very high early precision. Early
+                    precision matters here: biological workflows often need a short list of strong candidates
+                    to validate further.
                 </p>
 
                 <div class="metric-grid">
@@ -754,8 +753,8 @@
                 <div class="split-layout">
                     <div>
                         <p>
-                            The model was strongest in dense regions of the graph. This makes sense: GNNs rely on
-                            neighborhood information, so hub proteins and clustered regions provide more signal.
+                            The model worked best in dense parts of the graph. GNNs use neighborhood
+                            information, so hub proteins and clustered regions give them more signal.
                         </p>
                         <ul class="bullets">
                             <li><span class="hl">Recovered test edges:</span> involved proteins with higher-than-average
@@ -770,9 +769,9 @@
                     <div class="case-panel">
                         <h3>Practical interpretation</h3>
                         <p class="case-summary">
-                            The model is not only learning sequence compatibility. It is also learning how interaction
-                            likelihood behaves inside the observed graph topology.
-                            This is useful, but it introduces a blind spot for sparse regions.
+                            The model learns both sequence compatibility and how interaction likelihood varies
+                            with the observed graph topology. That’s useful, but leaves a blind spot in sparse
+                            regions.
                         </p>
                     </div>
                 </div>
@@ -781,8 +780,9 @@
             <section class="card thesis-section" id="notch2">
                 <h2>NOTCH2 case study</h2>
                 <p>
-                    The NOTCH2 analysis compared a denser lower-confidence graph with the high-confidence graph used for
-                    training. The main point is that graph context changes model confidence dramatically.
+                    The NOTCH2 analysis compared a denser, lower-confidence graph with the high-confidence
+                    training graph. It showed how dramatically graph context can change the model’s
+                    confidence.
                 </p>
 
                 <div class="case-controls" aria-label="NOTCH2 graph context toggle">
@@ -793,8 +793,8 @@
                 <div class="case-panel" data-case-panel>
                     <h3 data-case-title>Dense LC-250 graph</h3>
                     <p data-case-text>
-                        In the denser graph, recovered edges showed a sharp high-confidence region near p = 0.95. The
-                        model became bolder because NOTCH2 had richer local topology.
+                        In the denser graph, recovered edges formed a sharp high-confidence region near p =
+                        0.95. Richer local topology around NOTCH2 made the model more confident.
                     </p>
 
                     <div class="case-bars">

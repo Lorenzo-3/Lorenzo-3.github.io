@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width,initial-scale=1" />
     <title>Anomaly Detection & Localizzazione UAV · Lorenzo Marinelli</title>
     <meta name="description" content="Pagina progetto interattiva per anomaly detection UAV di Lorenzo Marinelli." />
-    <link rel="stylesheet" href="/assets/style.css" />
+    <link rel="stylesheet" href="/assets/style.css?v=20261017" />
 
     <link rel="alternate" hreflang="en" href="/projects/uav-anomaly-detection/" />
     <link rel="alternate" hreflang="it" href="/it/projects/uav-anomaly-detection/" />
@@ -717,7 +717,6 @@
                 <a href="/it/">Home</a>
                 <a href="/it/about/">Info</a>
                 <a aria-current="page" href="/it/projects/">Progetti</a>
-                <a href="/it/notes/">Appunti</a>
                 <a href="/it/contact/">Contatti</a>
         <a href="/it/playground/">Playground</a>
             </div>
@@ -727,8 +726,8 @@
             <p class="kicker">Demo interattiva</p>
             <h1>Anomaly Detection & Localizzazione UAV</h1>
             <p class="lead">
-                Una pagina compatta del progetto di anomaly detection: dall’immagine aerea originale alla anomaly map,
-                alla maschera sogliata e all’output pronto per la localizzazione.
+                Una breve guida alla pipeline di anomaly detection: dall’immagine aerea originale alla anomaly
+                map, alla maschera sogliata e all’output pronto per la localizzazione.
             </p>
 
             <div class="tag-row" aria-label="Tags">
@@ -767,9 +766,9 @@
                     <div class="uav-caption">
                         <h3 data-uav-title>Vista completa della pipeline</h3>
                         <p data-uav-description>
-                            L’esempio riassume la logica completa della pipeline: si parte dall’immagine aerea
-                            originale, si produce una mappa di anomalia, poi una maschera sogliata che può essere
-                            post-processata in rilevamenti localizzati.
+                            L’esempio percorre l’intera pipeline. Si parte dall’immagine aerea originale, si
+                            produce una mappa di anomalia, poi una maschera sogliata che può essere elaborata
+                            per ottenere rilevamenti localizzati.
                         </p>
                     </div>
                 </div>
@@ -820,8 +819,9 @@
             <section class="card model-visual-card" id="model-view">
                 <h2>Vista modello AE / VAE</h2>
                 <p>
-                    Il modello impara a ricostruire ciò che sembra normale. Oggetti o texture che non vengono
-                    ricostruiti bene diventano segnale residuo, poi una maschera più pulita per la localizzazione.
+                    Il modello impara a ricostruire ciò che sembra normale. Oggetti o texture ricostruiti male
+                    lasciano un segnale residuo, che viene poi trasformato in una maschera più pulita per la
+                    localizzazione.
                 </p>
 
                 <div class="model-visual" aria-label="Pipeline stilizzata di autoencoder e variational autoencoder">
@@ -908,28 +908,26 @@
                     <div class="pipeline-step">
                         <div class="pipeline-step__num">1</div>
                         <h3>Ricostruzione</h3>
-                        <p>Si addestra un AE / VAE su immagini normali o dominate dallo sfondo, in modo che il modello
-                            impari a riprodurre la scena attesa.</p>
+                        <p>Addestra un AE / VAE su immagini normali o dominate dallo sfondo, così impara a riprodurre la scena attesa.</p>
                     </div>
 
                     <div class="pipeline-step">
                         <div class="pipeline-step__num">2</div>
                         <h3>Score di anomalia</h3>
-                        <p>Si calcola uno score pixel-wise o patch-wise dalla differenza tra input e ricostruzione.</p>
+                        <p>Usa la differenza tra input e ricostruzione per calcolare uno score pixel-wise o patch-wise.</p>
                     </div>
 
                     <div class="pipeline-step">
                         <div class="pipeline-step__num">3</div>
                         <h3>Soglia & pulizia</h3>
-                        <p>La mappa di anomalia viene trasformata in una maschera e ripulita con denoising / logica di
-                            connected components.</p>
+                        <p>Trasforma la mappa di anomalia in una maschera e ripuliscila con denoising e logica di connected components.</p>
                     </div>
 
                     <div class="pipeline-step">
                         <div class="pipeline-step__num">4</div>
                         <h3>Localizzazione & crop</h3>
-                        <p>Si estraggono bounding box e crop da passare a un classificatore a valle, se si vuole una
-                            pipeline completa di detection + classification.</p>
+                        <p>Estrai bounding box e crop da passare a un classificatore a valle, se vuoi una pipeline completa di detection
+                            + classification.</p>
                     </div>
                 </div>
             </section>
@@ -937,14 +935,14 @@
             <section class="card">
                 <h2>Cosa ho imparato</h2>
                 <p>
-                    L’aspetto interessante di questo progetto è che sfrutta la struttura del problema. Quando lo sfondo
-                    è relativamente stabile, i modelli di anomalia possono funzionare come meccanismo leggero di
-                    proposal generation.
+                    Mi piace come questo progetto sfrutta la struttura del problema. Con uno sfondo
+                    relativamente stabile, i modelli di anomalia possono proporre regioni di interesse con un
+                    meccanismo leggero.
                 </p>
                 <p>
-                    Allo stesso tempo, la parte difficile è il rumore: i VAE possono rilevare anomalie utili ma produrre
-                    heatmap sporche, quindi il post-processing conta moltissimo. Qui sogliatura, denoising e connected
-                    components diventano fondamentali.
+                    Il rumore è la parte difficile. I VAE possono trovare anomalie utili e produrre comunque
+                    heatmap sporche, quindi il post-processing fa una grande differenza. Sogliatura, denoising
+                    e connected components sono importanti proprio qui.
                 </p>
             </section>
         </main>

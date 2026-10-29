@@ -7,7 +7,7 @@
     <title>Tesi GNN Interazioni Proteiche · Lorenzo Marinelli</title>
     <meta name="description"
         content="Riassunto interattivo della tesi di Lorenzo Marinelli sulla predizione di interazioni proteina-proteina con Graph Neural Networks ed embedding ProtT5." />
-    <link rel="stylesheet" href="/assets/style.css" />
+    <link rel="stylesheet" href="/assets/style.css?v=20261017" />
 
     <link rel="alternate" hreflang="en" href="/projects/thesis-gnn-protein-interactions/" />
     <link rel="alternate" hreflang="it" href="/it/projects/thesis-gnn-protein-interactions/" />
@@ -393,7 +393,6 @@
                 <a href="/it/">Home</a>
                 <a href="/it/about/">Info</a>
                 <a aria-current="page" href="/it/projects/">Progetti</a>
-                <a href="/it/notes/">Appunti</a>
                 <a href="/it/contact/">Contatti</a>
         <a href="/it/playground/">Playground</a>
             </div>
@@ -403,8 +402,8 @@
             <p class="kicker">Riassunto interattivo della tesi</p>
             <h1>Unveiling Protein Connections through Graph Neural Networks and ProtT5 Embeddings</h1>
             <p class="lead">
-                Un riassunto web-native della mia tesi triennale: predire interazioni proteina-proteina mancanti
-                combinando embedding da protein language model e Graph Neural Networks.
+                Un riassunto nel browser della mia tesi triennale sulla previsione di interazioni
+                proteina-proteina mancanti, con embedding da protein language model e Graph Neural Networks.
             </p>
 
             <div class="tag-row" aria-label="Tags">
@@ -434,9 +433,8 @@
             <section class="card thesis-section" id="pipeline">
                 <h2>Dalle sequenze proteiche agli score di interazione</h2>
                 <p>
-                    L’idea è semplice: le proteine diventano nodi, le interazioni note diventano archi, ProtT5 fornisce
-                    feature basate sulla sequenza
-                    e il GNN apprende embedding proteici arricchiti dal contesto di grafo.
+                    Le proteine sono nodi e le interazioni note sono archi. ProtT5 fornisce feature basate
+                    sulla sequenza; la GNN apprende embedding proteici che includono il contesto del grafo.
                 </p>
 
                 <div class="pipeline" data-pipeline>
@@ -479,8 +477,8 @@
                 <div class="pipeline-explainer" aria-live="polite">
                     <h3 data-pipeline-title>Sequenze proteiche</h3>
                     <p data-pipeline-text>
-                        Il punto di partenza è la sequenza amminoacidica di ogni proteina. Questo dà al modello
-                        informazione biologica prima ancora di considerare il grafo.
+                        La sequenza amminoacidica di ogni proteina è il punto di partenza: dà al modello
+                        informazioni biologiche prima ancora che veda il grafo.
                     </p>
                 </div>
             </section>
@@ -490,10 +488,10 @@
                 <div class="thesis-hero-grid">
                     <div>
                         <p>
-                            Ho usato la rete di interazioni proteina-proteina umana da STRING v12, mantenendo solo archi
-                            ad altissima confidenza.
-                            Il filtro a confidenza ≥ 950 riduce il rumore e rende il grafo più affidabile per il
-                            training, anche se rimuove molte interazioni a confidenza minore.
+                            Ho usato la rete umana di interazioni proteina-proteina STRING v12, mantenendo
+                            solo archi ad altissima confidenza. La soglia ≥ 950 riduce il rumore e rende il
+                            grafo di training più affidabile, ma elimina molte interazioni a confidenza
+                            minore.
                         </p>
                         <ul class="bullets">
                             <li><span class="hl">Fonte:</span> STRING v12, rete PPI umana.</li>
@@ -532,8 +530,8 @@
                     <div>
                         <h3>Intuizione del message passing</h3>
                         <p>
-                            TAGConv aggrega informazione multi-hop. Usa i pulsanti per vedere come una proteina centrale
-                            può ricevere informazione dai vicini a 1-hop, 2-hop e 3-hop.
+                            TAGConv raccoglie informazioni su più hop. Usa i pulsanti per vedere come una
+                            proteina centrale riceve informazioni dai vicinati a 1-hop, 2-hop e 3-hop.
                         </p>
 
                         <div class="graph-demo" data-hop-demo aria-label="Visualizzazione hop message passing">
@@ -588,8 +586,9 @@
 
                         <h3>Pair decoder</h3>
                         <p>
-                            Una volta prodotti gli embedding arricchiti dal grafo, il decoder assegna score alle coppie.
-                            Questo permette di codificare il grafo una volta e poi ordinare molte coppie candidate.
+                            Una volta ottenuti gli embedding arricchiti dal grafo, il decoder assegna score
+                            alle coppie. Basta codificare il grafo una volta per ordinare molte coppie
+                            candidate.
                         </p>
                     </div>
                 </div>
@@ -598,8 +597,8 @@
                     <article class="architecture-panel">
                         <h3>Attention in TransformerConv</h3>
                         <p>
-                            Ogni vicino invia un messaggio, ma l’attention decide quanto quel messaggio deve contare
-                            prima che la proteina centrale aggiorni il proprio embedding.
+                            Ogni vicino invia un messaggio. L’attention stabilisce quanto peso dargli prima
+                            che la proteina centrale aggiorni il proprio embedding.
                         </p>
 
                         <div class="attention-demo" aria-label="Aggregazione dei vicini pesata da attention">
@@ -648,8 +647,9 @@
                     <article class="architecture-panel">
                         <h3>Animazione del pair decoder</h3>
                         <p>
-                            Dopo il message passing, il grafo viene codificato una volta. Il decoder riceve solo due
-                            embedding, costruisce feature di coppia e le mappa a una probabilità di interazione.
+                            Dopo il message passing, il grafo viene codificato una volta. Il decoder prende
+                            solo due embedding, costruisce feature di coppia e le trasforma in una probabilità
+                            di interazione.
                         </p>
 
                         <div class="decoder-motion" aria-label="Flusso animato del pair decoder">
@@ -714,9 +714,9 @@
             <section class="card thesis-section" id="results">
                 <h2>Risultati</h2>
                 <p>
-                    Il modello ha ottenuto una forte separabilità globale e un’ottima early precision. Quest’ultima è
-                    particolarmente importante perché in un workflow biologico l’obiettivo è spesso produrre una
-                    short-list affidabile di candidati da validare.
+                    Il modello ha ottenuto una forte separabilità globale e un’ottima early precision.
+                    Quest’ultima conta molto: nei workflow biologici serve spesso una breve lista di candidati
+                    affidabili da validare.
                 </p>
 
                 <div class="metric-grid">
@@ -753,8 +753,8 @@
                 <div class="split-layout">
                     <div>
                         <p>
-                            Il modello è risultato più forte nelle regioni dense del grafo. Ha senso: i GNN sfruttano
-                            informazione di vicinato, quindi hub e cluster forniscono più segnale.
+                            Il modello ha funzionato meglio nelle parti dense del grafo. I GNN usano
+                            informazioni di vicinato, quindi hub e cluster offrono più segnale.
                         </p>
                         <ul class="bullets">
                             <li><span class="hl">Archi di test recuperati:</span> coinvolgevano proteine con grado
@@ -769,9 +769,9 @@
                     <div class="case-panel">
                         <h3>Interpretazione pratica</h3>
                         <p class="case-summary">
-                            Il modello non sta imparando solo compatibilità di sequenza. Sta anche imparando come la
-                            probabilità di interazione si comporta nella topologia osservata.
-                            Questo è utile, ma introduce un punto debole nelle zone sparse.
+                            Il modello impara sia la compatibilità di sequenza sia come varia la probabilità
+                            di interazione nella topologia osservata. È utile, ma lascia un punto debole nelle
+                            regioni sparse.
                         </p>
                     </div>
                 </div>
@@ -780,9 +780,9 @@
             <section class="card thesis-section" id="notch2">
                 <h2>Case study NOTCH2</h2>
                 <p>
-                    L’analisi su NOTCH2 confronta un grafo più denso a minore confidenza con il grafo ad alta confidenza
-                    usato per il training.
-                    Il punto centrale è che il contesto di grafo cambia drasticamente la confidenza del modello.
+                    L’analisi su NOTCH2 confronta un grafo più denso e a minore confidenza con il grafo ad
+                    alta confidenza usato per il training. Mostra quanto il contesto del grafo possa cambiare
+                    la confidenza del modello.
                 </p>
 
                 <div class="case-controls" aria-label="Toggle contesto grafo NOTCH2">
@@ -793,8 +793,9 @@
                 <div class="case-panel" data-case-panel>
                     <h3 data-case-title>Grafo denso LC-250</h3>
                     <p data-case-text>
-                        Nel grafo più denso, gli archi recuperati mostrano una regione ad alta confidenza vicino a p =
-                        0.95. Il modello diventa più deciso perché NOTCH2 ha una topologia locale più ricca.
+                        Nel grafo più denso, gli archi recuperati mostrano una regione ad alta confidenza
+                        vicino a p = 0.95. La topologia locale più ricca attorno a NOTCH2 rende il modello più
+                        deciso.
                     </p>
 
                     <div class="case-bars">

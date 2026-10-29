@@ -7,7 +7,7 @@
     <title>Image Color Editor · Playground · Lorenzo Marinelli</title>
     <meta name="description"
         content="Interactive image color editor by Lorenzo Marinelli - shift hue, saturation, contrast, warmth, grayscale, inversion, and RGB channel order, then save a PNG." />
-    <link rel="stylesheet" href="/assets/style.css" />
+    <link rel="stylesheet" href="/assets/style.css?v=20261017" />
 
     <link rel="alternate" hreflang="en" href="/playground/image-color-editor/" />
     <link rel="alternate" hreflang="it" href="/it/playground/image-color-editor/" />
@@ -43,7 +43,6 @@
                 <a href="/">Home</a>
                 <a href="/about/">About</a>
                 <a href="/projects/">Projects</a>
-                <a href="/notes/">Notes</a>
                 <a href="/contact/">Contact</a>
                 <a aria-current="page" href="/playground/">Playground</a>
             </div>
@@ -53,8 +52,8 @@
             <p class="kicker">Playground experiment</p>
             <h1>Image Color Editor</h1>
             <p class="lead hero-line">
-                Load an image or use the generated sample, then shift hue, saturation, contrast, warmth, grayscale,
-                inversion, and RGB channel order before saving the result as a PNG.
+                Load an image or start with the generated sample. Adjust hue, saturation, contrast, warmth,
+                grayscale, inversion, and RGB channel order, then save the result as a PNG.
             </p>
 
             <div class="hero__cta">
@@ -68,8 +67,8 @@
                     <p class="project-kicker">Pixel color lab</p>
                     <h2>One image, live color transforms</h2>
                     <p>
-                        The left canvas keeps the source image unchanged. The right canvas applies every color control
-                        in the browser so each slider and channel swap is visible immediately.
+                        The left canvas shows the unchanged source. The right one applies the color controls
+                        in your browser, so you can see each slider adjustment and channel swap immediately.
                     </p>
                 </div>
 
@@ -162,8 +161,8 @@
                     </div>
 
                     <p class="color-note">
-                        Hue and saturation operate in HSL space. Contrast, brightness, warmth, inversion, grayscale, and
-                        channel swaps operate directly on RGB pixels.
+                        Hue and saturation work in HSL space. Contrast, brightness, warmth, inversion,
+                        grayscale, and channel swaps work directly on RGB pixels.
                     </p>
                 </aside>
             </div>
@@ -173,16 +172,17 @@
             <article class="card">
                 <h2>What to notice</h2>
                 <p>
-                    Channel swaps are structural: red, green, and blue information trade places. Hue shifts rotate
-                    color relationships while preserving more of the original luminance.
+                    Swapping channels moves red, green, and blue information into each other’s places.
+                    Shifting hue rotates the color relationships while retaining more of the original
+                    luminance.
                 </p>
             </article>
 
             <article class="card">
                 <h2>Why it exists</h2>
                 <p>
-                    I like art and color theory, and I kept needing quick color transformations without signing up for
-                    another account or fighting a bad free tool. This is the utility I wanted to have open.
+                    I like art and color theory, and I often needed a quick color adjustment without another
+                    signup or a frustrating free tool. This is the utility I wanted to keep open.
                 </p>
             </article>
         </section>

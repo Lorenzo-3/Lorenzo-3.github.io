@@ -7,7 +7,7 @@
     <title>Fourier Transform Playground · Playground · Lorenzo Marinelli</title>
     <meta name="description"
         content="Playground interattivo sulla trasformata di Fourier di Lorenzo Marinelli: aggiungi onde sinusoidali una alla volta e ascolta come cambiano il suono." />
-    <link rel="stylesheet" href="/assets/style.css" />
+    <link rel="stylesheet" href="/assets/style.css?v=20261017" />
 
     <link rel="alternate" hreflang="en" href="/playground/fourier/" />
     <link rel="alternate" hreflang="it" href="/it/playground/fourier/" />
@@ -41,7 +41,6 @@
                 <a href="/it/">Home</a>
                 <a href="/it/about/">Info</a>
                 <a href="/it/projects/">Progetti</a>
-                <a href="/it/notes/">Appunti</a>
                 <a href="/it/contact/">Contatti</a>
                 <a aria-current="page" href="/it/playground/">Playground</a>
             </div>
@@ -51,8 +50,8 @@
             <p class="kicker">Esperimento del playground</p>
             <h1>Fourier Transform Playground</h1>
             <p class="lead hero-line">
-                Aggiungi onde sinusoidali una alla volta, poi osserva forma d’onda nel tempo e spettro in frequenza mentre il suono
-                diventa più ricco.
+                Aggiungi onde sinusoidali una alla volta. Guarda cambiare la forma d’onda nel tempo e lo
+                spettro in frequenza mentre il suono si arricchisce.
             </p>
 
             <div class="hero__cta">
@@ -76,7 +75,7 @@
         <div class="fourier-hud__top">
             <div>
                 <h2>Mixer Fourier</h2>
-                <p data-fourier-status>Una sinusoide è caricata. Aggiungi parziali per rimodellare il suono.</p>
+                <p data-fourier-status>Si parte da una sinusoide. Aggiungi altre parziali per cambiare il suono.</p>
             </div>
             <div class="fourier-actions">
                 <button class="btn" type="button" data-fourier-play>Ascolta mix</button>
@@ -100,8 +99,8 @@
         <div class="fourier-components" data-fourier-components aria-label="Componenti sinusoidali"></div>
 
         <p class="fourier-note">
-            L’armonica 1 è l’altezza di base. Le armoniche superiori aggiungono brillantezza; la fase cambia la forma senza spostare la
-            barra nello spettro.
+            L’armonica 1 dà l’altezza di base. Le armoniche superiori aggiungono brillantezza, mentre la fase
+            cambia la forma d’onda senza spostare la barra nello spettro.
         </p>
     </aside>
 

@@ -7,7 +7,7 @@
     <title>File Converter · Playground · Lorenzo Marinelli</title>
     <meta name="description"
         content="Local file converter by Lorenzo Marinelli - convert images natively, export WAV, and use FFmpeg.wasm for MP3, FLAC, MP4, WebM, MOV, MKV, and AVI." />
-    <link rel="stylesheet" href="/assets/style.css" />
+    <link rel="stylesheet" href="/assets/style.css?v=20261017" />
 
     <link rel="alternate" hreflang="en" href="/playground/file-converter/" />
     <link rel="alternate" hreflang="it" href="/it/playground/file-converter/" />
@@ -42,7 +42,6 @@
                 <a href="/">Home</a>
                 <a href="/about/">About</a>
                 <a href="/projects/">Projects</a>
-                <a href="/notes/">Notes</a>
                 <a href="/contact/">Contact</a>
                 <a aria-current="page" href="/playground/">Playground</a>
             </div>
@@ -50,10 +49,10 @@
 
         <header class="hero">
             <p class="kicker">Playground utility</p>
-            <h1>File Converter, WIP</h1>
+            <h1>File Converter</h1>
             <p class="lead hero-line">
-                Convert images, export audio as WAV, MP3, or FLAC, and transcode video to MP4, WebM, MOV, MKV, or AVI.
-                Files stay local in the browser.
+                Convert images, export audio to WAV, MP3, or FLAC, and transcode video to MP4, WebM, MOV, MKV,
+                or AVI. Your files stay in your browser.
             </p>
 
             <div class="hero__cta">
@@ -67,9 +66,10 @@
                     <p class="project-kicker">Local media converter</p>
                     <h2>No account, all local</h2>
                     <p>
-                        Drop an image, audio file, or video. Native browser APIs handle the quick paths; FFmpeg.wasm
-                        loads on demand for heavier audio and video conversions.
-                        Warning: audio and video conversion runs locally on your device. Heavy conversions may reduce performance or cause overheating depending on your hardware.
+                        Drop in an image, audio file, or video. Native browser APIs handle the quick
+                        conversions; FFmpeg.wasm loads when a heavier audio or video conversion needs it.
+                        Warning: audio and video conversion runs locally on your device. Heavy conversions may
+                        slow it down or cause overheating, depending on your hardware.
                     </p>
                 </div>
 
@@ -98,7 +98,7 @@
                     <div class="converter-preview" data-preview-empty>
                         <p class="project-kicker">Preview</p>
                         <h2>Waiting for a file</h2>
-                        <p>Details, controls, and output downloads appear after the browser identifies the file type.</p>
+                        <p>Once the browser identifies the file type, you’ll see its details, conversion controls, and download options.</p>
                     </div>
 
                     <div class="converter-preview converter-preview--image" data-image-preview hidden>
@@ -267,7 +267,7 @@
                             <span>Video output</span>
                             <select data-video-format>
                                 <option value="video/mp4" selected>MP4 · H.264 + AAC</option>
-                                <option value="video/webm">WebM · VP9 + Opus</option>
+                                <option value="video/webm">WebM · VP8 + Opus</option>
                                 <option value="video/quicktime">MOV · H.264 + AAC</option>
                                 <option value="video/x-matroska">MKV · H.264 + AAC</option>
                                 <option value="video/x-msvideo">AVI · MPEG-4 + MP3</option>
@@ -298,9 +298,9 @@
                     <a class="btn converter-download" href="#" data-download hidden>Download output</a>
 
                     <p class="converter-note">
-                        Power-user note: image output stays browser-native. MP3, FLAC, and video presets lazy-load the
-                        single-thread FFmpeg.wasm core from CDN, then run locally in your browser. Large video files can
-                        be slow and memory-heavy.
+                        For power users: image output uses native browser tools. MP3, FLAC, and video presets
+                        load the single-thread FFmpeg.wasm core from a CDN when needed, then run locally in
+                        your browser. Large videos can take time and use a lot of memory.
                     </p>
                 </aside>
             </div>
@@ -310,16 +310,19 @@
             <article class="card">
                 <h2>Why it exists</h2>
                 <p>
-                    Useful online file converters often require an account or are hosted on websites with questionable privacy and security practices, along with slow upload times or tiny usage limits.
-                    This page is made for fast local conversions with privacy and speed in mind. If you don’t want to take my word for it, you can always check the repository yourself :3 (or have an LLM inspect it for you…).
+                    Useful online converters often require an account, have questionable privacy and security
+                    practices, or come with slow uploads and tiny usage limits. I made this page for quick,
+                    local conversions with privacy and speed in mind. You can check the repository yourself if
+                    you’d rather see how it works :3 (or ask an LLM to inspect it for you…).
                 </p>
             </article>
 
             <article class="card">
                 <h2>What it can do</h2>
                 <p>
-                    Images convert through canvas to PNG, JPEG, or WebP when the browser can decode the input. Audio
-                    can export as WAV, MP3, or FLAC, and video supports MP4, WebM, MOV, MKV, AVI, and frame export.
+                    Images are converted through canvas to PNG, JPEG, or WebP, as long as the browser can
+                    decode the input. Audio exports to WAV, MP3, or FLAC. Video supports MP4, WebM, MOV, MKV,
+                    AVI, and frame export.
                 </p>
             </article>
         </section>
@@ -352,6 +355,7 @@
                 loadingFFmpeg: 'Loading FFmpeg.wasm from CDN...',
                 ffmpegReady: 'FFmpeg ready.',
                 ffmpegLoadFailed: 'FFmpeg could not load. Check the browser network connection or CDN access.',
+                ffmpegConversionFailed: 'Conversion failed. Try a different format or a smaller file.',
                 ffmpegWorkerLoadFailed: 'FFmpeg CDN worker could not load. Check browser network access or CDN blocking.',
                 ffmpegCancelled: 'FFmpeg conversion cancelled.',
                 ffmpegNotLoaded: 'Not loaded',
@@ -481,7 +485,8 @@
                 ffmpegRunId: 0,
                 ffmpegWorkerUrl: null,
                 ffmpegStatus: copy.ffmpegNotLoaded,
-                ffmpegLastLog: copy.lastLogDefault
+                ffmpegLastLog: copy.lastLogDefault,
+                ffmpegLogHistory: []
             };
 
             const imageOutputSupport = {
@@ -504,9 +509,9 @@
             };
 
             const videoQualityPresets = {
-                small: { crf: '32', vp9Crf: '36', audio: '96k', aviQ: '8' },
-                balanced: { crf: '26', vp9Crf: '32', audio: '128k', aviQ: '5' },
-                high: { crf: '20', vp9Crf: '24', audio: '192k', aviQ: '3' }
+                small: { crf: '32', webmCrf: '20', webmBitrate: '800k', audio: '96k', aviQ: '8' },
+                balanced: { crf: '26', webmCrf: '12', webmBitrate: '1500k', audio: '128k', aviQ: '5' },
+                high: { crf: '20', webmCrf: '6', webmBitrate: '3000k', audio: '192k', aviQ: '3' }
             };
 
             const formatBytes = bytes => {
@@ -883,7 +888,10 @@
                 if (state.ffmpegLoaded && state.ffmpeg) return state.ffmpeg;
                 if (state.ffmpegLoadingPromise) return state.ffmpegLoadingPromise;
 
+                const loadRunId = state.ffmpegRunId;
                 state.ffmpegLoadingPromise = (async () => {
+                    let ffmpeg = null;
+                    const runtimeBlobUrls = [];
                     try {
                         setFFmpegStatus(copy.ffmpegLoading);
                         setStatus(copy.loadingFFmpeg);
@@ -891,7 +899,8 @@
                             import(ffmpegUrls.wrapper),
                             import(ffmpegUrls.util)
                         ]);
-                        const ffmpeg = new FFmpeg();
+                        if (loadRunId !== state.ffmpegRunId) throw new Error(copy.ffmpegCancelled);
+                        ffmpeg = new FFmpeg();
                         state.ffmpeg = ffmpeg;
                         state.ffmpegFetchFile = fetchFile;
                         state.ffmpegToBlobURL = toBlobURL;
@@ -900,6 +909,8 @@
                                 const isAbortLog = /^aborted\(\)$/i.test(message.trim());
                                 if (isAbortLog && (state.ffmpegIgnoreAbortLog || state.ffmpegCancelled || !state.ffmpegBusy)) return;
                                 state.ffmpegLastLog = message;
+                                state.ffmpegLogHistory.push(message);
+                                state.ffmpegLogHistory = state.ffmpegLogHistory.slice(-8);
                                 updateDetails();
                             }
                         });
@@ -908,19 +919,21 @@
                             ffmpegProgress.hidden = false;
                             ffmpegProgress.value = Math.max(0, Math.min(100, progress * 100));
                         });
-                        const classWorkerURL = createFFmpegWorkerUrl();
-                        await ffmpeg.load({
-                            classWorkerURL,
-                            coreURL: await toBlobURL(`${ffmpegUrls.core}/ffmpeg-core.js`, 'text/javascript'),
-                            wasmURL: await toBlobURL(`${ffmpegUrls.core}/ffmpeg-core.wasm`, 'application/wasm')
-                        });
+                        const coreURL = await toBlobURL(`${ffmpegUrls.core}/ffmpeg-core.js`, 'text/javascript');
+                        runtimeBlobUrls.push(coreURL);
+                        const wasmURL = await toBlobURL(`${ffmpegUrls.core}/ffmpeg-core.wasm`, 'application/wasm');
+                        runtimeBlobUrls.push(wasmURL);
+                        if (loadRunId !== state.ffmpegRunId) throw new Error(copy.ffmpegCancelled);
+                        await ffmpeg.load({ classWorkerURL: createFFmpegWorkerUrl(), coreURL, wasmURL });
+                        if (loadRunId !== state.ffmpegRunId) throw new Error(copy.ffmpegCancelled);
                         state.ffmpeg = ffmpeg;
                         state.ffmpegLoaded = true;
                         setFFmpegStatus(copy.ffmpegLoaded);
                         setStatus(copy.ffmpegReady);
                         return ffmpeg;
                     } catch (error) {
-                        if (state.ffmpeg) state.ffmpeg.terminate();
+                        if (ffmpeg) ffmpeg.terminate();
+                        if (loadRunId !== state.ffmpegRunId) throw error;
                         state.ffmpeg = null;
                         state.ffmpegLoaded = false;
                         revokeFFmpegWorkerUrl();
@@ -930,7 +943,8 @@
                         setStatus(copy.ffmpegWorkerLoadFailed);
                         throw error;
                     } finally {
-                        state.ffmpegLoadingPromise = null;
+                        runtimeBlobUrls.forEach(url => URL.revokeObjectURL(url));
+                        if (loadRunId === state.ffmpegRunId) state.ffmpegLoadingPromise = null;
                     }
                 })();
 
@@ -972,7 +986,11 @@
                 const args = ['-i', inputName, '-map', '0:v:0?', '-map', '0:a:0?'];
 
                 if (outputType === 'video/webm') {
-                    args.push('-c:v', 'libvpx-vp9', '-b:v', '0', '-crf', preset.vp9Crf, '-c:a', 'libopus', '-b:a', preset.audio);
+                    args.push(
+                        '-c:v', 'libvpx', '-threads', '1', '-deadline', 'realtime', '-cpu-used', '6',
+                        '-lag-in-frames', '0', '-b:v', preset.webmBitrate, '-crf', preset.webmCrf,
+                        '-pix_fmt', 'yuv420p', '-c:a', 'libopus', '-b:a', preset.audio
+                    );
                 } else if (outputType === 'video/x-msvideo') {
                     args.push('-c:v', 'mpeg4', '-q:v', preset.aviQ, '-c:a', 'libmp3lame', '-q:a', '4');
                 } else {
@@ -986,6 +1004,7 @@
 
             const runFFmpeg = async ({ args, outputName, outputType }) => {
                 if (!state.file) return;
+                const file = state.file;
                 const runId = state.ffmpegRunId + 1;
                 state.ffmpegRunId = runId;
                 clearOutput();
@@ -993,17 +1012,25 @@
                 state.ffmpegCancelled = false;
                 state.ffmpegIgnoreAbortLog = false;
                 state.ffmpegLastLog = copy.lastLogDefault;
+                state.ffmpegLogHistory = [];
                 ffmpegProgress.value = 0;
                 setFFmpegStatus(copy.ffmpegRunning);
                 setStatus(copy.convertingWithFFmpeg);
-                const inputName = ffmpegInputName(state.file);
+                const inputName = ffmpegInputName(file);
 
                 try {
                     const ffmpeg = await ensureFFmpeg();
-                    await ffmpeg.writeFile(inputName, await state.ffmpegFetchFile(state.file));
-                    await ffmpeg.exec(args);
+                    if (runId !== state.ffmpegRunId) return;
+                    const inputData = await state.ffmpegFetchFile(file);
+                    if (runId !== state.ffmpegRunId) return;
+                    await ffmpeg.writeFile(inputName, inputData);
+                    if (runId !== state.ffmpegRunId) return;
+                    const exitCode = await ffmpeg.exec(args);
+                    if (runId !== state.ffmpegRunId || state.ffmpegCancelled) return;
+                    if (exitCode !== 0) throw new Error(copy.ffmpegConversionFailed);
                     const data = await ffmpeg.readFile(outputName);
-                    const blob = new Blob([data.buffer], { type: outputType });
+                    if (runId !== state.ffmpegRunId) return;
+                    const blob = new Blob([data], { type: outputType });
                     setOutput(blob, outputName);
                     state.ffmpegIgnoreAbortLog = true;
                     state.ffmpegLastLog = copy.ffmpegCompleted;
@@ -1020,8 +1047,12 @@
                         state.ffmpegLastLog = copy.ffmpegCancelled;
                         setFFmpegStatus(copy.ffmpegCancelledStatus);
                     } else {
-                        const message = error.message || copy.ffmpegLoadFailed;
-                        state.ffmpegLastLog = message;
+                        const message = error.message || copy.ffmpegConversionFailed;
+                        state.ffmpegLastLog = [...state.ffmpegLogHistory, String(error)].join(' | ');
+                        if (state.ffmpeg) state.ffmpeg.terminate();
+                        state.ffmpeg = null;
+                        state.ffmpegLoaded = false;
+                        revokeFFmpegWorkerUrl();
                         setWarning(message);
                         setStatus(message);
                         setFFmpegStatus(copy.ffmpegError);
@@ -1034,6 +1065,7 @@
             const cancelFFmpeg = () => {
                 if (!state.ffmpegBusy) return;
                 state.ffmpegCancelled = true;
+                state.ffmpegRunId += 1;
                 state.ffmpegIgnoreAbortLog = true;
                 if (state.ffmpeg) state.ffmpeg.terminate();
                 state.ffmpeg = null;

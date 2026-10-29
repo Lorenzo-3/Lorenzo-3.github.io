@@ -7,7 +7,7 @@
     <title>File Converter · Playground · Lorenzo Marinelli</title>
     <meta name="description"
         content="Convertitore file locale di Lorenzo Marinelli: converti immagini nativamente, esporta WAV e usa FFmpeg.wasm per MP3, FLAC, MP4, WebM, MOV, MKV e AVI." />
-    <link rel="stylesheet" href="/assets/style.css" />
+    <link rel="stylesheet" href="/assets/style.css?v=20261017" />
 
     <link rel="alternate" hreflang="en" href="/playground/file-converter/" />
     <link rel="alternate" hreflang="it" href="/it/playground/file-converter/" />
@@ -42,7 +42,6 @@
                 <a href="/it/">Home</a>
                 <a href="/it/about/">Info</a>
                 <a href="/it/projects/">Progetti</a>
-                <a href="/it/notes/">Appunti</a>
                 <a href="/it/contact/">Contatti</a>
                 <a aria-current="page" href="/it/playground/">Playground</a>
             </div>
@@ -50,10 +49,10 @@
 
         <header class="hero">
             <p class="kicker">Utility del playground</p>
-            <h1>File Converter, WIP</h1>
+            <h1>File Converter</h1>
             <p class="lead hero-line">
-                Converti immagini, esporta audio in WAV, MP3 o FLAC, e transcodifica video in MP4, WebM, MOV, MKV o
-                AVI. I file restano locali nel browser.
+                Converti immagini, esporta audio in WAV, MP3 o FLAC e transcodifica video in MP4, WebM, MOV,
+                MKV o AVI. I file restano nel tuo browser.
             </p>
 
             <div class="hero__cta">
@@ -67,9 +66,11 @@
                     <p class="project-kicker">Convertitore media locale</p>
                     <h2>Nessun account, tutto in locale</h2>
                     <p>
-                        Trascina un’immagine, un file audio o un video. Le API native del browser gestiscono i percorsi
-                        rapidi; FFmpeg.wasm viene caricato su richiesta per conversioni audio e video più pesanti.
-                        Attenzione: la conversione audio e video viene eseguita localmente sul dispositivo e può causare rallentamenti o surriscaldamento durante operazioni intensive.
+                        Trascina qui un’immagine, un file audio o un video. Le API native del browser
+                        gestiscono le conversioni rapide; FFmpeg.wasm si carica quando serve per quelle audio
+                        e video più pesanti. Attenzione: la conversione audio e video avviene in locale sul
+                        dispositivo e, durante operazioni intensive, può causare rallentamenti o
+                        surriscaldamento.
                     </p>
                 </div>
 
@@ -98,7 +99,7 @@
                     <div class="converter-preview" data-preview-empty>
                         <p class="project-kicker">Anteprima</p>
                         <h2>In attesa di un file</h2>
-                        <p>Dettagli, controlli e download appaiono dopo che il browser identifica il tipo di file.</p>
+                        <p>Quando il browser riconosce il tipo di file, compaiono dettagli, controlli di conversione e opzioni per il download.</p>
                     </div>
 
                     <div class="converter-preview converter-preview--image" data-image-preview hidden>
@@ -267,7 +268,7 @@
                             <span>Output video</span>
                             <select data-video-format>
                                 <option value="video/mp4" selected>MP4 · H.264 + AAC</option>
-                                <option value="video/webm">WebM · VP9 + Opus</option>
+                                <option value="video/webm">WebM · VP8 + Opus</option>
                                 <option value="video/quicktime">MOV · H.264 + AAC</option>
                                 <option value="video/x-matroska">MKV · H.264 + AAC</option>
                                 <option value="video/x-msvideo">AVI · MPEG-4 + MP3</option>
@@ -298,9 +299,10 @@
                     <a class="btn converter-download" href="#" data-download hidden>Scarica output</a>
 
                     <p class="converter-note">
-                        Nota power-user: l’output immagine resta browser-native. MP3, FLAC e preset video caricano su
-                        richiesta il core FFmpeg.wasm single-thread da CDN, poi girano localmente nel browser. I video
-                        grandi possono essere lenti e pesanti in memoria.
+                        Per chi vuole i dettagli: le immagini usano strumenti nativi del browser. MP3, FLAC e
+                        preset video caricano al bisogno il core FFmpeg.wasm single-thread da una CDN, poi
+                        lavorano in locale nel browser. I video grandi possono richiedere tempo e molta
+                        memoria.
                     </p>
                 </aside>
             </div>
@@ -310,16 +312,19 @@
             <article class="card">
                 <h2>Perché esiste</h2>
                 <p>
-                    I convertitori utili online spesso richiedono un account o sono su siti dalla dubbia privacy e sicurezza,con tempi di upload o limiti minuscoli. Questa pagina
-                    serve per conversioni locali rapide con privacy e velocità. se non ti fidi sulla parola puoi sempre controllare la repo :3 (o farla controllare a un llm...).
+                    I convertitori online utili spesso richiedono un account, si trovano su siti con pratiche
+                    discutibili di privacy e sicurezza oppure hanno upload lenti e limiti minuscoli. Questa
+                    pagina serve per conversioni rapide e locali, con attenzione a privacy e velocità. Se vuoi
+                    vedere come funziona, puoi controllare la repo :3 (o farla controllare a un LLM…).
                 </p>
             </article>
 
             <article class="card">
                 <h2>Cosa può fare</h2>
                 <p>
-                    Le immagini passano da canvas verso PNG, JPEG o WebP quando il browser decodifica l’input. L’audio
-                    può uscire in WAV, MP3 o FLAC, e il video supporta MP4, WebM, MOV, MKV, AVI ed export di frame.
+                    Le immagini vengono convertite tramite canvas in PNG, JPEG o WebP, se il browser riesce a
+                    decodificare l’input. L’audio si esporta in WAV, MP3 o FLAC. Per i video sono disponibili
+                    MP4, WebM, MOV, MKV, AVI ed esportazione dei frame.
                 </p>
             </article>
         </section>
@@ -352,6 +357,7 @@
                 loadingFFmpeg: 'Caricamento di FFmpeg.wasm da CDN...',
                 ffmpegReady: 'FFmpeg pronto.',
                 ffmpegLoadFailed: 'FFmpeg non è stato caricato. Controlla connessione del browser o accesso al CDN.',
+                ffmpegConversionFailed: 'Conversione non riuscita. Prova un altro formato o un file più piccolo.',
                 ffmpegWorkerLoadFailed: 'Il worker CDN di FFmpeg non è stato caricato. Controlla accesso di rete del browser o blocchi sul CDN.',
                 ffmpegCancelled: 'Conversione FFmpeg annullata.',
                 ffmpegNotLoaded: 'Non caricato',
@@ -481,7 +487,8 @@
                 ffmpegRunId: 0,
                 ffmpegWorkerUrl: null,
                 ffmpegStatus: copy.ffmpegNotLoaded,
-                ffmpegLastLog: copy.lastLogDefault
+                ffmpegLastLog: copy.lastLogDefault,
+                ffmpegLogHistory: []
             };
 
             const imageOutputSupport = {
@@ -504,9 +511,9 @@
             };
 
             const videoQualityPresets = {
-                small: { crf: '32', vp9Crf: '36', audio: '96k', aviQ: '8' },
-                balanced: { crf: '26', vp9Crf: '32', audio: '128k', aviQ: '5' },
-                high: { crf: '20', vp9Crf: '24', audio: '192k', aviQ: '3' }
+                small: { crf: '32', webmCrf: '20', webmBitrate: '800k', audio: '96k', aviQ: '8' },
+                balanced: { crf: '26', webmCrf: '12', webmBitrate: '1500k', audio: '128k', aviQ: '5' },
+                high: { crf: '20', webmCrf: '6', webmBitrate: '3000k', audio: '192k', aviQ: '3' }
             };
 
             const formatBytes = bytes => {
@@ -883,7 +890,10 @@
                 if (state.ffmpegLoaded && state.ffmpeg) return state.ffmpeg;
                 if (state.ffmpegLoadingPromise) return state.ffmpegLoadingPromise;
 
+                const loadRunId = state.ffmpegRunId;
                 state.ffmpegLoadingPromise = (async () => {
+                    let ffmpeg = null;
+                    const runtimeBlobUrls = [];
                     try {
                         setFFmpegStatus(copy.ffmpegLoading);
                         setStatus(copy.loadingFFmpeg);
@@ -891,7 +901,8 @@
                             import(ffmpegUrls.wrapper),
                             import(ffmpegUrls.util)
                         ]);
-                        const ffmpeg = new FFmpeg();
+                        if (loadRunId !== state.ffmpegRunId) throw new Error(copy.ffmpegCancelled);
+                        ffmpeg = new FFmpeg();
                         state.ffmpeg = ffmpeg;
                         state.ffmpegFetchFile = fetchFile;
                         state.ffmpegToBlobURL = toBlobURL;
@@ -900,6 +911,8 @@
                                 const isAbortLog = /^aborted\(\)$/i.test(message.trim());
                                 if (isAbortLog && (state.ffmpegIgnoreAbortLog || state.ffmpegCancelled || !state.ffmpegBusy)) return;
                                 state.ffmpegLastLog = message;
+                                state.ffmpegLogHistory.push(message);
+                                state.ffmpegLogHistory = state.ffmpegLogHistory.slice(-8);
                                 updateDetails();
                             }
                         });
@@ -908,19 +921,21 @@
                             ffmpegProgress.hidden = false;
                             ffmpegProgress.value = Math.max(0, Math.min(100, progress * 100));
                         });
-                        const classWorkerURL = createFFmpegWorkerUrl();
-                        await ffmpeg.load({
-                            classWorkerURL,
-                            coreURL: await toBlobURL(`${ffmpegUrls.core}/ffmpeg-core.js`, 'text/javascript'),
-                            wasmURL: await toBlobURL(`${ffmpegUrls.core}/ffmpeg-core.wasm`, 'application/wasm')
-                        });
+                        const coreURL = await toBlobURL(`${ffmpegUrls.core}/ffmpeg-core.js`, 'text/javascript');
+                        runtimeBlobUrls.push(coreURL);
+                        const wasmURL = await toBlobURL(`${ffmpegUrls.core}/ffmpeg-core.wasm`, 'application/wasm');
+                        runtimeBlobUrls.push(wasmURL);
+                        if (loadRunId !== state.ffmpegRunId) throw new Error(copy.ffmpegCancelled);
+                        await ffmpeg.load({ classWorkerURL: createFFmpegWorkerUrl(), coreURL, wasmURL });
+                        if (loadRunId !== state.ffmpegRunId) throw new Error(copy.ffmpegCancelled);
                         state.ffmpeg = ffmpeg;
                         state.ffmpegLoaded = true;
                         setFFmpegStatus(copy.ffmpegLoaded);
                         setStatus(copy.ffmpegReady);
                         return ffmpeg;
                     } catch (error) {
-                        if (state.ffmpeg) state.ffmpeg.terminate();
+                        if (ffmpeg) ffmpeg.terminate();
+                        if (loadRunId !== state.ffmpegRunId) throw error;
                         state.ffmpeg = null;
                         state.ffmpegLoaded = false;
                         revokeFFmpegWorkerUrl();
@@ -930,7 +945,8 @@
                         setStatus(copy.ffmpegWorkerLoadFailed);
                         throw error;
                     } finally {
-                        state.ffmpegLoadingPromise = null;
+                        runtimeBlobUrls.forEach(url => URL.revokeObjectURL(url));
+                        if (loadRunId === state.ffmpegRunId) state.ffmpegLoadingPromise = null;
                     }
                 })();
 
@@ -972,7 +988,11 @@
                 const args = ['-i', inputName, '-map', '0:v:0?', '-map', '0:a:0?'];
 
                 if (outputType === 'video/webm') {
-                    args.push('-c:v', 'libvpx-vp9', '-b:v', '0', '-crf', preset.vp9Crf, '-c:a', 'libopus', '-b:a', preset.audio);
+                    args.push(
+                        '-c:v', 'libvpx', '-threads', '1', '-deadline', 'realtime', '-cpu-used', '6',
+                        '-lag-in-frames', '0', '-b:v', preset.webmBitrate, '-crf', preset.webmCrf,
+                        '-pix_fmt', 'yuv420p', '-c:a', 'libopus', '-b:a', preset.audio
+                    );
                 } else if (outputType === 'video/x-msvideo') {
                     args.push('-c:v', 'mpeg4', '-q:v', preset.aviQ, '-c:a', 'libmp3lame', '-q:a', '4');
                 } else {
@@ -986,6 +1006,7 @@
 
             const runFFmpeg = async ({ args, outputName, outputType }) => {
                 if (!state.file) return;
+                const file = state.file;
                 const runId = state.ffmpegRunId + 1;
                 state.ffmpegRunId = runId;
                 clearOutput();
@@ -993,17 +1014,25 @@
                 state.ffmpegCancelled = false;
                 state.ffmpegIgnoreAbortLog = false;
                 state.ffmpegLastLog = copy.lastLogDefault;
+                state.ffmpegLogHistory = [];
                 ffmpegProgress.value = 0;
                 setFFmpegStatus(copy.ffmpegRunning);
                 setStatus(copy.convertingWithFFmpeg);
-                const inputName = ffmpegInputName(state.file);
+                const inputName = ffmpegInputName(file);
 
                 try {
                     const ffmpeg = await ensureFFmpeg();
-                    await ffmpeg.writeFile(inputName, await state.ffmpegFetchFile(state.file));
-                    await ffmpeg.exec(args);
+                    if (runId !== state.ffmpegRunId) return;
+                    const inputData = await state.ffmpegFetchFile(file);
+                    if (runId !== state.ffmpegRunId) return;
+                    await ffmpeg.writeFile(inputName, inputData);
+                    if (runId !== state.ffmpegRunId) return;
+                    const exitCode = await ffmpeg.exec(args);
+                    if (runId !== state.ffmpegRunId || state.ffmpegCancelled) return;
+                    if (exitCode !== 0) throw new Error(copy.ffmpegConversionFailed);
                     const data = await ffmpeg.readFile(outputName);
-                    const blob = new Blob([data.buffer], { type: outputType });
+                    if (runId !== state.ffmpegRunId) return;
+                    const blob = new Blob([data], { type: outputType });
                     setOutput(blob, outputName);
                     state.ffmpegIgnoreAbortLog = true;
                     state.ffmpegLastLog = copy.ffmpegCompleted;
@@ -1020,8 +1049,12 @@
                         state.ffmpegLastLog = copy.ffmpegCancelled;
                         setFFmpegStatus(copy.ffmpegCancelledStatus);
                     } else {
-                        const message = error.message || copy.ffmpegLoadFailed;
-                        state.ffmpegLastLog = message;
+                        const message = error.message || copy.ffmpegConversionFailed;
+                        state.ffmpegLastLog = [...state.ffmpegLogHistory, String(error)].join(' | ');
+                        if (state.ffmpeg) state.ffmpeg.terminate();
+                        state.ffmpeg = null;
+                        state.ffmpegLoaded = false;
+                        revokeFFmpegWorkerUrl();
                         setWarning(message);
                         setStatus(message);
                         setFFmpegStatus(copy.ffmpegError);
@@ -1034,6 +1067,7 @@
             const cancelFFmpeg = () => {
                 if (!state.ffmpegBusy) return;
                 state.ffmpegCancelled = true;
+                state.ffmpegRunId += 1;
                 state.ffmpegIgnoreAbortLog = true;
                 if (state.ffmpeg) state.ffmpeg.terminate();
                 state.ffmpeg = null;

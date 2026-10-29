@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width,initial-scale=1" />
     <title>Lorenz Attractor Forecasting · Lorenzo Marinelli</title>
     <meta name="description" content="Interactive Lorenz attractor demo and project notes by Lorenzo Marinelli." />
-    <link rel="stylesheet" href="/assets/style.css" />
+    <link rel="stylesheet" href="/assets/style.css?v=20261017" />
 
     <link rel="alternate" hreflang="it" href="/it/projects/lorenz/" />
     <link rel="alternate" hreflang="en" href="/projects/lorenz/" />
@@ -157,7 +157,6 @@
                 <a href="/">Home</a>
                 <a href="/about/">About</a>
                 <a aria-current="page" href="/projects/">Projects</a>
-                <a href="/notes/">Notes</a>
                 <a href="/contact/">Contact</a>
         <a href="/playground/">Playground</a>
             </div>
@@ -167,7 +166,7 @@
             <p class="kicker">Interactive demo</p>
             <h1>Lorenz Attractor Forecasting</h1>
             <p class="lead">
-                A small visual demo connected to my experiments with LSTMs, derivative-aware outputs, and rolling
+                A small visual demo from my experiments with LSTMs, derivative-aware outputs, and rolling
                 forecasts on a chaotic dynamical system.
             </p>
 
@@ -188,8 +187,8 @@
             <section class="card">
                 <h2>Live attractor</h2>
                 <p>
-                    The canvas below simulates the Lorenz system directly in the browser. Change ρ to see how the shape
-                    of the trajectory changes.
+                    The canvas below runs the Lorenz system in your browser. Change ρ and watch the
+                    trajectory’s shape change.
                 </p>
 
                 <div class="demo-stage">
@@ -230,7 +229,7 @@
 
             <aside class="card equation-card">
                 <h2>System</h2>
-                <p>The classical Lorenz system is defined by three coupled differential equations:</p>
+                <p>Three coupled differential equations define the classical Lorenz system:</p>
 
                 <pre class="equation">dx/dt = σ(y - x)
 dy/dt = x(ρ - z) - y
@@ -255,30 +254,28 @@ dz/dt = xy - βz
             <section class="card">
                 <h2>What I learned</h2>
                 <p>
-                    The Lorenz system is a useful stress test because the ground truth is deterministic but very
-                    sensitive to initial conditions.
-                    This makes it a good playground for understanding why sequence models may perform well locally but
-                    fail globally.
+                    The Lorenz system makes a useful stress test: its ground truth is deterministic, yet it’s
+                    very sensitive to initial conditions. It helps show why sequence models can do well
+                    locally and still fail globally.
                 </p>
                 <p>
-                    In my experiments, predicting coordinates and derivatives independently surprisingly worked better
-                    than forcing
-                    derivative calculations too early in training.
-                    Residual-style updates were interesting, but recursive rollouts still exposed instability.
+                    To my surprise, predicting coordinates and derivatives independently worked better than
+                    forcing derivative calculations early in training. Residual-style updates were
+                    interesting, but recursive rollouts still revealed instability.
                 </p>
             </section>
 
             <section class="card">
                 <h2>An early recurrent-data experiment</h2>
                 <p>
-                    This was one of my first experiments with recurrent data during my first year of university. It was
-                    not a large or polished research project, but it was the first time I really saw how sequence models
-                    behave once predictions are fed back into themselves.
+                    I tried this in my first year of university, as one of my first experiments with recurrent
+                    data. It was a small, unpolished project, but it was the first time I really saw what
+                    happens when sequence models feed their own predictions back in.
                 </p>
                 <p>
-                    I am still fond of it for that reason. The Lorenz system made the lesson concrete: even a small
-                    model can look convincing over short horizons, while the recursive rollout exposes stability,
-                    drift, and error accumulation in a way that is hard to ignore.
+                    That’s why I’m still fond of it. The Lorenz system made the lesson hard to miss: a small
+                    model can look convincing over a short horizon, then reveal stability issues, drift, and
+                    accumulating errors during recursive rollout.
                 </p>
             </section>
         </main>

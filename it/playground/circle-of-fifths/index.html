@@ -7,7 +7,7 @@
     <title>Circle of Fifths Network · Playground · Lorenzo Marinelli</title>
     <meta name="description"
         content="Rete interattiva del circolo delle quinte di Lorenzo Marinelli: esplora relazioni tra tonalità, minori relative e semplice movimento armonico." />
-    <link rel="stylesheet" href="/assets/style.css" />
+    <link rel="stylesheet" href="/assets/style.css?v=20261017" />
 
     <link rel="alternate" hreflang="en" href="/playground/circle-of-fifths/" />
     <link rel="alternate" hreflang="it" href="/it/playground/circle-of-fifths/" />
@@ -42,7 +42,6 @@
                 <a href="/it/">Home</a>
                 <a href="/it/about/">Info</a>
                 <a href="/it/projects/">Progetti</a>
-                <a href="/it/notes/">Appunti</a>
                 <a href="/it/contact/">Contatti</a>
                 <a aria-current="page" href="/it/playground/">Playground</a>
             </div>
@@ -52,8 +51,9 @@
             <p class="kicker">Esperimento del playground</p>
             <h1>Circle of Fifths Network</h1>
             <p class="lead hero-line">
-                Un piccolo grafo interattivo di teoria musicale. Clicca una tonalità per evidenziare i vicini armonici più prossimi,
-                la minore relativa e una semplice progressione I–vi–IV–V.
+                Esplora la teoria musicale con un piccolo grafo interattivo. Clicca su una tonalità per
+                evidenziare i vicini armonici più prossimi, la relativa minore e una semplice progressione
+                I–vi–IV–V.
             </p>
 
             <div class="hero__cta">
@@ -67,8 +67,9 @@
                     <p class="project-kicker">Grafo armonico interattivo</p>
                     <h2>Tonalità come nodi connessi</h2>
                     <p>
-                        I nodi esterni sono tonalità maggiori. I nodi interni sono le relative minori.
-                        Le tonalità maggiori vicine sono a distanza di quinta, quindi sono target naturali di modulazione.
+                        I nodi esterni sono le tonalità maggiori, quelli interni le relative minori. Le
+                        tonalità maggiori adiacenti distano una quinta: per questo sono scelte naturali per
+                        una modulazione.
                     </p>
                 </div>
 
@@ -112,8 +113,8 @@
                     </button>
 
                     <p class="fifths-note">
-                        Il suono è volutamente semplice: triadi sintetizzate essenziali, quanto basta per sentire la
-                        relazione.
+                        Il suono è volutamente semplice: solo triadi sintetizzate, quanto basta per sentire
+                        come si legano le tonalità.
                     </p>
                 </aside>
             </div>
@@ -123,18 +124,18 @@
             <article class="card">
                 <h2>Cosa osservare</h2>
                 <p>
-                    Muoversi in senso orario aggiunge diesis e procede per quinte. Muoversi in senso antiorario aggiunge bemolli e procede per
-                    quarte.
-                    Le tonalità vicine condividono molte note, per questo sono target comuni di modulazione.
+                    In senso orario si aggiungono diesis e si procede per quinte; in senso antiorario si
+                    aggiungono bemolli e si procede per quarte. Le tonalità vicine condividono molte note,
+                    perciò sono scelte comuni per modulare.
                 </p>
             </article>
 
             <article class="card">
                 <h2>Perché nel Playground</h2>
                 <p>
-                    Usa la stessa idea di grafo degli esperimenti di data science, ma applicata all’armonia. Accordi, tonalità e
-                    progressioni
-                    possono essere trattati come nodi e transizioni. E semplicemente mi piace la teoria musicale.
+                    È la stessa idea di grafo degli esperimenti di data science, applicata all’armonia.
+                    Accordi, tonalità e progressioni si possono rappresentare come nodi e transizioni. E poi,
+                    semplicemente, mi piace la teoria musicale.
                 </p>
             </article>
         </section>
@@ -366,6 +367,26 @@
 
             const SINGLE_NOTE_VOLUME = 0.24;
             const CHORD_VOICE_VOLUME = 0.12;
+            let audioContext = null;
+            const getAudioContext = async () => {
+                try {
+                    const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+                    if (!AudioContextClass) throw new Error('Audio unavailable');
+                    if (!audioContext || audioContext.state === 'closed') {
+                        audioContext = new AudioContextClass();
+                    }
+                    if (audioContext.state === 'suspended') await audioContext.resume();
+                    return audioContext;
+                } catch {
+                    status.textContent = 'Audio non disponibile in questo browser.';
+                    return null;
+                }
+            };
+
+            window.addEventListener('pagehide', () => {
+                if (audioContext) audioContext.close().catch(() => {});
+                audioContext = null;
+            });
 
             const cleanRootName = (name) => {
                 return name
@@ -374,8 +395,9 @@
                     .trim();
             };
 
-            const playSingleNote = (rootName, octave = 4) => {
-                const audio = new AudioContext();
+            const playSingleNote = async (rootName, octave = 4) => {
+                const audio = await getAudioContext();
+                if (!audio) return;
 
                 const root = cleanRootName(rootName);
                 const pc = pitchClasses[root] ?? 0;
@@ -392,7 +414,7 @@
                 const now = audio.currentTime;
 
                 gain.gain.setValueAtTime(0.0001, now);
-                gain.gain.exponentialRampToValueAtTime(SINGLE_NOTE_VOLUME, now + 0.025);;
+                gain.gain.exponentialRampToValueAtTime(SINGLE_NOTE_VOLUME, now + 0.025);
                 gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.65);
 
                 oscillator.connect(gain);
@@ -400,6 +422,10 @@
 
                 oscillator.start(now);
                 oscillator.stop(now + 0.7);
+                oscillator.onended = () => {
+                    oscillator.disconnect();
+                    gain.disconnect();
+                };
             };
 
             const midiToFrequency = (midi) => {
@@ -437,11 +463,16 @@
 
                     oscillator.start(startTime);
                     oscillator.stop(startTime + duration + 0.03);
+                    oscillator.onended = () => {
+                        oscillator.disconnect();
+                        gain.disconnect();
+                    };
                 });
             };
 
-            const playProgression = () => {
-                const audio = new AudioContext();
+            const playProgression = async () => {
+                const audio = await getAudioContext();
+                if (!audio) return;
                 const chords = keys[selected].progression;
                 const qualities = ['major', 'minor', 'major', 'major'];
                 const now = audio.currentTime + 0.05;

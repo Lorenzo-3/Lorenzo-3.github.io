@@ -7,7 +7,7 @@
   <title>Playground · Lorenzo Marinelli</title>
   <meta name="description"
     content="Playground interattivo di Lorenzo Marinelli: grafi, data science, teoria musicale ed esperimenti browser-native." />
-  <link rel="stylesheet" href="/assets/style.css" />
+  <link rel="stylesheet" href="/assets/style.css?v=20261017" />
 
   <link rel="alternate" hreflang="en" href="/playground/" />
   <link rel="alternate" hreflang="it" href="/it/playground/" />
@@ -41,7 +41,6 @@
         <a href="/it/">Home</a>
         <a href="/it/about/">Info</a>
         <a href="/it/projects/">Progetti</a>
-        <a href="/it/notes/">Appunti</a>
         <a href="/it/contact/">Contatti</a>
         <a aria-current="page" href="/it/playground/">Playground</a>
       </div>
@@ -49,9 +48,10 @@
 
     <header class="hero playground-hero">
       <p class="kicker">Mappa interattiva</p>
-      <h1>Playground-WIP</h1>
+      <h1>Playground</h1>
       <p class="lead hero-line">
-        Una mappa browser-native di alcune utilities + piccoli esperimenti legati ai temi che mi interessano. USO DESKTOP CONSIGLIATO.
+        Una mappa di utility e piccoli esperimenti sui temi che mi interessano, tutti nel browser. Da
+        esplorare preferibilmente su desktop.
       </p>
     </header>
 
@@ -68,59 +68,59 @@
       <ul class="notes-list playground-live-list">
         <li>
           <strong><a href="/it/playground/graph-diffusion/">Graph Signal Diffusion</a></strong>
-          <p>Inietta un segnale in un nodo e osserva come i vicinati locali lo trasportano.</p>
+          <p>Invia un segnale a un nodo e guarda come attraversa i vicinati locali.</p>
         </li>
         <li>
           <strong><a href="/it/playground/gnn-toy/">GNN Message Passing Toy</a></strong>
-          <p>Scegli le feature dei nodi, impila strati di message passing e osserva gli embedding che si smussano sugli archi.</p>
+          <p>Scegli le feature dei nodi e aggiungi strati di message passing per vedere gli embedding diventare più uniformi lungo gli archi.</p>
         </li>
         <li>
           <strong><a href="/it/playground/clustering/">Clustering Lab</a></strong>
-          <p>Aggiungi punti in 2D, confronta algoritmi di clustering e regola le ipotesi di raggruppamento.</p>
+          <p>Disponi punti in 2D, confronta algoritmi di clustering e regola le ipotesi con cui formano i gruppi.</p>
         </li>
         <li>
           <strong><a href="/it/playground/gravity-assist/">Gravity Assist Sandbox</a></strong>
-          <p>Lancia una sonda in un sistema solare in miniatura e usa i flyby per raggiungere un pianeta target.</p>
+          <p>Invia una sonda in un sistema solare in miniatura e usa i flyby per raggiungere il pianeta obiettivo.</p>
         </li>
         <li>
           <strong><a href="/it/playground/fourier/">Fourier Transform Playground</a></strong>
-          <p>Aggiungi onde sinusoidali una alla volta, ascolta il mix e osserva lo spettro cambiare.</p>
+          <p>Aggiungi onde sinusoidali una alla volta, ascolta il mix e guarda cambiare lo spettro.</p>
         </li>
         <li>
           <strong><a href="/it/playground/signal-filters/">Signal Filter Playground</a></strong>
-          <p>Prova filtri classici su segnali semplici e confronta ingresso, uscita e risposta in frequenza.</p>
+          <p>Applica filtri classici a segnali semplici e confronta ingresso, uscita e risposta in frequenza.</p>
         </li>
         <li>
           <strong><a href="/it/playground/mlp-lab/">MLP Decision Boundary Lab</a></strong>
-          <p>Personalizza una piccola rete neurale, cambia attivazione e osserva il confine appreso durante il training.</p>
+          <p>Costruisci una piccola rete neurale, cambia le attivazioni e guarda muoversi il confine appreso durante il training.</p>
         </li>
         <li>
           <strong><a href="/it/playground/diffusion-models/">Diffusion Model Denoising Toy</a></strong>
-          <p>Aggiungi rumore a un'immagine generata, poi torna indietro con un processo di denoising semplificato.</p>
+          <p>Aggiungi rumore a un’immagine generata, poi ripercorri al contrario un denoising semplificato, un passo alla volta.</p>
         </li>
         <li>
           <strong><a href="/it/playground/convolution-kernels/">Convolution Kernel Playground</a></strong>
-          <p>Modifica kernel immagine 3x3 e 5x5 e confronta immagine originale e risultato convoluto.</p>
+          <p>Crea kernel 3x3 e 5x5 e confronta l’immagine convoluta con l’originale.</p>
         </li>
         <li>
           <strong><a href="/it/playground/image-color-editor/">Image Color Editor</a></strong>
-          <p>Carica o genera un’immagine, modifica i colori, scambia i canali RGB e salva il PNG modificato.</p>
+          <p>Carica o genera un’immagine, regola i colori, scambia i canali RGB e salva il PNG modificato.</p>
         </li>
         <li>
           <strong><a href="/it/playground/file-converter/">File Converter</a></strong>
-          <p>Converti immagini, audio e video localmente con strumenti browser-native e FFmpeg.wasm.</p>
+          <p>Converti immagini, audio e video in locale con strumenti nativi del browser e FFmpeg.wasm.</p>
         </li>
         <li>
           <strong><a href="/it/playground/anomaly-node/">Anomaly Node Game</a></strong>
-          <p>Osserva un grafo dinamico e identifica il nodo che reagisce in modo diverso.</p>
+          <p>Osserva il grafo in movimento e trova il nodo che reagisce diversamente.</p>
         </li>
         <li>
           <strong><a href="/it/playground/computer-vision/">Computer Vision Mini Lab</a></strong>
-          <p>Piccoli esperimenti visivi su detection, saliency, errore di ricostruzione, maschere e intuizione sulle immagini.</p>
+          <p>Piccoli esperimenti visivi per esplorare detection, saliency, errore di ricostruzione, maschere e lettura delle immagini.</p>
         </li>
         <li>
           <strong><a href="/it/playground/circle-of-fifths/">Circle of Fifths Network</a></strong>
-          <p>Esplora tonalità, minori relative e vicini armonici come grafo.</p>
+          <p>Esplora un grafo di tonalità, relative minori e vicini armonici.</p>
         </li>
       </ul>
     </section>
@@ -136,7 +136,7 @@
     <p class="project-kicker" data-playground-kicker>Nodo tematico</p>
     <h2 data-playground-title>Seleziona un nodo</h2>
     <p data-playground-text>
-      Clicca un nodo tematico per vedere come si collega agli esperimenti attuali e ai progetti.
+      Clicca su un nodo tematico per vedere i suoi legami con gli esperimenti attuali e i progetti.
     </p>
 
     <div class="playground-popup__relations">
@@ -158,7 +158,8 @@
       const canvas = document.createElement('canvas');
       canvas.className = 'network-bg playground-bg-graph';
       canvas.setAttribute('aria-hidden', 'true');
-      document.body.prepend(canvas);
+      const graphWindow = document.querySelector('.playground-graph-window');
+      graphWindow.prepend(canvas);
 
       const ctx = canvas.getContext('2d');
       const root = document.documentElement;
@@ -419,12 +420,22 @@
       const cssVar = (name, fallback) =>
         getComputedStyle(root).getPropertyValue(name).trim() || fallback;
 
+      let graphWidth = 0;
+      let graphHeight = 0;
+      const graphPoints = [...nodes, ...groups];
+      const minX = Math.min(...graphPoints.map(node => node.x));
+      const maxX = Math.max(...graphPoints.map(node => node.x));
+      const minY = Math.min(...graphPoints.map(node => node.y));
+      const maxY = Math.max(...graphPoints.map(node => node.y));
+
       const resize = () => {
+        graphWidth = graphWindow.clientWidth;
+        graphHeight = graphWindow.clientHeight;
         const dpr = Math.min(window.devicePixelRatio || 1, 2);
-        canvas.width = Math.floor(window.innerWidth * dpr);
-        canvas.height = Math.floor(window.innerHeight * dpr);
-        canvas.style.width = `${window.innerWidth}px`;
-        canvas.style.height = `${window.innerHeight}px`;
+        canvas.width = Math.floor(graphWidth * dpr);
+        canvas.height = Math.floor(graphHeight * dpr);
+        canvas.style.width = `${graphWidth}px`;
+        canvas.style.height = `${graphHeight}px`;
         ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
       };
 
@@ -435,20 +446,12 @@
       };
 
       const pointFor = (node) => {
-        const padX = window.innerWidth < 520 ? 34 : 72;
-        const graphWidth = Math.max(1, window.innerWidth - padX * 2);
-        const graphHeight = Math.max(1, window.innerHeight * (window.innerWidth < 720 ? 0.72 : 0.74));
-        const spreadX = window.innerWidth < 720 ? 1.35 : 1.45;
-        const spreadY = window.innerWidth < 720 ? 1.10 : 1.08;
-        const centerY = window.innerHeight * (window.innerWidth < 720 ? 0.68 : 0.58);
+        const padX = graphWidth < 520 ? 44 : 72;
         const waveX = reduceMotion ? 0 : Math.sin(time * 0.0012 + node.x * 8) * 6;
         const waveY = reduceMotion ? 0 : Math.cos(time * 0.0010 + node.y * 8) * 5;
-        const x = window.innerWidth / 2 + (node.x - 0.5) * graphWidth * spreadX;
-        const y = centerY + (node.y - 0.5) * graphHeight * spreadY;
-
         return {
-          x: Math.min(window.innerWidth - padX, Math.max(padX, x)) + waveX,
-          y: Math.min(window.innerHeight - 34, Math.max(34, y)) + waveY
+          x: padX + (node.x - minX) / (maxX - minX) * Math.max(1, graphWidth - padX * 2) + waveX,
+          y: 110 + (node.y - minY) / (maxY - minY) * Math.max(1, graphHeight - 170) + waveY
         };
       };
 
@@ -491,12 +494,15 @@
       };
 
       const hitTest = (clientX, clientY) => {
+        const rect = canvas.getBoundingClientRect();
+        const localX = clientX - rect.left;
+        const localY = clientY - rect.top;
         let best = null;
         let bestDistance = Infinity;
 
         nodes.forEach(node => {
           const p = pointFor(node);
-          const distance = Math.hypot(p.x - clientX, p.y - clientY);
+          const distance = Math.hypot(p.x - localX, p.y - localY);
 
           if (distance < 34 && distance < bestDistance) {
             best = node.id;
@@ -518,9 +524,9 @@
         const activeRelated = new Set(activeId ? relatedIds(activeId) : []);
         const hoveredRelated = new Set(hoveredId ? relatedIds(hoveredId) : []);
 
-        ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
+        ctx.clearRect(0, 0, graphWidth, graphHeight);
 
-        if (window.innerWidth > 760) {
+        if (graphWidth > 760) {
           groups.forEach(group => {
             const p = pointFor(group);
             ctx.globalAlpha = 0.34;

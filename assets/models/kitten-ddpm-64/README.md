@@ -6,4 +6,4 @@ This directory is intentionally deployable before training. The page checks for:
 - `kitten_denoiser.onnx`
 - optional `previews/*.png`
 
-Run `notebooks/tiny_kitten_ddpm_64.ipynb` with your kitten/cat dataset to create the ONNX model and preview images. Until `kitten_denoiser.onnx` exists, the playground shows a clear fallback and keeps the procedural diffusion toy usable.
+Run `notebooks/tiny_kitten_ddpm_64.ipynb` with your kitten/cat dataset to create the ONNX model and preview images. The sampler stays hidden until `metadata.json` has `status: "trained"` and `kitten_denoiser.onnx` is available. The procedural diffusion toy remains usable independently.

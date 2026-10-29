@@ -7,7 +7,7 @@
     <title>Convolution Kernel Playground · Playground · Lorenzo Marinelli</title>
     <meta name="description"
         content="Playground interattivo sulla convoluzione di immagini di Lorenzo Marinelli: modifica kernel 3x3 e 5x5 personalizzati e osserva come cambiano un’immagine." />
-    <link rel="stylesheet" href="/assets/style.css" />
+    <link rel="stylesheet" href="/assets/style.css?v=20261017" />
 
     <link rel="alternate" hreflang="en" href="/playground/convolution-kernels/" />
     <link rel="alternate" hreflang="it" href="/it/playground/convolution-kernels/" />
@@ -42,7 +42,6 @@
                 <a href="/it/">Home</a>
                 <a href="/it/about/">Info</a>
                 <a href="/it/projects/">Progetti</a>
-                <a href="/it/notes/">Appunti</a>
                 <a href="/it/contact/">Contatti</a>
                 <a aria-current="page" href="/it/playground/">Playground</a>
             </div>
@@ -52,8 +51,8 @@
             <p class="kicker">Esperimento del playground</p>
             <h1>Convolution Kernel Playground</h1>
             <p class="lead hero-line">
-                Modifica un piccolo kernel immagine e applicalo a ogni pixel. Prova blur, sharpen, edge, emboss e i tuoi
-                filtri 5x5 personalizzati.
+                Modifica un piccolo kernel e applicalo a ogni pixel dell’immagine. Prova blur, sharpen, edge,
+                emboss oppure crea i tuoi filtri 5x5.
             </p>
 
             <div class="hero__cta">
@@ -78,7 +77,7 @@
         <div class="conv-hud__top">
             <div>
                 <h2>Editor kernel</h2>
-                <p data-conv-status>Kernel identità caricato. Cambia i pesi per trasformare l’immagine.</p>
+                <p data-conv-status>Il kernel identità è caricato. Modifica i pesi per trasformare l’immagine.</p>
             </div>
             <div class="conv-actions">
                 <label class="mini-btn conv-upload">
@@ -135,8 +134,8 @@
         </div>
 
         <p class="conv-note">
-            I pesi positivi schiariscono i vicinati corrispondenti. I pesi negativi sottraggono i vicini: per questo i kernel
-            edge rivelano cambiamenti improvvisi.
+            I pesi positivi schiariscono i vicinati corrispondenti; quelli negativi sottraggono il contributo
+            dei pixel vicini. È così che i kernel edge fanno emergere i cambiamenti improvvisi.
         </p>
     </aside>
 

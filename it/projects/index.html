@@ -7,7 +7,7 @@
   <title>Progetti · Lorenzo Marinelli</title>
   <meta name="description"
     content="Progetti di Lorenzo Marinelli — ML, data science, bioinformatica e lavoro ingegneristico." />
-  <link rel="stylesheet" href="/assets/style.css" />
+  <link rel="stylesheet" href="/assets/style.css?v=20261017" />
 
   <link rel="alternate" hreflang="en" href="/projects/" />
   <link rel="alternate" hreflang="it" href="/it/projects/" />
@@ -41,7 +41,6 @@
         <a href="/it/">Home</a>
         <a href="/it/about/">Info</a>
         <a aria-current="page" href="/it/projects/">Progetti</a>
-        <a href="/it/notes/">Appunti</a>
         <a href="/it/contact/">Contatti</a>
         <a href="/it/playground/">Playground</a>
       </div>
@@ -50,11 +49,11 @@
     <header class="hero hero--projects">
       <p class="kicker">Lavori selezionati</p>
       <h1>Progetti</h1>
-      <p class="lead">Una panoramica ordinata di alcune cose che ho costruito, studiato e testato.</p>
+      <p class="lead">Alcune cose che ho costruito, studiato e testato, raccolte in un unico posto.</p>
       <div class="meta">
         <span>Italia</span>
         <span class="sep">•</span>
-        <span>Aggiornato: Luglio 2026</span>
+        <span>Aggiornato: Ottobre 2026</span>
       </div>
     </header>
 
@@ -82,10 +81,11 @@
       </div>
 
       <p class="project__desc">
-        <span class="hl">Unveiling Protein Connections through Graph Neural Networks and ProtT5 Embeddings</span><br />
-        La mia tesi triennale parte da una domanda pratica di bioinformatica: un modello può suggerire collegamenti
-        probabili ma ancora mancanti tra proteine, così da dare candidati migliori da controllare? Combina informazione
-        di sequenza con una rete di interazioni note, con un case study su NOTCH2.
+        <span class="hl">Unveiling Protein Connections through Graph Neural Networks and ProtT5
+        Embeddings</span><br /> La mia tesi triennale parte da una domanda pratica di bioinformatica: un
+        modello può suggerire collegamenti probabili ma ancora mancanti tra proteine e dare ai ricercatori
+        candidati migliori da controllare? Combina informazioni di sequenza con una rete di interazioni note e
+        include un caso di studio su NOTCH2.
       </p>
 
       <div class="tag-row" aria-label="Tags">
@@ -118,9 +118,9 @@
         </div>
 
         <p class="project__desc">
-          Un attacco veloce a livello di forma d’onda che addestra una U-Net residuale 1D a generare perturbazioni
-          audio piccole e vincolate in un singolo forward pass, mantenendo il parlato comprensibile ma degradando
-          nettamente la trascrizione di Whisper.
+          Un attacco veloce alle forme d’onda del parlato: una U-Net residuale 1D impara a produrre
+          perturbazioni audio piccole e vincolate in un solo forward pass. Il parlato resta comprensibile,
+          mentre la trascrizione di Whisper peggiora nettamente.
         </p>
 
         <div class="tag-row" aria-label="Tags">
@@ -150,8 +150,9 @@
         </div>
 
         <p class="project__desc">
-          Progetto d’esame che combina reinforcement learning e guida basata su LLM per navigazione in un ambiente
-          PyBullet stocastico con goal nascosto, sensing locale, embedding di guida e controllo ricorrente.
+          Un progetto d’esame che combina reinforcement learning e guida basata su LLM per navigare in un
+          ambiente PyBullet stocastico. Usa un goal nascosto, sensing locale, embedding di guida e controllo
+          ricorrente.
         </p>
 
         <div class="tag-row" aria-label="Tags">
@@ -173,6 +174,38 @@
         </div>
       </article>
 
+      <article class="card project project-card" data-tags="ml nlp adversarial security">
+        <div class="project__top">
+          <p class="project-kicker">Elaborazione del linguaggio naturale</p>
+          <h2>Unicode-Robust Text Classification Lab</h2>
+        </div>
+
+        <p class="project__desc">
+          Una frase può sembrare quasi identica e mettere comunque in difficoltà un classificatore. Il
+          progetto testa sostituzioni Unicode e caratteri invisibili su BANKING77 e TREC, confronta
+          classificatori TF-IDF con DistilBERT fine-tuned e valuta semplici difese sul testo in ingresso.
+        </p>
+
+        <div class="tag-row" aria-label="Tags">
+          <span>NLP</span>
+          <span>Attacchi Unicode</span>
+          <span>TF-IDF</span>
+          <span>DistilBERT</span>
+        </div>
+
+        <ul class="bullets">
+          <li><span class="hl">Confronto:</span> feature di parole, caratteri e BPE testate sugli stessi input perturbati.</li>
+          <li><span class="hl">Risultato:</span> le feature a caratteri conservano meglio le prestazioni con intensità
+            di attacco del 20%; correzioni mirate dell’input recuperano gran parte della perdita sugli attacchi testati.</li>
+        </ul>
+
+        <div class="hero__cta">
+          <a class="btn" href="/assets/unicode-text-classification/Unicode_Robust_Text_Classification_Report.pdf">Report PDF</a>
+          <a class="btn btn--ghost" href="https://github.com/Lorenzo-3/Unicode-Robust-Text-Classification-Lab/tree/main"
+            target="_blank" rel="noopener noreferrer">Codice e notebook</a>
+        </div>
+      </article>
+
       <article class="card project project-card" data-tags="ml vision uav">
         <div class="project__top">
           <p class="project-kicker">Visione artificiale</p>
@@ -180,7 +213,7 @@
         </div>
 
         <p class="project__desc">
-          Pipeline di visione artificiale per immagini da drone molto grandi, con un obiettivo semplice: individuare
+          Una pipeline di visione artificiale per immagini da drone molto grandi. L’obiettivo è individuare
           oggetti o aree insolite e trasformarle in regioni da controllare o classificare.
         </p>
 
@@ -210,8 +243,9 @@
         </div>
 
         <p class="project__desc">
-          Un piccolo studio di forecasting su un sistema caotico: un modello riesce a prevedere il movimento
-          successivo, e quanto velocemente crescono gli errori quando le previsioni vengono riusate dal modello?
+          Un piccolo studio di forecasting su un sistema caotico. Un modello riesce a prevedere il movimento
+          successivo? E quanto in fretta crescono gli errori quando le sue previsioni vengono riusate come
+          input?
         </p>
 
         <div class="tag-row" aria-label="Tags">
@@ -244,8 +278,8 @@
         </div>
 
         <p class="project__desc">
-          Analisi esplorativa delle elezioni europee 2019: pulizia dei dati, verifica di ipotesi e sintesi tramite
-          visualizzazioni.
+          Un’analisi esplorativa delle elezioni europee 2019, dalla pulizia dei dati alla verifica di ipotesi
+          e alle sintesi visive.
         </p>
 
         <div class="tag-row" aria-label="Tags">
@@ -273,8 +307,8 @@
         </div>
 
         <p class="project__desc">
-          Un’esperienza in prima persona realizzata con Three.js che trasforma il suono in un luogo da esplorare: una
-          forma d’onda live mostra il segnale nel tempo, mentre uno skyline audio-reattivo ne rivela lo spettro.
+          Esplora il suono in una scena Three.js in prima persona. Una forma d’onda live mostra il segnale nel
+          tempo, mentre uno skyline audio-reattivo ne mostra lo spettro.
         </p>
 
         <div class="tag-row" aria-label="Tags">
@@ -306,8 +340,8 @@
         </div>
 
         <p class="project__desc">
-          Piccola pipeline per generare immagini sintetiche etichettate con domain randomization per training in stile
-          YOLO.
+          Una piccola pipeline che usa domain randomization per generare immagini sintetiche etichettate per
+          training in stile YOLO.
         </p>
 
         <div class="tag-row" aria-label="Tags">
@@ -342,8 +376,8 @@
         </div>
 
         <p class="project__desc">
-          Lavori leggeri di backend/API e piccole app orientate a trasformare funzionalità in qualcosa di usabile e
-          testabile.
+          Piccoli lavori di backend/API e app che trasformano funzionalità in qualcosa da usare e mettere alla
+          prova.
         </p>
 
         <div class="tag-row" aria-label="Tags">
@@ -374,8 +408,8 @@
         </div>
 
         <p class="project__desc">
-          Uno spazio in crescita per simulazioni native del browser, spiegazioni visuali e piccoli strumenti utili da
-          esplorare, ma non sempre abbastanza grandi per pagine progetto autonome.
+          Una raccolta in crescita di simulazioni, spiegazioni visive e piccoli strumenti che girano nel
+          browser. Sono da esplorare anche quando non richiedono una pagina progetto dedicata.
         </p>
 
         <div class="tag-row" aria-label="Tags">

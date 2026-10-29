@@ -7,7 +7,7 @@
     <title>Previsione dell’attrattore di Lorenz · Lorenzo Marinelli</title>
     <meta name="description"
         content="Demo interattiva dell’attrattore di Lorenz e note di progetto di Lorenzo Marinelli." />
-    <link rel="stylesheet" href="/assets/style.css" />
+    <link rel="stylesheet" href="/assets/style.css?v=20261017" />
 
     <link rel="alternate" hreflang="en" href="/projects/lorenz/" />
     <link rel="alternate" hreflang="it" href="/it/projects/lorenz/" />
@@ -159,7 +159,6 @@
                 <a href="/it/">Home</a>
                 <a href="/it/about/">Info</a>
                 <a aria-current="page" href="/it/projects/">Progetti</a>
-                <a href="/it/notes/">Appunti</a>
                 <a href="/it/contact/">Contatti</a>
         <a href="/it/playground/">Playground</a>
             </div>
@@ -169,8 +168,8 @@
             <p class="kicker">Demo interattiva</p>
             <h1>Previsione dell’attrattore di Lorenz</h1>
             <p class="lead">
-                Una piccola demo visuale collegata ai miei esperimenti con LSTM, output con derivate e rolling forecast
-                su un sistema dinamico caotico.
+                Una piccola demo visiva nata dai miei esperimenti con LSTM, output con derivate e rolling
+                forecast su un sistema dinamico caotico.
             </p>
 
             <div class="tag-row" aria-label="Tags">
@@ -190,7 +189,7 @@
             <section class="card">
                 <h2>Attrattore live</h2>
                 <p>
-                    Il canvas sotto simula il sistema di Lorenz direttamente nel browser. Modifica ρ per vedere come
+                    Il canvas qui sotto esegue il sistema di Lorenz nel browser. Modifica ρ e guarda come
                     cambia la forma della traiettoria.
                 </p>
 
@@ -232,7 +231,7 @@
 
             <aside class="card equation-card">
                 <h2>Sistema</h2>
-                <p>Il sistema classico di Lorenz è definito da tre equazioni differenziali accoppiate:</p>
+                <p>Tre equazioni differenziali accoppiate definiscono il sistema classico di Lorenz:</p>
 
                 <pre class="equation">dx/dt = σ(y - x)
 dy/dt = x(ρ - z) - y
@@ -258,31 +257,29 @@ dz/dt = xy - βz
             <section class="card">
                 <h2>Cosa ho imparato</h2>
                 <p>
-                    Il sistema di Lorenz è un buon banco di prova perché la dinamica è deterministica ma estremamente
-                    sensibile alle condizioni iniziali.
-                    Questo lo rende utile per capire perché i modelli sequenziali possono funzionare localmente ma
-                    fallire globalmente.
+                    Il sistema di Lorenz è un buon banco di prova: la dinamica è deterministica, ma
+                    estremamente sensibile alle condizioni iniziali. Aiuta a capire perché i modelli
+                    sequenziali possono funzionare localmente e fallire su scala globale.
                 </p>
                 <p>
-                    Nei miei esperimenti, predire coordinate e derivate in modo indipendente ha funzionato meglio
-                    rispetto a forzare troppo presto il calcolo analitico delle derivate.
-                    Gli aggiornamenti residuali erano interessanti, ma i rollout ricorsivi hanno comunque evidenziato
-                    problemi di instabilità.
+                    Nei miei esperimenti, predire coordinate e derivate separatamente ha funzionato meglio che
+                    imporre troppo presto il calcolo analitico delle derivate. Gli aggiornamenti residuali
+                    erano interessanti, ma i rollout ricorsivi hanno comunque mostrato instabilità.
                 </p>
             </section>
 
             <section class="card">
                 <h2>Un primo esperimento con dati ricorrenti</h2>
                 <p>
-                    Questo è stato uno dei miei primi esperimenti con dati ricorrenti durante il primo anno di
-                    università. Non era un progetto di ricerca grande o rifinito, ma è stato uno dei primi momenti in
-                    cui ho visto davvero come si comportano i modelli sequenziali quando le predizioni vengono
-                    reinserite nel sistema.
+                    L’ho provato al primo anno di università, in uno dei miei primi esperimenti con dati
+                    ricorrenti. Era un progetto piccolo e poco rifinito, ma è stato uno dei primi momenti in
+                    cui ho visto davvero cosa succede quando i modelli sequenziali riusano le proprie
+                    predizioni.
                 </p>
                 <p>
-                    Per questo ci sono ancora affezionato. Il sistema di Lorenz rendeva la lezione molto concreta: anche
-                    un modello piccolo può sembrare convincente su orizzonti brevi, mentre il rollout ricorsivo mette in
-                    evidenza stabilità, drift e accumulo dell’errore in modo difficile da ignorare.
+                    È per questo che ci sono ancora affezionato. Il sistema di Lorenz rendeva difficile
+                    ignorare la lezione: un modello piccolo può convincere su orizzonti brevi, poi mostrare
+                    problemi di stabilità, drift e accumulo degli errori nel rollout ricorsivo.
                 </p>
             </section>
         </main>

@@ -7,7 +7,7 @@
     <title>Computer Vision Mini Lab · Playground · Lorenzo Marinelli</title>
     <meta name="description"
         content="Toy interattivo di computer vision di Lorenzo Marinelli: piccoli esperimenti visivi su detection, saliency, errore di ricostruzione, maschere e intuizione sulle immagini." />
-    <link rel="stylesheet" href="/assets/style.css" />
+    <link rel="stylesheet" href="/assets/style.css?v=20261017" />
 
     <link rel="alternate" hreflang="en" href="/playground/computer-vision/" />
     <link rel="alternate" hreflang="it" href="/it/playground/computer-vision/" />
@@ -42,7 +42,6 @@
                 <a href="/it/">Home</a>
                 <a href="/it/about/">Info</a>
                 <a href="/it/projects/">Progetti</a>
-                <a href="/it/notes/">Appunti</a>
                 <a href="/it/contact/">Contatti</a>
                 <a aria-current="page" href="/it/playground/">Playground</a>
             </div>
@@ -52,7 +51,8 @@
             <p class="kicker">Esperimento del playground</p>
             <h1>Computer Vision Mini Lab</h1>
             <p class="lead hero-line">
-                Piccoli esperimenti visivi su detection, saliency, errore di ricostruzione, maschere e intuizione sulle immagini.
+                Piccoli esperimenti visivi per esplorare detection, saliency, errore di ricostruzione,
+                maschere e lettura delle immagini.
             </p>
 
             <div class="hero__cta">
@@ -66,8 +66,8 @@
                     <p class="project-kicker">Sonda su immagine sintetica</p>
                     <h2>Una scena, cinque viste del modello</h2>
                     <p>
-                        Una immagine generata neutra viene riusata in cinque viste, così l’overlay del modello cambia mentre
-                        la scena sottostante resta visivamente stabile.
+                        Le cinque viste usano la stessa immagine generata e neutra. Cambia l’overlay del
+                        modello, mentre la scena sottostante resta uguale.
                     </p>
                 </div>
 
@@ -142,16 +142,18 @@
             <article class="card">
                 <h2>Cosa osservare</h2>
                 <p>
-                    La detection comprime un’immagine in box e punteggi di confidenza. La saliency distribuisce attenzione sui
-                    pixel. L’errore di ricostruzione mostra dove un prior semplice non riesce a spiegare ciò che è visibile.
+                    La detection riduce un’immagine a box e punteggi di confidenza. La saliency mostra
+                    l’attenzione sui pixel. L’errore di ricostruzione rivela dove un prior semplice non riesce
+                    a spiegare ciò che si vede.
                 </p>
             </article>
 
             <article class="card">
                 <h2>Dai pixel alla pipeline</h2>
                 <p>
-                    La scena è sintetica, ma le abitudini sono reali: confrontare viste, spostare soglie, ispezionare false
-                    certezze e tenere l’output del modello legato all’immagine che lo ha prodotto.
+                    La scena è sintetica, ma le abitudini servono anche fuori dal demo: confrontare viste,
+                    regolare soglie, mettere in discussione false certezze e controllare gli output rispetto
+                    all’immagine che li ha prodotti.
                 </p>
             </article>
         </section>

@@ -7,7 +7,7 @@
     <title>Convolution Kernel Playground · Playground · Lorenzo Marinelli</title>
     <meta name="description"
         content="Interactive image convolution playground by Lorenzo Marinelli - edit custom 3x3 and 5x5 kernels and see how they change an image." />
-    <link rel="stylesheet" href="/assets/style.css" />
+    <link rel="stylesheet" href="/assets/style.css?v=20261017" />
 
     <link rel="alternate" hreflang="en" href="/playground/convolution-kernels/" />
     <link rel="alternate" hreflang="it" href="/it/playground/convolution-kernels/" />
@@ -42,7 +42,6 @@
                 <a href="/">Home</a>
                 <a href="/about/">About</a>
                 <a href="/projects/">Projects</a>
-                <a href="/notes/">Notes</a>
                 <a href="/contact/">Contact</a>
                 <a aria-current="page" href="/playground/">Playground</a>
             </div>
@@ -52,8 +51,8 @@
             <p class="kicker">Playground experiment</p>
             <h1>Convolution Kernel Playground</h1>
             <p class="lead hero-line">
-                Edit a small image kernel and apply it across every pixel. Try blur, sharpen, edge, emboss, and your own
-                custom 5x5 filters.
+                Edit a small kernel and apply it to every pixel of an image. Try blur, sharpen, edge, emboss,
+                or your own custom 5x5 filters.
             </p>
 
             <div class="hero__cta">
@@ -78,7 +77,7 @@
         <div class="conv-hud__top">
             <div>
                 <h2>Kernel editor</h2>
-                <p data-conv-status>Identity kernel loaded. Change weights to transform the image.</p>
+                <p data-conv-status>The identity kernel is loaded. Change its weights to transform the image.</p>
             </div>
             <div class="conv-actions">
                 <label class="mini-btn conv-upload">
@@ -135,8 +134,8 @@
         </div>
 
         <p class="conv-note">
-            Positive weights brighten matching neighborhoods. Negative weights subtract neighbors, which is why edge
-            kernels reveal sudden changes.
+            Positive weights brighten matching neighborhoods; negative weights subtract contributions from
+            neighboring pixels. That’s how edge kernels bring out sudden changes.
         </p>
     </aside>
 

@@ -7,7 +7,7 @@
   <title>NoWhisper · Lorenzo Marinelli</title>
   <meta name="description"
     content="NoWhisper uses a residual 1D U-Net to generate bounded audio perturbations that disrupt Whisper ASR in one forward pass." />
-  <link rel="stylesheet" href="/assets/style.css" />
+  <link rel="stylesheet" href="/assets/style.css?v=20261017" />
 
   <link rel="alternate" hreflang="it" href="/it/projects/nowhisper/" />
   <link rel="alternate" hreflang="en" href="/projects/nowhisper/" />
@@ -41,7 +41,6 @@
         <a href="/">Home</a>
         <a href="/about/">About</a>
         <a aria-current="page" href="/projects/">Projects</a>
-        <a href="/notes/">Notes</a>
         <a href="/contact/">Contact</a>
         <a href="/playground/">Playground</a>
       </div>
@@ -51,10 +50,10 @@
       <div class="nowhisper-hero__copy">
         <p class="kicker">Deep Learning &amp; Applied AI · Sapienza 2026</p>
         <h1>NoWhisper</h1>
-        <p class="lead">Fast generative perturbations for breaking Whisper ASR.</p>
+        <p class="lead">Fast, generated perturbations that break Whisper ASR.</p>
         <p>
-          Train once, then perturb a new speech waveform in a single forward pass. In informal listening, the
-          adversarial speech often remains understandable while pushing Whisper far away from the original transcript.
+          Train once, then perturb a new speech waveform in one forward pass. In informal listening, the
+          speech often stays understandable even as Whisper’s output moves far from the original transcript.
         </p>
 
         <div class="tag-row" aria-label="Tags">
@@ -142,8 +141,9 @@
           <p class="project-kicker">01 · The idea</p>
           <h2>Make transcription expensive to trust, not expensive to attack</h2>
           <p>
-            NoWhisper turns a slow, sample-specific waveform attack into a reusable generator. It learns the attack
-            once, then produces a bounded perturbation for unseen speech without per-clip optimization.
+            NoWhisper replaces a slow attack tailored to each waveform with a reusable generator. It learns
+            the attack once, then produces bounded perturbations for unseen speech without optimizing each
+            clip.
           </p>
         </div>
 
@@ -152,14 +152,14 @@
             <span aria-hidden="true">◉</span>
             <p class="project-kicker">Human listener</p>
             <h3>Keep the message</h3>
-            <p>Within the amplitude budget, the adversarial speech often remains understandable in informal listening.</p>
+            <p>With perturbations kept within the amplitude budget, the speech often stays understandable in informal listening.</p>
           </article>
           <div class="nowhisper-problem-arrow" aria-hidden="true">same audio<br>different outcome</div>
           <article class="nowhisper-listener-card nowhisper-listener-card--asr">
             <span aria-hidden="true">⌁</span>
             <p class="project-kicker">Whisper ASR</p>
             <h3>Lose the transcript</h3>
-            <p>Substitutions and insertions push the decoded text away from the original speech.</p>
+            <p>Substitutions and insertions move the decoded text away from what was originally said.</p>
           </article>
         </div>
 
@@ -175,7 +175,7 @@
         <div class="nowhisper-story-head">
           <p class="project-kicker">02 · Method</p>
           <h2>From iterative gradients to one forward pass</h2>
-          <p>Both paths optimize the same idea: increase Whisper’s reference loss while keeping the waveform bounded.</p>
+          <p>Both approaches aim to increase Whisper’s reference loss while keeping the waveform bounded.</p>
         </div>
 
         <div class="nowhisper-method-grid">
@@ -186,7 +186,7 @@
             <div class="nowhisper-flow" aria-label="White-box attack flow">
               <span>Audio</span><i>→</i><span>Adam</span><i>→</i><span>Project δ</span><i>→</i><span>Attack</span>
             </div>
-            <p>Gradients pass through Whisper’s differentiable frontend for many update steps.</p>
+            <p>Gradients flow through Whisper’s differentiable frontend over many update steps.</p>
             <p class="nowhisper-method-card__tradeoff"><strong>Strong</strong><span>Slow per waveform</span></p>
           </article>
 
@@ -197,7 +197,7 @@
             <div class="nowhisper-flow" aria-label="Generator attack flow">
               <span>Audio</span><i>→</i><span>G<sub>θ</sub></span><i>→</i><span>Bound δ</span><i>→</i><span>Attack</span>
             </div>
-            <p>The trained network predicts a complete perturbation in a single evaluation.</p>
+            <p>The trained network produces the full perturbation in a single evaluation.</p>
             <p class="nowhisper-method-card__tradeoff"><strong>Reusable</strong><span>One forward pass</span></p>
           </article>
         </div>
@@ -207,7 +207,7 @@
           <div class="nowhisper-details__body">
             <code class="nowhisper-equation">x_adv = clip(x + Π[-ε, ε](δ), -1, 1)</code>
             <code class="nowhisper-equation">x_gen = clip(x + ε tanh(Gθ(x)), -1, 1)</code>
-            <p>The projection and tanh parameterization enforce the same L∞ amplitude budget in both pipelines.</p>
+            <p>Projection and tanh parameterization keep both pipelines within the same L∞ amplitude budget.</p>
           </div>
         </details>
       </section>
@@ -216,7 +216,7 @@
         <div class="nowhisper-story-head">
           <p class="project-kicker">03 · Model</p>
           <h2>A compact residual U-Net for raw waveforms</h2>
-          <p>Skip connections preserve local speech structure while dilated residual blocks expand temporal context.</p>
+          <p>Skip connections keep local speech structure intact, while dilated residual blocks widen the temporal context.</p>
         </div>
 
         <div class="nowhisper-model-layout">
@@ -261,7 +261,7 @@
             </div>
             <div class="nowhisper-principle">
               <p><strong>The surprising result</strong></p>
-              <p>The strongest generator skipped teacher imitation and attacked Whisper’s reference loss directly.</p>
+              <p>The strongest generator attacked Whisper’s reference loss directly, without imitating the teacher.</p>
             </div>
           </div>
         </div>
@@ -281,7 +281,7 @@
         <div class="nowhisper-story-head">
           <p class="project-kicker">04 · Evidence</p>
           <h2>Trained on Small. Effective on larger Whisper models.</h2>
-          <p>The same ε = 0.0075 generator was evaluated on 100 held-out clips per model without retraining.</p>
+          <p>The same ε = 0.0075 generator was tested without retraining on 100 held-out clips for each model.</p>
         </div>
 
         <div class="nowhisper-result-cards" aria-label="Cross-model attack success">
@@ -334,8 +334,8 @@
                 </tbody>
               </table>
             </div>
-            <p>At ε = 0.005 the best 20-epoch run reached 2.165 WER at 23.37 dB. Strong masking raised SNR to
-              23.64 dB but reduced adversarial WER to 0.064.</p>
+            <p>At ε = 0.005, the best 20-epoch run reached 2.165 WER at 23.37 dB. Strong masking brought SNR up to 23.64 dB,
+              but dropped adversarial WER to 0.064.</p>
           </div>
         </details>
       </section>
@@ -344,7 +344,7 @@
         <div class="nowhisper-story-head">
           <p class="project-kicker">05 · Run locally</p>
           <h2>The frontend and a ready checkpoint ship with the repository</h2>
-          <p>Clone, install the matching PyTorch group, and launch the Gradio interface. No generator training is required.</p>
+          <p>Clone the repository, install the matching PyTorch group, and start the Gradio interface. You don’t need to train the generator.</p>
         </div>
 
         <div class="nowhisper-run-grid">
@@ -394,7 +394,7 @@
             </div>
             <div class="nowhisper-demo__transcript">
               <small>Clean transcription</small>
-              <p>Editable reference text appears here before the attack.</p>
+              <p>The editable reference text appears here before you run the attack.</p>
             </div>
             <div class="nowhisper-demo__tabs" aria-hidden="true">
               <span>Untargeted attack</span><span class="is-active">Generator</span>
@@ -432,25 +432,25 @@
               <article>
                 <span>01</span>
                 <h3>Not imperceptible</h3>
-                <p>At roughly 20–23 dB SNR, the perturbation is not silent, although the speech often remains
-                  understandable in informal listening.</p>
+                <p>At roughly 20–23 dB SNR, you can hear the perturbation, though the speech often stays understandable in
+                  informal listening.</p>
               </article>
               <article>
                 <span>02</span>
                 <h3>Masking can collapse the attack</h3>
-                <p>The strongest reported masking increased SNR but barely moved WER.</p>
+                <p>The strongest reported masking raised SNR while changing WER very little.</p>
               </article>
               <article>
                 <span>03</span>
                 <h3>Open evaluation space</h3>
-                <p>Other ASR families, languages, and over-the-air playback remain future tests.</p>
+                <p>Testing on other ASR families, languages, and over-the-air playback is still future work.</p>
               </article>
             </div>
             <details class="nowhisper-details">
               <summary>Potential extensions beyond the report</summary>
               <div class="nowhisper-details__body">
-                <p>Learned perceptual objectives, multilingual evaluation, physical playback tests, and adversarial
-                  training are the clearest next steps.</p>
+                <p>The clearest next steps are learned perceptual objectives, multilingual evaluation, physical playback tests,
+                  and adversarial training.</p>
               </div>
             </details>
           </div>
@@ -459,8 +459,8 @@
             <p class="project-kicker">Project credits</p>
             <h3>Built jointly by Lorenzo Marinelli and Andrea Venditti</h3>
             <p>Deep Learning and Applied AI, Sapienza University of Rome, 2026.</p>
-            <p>Experiments use LibriSpeech and Whisper through Hugging Face Transformers. The local interface uses
-              Gradio and Plotly.</p>
+            <p>The experiments use LibriSpeech and Whisper via Hugging Face Transformers. Gradio and Plotly power the local
+              interface.</p>
 
             <div class="nowhisper-resource-list">
               <a class="nowhisper-resource" href="https://github.com/Reewd/NoWhisper" target="_blank"

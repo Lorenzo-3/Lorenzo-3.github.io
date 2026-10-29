@@ -7,7 +7,7 @@
     <title>Graph Signal Diffusion · Playground · Lorenzo Marinelli</title>
     <meta name="description"
         content="Toy interattivo di diffusione del segnale su grafo di Lorenzo Marinelli: clicca un nodo e osserva l’informazione propagarsi nel grafo." />
-    <link rel="stylesheet" href="/assets/style.css" />
+    <link rel="stylesheet" href="/assets/style.css?v=20261017" />
 
     <link rel="alternate" hreflang="en" href="/playground/graph-diffusion/" />
     <link rel="alternate" hreflang="it" href="/it/playground/graph-diffusion/" />
@@ -41,7 +41,6 @@
                 <a href="/it/">Home</a>
                 <a href="/it/about/">Info</a>
                 <a href="/it/projects/">Progetti</a>
-                <a href="/it/notes/">Appunti</a>
                 <a href="/it/contact/">Contatti</a>
                 <a aria-current="page" href="/it/playground/">Playground</a>
             </div>
@@ -51,8 +50,9 @@
             <p class="kicker">Esperimento del playground</p>
             <h1>Graph Signal Diffusion</h1>
             <p class="lead hero-line">
-                Clicca un nodo per iniettare un segnale. I nodi vicini ne ricevono una versione più debole a ogni hop.
-                È una piccola intuizione visiva per vicinati di grafo, message passing ed effetti di rete.
+                Clicca su un nodo per iniettare un segnale. A ogni hop, i nodi vicini ne ricevono una versione
+                più debole. È un modo visivo per esplorare vicinati di grafo, message passing ed effetti di
+                rete.
             </p>
 
             <div class="hero__cta">
@@ -67,8 +67,8 @@
                     <p class="project-kicker">Grafo interattivo</p>
                     <h2>Inietta un segnale</h2>
                     <p>
-                        Clicca un nodo nel canvas. Aumenta il numero di hop per far viaggiare il segnale più lontano.
-                        Aumenta il decadimento per farlo svanire più lentamente.
+                        Clicca su un nodo nel canvas. Aumenta il numero di hop per far arrivare il segnale più
+                        lontano, oppure il valore di decadimento per farlo svanire più lentamente.
                     </p>
                 </div>
 
@@ -108,28 +108,30 @@
             <article class="card">
                 <h2>Cosa rappresenta</h2>
                 <p>
-                    Non vuole essere una implementazione completa di una GNN. Mostra l’intuizione centrale:
-                    un nodo parte con informazione, poi il suo vicinato locale ne riceve tracce progressivamente più deboli.
+                    Qui si vede l’idea alla base del message passing, senza implementare una GNN completa: un
+                    nodo parte con un’informazione e il suo vicinato ne riceve tracce via via più deboli.
                 </p>
                 <p>
-                    In una vera graph neural network, ogni nodo aggrega ripetutamente informazioni dai vicini e aggiorna
-                    la propria rappresentazione. Più hop significano un campo recettivo più ampio, ma anche più smoothing.
+                    In una vera graph neural network, i nodi raccolgono ripetutamente informazioni dai vicini
+                    e aggiornano la propria rappresentazione. Più hop ampliano il campo recettivo, ma
+                    aumentano anche lo smoothing.
                 </p>
                 <p>
-                    Il toy GNN collegato rende esplicito quel passo di aggiornamento con feature dei nodi modificabili e da uno a tre
-                    strati di message passing.
+                    Il demo GNN collegato permette di esplorare direttamente quel passo di aggiornamento, con
+                    feature dei nodi modificabili e da uno a tre strati di message passing.
                 </p>
             </article>
 
             <article class="card">
                 <h2>Un linguaggio di grafo condiviso</h2>
                 <p>
-                    La stessa metafora visiva collega diversi interessi: reti di interazione proteica, moduli di malattia,
-                    graph neural network, random walk, grafi di armonia musicale e persino associazioni di idee.
+                    La stessa immagine collega diversi miei interessi: reti di interazione proteica, moduli di
+                    malattia, graph neural network, random walk, grafi di armonia musicale e persino
+                    associazioni di idee.
                 </p>
                 <p>
-                    Mantenerlo piccolo rende l’interazione riutilizzabile: un grafo può essere un modello, una mappa, uno strumento compositivo
-                    o un modo per rendere più ispezionabili relazioni astratte.
+                    Tenere piccola l’interazione la rende riutilizzabile. Un grafo può essere un modello, una
+                    mappa, uno strumento per comporre o un modo per esaminare relazioni astratte.
                 </p>
             </article>
         </section>

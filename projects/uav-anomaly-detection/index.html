@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width,initial-scale=1" />
     <title>UAV Anomaly Detection & Localization · Lorenzo Marinelli</title>
     <meta name="description" content="Interactive UAV anomaly detection project page by Lorenzo Marinelli." />
-    <link rel="stylesheet" href="/assets/style.css" />
+    <link rel="stylesheet" href="/assets/style.css?v=20261017" />
 
     <link rel="alternate" hreflang="it" href="/it/projects/uav-anomaly-detection/" />
     <link rel="alternate" hreflang="en" href="/projects/uav-anomaly-detection/" />
@@ -717,7 +717,6 @@
                 <a href="/">Home</a>
                 <a href="/about/">About</a>
                 <a aria-current="page" href="/projects/">Projects</a>
-                <a href="/notes/">Notes</a>
                 <a href="/contact/">Contact</a>
         <a href="/playground/">Playground</a>
             </div>
@@ -727,8 +726,8 @@
             <p class="kicker">Interactive demo</p>
             <h1>UAV Anomaly Detection & Localization</h1>
             <p class="lead">
-                A compact project page for the anomaly-detection pipeline: from the original aerial image to anomaly
-                map, thresholded mask, and localization-ready output.
+                A short guide to the anomaly-detection pipeline, from the original aerial image through the
+                anomaly map and thresholded mask to an output ready for localization.
             </p>
 
             <div class="tag-row" aria-label="Tags">
@@ -767,8 +766,8 @@
                     <div class="uav-caption">
                         <h3 data-uav-title>Full pipeline view</h3>
                         <p data-uav-description>
-                            The example summarizes the full logic of the pipeline: the network starts from the original
-                            aerial image, produces an anomaly score map, then a thresholded mask that can be
+                            The example walks through the full pipeline. The network takes the original aerial
+                            image and produces an anomaly score map, then a thresholded mask that can be
                             post-processed into localized detections.
                         </p>
                     </div>
@@ -820,8 +819,9 @@
             <section class="card model-visual-card" id="model-view">
                 <h2>AE / VAE model view</h2>
                 <p>
-                    The model learns to reconstruct what looks normal. Objects or texture changes that are not
-                    reconstructed well become residual signal, then a cleaner mask for localization.
+                    The model learns to reconstruct what looks normal. Objects or texture changes it
+                    reconstructs poorly leave a residual signal, which is then turned into a cleaner mask for
+                    localization.
                 </p>
 
                 <div class="model-visual" aria-label="Stylized autoencoder and variational autoencoder pipeline">
@@ -908,29 +908,26 @@
                     <div class="pipeline-step">
                         <div class="pipeline-step__num">1</div>
                         <h3>Reconstruct</h3>
-                        <p>Train an AE / VAE on normal or background-dominated imagery so the model learns to reproduce
-                            the expected scene.</p>
+                        <p>Train an AE / VAE on normal or background-dominated images so it learns to reproduce the expected scene.</p>
                     </div>
 
                     <div class="pipeline-step">
                         <div class="pipeline-step__num">2</div>
                         <h3>Score anomalies</h3>
-                        <p>Compute a pixel-wise or patch-wise anomaly score from the difference between input and
-                            reconstruction.</p>
+                        <p>Use the difference between input and reconstruction to compute a pixel-wise or patch-wise anomaly score.</p>
                     </div>
 
                     <div class="pipeline-step">
                         <div class="pipeline-step__num">3</div>
                         <h3>Threshold & clean</h3>
-                        <p>Convert the anomaly map into a mask and apply denoising / connected-components logic to
-                            isolate likely targets.</p>
+                        <p>Turn the anomaly map into a mask, then use denoising and connected-components logic to isolate likely targets.</p>
                     </div>
 
                     <div class="pipeline-step">
                         <div class="pipeline-step__num">4</div>
                         <h3>Localize & crop</h3>
-                        <p>Extract bounding boxes and pass crops to a downstream classifier if you want a full detection
-                            + classification pipeline.</p>
+                        <p>Extract bounding boxes and, if you want a full detection + classification pipeline, send the crops to a
+                            downstream classifier.</p>
                     </div>
                 </div>
             </section>
@@ -938,13 +935,13 @@
             <section class="card">
                 <h2>What I learned</h2>
                 <p>
-                    The appealing part of this project is that it uses structure in the problem. When the background is
-                    relatively stable, anomaly models can work as a lightweight proposal mechanism.
+                    I like how this project uses the structure of the problem. With a relatively stable
+                    background, anomaly models can offer a lightweight way to propose regions of interest.
                 </p>
                 <p>
-                    At the same time, the hard part is noise: VAEs may detect useful anomalies but produce messy
-                    heatmaps, so post-processing matters a lot. This is where thresholding, denoising, and connected
-                    components become important.
+                    Noise is the difficult part. VAEs can find useful anomalies and still produce messy
+                    heatmaps, so post-processing makes a big difference. Thresholding, denoising, and
+                    connected components are important here.
                 </p>
             </section>
         </main>

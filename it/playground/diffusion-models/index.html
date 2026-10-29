@@ -7,7 +7,7 @@
     <title>Diffusion Model Denoising Toy · Playground · Lorenzo Marinelli</title>
     <meta name="description"
         content="Toy interattivo sui diffusion model di Lorenzo Marinelli: aggiungi rumore a un'immagine generata e attraversa un processo di denoising semplificato." />
-    <link rel="stylesheet" href="/assets/style.css" />
+    <link rel="stylesheet" href="/assets/style.css?v=20261017" />
 
     <link rel="alternate" hreflang="it" href="/it/playground/diffusion-models/" />
     <link rel="alternate" hreflang="en" href="/playground/diffusion-models/" />
@@ -42,7 +42,6 @@
                 <a href="/it/">Home</a>
                 <a href="/it/about/">Info</a>
                 <a href="/it/projects/">Progetti</a>
-                <a href="/it/notes/">Appunti</a>
                 <a href="/it/contact/">Contatti</a>
                 <a aria-current="page" href="/it/playground/">Playground</a>
             </div>
@@ -52,8 +51,9 @@
             <p class="kicker">Esperimento playground</p>
             <h1>Diffusion Model Denoising Toy</h1>
             <p class="lead hero-line">
-                Aggiungi rumore a un'immagine generata, poi torna indietro con un processo di denoising semplificato.
-                È un'intuizione canvas per i diffusion model generativi, non un modello addestrato.
+                Aggiungi rumore a un’immagine generata, poi ripercorri al contrario un processo di denoising
+                semplificato. Il demo in canvas aiuta a capire i diffusion model generativi; non è un modello
+                addestrato.
             </p>
 
             <div class="hero__cta">
@@ -68,8 +68,8 @@
                     <p class="project-kicker">Schedule del rumore</p>
                     <h2>Rumore in avanti, stima inversa</h2>
                     <p>
-                        Lo slider del timestep controlla quanto rumore è stato aggiunto. Avvia il processo inverso per
-                        vedere l'immagine rumorosa tornare verso un campione strutturato.
+                        Usa lo slider del timestep per regolare quanto rumore aggiungere. Avvia il processo
+                        inverso e guarda l’immagine rumorosa tornare verso un campione strutturato.
                     </p>
                 </div>
 
@@ -140,14 +140,14 @@
             </div>
         </main>
 
-        <section class="card kitten-sampler" data-kitten-sampler>
+        <section class="card kitten-sampler" data-kitten-sampler hidden>
             <div class="kitten-sampler__top">
                 <div>
                     <p class="project-kicker">Sampler con modello</p>
                     <h2>Kitten sampler</h2>
                     <p>
-                        Dopo l'export ONNX dal notebook, questo pannello genera dal rumore puro direttamente nel
-                        browser con passi in stile DDIM.
+                        Trasforma rumore casuale nella piccola immagine di un gattino con un modello di
+                        diffusione addestrato, eseguito nel browser.
                     </p>
                 </div>
 
@@ -210,8 +210,8 @@
                     </div>
 
                     <p class="kitten-sampler__note" data-kitten-note>
-                        Esegui <code>notebooks/tiny_kitten_ddpm_64.ipynb</code> ed esporta
-                        <code>assets/models/kitten-ddpm-64/kitten_denoiser.onnx</code> per abilitare il sampling live.
+                        Più passi richiedono più tempo. La generazione avviene in locale e ogni seed parte da
+                        un rumore iniziale diverso.
                     </p>
                 </aside>
             </div>
@@ -221,17 +221,18 @@
             <article class="card">
                 <h2>Diffusione in avanti</h2>
                 <p>
-                    Il processo forward mescola gradualmente un campione pulito con rumore casuale. A timestep alti
-                    l'immagine conserva meno struttura visibile: per questo i diffusion model reali imparano molti
-                    piccoli passi di denoising.
+                    Il processo forward mescola gradualmente un campione pulito con rumore casuale. A timestep
+                    alti resta poca struttura visibile. Per tornare indietro, i diffusion model reali imparano
+                    molti piccoli passi di denoising.
                 </p>
             </article>
 
             <article class="card">
                 <h2>Denoising inverso</h2>
                 <p>
-                    Il pannello inverso è un'approssimazione deterministica in canvas. Usa il campione pulito nascosto
-                    come guida per rendere l'interazione leggibile; un modello reale imparerebbe quella guida dai dati.
+                    Il pannello inverso usa un’approssimazione deterministica in canvas. Prende come guida il
+                    campione pulito nascosto, così l’interazione è facile da seguire. Un modello reale
+                    imparerebbe quella guida dai dati.
                 </p>
             </article>
         </section>
@@ -756,11 +757,29 @@
                 drawSeedNoise();
             });
 
-            status.textContent = copy.waiting;
-            modelReadout.textContent = copy.modelMissing;
-            title.textContent = copy.titleMissing;
-            syncLabels();
-            drawSeedNoise();
+            // Only offer live sampling when a trained model is actually deployed.
+            const initializeSampler = async () => {
+                try {
+                    const response = await fetch(metadataPath);
+                    if (!response.ok) return;
+                    const metadata = await response.json();
+                    if (metadata.status !== 'trained') return;
+                    const modelPath = metadata.modelPath || `${modelRoot}/kitten_denoiser.onnx`;
+                    const modelResponse = await fetch(modelPath, { method: 'HEAD' });
+                    if (!modelResponse.ok) return;
+
+                    syncLabels();
+                    drawSeedNoise();
+                    status.textContent = copy.ready;
+                    modelReadout.textContent = copy.modelReady;
+                    title.textContent = copy.titleReady;
+                    root.hidden = false;
+                } catch {
+                    // The procedural toy stays available without the optional model.
+                    root.hidden = true;
+                }
+            };
+            initializeSampler();
         });
     </script>
 </body>

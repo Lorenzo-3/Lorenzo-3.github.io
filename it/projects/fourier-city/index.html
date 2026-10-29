@@ -7,7 +7,7 @@
   <title>Fourier City · Lorenzo Marinelli</title>
   <meta name="description"
     content="Fourier City è una visualizzazione audio interattiva in Three.js che collega forme d’onda, spettro in frequenza, filtri in tempo reale e un braccio robotico che segue il pitch." />
-  <link rel="stylesheet" href="/assets/style.css" />
+  <link rel="stylesheet" href="/assets/style.css?v=20261017" />
 
   <link rel="alternate" hreflang="en" href="/projects/fourier-city/" />
   <link rel="alternate" hreflang="it" href="/it/projects/fourier-city/" />
@@ -41,7 +41,6 @@
         <a href="/it/">Home</a>
         <a href="/it/about/">Info</a>
         <a aria-current="page" href="/it/projects/">Progetti</a>
-        <a href="/it/notes/">Appunti</a>
         <a href="/it/contact/">Contatti</a>
         <a href="/it/playground/">Playground</a>
       </div>
@@ -52,8 +51,8 @@
         <p class="kicker">Progetto del corso di Grafica Interattiva</p>
         <h1>Fourier City</h1>
         <p class="lead">
-          Una città interattiva e audio-reattiva in cui il suono diventa architettura: ascolta un segnale, modellalo e
-          osserva forma d’onda e spettro in frequenza reagire nella stessa scena 3D esplorabile.
+          Esplora una città interattiva e audio-reattiva in cui il suono diventa architettura. Ascolta un
+          segnale, modellalo e guarda forma d’onda e spettro in frequenza reagire nella stessa scena 3D.
         </p>
 
         <div class="tag-row" aria-label="Tags">
@@ -105,14 +104,14 @@
         <div class="fourier-grid">
           <div>
             <p class="fourier-section__intro">
-              Fourier City trasforma concetti di elaborazione dei segnali in comportamenti visibili. La forma d’onda
-              live mostra come cambia l’ampiezza nel tempo; lo skyline mostra dove si distribuisce l’energia in
-              frequenza. I controlli nella scena permettono di modificare il suono e confrontare subito entrambe le viste.
+              Fourier City rende visibile l’elaborazione dei segnali. La forma d’onda live mostra come cambia
+              l’ampiezza nel tempo; lo skyline mostra come si distribuisce l’energia tra le frequenze.
+              Modifica il suono con i controlli nella scena e confronta subito le due viste.
             </p>
             <p>
-              L’esperienza supporta segnali generati sinusoidali, quadri, triangolari, a dente di sega, ricchi di
-              armoniche e rumore, oltre a un MP3 incluso o selezionato dall’utente. Pitch, cutoff, gain e risonanza si
-              modificano direttamente sul tavolo 3D, senza un menu separato.
+              Prova segnali generati sinusoidali, quadri, triangolari, a dente di sega, ricchi di armoniche e
+              rumore, oppure riproduci l’MP3 incluso o uno dei tuoi. Regola pitch, cutoff, gain e risonanza
+              direttamente sul tavolo 3D.
             </p>
           </div>
 
@@ -125,8 +124,8 @@
         </div>
 
         <div class="fourier-principle">
-          <p><strong>Principio centrale:</strong> forma d’onda e FFT analizzano lo stesso segnale post-filtro che arriva
-            all’ascoltatore, mantenendo allineate la risposta udibile e quella visiva.</p>
+          <p><strong>Principio centrale:</strong> forma d’onda e FFT analizzano lo stesso segnale post-filtro che ascolti,
+            mantenendo allineati suono e immagini.</p>
         </div>
       </section>
 
@@ -143,8 +142,8 @@
 
           <div>
             <p>
-              La camera usa una vista in prima persona. Il tavolo e il robot sono ostacoli fisici; quando un movimento
-              diagonale è bloccato, il giocatore scivola lungo i bordi per mantenere fluida l’esplorazione.
+              Esplori la scena in prima persona. Tavolo e robot fanno da ostacoli fisici: se bloccano un
+              movimento diagonale, scivoli lungo i bordi per continuare a muoverti in modo fluido.
             </p>
             <div class="fourier-controls" aria-label="Controlli di Fourier City">
               <div class="fourier-control"><kbd>WASD</kbd><span>Cammina nella città.</span></div>
@@ -161,26 +160,26 @@
           <article class="fourier-system-card">
             <span>Tavolo di controllo</span>
             <h3>Controlli fisici e feedback esatto</h3>
-            <p>I pulsanti selezionano sorgenti e filtri. Le manopole ruotano di 270° e aggiornano etichette in Hz, Q,
-              dB o velocità di riproduzione.</p>
+            <p>I pulsanti servono a scegliere sorgenti e filtri. Le manopole ruotano di 270° e aggiornano le etichette in Hz,
+              Q, dB o velocità di riproduzione mentre le muovi.</p>
           </article>
           <article class="fourier-system-card">
             <span>Dominio del tempo</span>
             <h3>Forma d’onda live</h3>
-            <p>Un display in vetro traccia 2.048 campioni post-filtro e parte vicino a uno zero-crossing crescente, così
-              le forme d’onda periodiche restano visivamente stabili.</p>
+            <p>Un display in vetro traccia 2.048 campioni post-filtro. Parte vicino a uno zero-crossing crescente per
+              mantenere stabili le forme d’onda periodiche.</p>
           </article>
           <article class="fourier-system-card">
             <span>Dominio della frequenza</span>
             <h3>Skyline audio-reattivo</h3>
-            <p>Posizione e colore identificano la frequenza; altezza degli edifici, luminosità delle linee e movimento
-              del terreno identificano l’energia spettrale.</p>
+            <p>Posizione e colore mostrano la frequenza. Altezza degli edifici, luminosità delle linee e movimento del
+              terreno mostrano l’energia spettrale.</p>
           </article>
           <article class="fourier-system-card">
             <span>Pitch</span>
             <h3>Robot gerarchico</h3>
-            <p>Per i segnali periodici, un braccio robotico a due link indica la banda dello skyline che corrisponde al
-              pitch selezionato e segue il tetto dell’edificio.</p>
+            <p>Per i segnali periodici, un braccio robotico a due link indica la banda dello skyline corrispondente al pitch
+              scelto e segue il tetto dell’edificio.</p>
           </article>
         </div>
       </section>
@@ -189,9 +188,9 @@
         <p class="project-kicker">Pipeline audio</p>
         <h2>Un solo segnale elaborato alimenta suono e grafica</h2>
         <p class="fourier-section__intro">
-          Buffer MP3 e sorgenti procedurali condividono un controller. Le forme periodiche usano oscillatori live per
-          cambiare pitch in modo fluido; rumore e musica usano buffer in loop. Il filtro biquad selezionato viene
-          inserito prima dell’analisi e dell’output posizionale.
+          Buffer MP3 e sorgenti procedurali usano lo stesso controller. Gli oscillatori live permettono cambi
+          fluidi di pitch per le forme periodiche; rumore e musica usano buffer in loop. Il filtro biquad
+          scelto si trova prima dell’analisi e dell’output posizionale.
         </p>
 
         <div class="fourier-pipeline" aria-label="Flusso dei dati audio e visuali">
@@ -222,16 +221,15 @@
         <div class="fourier-technical-grid">
           <article class="fourier-callout">
             <h3>Pitch logaritmico</h3>
-            <p>Per gli oscillatori periodici, il valore normalizzato della manopola si distribuisce uniformemente
-              sull’intervallo udibile.</p>
+            <p>Per gli oscillatori periodici, il valore normalizzato della manopola copre uniformemente l’intervallo udibile.</p>
             <code class="fourier-equation">f(p) = 20 × (20000 / 20)<sup>p</sup> Hz, 0 ≤ p ≤ 1</code>
-            <p>Per la musica, il pitch diventa invece una velocità da 0,5× a 1,5×; il rumore non ha un singolo pitch.</p>
+            <p>Per la musica, invece, il pitch corrisponde a una velocità di riproduzione tra 0,5× e 1,5×. Il rumore non ha un singolo pitch.</p>
           </article>
           <article class="fourier-callout">
             <h3>Filtri con conseguenze visibili</h3>
-            <p>Il cutoff va da 20 Hz a 20 kHz, la risonanza da Q = 0,1 a 20 e il filtro peaking aggiunge gain da -18 a
-              +18 dB.</p>
-            <p>La curva rossa sullo skyline prevede attenuazione o enfasi, mentre il punto giallo identifica il cutoff.</p>
+            <p>Il cutoff va da 20 Hz a 20 kHz e la risonanza da Q = 0,1 a 20. Il filtro peaking aggiunge gain da -18 a +18
+              dB.</p>
+            <p>La curva rossa sullo skyline prevede attenuazione o enfasi. Il punto giallo mostra il cutoff.</p>
           </article>
         </div>
       </section>
@@ -240,9 +238,9 @@
         <p class="project-kicker">Città-spettro</p>
         <h2>Dai bin FFT a uno skyline animato</h2>
         <p class="fourier-section__intro">
-          Una FFT da 2.048 punti viene campionata a 30 Hz e raggruppata in 70 bande logaritmiche da 20 Hz a 20 kHz.
-          I decibel medi di ogni banda vengono normalizzati in un valore di energia comune usato da edifici,
-          wireframe e flusso del terreno guidato da shader.
+          Una FFT da 2.048 punti viene campionata a 30 Hz e suddivisa in 70 bande logaritmiche da 20 Hz a 20
+          kHz. I decibel medi di ogni banda vengono normalizzati in un valore di energia comune che guida
+          edifici, wireframe e flusso del terreno controllato dallo shader.
         </p>
 
         <div class="fourier-spectrum-visual" aria-hidden="true">
@@ -263,14 +261,15 @@
         <div class="fourier-technical-grid">
           <article class="fourier-callout">
             <h3>Movimento senza jitter</h3>
-            <p>Tassi esponenziali separati fanno reagire rapidamente gli edifici quando l’energia cresce e li fanno
-              scendere più lentamente durante il decadimento. La stessa scala smussata guida solido e wireframe.</p>
+            <p>Tassi esponenziali separati fanno salire rapidamente gli edifici quando l’energia cresce e scendere più
+              lentamente quando decade. Solido e wireframe usano la stessa scala smussata.</p>
             <code class="fourier-equation">α = 1 - e<sup>-rΔt</sup> · salita r = 200 · discesa r = 16</code>
           </article>
           <article class="fourier-callout">
             <h3>Un’energia, tre canali visivi</h3>
-            <p>L’energia di banda controlla altezza degli edifici, luminosità del wireframe e una texture compatta da
-              70 texel letta dallo shader del terreno. Il colore conserva l’identità della frequenza a ogni livello.</p>
+            <p>L’energia di banda determina l’altezza degli edifici e la luminosità del wireframe. Alimenta anche una texture
+              compatta da 70 texel letta dallo shader del terreno. Il colore rende riconoscibile ogni
+              frequenza a tutti i livelli.</p>
           </article>
         </div>
       </section>
@@ -288,24 +287,26 @@
 
           <div>
             <p>
-              Il braccio è una gerarchia annidata di oggetti Three.js. La rotazione della base sceglie il piano di
-              movimento; spalla e gomito risolvono la distanza; il polso compensa per mantenere l’orientamento dello
-              stilo. Ogni figlio eredita le trasformazioni dei giunti precedenti.
+              Il braccio è costruito come una gerarchia annidata di oggetti Three.js. La rotazione della base
+              sceglie il piano di movimento; spalla e gomito risolvono la distanza; il polso compensa per
+              mantenere l’orientamento dello stilo. Ogni figlio eredita le trasformazioni dei giunti
+              precedenti.
             </p>
             <div class="fourier-hierarchy" aria-label="Gerarchia della scena del robot">
               <span>Root</span><i>→</i><span>Base</span><i>→</i><span>Spalla</span><i>→</i><span>Gomito</span><i>→</i><span>Polso</span><i>→</i><span>Stilo</span>
             </div>
             <p>
-              Il pitch di un oscillatore periodico viene arrotondato alla banda più vicina. Velocità di un MP3 e
-              rumore non rappresentano una frequenza stabile, quindi il robot torna lentamente alla posa inattiva.
+              Il pitch degli oscillatori periodici viene arrotondato alla banda più vicina. Velocità di
+              riproduzione MP3 e rumore non corrispondono a una frequenza stabile, quindi il robot torna
+              lentamente alla posa inattiva.
             </p>
           </div>
         </div>
 
         <article class="fourier-callout">
           <h3>Cinematica inversa a due link</h3>
-          <p>La distanza del target viene limitata all’intervallo raggiungibile prima di calcolare gli angoli, evitando
-            pose non valide quando l’edificio selezionato è fuori dal raggio esatto del braccio.</p>
+          <p>Prima di calcolare gli angoli dei giunti, la distanza del target viene limitata all’intervallo raggiungibile.
+            Si evitano così pose non valide quando l’edificio scelto è oltre il raggio esatto del braccio.</p>
           <code class="fourier-equation fourier-equation--stacked">θ₂ = acos((d² - L₁² - L₂²) / (2L₁L₂))
 θ₁ = atan2(y, x) - atan2(L₂sinθ₂, L₁ + L₂cosθ₂)
 polso = -(θ₁ + θ₂)</code>
@@ -316,40 +317,41 @@ polso = -(θ₁ + θ₂)</code>
         <p class="project-kicker">Ingegneria</p>
         <h2>Mantenere reattiva la spiegazione</h2>
         <p class="fourier-section__intro">
-          La scena usa tecniche di ottimizzazione in modo mirato: ognuna protegge anche la chiarezza di una
-          visualizzazione che deve aggiornarsi continuamente insieme all’audio.
+          Le ottimizzazioni sono scelte pensando anche alla spiegazione: la scena deve restare chiara mentre
+          si aggiorna continuamente insieme all’audio.
         </p>
 
         <div class="fourier-engineering-grid">
           <article class="fourier-engineering-card">
             <span>Geometria</span>
             <h3>Skyline istanziato</h3>
-            <p>Il grattacielo originale in Blender viene normalizzato e riutilizzato con instancing. Buffer di linee
-              espansi mantengono ogni wireframe sincronizzato con l’edificio solido.</p>
+            <p>Il grattacielo originale in Blender viene normalizzato e riutilizzato tramite instancing. Buffer di linee
+              espansi tengono ogni wireframe sincronizzato con l’edificio solido.</p>
           </article>
           <article class="fourier-engineering-card">
             <span>Memoria</span>
             <h3>Buffer riutilizzabili</h3>
-            <p>Typed array, buffer degli analizzatori, matrici e geometria della forma d’onda si aggiornano in place,
-              evitando allocazioni a ogni frame.</p>
+            <p>Typed array, buffer degli analizzatori, matrici e geometria della forma d’onda vengono aggiornati in place,
+              senza allocazioni a ogni frame.</p>
           </article>
           <article class="fourier-engineering-card">
             <span>Rendering</span>
             <h3>Flusso guidato da shader</h3>
-            <p>Una piccola texture RGBA porta l’energia delle bande a uno shader polare con onde in movimento, bordi
+            <p>Una piccola texture RGBA trasmette l’energia delle bande a uno shader polare con onde in movimento, bordi
               Voronoi, risposta Fresnel e riflessi speculari.</p>
           </article>
           <article class="fourier-engineering-card">
             <span>Interazione</span>
             <h3>Cambi di stato robusti</h3>
-            <p>Richieste audio versionate ignorano callback MP3 obsolete; collisioni analitiche, recupero del pointer
-              lock e setup audio lazy mantengono prevedibile l’esperienza.</p>
+            <p>Le richieste audio versionate scartano callback MP3 obsolete. Collisioni analitiche, recupero del pointer lock
+              e inizializzazione audio al bisogno aiutano a mantenere prevedibile l’esperienza.</p>
           </article>
         </div>
 
         <div class="fourier-principle">
-          <p><strong>Prossimi passi:</strong> filtri band-stop, microfono e streaming, dimensioni FFT selezionabili,
-            controlli accessibili da tastiera, preset salvati e modalità a dettaglio ridotto per dispositivi meno potenti.</p>
+          <p><strong>Prossimi passi:</strong> aggiungere filtri band-stop, microfono e sorgenti in streaming, dimensioni
+            FFT selezionabili, controlli accessibili da tastiera, preset salvati e modalità con meno dettagli
+            per dispositivi meno potenti.</p>
         </div>
       </section>
 
@@ -381,13 +383,14 @@ polso = -(θ₁ + θ₂)</code>
         <p class="project-kicker">Crediti e risorse</p>
         <h2>Realizzato come progetto di gruppo</h2>
         <p>
-          Fourier City è stato creato da <strong>Lorenzo Marinelli</strong> e <strong>Alessandro Romania</strong> per il
-          corso di Grafica Interattiva del Prof. Marco Schaerf presso il DIAG, Sapienza Università di Roma. I modelli OBJ
-          del tavolo e del grattacielo sono asset originali del team, realizzati in Blender.
+          <strong>Lorenzo Marinelli</strong> e <strong>Alessandro Romania</strong> hanno creato Fourier City
+          per il corso di Grafica Interattiva del Prof. Marco Schaerf presso il DIAG, Sapienza Università di
+          Roma. Il team ha realizzato in Blender i modelli OBJ originali del tavolo e del grattacielo.
         </p>
         <p>
-          L’ambiente usa Night Sky HDRI 001 di ambientCG con licenza CC0 1.0. Three.js e Vite sono usati secondo le
-          rispettive licenze open source. Il report contiene riferimenti tecnici e dettagli completi di implementazione.
+          L’ambiente usa Night Sky HDRI 001 di ambientCG con licenza CC0 1.0. Three.js e Vite mantengono le
+          rispettive licenze open source. Nel report trovi tutti i riferimenti tecnici e i dettagli di
+          implementazione.
         </p>
 
         <div class="fourier-resource-list">

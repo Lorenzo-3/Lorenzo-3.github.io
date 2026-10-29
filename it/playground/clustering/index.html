@@ -7,7 +7,7 @@
     <title>Clustering Lab · Playground · Lorenzo Marinelli</title>
     <meta name="description"
         content="Laboratorio di clustering interattivo di Lorenzo Marinelli: aggiungi punti 2D e confronta k-means, k-medoids, DBSCAN, Mean Shift e clustering agglomerativo." />
-    <link rel="stylesheet" href="/assets/style.css" />
+    <link rel="stylesheet" href="/assets/style.css?v=20261017" />
 
     <link rel="alternate" hreflang="en" href="/playground/clustering/" />
     <link rel="alternate" hreflang="it" href="/it/playground/clustering/" />
@@ -41,7 +41,6 @@
                 <a href="/it/">Home</a>
                 <a href="/it/about/">Info</a>
                 <a href="/it/projects/">Progetti</a>
-                <a href="/it/notes/">Appunti</a>
                 <a href="/it/contact/">Contatti</a>
                 <a aria-current="page" href="/it/playground/">Playground</a>
             </div>
@@ -51,8 +50,8 @@
             <p class="kicker">Esperimento del playground</p>
             <h1>Clustering Lab</h1>
             <p class="lead hero-line">
-                Aggiungi punti in 2D, poi confronta come k-means, k-medoids, DBSCAN, Mean Shift e clustering agglomerativo
-                trasformano la stessa geometria in gruppi diversi.
+                Aggiungi punti in 2D e guarda come k-means, k-medoids, DBSCAN, Mean Shift e clustering
+                agglomerativo dividono la stessa disposizione in gruppi diversi.
             </p>
 
             <div class="hero__cta">
@@ -180,13 +179,13 @@
                         </div>
                     </div>
                     <p class="cluster-note" data-cluster-note>
-                        k-means forces every point into one of k compact groups.
+                        k-means assegna ogni punto a uno di k gruppi compatti.
                     </p>
                     <div class="cluster-explanation">
                         <h4 data-cluster-explanation-title>k-means</h4>
                         <p data-cluster-explanation-body>
-                            Repeatedly assigns each point to the nearest center, then moves each center to the mean of
-                            its assigned points.
+                            Assegna ripetutamente ogni punto al centro più vicino, poi sposta ciascun centro
+                            sulla media dei punti assegnati.
                         </p>
                         <p><strong>Funziona meglio quando:</strong> <span data-cluster-explanation-best>I gruppi sono compatti e
                                 approssimativamente rotondi.</span></p>

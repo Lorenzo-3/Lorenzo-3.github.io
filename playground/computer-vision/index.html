@@ -7,7 +7,7 @@
     <title>Computer Vision Mini Lab · Playground · Lorenzo Marinelli</title>
     <meta name="description"
         content="Interactive computer vision toy by Lorenzo Marinelli — small visual toys around detection, saliency, reconstruction error, masks, and image intuition." />
-    <link rel="stylesheet" href="/assets/style.css" />
+    <link rel="stylesheet" href="/assets/style.css?v=20261017" />
 
     <link rel="alternate" hreflang="en" href="/playground/computer-vision/" />
     <link rel="alternate" hreflang="it" href="/it/playground/computer-vision/" />
@@ -42,7 +42,6 @@
                 <a href="/">Home</a>
                 <a href="/about/">About</a>
                 <a href="/projects/">Projects</a>
-                <a href="/notes/">Notes</a>
                 <a href="/contact/">Contact</a>
                 <a aria-current="page" href="/playground/">Playground</a>
             </div>
@@ -52,7 +51,8 @@
             <p class="kicker">Playground experiment</p>
             <h1>Computer Vision Mini Lab</h1>
             <p class="lead hero-line">
-                Small visual toys around detection, saliency, reconstruction error, masks, and image intuition.
+                Small visual experiments to explore detection, saliency, reconstruction error, masks, and how
+                to read images.
             </p>
 
             <div class="hero__cta">
@@ -66,8 +66,8 @@
                     <p class="project-kicker">Synthetic image probe</p>
                     <h2>One scene, five model views</h2>
                     <p>
-                        A neutral generated image is reused across five views, so the model overlay changes while the
-                        underlying scene stays visually stable.
+                        All five views use the same neutral, generated image. The model overlay changes, while
+                        the scene underneath stays the same.
                     </p>
                 </div>
 
@@ -142,16 +142,17 @@
             <article class="card">
                 <h2>What to notice</h2>
                 <p>
-                    Detection compresses an image into boxes and confidence scores. Saliency spreads attention over
-                    pixels. Reconstruction error shows where a simple prior fails to explain what is visible.
+                    Detection reduces an image to boxes and confidence scores. Saliency shows attention across
+                    pixels. Reconstruction error reveals where a simple prior can’t account for what’s in the
+                    image.
                 </p>
             </article>
 
             <article class="card">
                 <h2>From pixels to pipeline</h2>
                 <p>
-                    The scene is synthetic, but the habits are real: compare views, move thresholds, inspect false
-                    certainty, and keep the model output tied to the image that produced it.
+                    The scene is synthetic, but the habits carry over: compare views, adjust thresholds,
+                    question false certainty, and check model outputs against the images that produced them.
                 </p>
             </article>
         </section>

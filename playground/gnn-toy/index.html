@@ -7,7 +7,7 @@
     <title>GNN Message Passing Toy · Playground · Lorenzo Marinelli</title>
     <meta name="description"
         content="Interactive graph neural network toy by Lorenzo Marinelli - choose node features, run message-passing layers, and inspect embedding smoothing." />
-    <link rel="stylesheet" href="/assets/style.css" />
+    <link rel="stylesheet" href="/assets/style.css?v=20261017" />
 
     <link rel="alternate" hreflang="en" href="/playground/gnn-toy/" />
     <link rel="alternate" hreflang="it" href="/it/playground/gnn-toy/" />
@@ -41,7 +41,6 @@
                 <a href="/">Home</a>
                 <a href="/about/">About</a>
                 <a href="/projects/">Projects</a>
-                <a href="/notes/">Notes</a>
                 <a href="/contact/">Contact</a>
                 <a aria-current="page" href="/playground/">Playground</a>
             </div>
@@ -51,8 +50,8 @@
             <p class="kicker">Playground experiment</p>
             <h1>GNN Message Passing Toy</h1>
             <p class="lead hero-line">
-                Choose node features, apply one to three message-passing layers, and watch neighboring
-                embeddings become smoother without leaving the browser.
+                Choose node features and apply one to three message-passing layers. Watch neighboring
+                embeddings become smoother, all in your browser.
             </p>
 
             <div class="hero__cta">
@@ -67,8 +66,9 @@
                     <p class="project-kicker">Interactive GNN</p>
                     <h2>Average neighbor messages</h2>
                     <p>
-                        Start from editable node features, then repeatedly replace each embedding with the average of
-                        itself and its neighbors. More layers mix farther neighborhoods and reduce edge-level contrast.
+                        Start with node features you can edit. Each step replaces an embedding with the
+                        average of itself and its neighbors. Adding layers mixes information from farther away
+                        and reduces contrast across edges.
                     </p>
                 </div>
 
@@ -154,25 +154,25 @@
             <article class="card">
                 <h2>What changes per layer</h2>
                 <p>
-                    Each layer expands the receptive field by one hop. A node first blends direct neighbors, then
-                    neighbors of neighbors, then a wider local patch of the graph.
+                    Each layer reaches one hop farther. A node first blends information from its direct
+                    neighbors, then their neighbors, then a wider patch of the graph.
                 </p>
                 <p>
-                    This is useful because nearby context can improve a representation, but too many layers can make
-                    connected nodes look too similar.
+                    Nearby context can improve a representation. Add too many layers, though, and connected
+                    nodes can become too similar.
                 </p>
             </article>
 
             <article class="card">
                 <h2>What the colors mean</h2>
                 <p>
-                    The initial colors are hand-picked toy features A, B, and C. The after view shows the learned
-                    embeddings after
-                    aggregation, so mixed colors mean a node has absorbed neighboring feature channels.
+                    The starting colors represent three hand-picked toy features: A, B, and C. The after view
+                    shows the learned embeddings after aggregation. Mixed colors mean a node has absorbed
+                    feature channels from its neighbors.
                 </p>
                 <p>
-                    The embedding plot uses an equilateral A/B/C feature triangle. Pure features sit on the corners,
-                    while mixed embeddings move into the interior.
+                    The embedding plot is an equilateral A/B/C feature triangle. Pure features sit at the
+                    corners; mixtures move toward the interior.
                 </p>
             </article>
         </section>

@@ -7,7 +7,7 @@
     <title>GNN Message Passing Toy · Playground · Lorenzo Marinelli</title>
     <meta name="description"
         content="Toy interattivo di graph neural network di Lorenzo Marinelli: scegli feature dei nodi, esegui strati di message passing e osserva lo smoothing degli embedding." />
-    <link rel="stylesheet" href="/assets/style.css" />
+    <link rel="stylesheet" href="/assets/style.css?v=20261017" />
 
     <link rel="alternate" hreflang="en" href="/playground/gnn-toy/" />
     <link rel="alternate" hreflang="it" href="/it/playground/gnn-toy/" />
@@ -41,7 +41,6 @@
                 <a href="/it/">Home</a>
                 <a href="/it/about/">Info</a>
                 <a href="/it/projects/">Progetti</a>
-                <a href="/it/notes/">Appunti</a>
                 <a href="/it/contact/">Contatti</a>
                 <a aria-current="page" href="/it/playground/">Playground</a>
             </div>
@@ -51,8 +50,8 @@
             <p class="kicker">Esperimento del playground</p>
             <h1>GNN Message Passing Toy</h1>
             <p class="lead hero-line">
-                Scegli le feature dei nodi, applica da uno a tre strati di message passing e osserva gli
-                embedding vicini diventare più smooth senza uscire dal browser.
+                Scegli le feature dei nodi e applica da uno a tre strati di message passing. Guarda gli
+                embedding vicini diventare più uniformi, senza uscire dal browser.
             </p>
 
             <div class="hero__cta">
@@ -67,8 +66,9 @@
                     <p class="project-kicker">GNN interattiva</p>
                     <h2>Media dei messaggi dei vicini</h2>
                     <p>
-                        Parti da feature dei nodi modificabili, poi sostituisci ripetutamente ogni embedding con la media di
-                        sé stesso e dei vicini. Più strati mescolano vicinati più lontani e riducono il contrasto sugli archi.
+                        Parti da feature dei nodi che puoi modificare. A ogni passo, ciascun embedding viene
+                        sostituito dalla media di sé stesso e dei vicini. Aggiungere strati mescola
+                        informazioni da più lontano e riduce il contrasto sugli archi.
                     </p>
                 </div>
 
@@ -154,25 +154,25 @@
             <article class="card">
                 <h2>Cosa cambia per strato</h2>
                 <p>
-                    Ogni strato espande il campo recettivo di un hop. Un nodo mescola prima i vicini diretti, poi
-                    i vicini dei vicini, poi una porzione locale più ampia del grafo.
+                    Ogni strato allarga il campo recettivo di un hop. Un nodo combina prima i vicini diretti,
+                    poi i vicini dei vicini, poi una porzione più ampia del grafo.
                 </p>
                 <p>
-                    È utile perché il contesto vicino può migliorare una rappresentazione, ma troppi strati possono rendere
-                    i nodi connessi troppo simili.
+                    Il contesto vicino può migliorare una rappresentazione. Con troppi strati, però, i nodi
+                    connessi possono diventare troppo simili.
                 </p>
             </article>
 
             <article class="card">
                 <h2>Cosa indicano i colori</h2>
                 <p>
-                    I colori iniziali sono feature giocattolo A, B e C scelte a mano. La vista dopo mostra gli
-                    embedding dopo
-                    l’aggregazione, quindi i colori misti indicano che un nodo ha assorbito canali di feature vicini.
+                    I colori iniziali rappresentano tre feature giocattolo scelte a mano: A, B e C. La vista
+                    dopo mostra gli embedding dopo l’aggregazione. I colori misti indicano che un nodo ha
+                    assorbito canali di feature dai vicini.
                 </p>
                 <p>
-                    Il plot degli embedding usa un triangolo equilatero A/B/C. Le feature pure stanno agli angoli,
-                    mentre gli embedding misti si spostano all’interno.
+                    Il grafico degli embedding è un triangolo equilatero A/B/C. Le feature pure stanno ai
+                    vertici; le combinazioni si spostano verso l’interno.
                 </p>
             </article>
         </section>

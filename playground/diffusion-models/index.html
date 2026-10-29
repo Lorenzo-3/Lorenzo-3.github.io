@@ -7,7 +7,7 @@
     <title>Diffusion Model Denoising Toy · Playground · Lorenzo Marinelli</title>
     <meta name="description"
         content="Interactive diffusion model denoising toy by Lorenzo Marinelli — add noise to a generated image and step through a simplified reverse denoising process." />
-    <link rel="stylesheet" href="/assets/style.css" />
+    <link rel="stylesheet" href="/assets/style.css?v=20261017" />
 
     <link rel="alternate" hreflang="en" href="/playground/diffusion-models/" />
     <link rel="alternate" hreflang="it" href="/it/playground/diffusion-models/" />
@@ -42,7 +42,6 @@
                 <a href="/">Home</a>
                 <a href="/about/">About</a>
                 <a href="/projects/">Projects</a>
-                <a href="/notes/">Notes</a>
                 <a href="/contact/">Contact</a>
                 <a aria-current="page" href="/playground/">Playground</a>
             </div>
@@ -52,8 +51,8 @@
             <p class="kicker">Playground experiment</p>
             <h1>Diffusion Model Denoising Toy</h1>
             <p class="lead hero-line">
-                Add noise to a generated image, then step backward through a simplified denoising process.
-                It is a canvas intuition for generative diffusion models, not a trained model.
+                Add noise to a generated image, then work backward through a simplified denoising process.
+                This canvas demo gives a feel for generative diffusion models; it isn’t a trained model.
             </p>
 
             <div class="hero__cta">
@@ -68,8 +67,8 @@
                     <p class="project-kicker">Noise schedule</p>
                     <h2>Forward noise, reverse estimate</h2>
                     <p>
-                        The timestep slider controls how much noise has been added. Play the reverse process to watch
-                        the noisy image move back toward a structured sample.
+                        Use the timestep slider to control how much noise is added. Play the reverse process
+                        to watch the noisy image move back toward a structured sample.
                     </p>
                 </div>
 
@@ -140,14 +139,14 @@
             </div>
         </main>
 
-        <section class="card kitten-sampler" data-kitten-sampler>
+        <section class="card kitten-sampler" data-kitten-sampler hidden>
             <div class="kitten-sampler__top">
                 <div>
                     <p class="project-kicker">Model-backed sampler</p>
                     <h2>Kitten sampler</h2>
                     <p>
-                        After the notebook exports the tiny ONNX denoiser, this panel samples from pure noise in the
-                        browser with DDIM-style steps.
+                        Turn random noise into a small kitten image using a trained diffusion model that runs
+                        in your browser.
                     </p>
                 </div>
 
@@ -210,8 +209,8 @@
                     </div>
 
                     <p class="kitten-sampler__note" data-kitten-note>
-                        Run <code>notebooks/tiny_kitten_ddpm_64.ipynb</code> and export
-                        <code>assets/models/kitten-ddpm-64/kitten_denoiser.onnx</code> to enable live sampling.
+                        More steps take more time. Sampling happens locally, and each seed begins with a
+                        different noise pattern.
                     </p>
                 </aside>
             </div>
@@ -221,16 +220,18 @@
             <article class="card">
                 <h2>Forward diffusion</h2>
                 <p>
-                    The forward process gradually mixes a clean sample with random noise. At high timesteps the image
-                    keeps less visible structure, which is why real diffusion models learn many small denoising steps.
+                    The forward process gradually mixes a clean sample with random noise. At high timesteps,
+                    little visible structure remains. Real diffusion models learn many small denoising steps
+                    to work their way back.
                 </p>
             </article>
 
             <article class="card">
                 <h2>Reverse denoising</h2>
                 <p>
-                    The reverse panel is a deterministic canvas approximation. It uses the hidden clean sample as a
-                    guide so the interaction stays understandable; a real model would learn that guide from data.
+                    The reverse panel uses a deterministic canvas approximation. It takes the hidden clean
+                    sample as its guide to keep the interaction easy to follow. A real model would learn that
+                    guide from data.
                 </p>
             </article>
         </section>
@@ -755,11 +756,29 @@
                 drawSeedNoise();
             });
 
-            status.textContent = copy.waiting;
-            modelReadout.textContent = copy.modelMissing;
-            title.textContent = copy.titleMissing;
-            syncLabels();
-            drawSeedNoise();
+            // Only offer live sampling when a trained model is actually deployed.
+            const initializeSampler = async () => {
+                try {
+                    const response = await fetch(metadataPath);
+                    if (!response.ok) return;
+                    const metadata = await response.json();
+                    if (metadata.status !== 'trained') return;
+                    const modelPath = metadata.modelPath || `${modelRoot}/kitten_denoiser.onnx`;
+                    const modelResponse = await fetch(modelPath, { method: 'HEAD' });
+                    if (!modelResponse.ok) return;
+
+                    syncLabels();
+                    drawSeedNoise();
+                    status.textContent = copy.ready;
+                    modelReadout.textContent = copy.modelReady;
+                    title.textContent = copy.titleReady;
+                    root.hidden = false;
+                } catch {
+                    // The procedural toy stays available without the optional model.
+                    root.hidden = true;
+                }
+            };
+            initializeSampler();
         });
     </script>
 </body>

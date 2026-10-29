@@ -7,7 +7,7 @@
     <title>Graph Signal Diffusion · Playground · Lorenzo Marinelli</title>
     <meta name="description"
         content="Interactive graph signal diffusion toy by Lorenzo Marinelli — click a node and watch information spread across a graph." />
-    <link rel="stylesheet" href="/assets/style.css" />
+    <link rel="stylesheet" href="/assets/style.css?v=20261017" />
 
     <link rel="alternate" hreflang="en" href="/playground/graph-diffusion/" />
     <link rel="alternate" hreflang="it" href="/it/playground/graph-diffusion/" />
@@ -41,7 +41,6 @@
                 <a href="/">Home</a>
                 <a href="/about/">About</a>
                 <a href="/projects/">Projects</a>
-                <a href="/notes/">Notes</a>
                 <a href="/contact/">Contact</a>
                 <a aria-current="page" href="/playground/">Playground</a>
             </div>
@@ -51,8 +50,8 @@
             <p class="kicker">Playground experiment</p>
             <h1>Graph Signal Diffusion</h1>
             <p class="lead hero-line">
-                Click a node to inject a signal. Nearby nodes receive a weaker version of it at each hop.
-                It is a small visual intuition for graph neighborhoods, message passing, and network effects.
+                Click a node to inject a signal. At each hop, nearby nodes receive a weaker version. It’s a
+                small visual way to explore graph neighborhoods, message passing, and network effects.
             </p>
 
             <div class="hero__cta">
@@ -67,8 +66,8 @@
                     <p class="project-kicker">Interactive graph</p>
                     <h2>Inject a signal</h2>
                     <p>
-                        Click any node in the canvas. Increase the hop count to let the signal travel farther.
-                        Increase the decay to make the signal fade more slowly.
+                        Click any node in the canvas. Raise the hop count to send the signal farther, or
+                        increase the decay value to make it fade more slowly.
                     </p>
                 </div>
 
@@ -108,30 +107,30 @@
             <article class="card">
                 <h2>What this represents</h2>
                 <p>
-                    This is not meant to be a full GNN implementation. It shows the core intuition:
-                    a node starts with information, then its local neighborhood receives progressively weaker traces of
-                    it.
+                    This shows the basic idea behind message passing rather than a full GNN: a node starts
+                    with information, and its neighborhood receives progressively weaker traces of it.
                 </p>
                 <p>
-                    In a real graph neural network, each node repeatedly aggregates information from its neighbors and
-                    updates
-                    its representation. More hops means a wider receptive field, but also more smoothing.
+                    In a real graph neural network, nodes repeatedly gather information from their neighbors
+                    and update their representations. More hops give a wider receptive field, along with more
+                    smoothing.
                 </p>
                 <p>
-                    The follow-up GNN toy makes that update step explicit with editable node features and one to three
-                    message-passing layers.
+                    The follow-up GNN toy lets you explore that update step directly, with editable node
+                    features and one to three message-passing layers.
                 </p>
             </article>
 
             <article class="card">
                 <h2>A shared graph language</h2>
                 <p>
-                    The same visual metaphor connects several interests: protein interaction networks, disease modules,
-                    graph neural networks, random walks, music harmony graphs, and even idea association.
+                    The same picture connects several of my interests: protein interaction networks, disease
+                    modules, graph neural networks, random walks, music harmony graphs, and even associations
+                    between ideas.
                 </p>
                 <p>
-                    Keeping it small makes the interaction reusable: a graph can be a model, a map, a composition tool,
-                    or a way to make abstract relationships easier to inspect.
+                    Keeping the interaction small makes it reusable. A graph can serve as a model, a map, a
+                    composition tool, or a way to examine abstract relationships.
                 </p>
             </article>
         </section>

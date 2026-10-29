@@ -7,7 +7,7 @@
   <title>Projects · Lorenzo Marinelli</title>
   <meta name="description"
     content="Projects by Lorenzo Marinelli — ML, data science, bioinformatics, and engineering work." />
-  <link rel="stylesheet" href="/assets/style.css" />
+  <link rel="stylesheet" href="/assets/style.css?v=20261017" />
 
   <link rel="alternate" hreflang="it" href="/it/projects/" />
   <link rel="alternate" hreflang="en" href="/projects/" />
@@ -41,7 +41,6 @@
         <a href="/">Home</a>
         <a href="/about/">About</a>
         <a aria-current="page" href="/projects/">Projects</a>
-        <a href="/notes/">Notes</a>
         <a href="/contact/">Contact</a>
         <a href="/playground/">Playground</a>
       </div>
@@ -50,11 +49,11 @@
     <header class="hero hero--projects">
       <p class="kicker">Selected work</p>
       <h1>Projects</h1>
-      <p class="lead">A tidy overview of some of the things I’ve built, studied, and tested.</p>
+      <p class="lead">A few things I’ve built, studied, and tested, gathered in one place.</p>
       <div class="meta">
         <span>Based in Italy</span>
         <span class="sep">•</span>
-        <span>Last updated: July 2026</span>
+        <span>Last updated: October 2026</span>
       </div>
     </header>
 
@@ -82,10 +81,11 @@
       </div>
 
       <p class="project__desc">
-        <span class="hl">Unveiling Protein Connections through Graph Neural Networks and ProtT5 Embeddings</span><br />
-        My bachelor’s thesis asks a practical bioinformatics question: can a model suggest likely missing links between
-        proteins, so researchers have better candidates to inspect? It combines protein sequence information with a
-        known interaction network, with a NOTCH2-focused case study.
+        <span class="hl">Unveiling Protein Connections through Graph Neural Networks and ProtT5
+        Embeddings</span><br /> My bachelor’s thesis starts with a practical bioinformatics question: can a
+        model suggest likely missing links between proteins and give researchers better candidates to inspect?
+        It combines protein sequence information with a known interaction network and includes a case study
+        focused on NOTCH2.
       </p>
 
       <div class="tag-row" aria-label="Tags">
@@ -118,8 +118,9 @@
         </div>
 
         <p class="project__desc">
-          A fast waveform-level attack that trains a residual 1D U-Net to generate small, bounded audio perturbations
-          in one forward pass, keeping speech understandable while sharply degrading Whisper transcription.
+          A fast attack on speech waveforms: a residual 1D U-Net learns to produce small, bounded audio
+          perturbations in one forward pass. Speech stays understandable while Whisper’s transcription
+          degrades sharply.
         </p>
 
         <div class="tag-row" aria-label="Tags">
@@ -149,8 +150,9 @@
         </div>
 
         <p class="project__desc">
-          Exam project combining reinforcement learning and LLM-based guidance for navigation in a stochastic PyBullet
-          environment with a hidden goal, sparse local sensing, dense guidance embeddings, and recurrent control.
+          An exam project combining reinforcement learning with LLM-based guidance to navigate a stochastic
+          PyBullet environment. It uses a hidden goal, sparse local sensing, dense guidance embeddings, and
+          recurrent control.
         </p>
 
         <div class="tag-row" aria-label="Tags">
@@ -171,6 +173,38 @@
         </div>
       </article>
 
+      <article class="card project project-card" data-tags="ml nlp adversarial security">
+        <div class="project__top">
+          <p class="project-kicker">Natural language processing</p>
+          <h2>Unicode-Robust Text Classification Lab</h2>
+        </div>
+
+        <p class="project__desc">
+          A sentence can look almost unchanged and still trip up a text classifier. This project tests Unicode
+          substitutions and invisible characters on BANKING77 and TREC, compares TF-IDF classifiers with
+          fine-tuned DistilBERT, and evaluates simple input defenses.
+        </p>
+
+        <div class="tag-row" aria-label="Tags">
+          <span>NLP</span>
+          <span>Unicode attacks</span>
+          <span>TF-IDF</span>
+          <span>DistilBERT</span>
+        </div>
+
+        <ul class="bullets">
+          <li><span class="hl">Comparison:</span> word, character, and BPE features tested on the same perturbed inputs.</li>
+          <li><span class="hl">Finding:</span> character features retain the most performance at 20% attack strength;
+            targeted input repair recovers much of the loss within the tested attack set.</li>
+        </ul>
+
+        <div class="hero__cta">
+          <a class="btn" href="/assets/unicode-text-classification/Unicode_Robust_Text_Classification_Report.pdf">Report PDF</a>
+          <a class="btn btn--ghost" href="https://github.com/Lorenzo-3/Unicode-Robust-Text-Classification-Lab/tree/main"
+            target="_blank" rel="noopener noreferrer">Source &amp; notebooks</a>
+        </div>
+      </article>
+
       <article class="card project project-card" data-tags="ml vision uav">
         <div class="project__top">
           <p class="project-kicker">Computer vision</p>
@@ -178,7 +212,7 @@
         </div>
 
         <p class="project__desc">
-          A computer-vision pipeline for large drone images where the goal is simple: spot unusual objects or target
+          A computer-vision pipeline for large drone images. The goal is to spot unusual objects or target
           areas quickly, then turn them into regions that can be checked or classified.
         </p>
 
@@ -208,8 +242,8 @@
         </div>
 
         <p class="project__desc">
-          A small forecasting study on a chaotic system: can a model predict the next movement, and how quickly do tiny
-          mistakes grow when predictions are fed back into the model?
+          A small forecasting study of a chaotic system. Can a model predict the next movement? And how
+          quickly do tiny errors grow when its predictions are fed back in?
         </p>
 
         <div class="tag-row" aria-label="Tags">
@@ -241,7 +275,8 @@
         </div>
 
         <p class="project__desc">
-          Exploratory analysis of the 2019 European elections: data cleaning, hypothesis checks, and visual summaries.
+          An exploratory analysis of the 2019 European elections, covering data cleaning, hypothesis checks,
+          and visual summaries.
         </p>
 
         <div class="tag-row" aria-label="Tags">
@@ -269,8 +304,8 @@
         </div>
 
         <p class="project__desc">
-          A first-person Three.js experience that turns sound into a place you can explore: a live waveform shows the
-          signal over time while an audio-reactive skyline reveals its frequency spectrum.
+          Explore sound in a first-person Three.js scene. A live waveform shows the signal over time, while an
+          audio-reactive skyline shows its frequency spectrum.
         </p>
 
         <div class="tag-row" aria-label="Tags">
@@ -302,7 +337,8 @@
         </div>
 
         <p class="project__desc">
-          Small synthetic-data pipeline for generating labeled images with domain randomization for YOLO-style training.
+          A small pipeline that uses domain randomization to generate labeled synthetic images for YOLO-style
+          training.
         </p>
 
         <div class="tag-row" aria-label="Tags">
@@ -335,8 +371,7 @@
         </div>
 
         <p class="project__desc">
-          Lightweight backend/API work and small apps focused on turning functionality into something usable and
-          testable.
+          Small backend/API projects and apps that turn functionality into something people can use and test.
         </p>
 
         <div class="tag-row" aria-label="Tags">
@@ -367,8 +402,8 @@
         </div>
 
         <p class="project__desc">
-          A growing space for browser-native simulations, visual explainers, and small tools that are useful to explore
-          but not necessarily large enough for standalone project pages.
+          A growing collection of simulations, visual explanations, and small tools that run in the browser.
+          They’re worth exploring even when they don’t need a full project page.
         </p>
 
         <div class="tag-row" aria-label="Tags">
